@@ -23,7 +23,7 @@ uses
   StdCtrls, shellapi, unitCREdProperties,
   cmpNTAboutBox, ExtDlgs, ResourceForm, GifImage, JPeg, PngImage,
   AppEvnts, unitHTMLHelpViewer, ActnMan, ActnCtrls, ActnMenus, XPStyleActnCtrls,
-  VirtualTrees, ExVirtualStringTree, unitResourceExaminer, XPMan;
+  VirtualTrees, VirtualStringTree, unitResourceExaminer, XPMan;
 {$endregion}
 
 {$region 'Constant Definitions'}
@@ -143,7 +143,7 @@ type
     N12: TMenuItem;
     actResourceClone: TAction;
     CloneResource1: TMenuItem;
-    vstResources: TExVirtualStringTree;
+    vstResources: TVirtualStringTree;
     XPManifest1: TXPManifest;
     tbMenu: TToolBar;
     btnFile: TToolButton;
