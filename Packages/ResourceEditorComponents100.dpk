@@ -1,0 +1,56 @@
+package ResourceEditorComponents100;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'Colin Wilson - Resource Editor Components'}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  LowLevel100,
+  vcl,
+  ResourceUtils100,
+  vcljpg,
+  ImageTypes100;
+
+contains
+  ResourceEditorComponentsReg in 'ResourceEditorComponentsReg.pas',
+  cmpDialogBox in 'cmpDialogBox.pas',
+  cmpDialogEditor in 'cmpDialogEditor.pas',
+  cmpMenuDesigner in 'cmpMenuDesigner.pas',
+  DialogButtonControls in 'DialogButtonControls.pas',
+  DialogComboBoxControls in 'DialogComboBoxControls.pas',
+  DialogEditControls in 'DialogEditControls.pas',
+  DialogHotkeyControls in 'DialogHotkeyControls.pas',
+  DialogListboxControls in 'DialogListboxControls.pas',
+  DialogProgressBarControls in 'DialogProgressBarControls.pas',
+  DialogScrollbarControls in 'DialogScrollbarControls.pas',
+  DialogSliderControls in 'DialogSliderControls.pas',
+  DialogStaticControls in 'DialogStaticControls.pas',
+  DialogStrings in 'DialogStrings.pas',
+  DialogUpDownControls in 'DialogUpDownControls.pas',
+  cmpBitmapEditor in 'cmpBitmapEditor.pas',
+  DialogListViewControls in 'DialogListViewControls.pas',
+  cmpGradientShape in 'cmpGradientShape.pas';
+
+end.
