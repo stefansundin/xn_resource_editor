@@ -20,7 +20,7 @@ object dlgAddResource: TdlgAddResource
     325)
   PixelsPerInch = 96
   TextHeight = 13
-  object ListView1: TListView
+  object ListView: TListView
     Left = 16
     Top = 16
     Width = 250
@@ -39,7 +39,7 @@ object dlgAddResource: TdlgAddResource
     SmallImages = fmMain.ilResources
     TabOrder = 0
     ViewStyle = vsReport
-    OnDblClick = ListView1DblClick
+    OnDblClick = ListViewDblClick
   end
   object btnOK: TButton
     Left = 106

@@ -2,7 +2,8 @@ unit unitCharsetMap;
 
 interface
 
-uses Windows, Classes, SysUtils, Graphics, MultiLanguage_TLB, richedit;
+uses
+  Windows, Classes, SysUtils, Graphics, MultiLanguage_TLB, RichEdit;
 
 var
   CP_USASCII : Integer = 0;
@@ -34,7 +35,8 @@ var
 
 implementation
 
-uses ActiveX;
+uses
+  ActiveX;
 
 type
   TCharsetRec = record
@@ -105,7 +107,7 @@ begin
     gIMultiLanguage := CoCMultiLanguage.Create;
     gMultiLang := False;
 
-    if Assigned (gIMultiLanguage) then
+    if Assigned(gIMultiLanguage) then
     begin
       gIMultiLanguage.EnumCodePages(MIMECONTF_MAILNEWS, enum);
       info := CoTaskMemAlloc (10* sizeof (tagMIMECPInfo));;

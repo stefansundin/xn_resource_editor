@@ -20,7 +20,7 @@ object fmTextInput: TfmTextInput
     210)
   PixelsPerInch = 96
   TextHeight = 13
-  object mmoText: TTntMemo
+  object mmoText: TMemo
     Left = 8
     Top = 8
     Width = 293

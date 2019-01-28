@@ -34,13 +34,13 @@ type
     FBorder: TBorderStyle;
     FHexData: THexStrArray;
     FLineAddr: array[0..15] of char;
-    fReadOnly: boolean;
+    FReadOnly: boolean;
     FCurrentLinePos: Integer;
     FAddressWidth : Integer;
     FEditCharacters : boolean;
     FLowNibble : boolean;
-    fChanges: boolean;
-    fOnChanges: TNotifyEvent;
+    FChanges: boolean;
+    FOnChanges: TNotifyEvent;
     FAddressOffset: Integer;
 
     procedure CalcPaintParams;
@@ -90,7 +90,7 @@ type
     property DataSize: Integer read FDataSize write SetDataSize;
     property AddressOffset : Integer read FAddressOffset write SetAddressOffset;
     property LowNibble : boolean read FLowNibble write SetLowNibble;
-    property Changes : boolean read fChanges write fChanges;
+    property Changes : boolean read FChanges write FChanges;
   published
     property Align;
     property Anchors;
@@ -144,13 +144,13 @@ type
     property OnStartDock;
     property OnStartDrag;
     property OnUnDock;
-    property ReadOnly : boolean read fReadOnly write SetReadOnly;
+    property ReadOnly : boolean read FReadOnly write SetReadOnly;
     property ShowAddress: Boolean read FShowAddress write SetShowAddress default True;
     property ShowCharacters: Boolean read FShowCharacters write SetShowCharacters default True;
     property AddressColor: TColor index 0 read GetFileColor write SetFileColor default clBlack;
     property HexDataColor: TColor index 1 read GetFileColor write SetFileColor default clBlack;
     property AnsiCharColor: TColor index 2 read GetFileColor write SetFileColor default clBlack;
-    property OnChanges : TNotifyEvent read fOnChanges write fOnChanges;
+    property OnChanges : TNotifyEvent read FOnChanges write FOnChanges;
   end;
 
 function CreateHexDump(AOwner: TWinControl): THexDump;
@@ -618,9 +618,9 @@ end;
 
 procedure THexDump.SetReadOnly(const Value: boolean);
 begin
-  if value <> fReadOnly then
+  if value <> FReadOnly then
   begin
-    fReadOnly := Value;
+    FReadOnly := Value;
     RecreateWnd
   end
 end;
@@ -762,9 +762,9 @@ procedure THexDump.SetChanged;
 begin
   if not Changes then
   begin
-    fChanges := True;
-    if Assigned (OnChanges) then
-      OnChanges (self)
+    FChanges := True;
+    if Assigned(OnChanges) then
+      OnChanges(self)
   end
 end;
 

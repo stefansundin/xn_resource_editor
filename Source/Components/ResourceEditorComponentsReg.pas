@@ -11,7 +11,8 @@ uses
   cmpBitmapEditor,
   cmpMenuDesigner,
   cmpDialogBox,
-  cmpDialogEditor;
+  cmpDialogEditor,
+  ExVirtualStringTree;
 
 procedure Register;
 begin
@@ -20,7 +21,8 @@ begin
     TMenuDesigner,
     TPopupMenuDesigner,
     TDialogBox,
-    TDialogEditor
+    TDialogEditor,
+    TExVirtualStringTree
   ])
 end;
 

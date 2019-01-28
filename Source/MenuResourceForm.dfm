@@ -4,8 +4,6 @@ inherited fmMenuResource: TfmMenuResource
   ActiveControl = PropertyListBox1
   Caption = 'fmMenuResource'
   OnShow = FormShow
-  ExplicitWidth = 701
-  ExplicitHeight = 455
   PixelsPerInch = 96
   TextHeight = 13
   object Splitter1: TSplitter

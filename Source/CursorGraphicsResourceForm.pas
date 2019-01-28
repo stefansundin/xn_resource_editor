@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, IconCursorGraphicsResourceForm, Menus, ActnList, ImgList,
   ComCtrls, cmpColorSelector, ExtCtrls, ToolWin, cmpSizingPageControl,
-  cmpBitmapEditor, cmpPropertyListBox, unitExIcon;
+  cmpBitmapEditor, cmpPropertyListBox, unitExIcon, System.Actions,
+  System.ImageList;
 
 type
   TfmCursorGraphicsResource = class(TfmIconCursorGraphicsResource)
@@ -14,10 +15,10 @@ type
     procedure actImageHotSpotExecute(Sender: TObject);
     procedure SetHotspot1Click(Sender: TObject);
     procedure PropertyListBox1PropertyChanged(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     function GetCursor: TExCursor;
     procedure SetHotspot(const ScreenPt : TPoint);
-    { Private declarations }
   protected
     procedure SetObject (const Value : TObject); override;
   public
@@ -26,9 +27,6 @@ type
 
     property Cursor : TExCursor read GetCursor;
   end;
-
-var
-  fmCursorGraphicsResource: TfmCursorGraphicsResource;
 
 implementation
 
@@ -70,6 +68,28 @@ procedure TfmCursorGraphicsResource.actImageHotSpotExecute(Sender: TObject);
 begin
   inherited;
 //
+end;
+
+procedure TfmCursorGraphicsResource.FormCreate(Sender: TObject);
+begin
+  inherited;
+
+  with TPropertyListProperty(PropertyListBox1.Properties.Add) do
+  begin
+    PropertyName := 'Hot Spot Left';
+    PropertyType := ptInteger;
+    ParentColor := False;
+    Color := clBlack;
+    ReadOnly := False;
+  end;
+  with TPropertyListProperty(PropertyListBox1.Properties.Add) do
+  begin
+    PropertyName := 'Hot Spot Top';
+    PropertyType := ptInteger;
+    ParentColor := False;
+    Color := clBlack;
+    ReadOnly := False;
+  end;
 end;
 
 function TfmCursorGraphicsResource.GetCursor : TExCursor;

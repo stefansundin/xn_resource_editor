@@ -42,7 +42,6 @@ object dlgResourceProperties: TdlgResourceProperties
     Width = 213
     Height = 21
     Anchors = [akLeft, akTop, akRight]
-    ItemHeight = 13
     Sorted = True
     TabOrder = 1
   end
@@ -68,7 +67,7 @@ object dlgResourceProperties: TdlgResourceProperties
     ModalResult = 2
     TabOrder = 3
   end
-  object ntedName: TTntEdit
+  object ntedName: TEdit
     Left = 80
     Top = 12
     Width = 209

@@ -4,24 +4,17 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, TntStdCtrls;
+  Dialogs, StdCtrls;
 
 type
   TfmTextInput = class(TForm)
-    mmoText: TTntMemo;
+    mmoText: TMemo;
     Button1: TButton;
     Button2: TButton;
     Button3: TButton;
     FontDialog1: TFontDialog;
     procedure Button2Click(Sender: TObject);
-  private
-    { Private declarations }
-  public
-    { Public declarations }
   end;
-
-var
-  fmTextInput: TfmTextInput;
 
 implementation
 

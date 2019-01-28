@@ -19,7 +19,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ResourceForm, ComCtrls, unitResourceMessages, ActnList, Menus, StdCtrls, ConTnrs,
-  cmpCWRichEdit, VirtualTrees;
+  cmpCWRichEdit, VirtualTrees, System.Actions;
 
 type
   TfmTextResource = class(TfmResource)
@@ -41,23 +41,24 @@ type
     ChangeID2: TMenuItem;
     mmoMessage: TExRichEdit;
     vstStrings: TVirtualStringTree;
-    procedure vstStringsNewText(Sender: TBaseVirtualTree; Node: PVirtualNode;
-      Column: TColumnIndex; NewText: WideString);
     procedure FormShow(Sender: TObject);
     procedure vstStringsEditing(Sender: TBaseVirtualTree; Node: PVirtualNode;
       Column: TColumnIndex; var Allowed: Boolean);
     procedure vstStringsKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure vstStringsDblClick(Sender: TObject);
+    procedure vstStringsGetText(Sender: TBaseVirtualTree; Node: PVirtualNode;
+      Column: TColumnIndex; TextType: TVSTTextType; var CellText: string);
+
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure vstStringsGetText(Sender: TBaseVirtualTree; Node: PVirtualNode;
-      Column: TColumnIndex; TextType: TVSTTextType; var CellText: WideString);
     procedure actStringsModifyExecute(Sender: TObject);
-    procedure mmoMessageExit(Sender: TObject);
     procedure actStringsDeleteExecute(Sender: TObject);
     procedure actStringsAddExecute(Sender: TObject);
     procedure actStringsChangeIDExecute(Sender: TObject);
+    procedure mmoMessageExit(Sender: TObject);
+    procedure vstStringsNewText(Sender: TBaseVirtualTree; Node: PVirtualNode;
+      Column: TColumnIndex; NewText: string);
   protected
     procedure SetObject(const Value: TObject); override;
     function GetMenuItem : TMenuItem; override;
@@ -84,7 +85,8 @@ var
 
 implementation
 
-uses DialogStrings;
+uses
+  DialogStrings;
 
 {$R *.DFM}
 
@@ -418,24 +420,6 @@ begin
     actStringsAdd.Execute
 end;
 
-procedure TfmTextResource.vstStringsGetText(Sender: TBaseVirtualTree;
-  Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType;
-  var CellText: WideString);
-var
-  si : TStringInfo;
-begin
-  si := NodeString (Node);
-
-  if si <> Nil then
-  case Column of
-    0 : if fHexMode then
-          CellText := IntToHex (si.Id , 8)
-        else
-          CellText := IntToStr (si.Id);
-    1 : CellText := si.St
-  end
-end;
-
 (*----------------------------------------------------------------------*
  | TfmTextResource.vstStringsKeyDown                                     |
  |                                                                      |
@@ -449,7 +433,7 @@ begin
 end;
 
 procedure TfmTextResource.vstStringsNewText(Sender: TBaseVirtualTree;
-  Node: PVirtualNode; Column: TColumnIndex; NewText: WideString);
+  Node: PVirtualNode; Column: TColumnIndex; NewText: string);
 var
   i, newID : Integer;
   st : TStringInfo;
@@ -485,6 +469,24 @@ procedure TfmTextResource.vstStringsEditing(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex; var Allowed: Boolean);
 begin
   Allowed := (Column = 0) and (NodeString (Node) <> Nil);
+end;
+
+procedure TfmTextResource.vstStringsGetText(Sender: TBaseVirtualTree;
+  Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType;
+  var CellText: string);
+var
+  si : TStringInfo;
+begin
+  si := NodeString (Node);
+
+  if si <> Nil then
+  case Column of
+    0 : if fHexMode then
+          CellText := IntToHex (si.Id , 8)
+        else
+          CellText := IntToStr (si.Id);
+    1 : CellText := si.St
+  end
 end;
 
 procedure TfmTextResource.TidyUp;

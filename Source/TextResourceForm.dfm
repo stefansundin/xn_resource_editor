@@ -2,8 +2,6 @@ inherited fmTextResource: TfmTextResource
   Caption = 'fmTextResource'
   OnCreate = FormCreate
   OnShow = FormShow
-  ExplicitWidth = 701
-  ExplicitHeight = 455
   PixelsPerInch = 96
   TextHeight = 13
   object vstStrings: TVirtualStringTree
@@ -13,11 +11,6 @@ inherited fmTextResource: TfmTextResource
     Height = 455
     Align = alClient
     Header.AutoSizeIndex = 1
-    Header.Font.Charset = DEFAULT_CHARSET
-    Header.Font.Color = clWindowText
-    Header.Font.Height = -11
-    Header.Font.Name = 'MS Sans Serif'
-    Header.Font.Style = []
     Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoVisible]
     Header.Style = hsPlates
     PopupMenu = pomStrings
@@ -46,13 +39,19 @@ inherited fmTextResource: TfmTextResource
   end
   object mmoMessage: TExRichEdit
     Left = 0
-    Top = 48
+    Top = 40
     Width = 185
     Height = 73
     Text = 'mmoMessage'
     RightMargin = 0
     AutoURLDetect = False
     AutoURLExecute = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
     TabOrder = 0
     Visible = False
     OnExit = mmoMessageExit

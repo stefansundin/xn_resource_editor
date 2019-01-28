@@ -2,18 +2,19 @@ unit unitVersionInfo;
 
 interface
 
-uses Windows, Classes, SysUtils;
+uses
+  Windows, Classes, SysUtils;
+
 type
   TVersionInfo = class
-  fModule : THandle;
-  fVersionInfo : PChar;
-  fVersionHeader : PChar;
-  fChildStrings : TStringList;
-  fTranslations : TList;
-  fFixedInfo : PVSFixedFileInfo;
-  fVersionResHandle : THandle;
-  fModuleLoaded : boolean;
-
+    FModule : THandle;
+    FVersionInfo : PChar;
+    FVersionHeader : PChar;
+    FChildStrings : TStringList;
+    FTranslations : TList;
+    FFixedInfo : PVSFixedFileInfo;
+    FVersionResHandle : THandle;
+    FModuleLoaded : boolean;
   private
     function GetInfo : boolean;
     function GetKeyCount: Integer;
@@ -37,37 +38,37 @@ implementation
 { TVersionInfo }
 
 type
-TVersionStringValue = class
-  fValue : string;
-  fLangID, fCodePage : Integer;
+  TVersionStringValue = class
+    FValue: string;
+    FLangID, FCodePage: Integer;
 
-  constructor Create (const AValue : string; ALangID, ACodePage : Integer);
-end;
+    constructor Create(const AValue: string; ALangID, ACodePage: Integer);
+  end;
 
 constructor TVersionInfo.Create(AModule: THandle);
 var
-  resHandle : THandle;
+  resHandle: THandle;
 begin
-  fModule := AModule;
-  fChildStrings := TStringList.Create;
-  fTranslations := TList.Create;
-  resHandle := FindResource (fModule, pointer (1), RT_VERSION);
+  FModule := AModule;
+  FChildStrings := TStringList.Create;
+  FTranslations := TList.Create;
+  resHandle := FindResource (FModule, pointer (1), RT_VERSION);
   if resHandle <> 0 then
   begin
-    fVersionResHandle := LoadResource (fModule, resHandle);
-    if fVersionResHandle <> 0 then
-      fVersionInfo := LockResource (fVersionResHandle)
+    FVersionResHandle := LoadResource (FModule, resHandle);
+    if FVersionResHandle <> 0 then
+      FVersionInfo := LockResource (FVersionResHandle)
   end;
 
-  if not Assigned (fVersionInfo) then
+  if not Assigned(FVersionInfo) then
     raise Exception.Create ('Unable to load version info resource');
 end;
 
 constructor TVersionInfo.Create(AVersionInfo: PChar);
 begin
-  fChildStrings := TStringList.Create;
-  fTranslations := TList.Create;
-  fVersionInfo := AVersionInfo;
+  FChildStrings := TStringList.Create;
+  FTranslations := TList.Create;
+  FVersionInfo := AVersionInfo;
 end;
 
 constructor TVersionInfo.Create(const AFileName: string);
@@ -78,7 +79,7 @@ begin
   if handle <> 0 then
   begin
     Create (handle);
-    fModuleLoaded := True
+    FModuleLoaded := True
   end
   else
     raiseLastOSError;
@@ -88,15 +89,15 @@ destructor TVersionInfo.Destroy;
 var
   i : Integer;
 begin
-  for i := 0 to fChildStrings.Count - 1 do
-    fChildStrings.Objects [i].Free;
+  for i := 0 to FChildStrings.Count - 1 do
+    FChildStrings.Objects [i].Free;
 
-  fChildStrings.Free;
-  fTranslations.Free;
-  if fVersionResHandle <> 0 then
-    FreeResource (fVersionResHandle);
-  if fModuleLoaded then
-    FreeLibrary (fModule);
+  FChildStrings.Free;
+  FTranslations.Free;
+  if FVersionResHandle <> 0 then
+    FreeResource (FVersionResHandle);
+  if FModuleLoaded then
+    FreeLibrary (FModule);
   inherited;
 end;
 
@@ -147,9 +148,9 @@ var
       codePage := StrToInt ('$' + Copy (key, 5, 4));
 
       strBase := p;
-      for i := 0 to fChildStrings.Count - 1 do
-        fChildStrings.Objects [i].Free;
-      fChildStrings.Clear;
+      for i := 0 to FChildStrings.Count - 1 do
+        FChildStrings.Objects [i].Free;
+      FChildStrings.Clear;
 
       while (p - strBase) < wLength do
       begin
@@ -164,7 +165,7 @@ var
         while Integer (p) mod 4 <> 0 do
           Inc (p);
 
-        fChildStrings.AddObject (key, TVersionStringValue.Create (value, langID, codePage))
+        FChildStrings.AddObject (key, TVersionStringValue.Create (value, langID, codePage))
       end
     end;
     base := p
@@ -185,13 +186,13 @@ var
       Dec (wLength, t);
 
       strBase := p;
-      fTranslations.Clear;
+      FTranslations.Clear;
 
       while (p - strBase) < wLength do
       begin
         v := PDWORD (p)^;
         Inc (p, sizeof (DWORD));
-        fTranslations.Add (pointer (v));
+        FTranslations.Add (pointer (v));
       end
     end;
     base := p
@@ -199,15 +200,15 @@ var
 
 begin
   result := False;
-  if not Assigned (fFixedInfo) then
+  if not Assigned(FFixedInfo) then
   try
-    p := fVersionInfo;
+    p := FVersionInfo;
     GetVersionHeader (p, wLength, wValueLength, wType, key);
 
     if wValueLength <> 0 then
     begin
-      fFixedInfo := PVSFixedFileInfo (p);
-      if fFixedInfo^.dwSignature <> $feef04bd then
+      FFixedInfo := PVSFixedFileInfo (p);
+      if FFixedInfo^.dwSignature <> $feef04bd then
         raise Exception.Create ('Invalid version resource');
 
       Inc (p, wValueLength);
@@ -215,9 +216,9 @@ begin
         Inc (p);
     end
     else
-      fFixedInfo := Nil;
+      FFixedInfo := Nil;
 
-    while wLength > (p - fVersionInfo) do
+    while wLength > (p - FVersionInfo) do
     begin
       t := GetVersionHeader (p, varwLength, varwValueLength, varwType, varKey);
       Dec (varwLength, t);
@@ -241,7 +242,7 @@ end;
 function TVersionInfo.GetKeyCount: Integer;
 begin
   if GetInfo then
-    result := fChildStrings.Count
+    result := FChildStrings.Count
   else
     result := 0;
 end;
@@ -251,7 +252,7 @@ begin
   if idx >= KeyCount then
     raise ERangeError.Create ('Index out of range')
   else
-    result := fChildStrings [idx];
+    result := FChildStrings [idx];
 end;
 
 function TVersionInfo.GetKeyValue(const idx: string): string;
@@ -260,9 +261,9 @@ var
 begin
   if GetInfo then
   begin
-    i := fChildStrings.IndexOf (idx);
+    i := FChildStrings.IndexOf (idx);
     if i <> -1 then
-      result := TVersionStringValue (fChildStrings.Objects [i]).fValue
+      result := TVersionStringValue (FChildStrings.Objects [i]).FValue
     else
       raise Exception.Create ('Key not found')
   end
@@ -315,24 +316,24 @@ begin { SaveToStream }
   begin
     zeros := 0;
 
-    SaveVersionHeader (strm, 0, sizeof (fFixedInfo^), 0, 'VS_VERSION_INFO', fFixedInfo^);
+    SaveVersionHeader (strm, 0, sizeof (FFixedInfo^), 0, 'VS_VERSION_INFO', FFixedInfo^);
 
-    if fChildStrings.Count > 0 then
+    if FChildStrings.Count > 0 then
     begin
       stringInfoStream := TMemoryStream.Create;
       try
-        strg := TVersionStringValue (fChildStrings.Objects [0]);
+        strg := TVersionStringValue (FChildStrings.Objects [0]);
 
-        SaveVersionHeader (stringInfoStream, 0, 0, 0, IntToHex (strg.fLangID, 4) + IntToHex (strg.fCodePage, 4), zeros);
+        SaveVersionHeader (stringInfoStream, 0, 0, 0, IntToHex (strg.FLangID, 4) + IntToHex (strg.FCodePage, 4), zeros);
 
-        for i := 0 to fChildStrings.Count - 1 do
+        for i := 0 to FChildStrings.Count - 1 do
         begin
           PadStream (stringInfoStream);
 
           p := stringInfoStream.Position;
-          strg := TVersionStringValue (fChildStrings.Objects [i]);
-          wValue := strg.fValue;
-          SaveVersionHeader (stringInfoStream, 0, Length (strg.fValue) + 1, 1, fChildStrings [i], wValue [1]);
+          strg := TVersionStringValue (FChildStrings.Objects [i]);
+          wValue := strg.FValue;
+          SaveVersionHeader (stringInfoStream, 0, Length (strg.FValue) + 1, 1, FChildStrings [i], wValue [1]);
           wSize := stringInfoStream.Size - p;
           stringInfoStream.Seek (p, soFromBeginning);
           stringInfoStream.Write (wSize, sizeof (wSize));
@@ -357,7 +358,7 @@ begin { SaveToStream }
       strm.Seek (0, soFromEnd)
     end;
 
-    if fTranslations.Count > 0 then
+    if FTranslations.Count > 0 then
     begin
       PadStream (strm);
       p := strm.Position;
@@ -367,16 +368,16 @@ begin { SaveToStream }
       p1 := strm.Position;
       SaveVersionHeader (strm, 0, 0, 0, 'Translation', zeros);
 
-      for i := 0 to fTranslations.Count - 1 do
+      for i := 0 to FTranslations.Count - 1 do
       begin
-        v := Integer (fTranslations [i]);
+        v := Integer (FTranslations [i]);
         strm.Write (v, sizeof (v))
       end;
 
       wSize := strm.Size - p1;
       strm.Seek (p1, soFromBeginning);
       strm.Write (wSize, sizeof (wSize));
-      wSize := sizeof (Integer) * fTranslations.Count;
+      wSize := sizeof (Integer) * FTranslations.Count;
       strm.Write (wSize, sizeof (wSize));
 
       wSize := strm.Size - p;
@@ -399,11 +400,11 @@ var
 begin
   if GetInfo then
   begin
-    i := fChildStrings.IndexOf (idx);
+    i := FChildStrings.IndexOf (idx);
     if i = -1 then
-      i := fChildStrings.AddObject (idx, TVersionStringValue.Create (idx, 0, 0));
+      i := FChildStrings.AddObject (idx, TVersionStringValue.Create (idx, 0, 0));
 
-    TVersionStringValue (fChildStrings.Objects [i]).fValue := Value
+    TVersionStringValue (FChildStrings.Objects [i]).FValue := Value
   end
   else
     raise Exception.Create ('Invalid version resource');
@@ -414,9 +415,9 @@ end;
 constructor TVersionStringValue.Create(const AValue: string; ALangID,
   ACodePage: Integer);
 begin
-  fValue := AValue;
-  fCodePage := ACodePage;
-  fLangID := ALangID;
+  FValue := AValue;
+  FCodePage := ACodePage;
+  FLangID := ALangID;
 end;
 
 end.

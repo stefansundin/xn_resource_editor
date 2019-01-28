@@ -27,7 +27,8 @@ unit cmpCWRichEdit;
 interface
 
 uses
-  Windows, Messages, Classes, SysUtils, Forms, Graphics, Controls, StdCtrls, ComCtrls, StdActns, RichEdit, Dialogs, RichOLE;
+  Windows, Messages, Classes, SysUtils, Forms, Graphics, Controls, StdCtrls,
+  ComCtrls, StdActns, RichEdit, Dialogs, RichOLE;
 
 type
   TCustomExRichEdit = class;

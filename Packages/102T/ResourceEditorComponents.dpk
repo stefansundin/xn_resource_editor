@@ -23,7 +23,6 @@ package ResourceEditorComponents;
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
-{$DEFINE TULargeInteger}
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'Resource Editor Components'}
 {$LIBSUFFIX '102T'}

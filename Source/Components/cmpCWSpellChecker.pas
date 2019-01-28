@@ -19,7 +19,8 @@ type
 
 implementation
 
-uses SpellCheckerForm;
+uses
+  SpellCheckerForm;
 
 { TCWSpellChecker }
 

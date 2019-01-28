@@ -17,13 +17,14 @@ interface
 {$region 'Interface Uses Section'}
 //------------------------------------------------------
 uses
-  Windows, Messages, SysUtils, SysConst, Classes, Graphics, Controls, Forms, Dialogs,
-  ComCtrls, Menus, ToolWin, ExtCtrls, ImgList, StdActns, ActnList, unitResourceDetails,
-  cmpStandardSystemMenu, cmpPersistentPosition, cmpMRUList,
+  Windows, Messages, SysUtils, SysConst, Classes, Graphics, Controls, Forms,
+  Dialogs, ComCtrls, Menus, ToolWin, ExtCtrls, ImgList, StdActns, ActnList,
+  unitResourceDetails, cmpStandardSystemMenu, cmpPersistentPosition, cmpMRUList,
   StdCtrls, shellapi, unitCREdProperties,
   cmpNTAboutBox, ExtDlgs, ResourceForm, GifImage, JPeg, PngImage,
   AppEvnts, unitHTMLHelpViewer, ActnMan, ActnCtrls, ActnMenus, XPStyleActnCtrls,
-  VirtualTrees, VirtualStringTree, unitResourceExaminer, XPMan;
+  VirtualTrees, unitResourceExaminer, XPMan, System.Actions, System.ImageList,
+  ExVirtualStringTree;
 {$endregion}
 
 {$region 'Constant Definitions'}
@@ -160,18 +161,18 @@ type
     ToolButton4: TToolButton;
     ToolButton5: TToolButton;
     procedure vstResourcesNewText(Sender: TBaseVirtualTree; Node: PVirtualNode;
-      Column: TColumnIndex; NewText: WideString);
+      Column: TColumnIndex; NewText: string);
     procedure vstResourcesEditing(Sender: TBaseVirtualTree; Node: PVirtualNode;
       Column: TColumnIndex; var Allowed: Boolean);
     procedure vstResourcesGetImageIndex(Sender: TBaseVirtualTree;
       Node: PVirtualNode; Kind: TVTImageKind; Column: TColumnIndex;
-      var Ghosted: Boolean; var ImageIndex: Integer);
+      var Ghosted: Boolean; var ImageIndex: TImageIndex);
     procedure vstResourcesFocusChanged(Sender: TBaseVirtualTree;
       Node: PVirtualNode; Column: TColumnIndex);
     procedure vstResourcesInitChildren(Sender: TBaseVirtualTree;
       Node: PVirtualNode; var ChildCount: Cardinal);
     procedure vstResourcesGetText(Sender: TBaseVirtualTree; Node: PVirtualNode;
-      Column: TColumnIndex; TextType: TVSTTextType; var CellText: WideString);
+      Column: TColumnIndex; TextType: TVSTTextType; var CellText: string);
     procedure vstResourcesInitNode(Sender: TBaseVirtualTree; ParentNode,
       Node: PVirtualNode; var InitialStates: TVirtualNodeInitStates);
     procedure actResourceGrabExecute(Sender: TObject);
@@ -205,13 +206,13 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
-    function ApplicationEvents1Help(Command: Word; Data: Integer;
-      var CallHelp: Boolean): Boolean;
     procedure actResourceImportRCDataResourceExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure actResourceImportOtherResourceExecute(Sender: TObject);
     procedure ApplicationEvents1Message(var Msg: tagMSG;
       var Handled: Boolean);
+    function ApplicationEvents1Help(Command: Word; Data: NativeInt;
+      var CallHelp: Boolean): Boolean;
   private
     fResourceModule : TResourceModule;
     fUndo, fRedo : string;
@@ -273,44 +274,45 @@ implementation
 {$R *.DFM}
 
 {$region 'Implementation Uses Section'}
-uses Registry, RawResourceForm,
-     unitPEFile,                        // Accept resources from PE files
-     unitNTModule,                      // Use this instead if NT
-     unitResFile,                       // Accept resources from .RES files
-     unitRCFile,                        // Accept resources from .RC files
+uses
+  Registry, RawResourceForm,
+  unitPEFile,                        // Accept resources from PE files
+  unitNTModule,                      // Use this instead if NT
+  unitResFile,                       // Accept resources from .RES files
+  unitRCFile,                        // Accept resources from .RC files
 
-     unitResourceGraphics,              // Decoder unit for Icons, Bitmaps, Cursors
-     unitResourceMessages,              //    "     "    "  String and Message tables
-     unitResourceVersionInfo,           //    "     "    "  Version Info
-     unitResourceMenus,                 //    "     "    "  Menus
-     unitResourceDialogs,               //    "     "    "  Dialogs
-     unitResourceRCData,                //    "     "    "  RCData
-     unitResourceJPEG,                  //    "     "    "  JPEG Images
-     unitResourceGIF,                   //    "     "    "  GIF Images
-     unitResourceXPManifests,           //    "     "    "  XP Manifests
-     unitResourceAccelerator,           //    "     "    "  Accelerator tables
-     unitResourceToolbar,
+  unitResourceGraphics,              // Decoder unit for Icons, Bitmaps, Cursors
+  unitResourceMessages,              //    "     "    "  String and Message tables
+  unitResourceVersionInfo,           //    "     "    "  Version Info
+  unitResourceMenus,                 //    "     "    "  Menus
+  unitResourceDialogs,               //    "     "    "  Dialogs
+  unitResourceRCData,                //    "     "    "  RCData
+  unitResourceJPEG,                  //    "     "    "  JPEG Images
+  unitResourceGIF,                   //    "     "    "  GIF Images
+  unitResourceXPManifests,           //    "     "    "  XP Manifests
+  unitResourceAccelerator,           //    "     "    "  Accelerator tables
+  unitResourceToolbar,
 
-     GroupResourceForm,                 // Display form for Icons & cursor groups
-     IconGraphicsResourceForm,          // Editor   "   "  Icons
-     CursorGraphicsResourceForm,        // Editor   "   "  Cursors
-     GraphicsResourceForm,              // Editor   "   "  Other graphics - bitmaps etc.
-     TextResourceForm,                  //   "      "   "   String and MEssage tables
-     VersionResourceForm,               //   "      "   "   Version Info
-     MenuResourceForm,                  //   "      "   "   Menus
-     DialogResourceForm,                //   "      "   "   Dialogs
-     DescriptionRCDataResourceForm,     //   "      "   "   RC Data Description
-     PackagesResourceForm,              //   "      "   "   Borland 'package' RC data
-     FormResourceForm,                  //   "      "   "   Borland TForm data
-     XPManifestResourceForm,            //   "      "   "   XML XP Manifest
-     AcceleratorResourceForm,           //   "      "   "   Accelerators
+  GroupResourceForm,                 // Display form for Icons & cursor groups
+  IconGraphicsResourceForm,          // Editor   "   "  Icons
+  CursorGraphicsResourceForm,        // Editor   "   "  Cursors
+  GraphicsResourceForm,              // Editor   "   "  Other graphics - bitmaps etc.
+  TextResourceForm,                  //   "      "   "   String and MEssage tables
+  VersionResourceForm,               //   "      "   "   Version Info
+  MenuResourceForm,                  //   "      "   "   Menus
+  DialogResourceForm,                //   "      "   "   Dialogs
+  DescriptionRCDataResourceForm,     //   "      "   "   RC Data Description
+  PackagesResourceForm,              //   "      "   "   Borland 'package' RC data
+  FormResourceForm,                  //   "      "   "   Borland TForm data
+  XPManifestResourceForm,            //   "      "   "   XML XP Manifest
+  AcceleratorResourceForm,           //   "      "   "   Accelerators
 
 
-     PropertiesForm,                    // Program properties dialog
-     AddResourceDialog,                 // Add Resource dialog
-     ResourcePropertiesDialog,
-     unitExIcon,
-     HelpContext, ResourceObjectForm, unitSearchString, CloneResourceDialog;
+  PropertiesForm,                    // Program properties dialog
+  AddResourceDialog,                 // Add Resource dialog
+  ResourcePropertiesDialog,
+  unitExIcon,
+  HelpContext, ResourceObjectForm, unitSearchString, CloneResourceDialog;
 {$endregion}
 
 {$region 'Resource String Definitions' }
@@ -379,7 +381,7 @@ begin
       break
     end;
 
-  if Assigned (btn) then
+  if Assigned(btn) then
   begin
     btn.MenuItem := menu;
     btn.Visible := True
@@ -405,7 +407,7 @@ begin
       break
     end;
 
-  if Assigned (btn) then
+  if Assigned(btn) then
   begin
     btn.Visible := False;
     btn.MenuItem := Nil
@@ -577,7 +579,7 @@ var
   elem : TResExamElement;
 begin
   resForm := ResourceForm;
-  if Assigned (resForm) then
+  if Assigned(resForm) then
   begin
     resForm.Redo;
     fmResourceObject.Obj := resForm.ResourceDetails;
@@ -614,7 +616,7 @@ var
   elem : TResExamElement;
 begin
   resForm := ResourceForm;
-  if Assigned (resForm) then
+  if Assigned(resForm) then
   begin
 
     resForm.Undo;   // Perform the undo
@@ -756,7 +758,7 @@ var
 begin
   p := vstResources.FocusedNode;
   details := GetNodeResourceDetails (p);
-  if not Assigned (details) then Exit;
+  if not Assigned(details) then Exit;
 
   if vstResources.GetNextSibling(p) <> Nil then
     nextAction := 1
@@ -810,9 +812,9 @@ begin
       TGraphicsResourceDetails (fmResourceObject.Obj).GetImage (pict)
     end;
 
-  if Assigned (pict) then
+  if Assigned(pict) then
   try
-    if Assigned (pict.Graphic) then
+    if Assigned(pict.Graphic) then
     begin
       SavePictureDialog1.InitialDir := PersistDirectoryName ['Export'];
 
@@ -1009,7 +1011,7 @@ begin
   fm := ResourceForm;
   res := SelectedResourceDetails;
 
-  if Assigned (res) and Assigned (fm) and not (res is TIconCursorResourceDetails) then
+  if Assigned(res) and Assigned(fm) and not (res is TIconCursorResourceDetails) then
   begin
     dlg := TdlgResourceProperties.Create (nil);
     try
@@ -1026,7 +1028,7 @@ begin
         if (newLanguage <> res.ResourceLanguage) or (newName <> res.ResourceName) then
         begin
           r := fResourceModule.FindResource (res.ResourceType, newName, newLanguage);
-          if Assigned (r) and (r <> res) and (r.ResourceLanguage = newLanguage) then
+          if Assigned(r) and (r <> res) and (r.ResourceLanguage = newLanguage) then
             raise Exception.Create (rstDuplicateResourceName);
 
           fm.AddUndoEntry (rstChangeResourceProperties);
@@ -1092,7 +1094,7 @@ begin
   gProperties.ShowToolbar := not gProperties.ShowToolbar;
 end;
 
-function TfmMain.ApplicationEvents1Help(Command: Word; Data: Integer;
+function TfmMain.ApplicationEvents1Help(Command: Word; Data: NativeInt;
   var CallHelp: Boolean): Boolean;
 begin
   CallHelp := not (command = HELP_FINDER);
@@ -1180,7 +1182,7 @@ end;
 procedure TfmMain.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if Assigned (fmResourceObject) then
+  if Assigned(fmResourceObject) then
   begin
     fmResourceObject.PreviewKey (key, Shift);
     fIgnoreChar := key = 0;
@@ -1207,7 +1209,7 @@ var
   obj : TObject;
 begin
   obj := vstResources.NodeObject [node];
-  result := Assigned (obj) and (obj is TResExamElement);
+  result := Assigned(obj) and (obj is TResExamElement);
   if result then
     elem := TResExamElement (obj)
   else
@@ -1245,7 +1247,7 @@ end;
 
 function TfmMain.IsDirty: Boolean;
 begin
-  if Assigned (fResourceModule) then
+  if Assigned(fResourceModule) then
     Result := fResourceModule.Dirty
   else
     Result := False
@@ -1278,7 +1280,7 @@ var
   name : TResExamName;
 begin
   resForm := ResourceForm;
-  if Assigned (resForm) then
+  if Assigned(resForm) then
   begin
     s := resForm.UndoDescription;
 
@@ -1373,7 +1375,7 @@ end;
 
 function TfmMain.ResourceForm: TfmResource;
 begin
-  if Assigned (fmResourceObject) and (fmResourceObject is TfmResource) then
+  if Assigned(fmResourceObject) and (fmResourceObject is TfmResource) then
     Result := TfmResource (fmResourceObject)
   else
     Result := Nil
@@ -1383,7 +1385,7 @@ function TfmMain.SaveChanges: Boolean;
 var
   s : string;
 begin
-  if Assigned (fmResourceObject) then
+  if Assigned(fmResourceObject) then
     fmResourceObject.TidyUp;
   if FileName = '' then
     s := rstUntitled
@@ -1423,7 +1425,7 @@ var
 begin
   Result := False;
   Application.ProcessMessages;  // Ensures that toolbar button doesn't temporarily disappear
-  if Assigned (fResourceModule) then
+  if Assigned(fResourceModule) then
   begin
     fName := FileName;
     if fResourceModule is TRCModule then
@@ -1546,7 +1548,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TfmMain.SetFormMenuButton(item: TMenuItem);
 begin
-  if Assigned (item) then
+  if Assigned(item) then
   begin
     btnResourceObject.Caption := item.Caption;
     btnResourceObject.MenuItem := item;
@@ -1631,16 +1633,16 @@ begin { SwitchView }
 
   // formClass is now a valid form class - or Nil
 
-  if not Assigned (fmResourceObject) or not Assigned (formClass) or not (fmResourceObject.ClassType = formClass) then
+  if not Assigned(fmResourceObject) or not Assigned(formClass) or not (fmResourceObject.ClassType = formClass) then
   begin
 
-    if Assigned (fmResourceObject) then  // Get rid of the old resource form
+    if Assigned(fmResourceObject) then  // Get rid of the old resource form
     begin
       SetFormMenuButton (Nil);
       FreeAndNil (fmResourceObject);
     end;
 
-    if Assigned (formClass) then         // Create the new resource form
+    if Assigned(formClass) then         // Create the new resource form
     begin
       fmResourceObject := formClass.Create (Nil);
       fmResourceObject.Parent := pnlResource;
@@ -1654,7 +1656,7 @@ begin { SwitchView }
   end
   else  // Form class is valid, and hasn't changed. Update the form.
 
-    if Assigned (fmResourceObject) then
+    if Assigned(fmResourceObject) then
       fmResourceObject.obj := details;
 end;
 
@@ -1677,7 +1679,7 @@ begin
 
   actResourceDeleteResource.Enabled := res <> Nil;
   resForm := ResourceForm;
-  if Assigned (resForm) then
+  if Assigned(resForm) then
   begin
     actEditUndo.Enabled := resForm.CanUndo;
     actEditRedo.Enabled := resForm.CanRedo;
@@ -1688,9 +1690,9 @@ begin
     actEditSelectAll.Enabled := resForm.CanSelectAll;
     actEditDelete.Enabled := resForm.CanDelete;
 
-    actResourceExportResource.Enabled := Assigned (res);
-    actResourceClone.Enabled := Assigned (res);
-    actResourceProperties.Enabled := Assigned (res) and not (res is TIconCursorResourceDetails);
+    actResourceExportResource.Enabled := Assigned(res);
+    actResourceClone.Enabled := Assigned(res);
+    actResourceProperties.Enabled := Assigned(res) and not (res is TIconCursorResourceDetails);
   end
   else
   begin
@@ -1726,7 +1728,7 @@ begin
     fWasDirty := IsDirty
   end;
 (*
-  if Assigned (ActiveControl) then
+  if Assigned(ActiveControl) then
   sbMain.Panels [0].Text := ActiveControl.Name; *)
 end;
 
@@ -1742,14 +1744,14 @@ var
 begin { UpdateDisplay }
   SwitchView (Nil);
 
-  if not Assigned (fResourceModule) then Exit;
+  if not Assigned(fResourceModule) then Exit;
 
   fExaminer.SetResourceModule(fResourceModule, false);
   resSection := fExaminer.ResourceSection;
 
   vstResources.BeginUpdate;
   try
-    if Assigned (resSection) then
+    if Assigned(resSection) then
       vstResources.RootNodeCount := resSection.Count
     else
       vstResources.RootNodeCount := 0;
@@ -1758,7 +1760,7 @@ begin { UpdateDisplay }
     vstResources.EndUpdate
   end;
 
-  if Assigned (SelectDetails) then
+  if Assigned(SelectDetails) then
   begin
     vstResources.SelectAndFocusNode (GetResourceDetailsNode (SelectDetails));
     SwitchView (SelectDetails)
@@ -1782,7 +1784,7 @@ begin
   p := vstResources.FocusedNode;
   o := GetNodeResourceDetails (p);
 
-  if Assigned (o) and (o is TIconCursorResourceDetails) then
+  if Assigned(o) and (o is TIconCursorResourceDetails) then
   begin
     res := TIconCursorResourceDetails (o);
     p := p.Parent
@@ -1837,7 +1839,7 @@ begin
   actViewStatusbar.Checked := sbMain.Visible;
   UseInternationalFont (vstResources.Font);
 
-  if Assigned (fmResourceObject) then
+  if Assigned(fmResourceObject) then
     fmResourceObject.UpdateFonts
 end;
 
@@ -1856,7 +1858,7 @@ var
   dlg : TdlgCloneResource;
 begin
   res := SelectedResourceDetails;
-  if Assigned (res) then
+  if Assigned(res) then
   begin
     dlg := TdlgCloneResource.Create(nil);
     try
@@ -1887,9 +1889,28 @@ begin
   SwitchView (GetNodeResourceDetails (Node));
 end;
 
+procedure TfmMain.vstResourcesGetImageIndex(Sender: TBaseVirtualTree;
+  Node: PVirtualNode; Kind: TVTImageKind; Column: TColumnIndex;
+  var Ghosted: Boolean; var ImageIndex: TImageIndex);
+var
+  details : TResourceDetails;
+begin
+  if Kind = ikOverlay then
+    Exit;
+
+  details := GetNodeResourceDetails (Node);
+  if Assigned(details) then
+    ImageIndex := GetTypeImage (details.ResourceType)
+  else
+    if vsExpanded in Node^.States then
+      ImageIndex := imgOpenFolder
+    else
+      ImageIndex := imgClosedFolder
+end;
+
 procedure TfmMain.vstResourcesGetText(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType;
-  var CellText: WideString);
+  var CellText: string);
 var
   elem : TResExamElement;
 begin
@@ -1913,12 +1934,12 @@ procedure TfmMain.vstResourcesInitNode(Sender: TBaseVirtualTree; ParentNode,
 var
   elem, pelem : TResExamElement;
 begin
-  if not Assigned (ParentNode) then
+  if not Assigned(ParentNode) then
     pelem := fExaminer.ResourceSection
   else
     GetNodeElement (ParentNode, pelem);
 
-  if Assigned (pelem) then
+  if Assigned(pelem) then
   begin
     elem := pelem.Element [Node.Index];
     vstResources.NodeObject [Node] := elem;
@@ -1927,23 +1948,19 @@ begin
   end
 end;
 
-procedure TfmMain.vstResourcesGetImageIndex(Sender: TBaseVirtualTree;
-  Node: PVirtualNode; Kind: TVTImageKind; Column: TColumnIndex;
-  var Ghosted: Boolean; var ImageIndex: Integer);
+procedure TfmMain.vstResourcesNewText(Sender: TBaseVirtualTree;
+  Node: PVirtualNode; Column: TColumnIndex; NewText: string);
 var
-  details : TResourceDetails;
+  elem : TResExamElement;
 begin
-  if Kind = ikOverlay then
-    Exit;
-  
-  details := GetNodeResourceDetails (Node);
-  if Assigned (details) then
-    ImageIndex := GetTypeImage (details.ResourceType)
-  else
-    if vsExpanded in Node^.States then
-      ImageIndex := imgOpenFolder
+  if GetNodeElement (node, elem) then
+    if (elem is TResExamName) then
+      TResExamName (elem).Name := NewText
     else
-      ImageIndex := imgClosedFolder
+      if (elem is TResExamType) then
+        TResExamType (elem).Name := NewText;
+
+  vstResources.InvalidateNode(node)
 end;
 
 procedure TfmMain.vstResourcesEditing(Sender: TBaseVirtualTree;
@@ -1978,29 +1995,13 @@ begin
       end
 end;
 
-procedure TfmMain.vstResourcesNewText(Sender: TBaseVirtualTree;
-  Node: PVirtualNode; Column: TColumnIndex; NewText: WideString);
-var
-  elem : TResExamElement;
-
-begin
-  if GetNodeElement (node, elem) then
-    if (elem is TResExamName) then
-      TResExamName (elem).Name := NewText
-    else
-      if (elem is TResExamType) then
-        TResExamType (elem).Name := NewText;
-
-  vstResources.InvalidateNode(node)
-end;
-
 procedure TfmMain.UpdateResourceNodes(res: TResourceDetails;
   node : PVirtualNode);
 var
   nm, tp : WideString;
   elem : TResExamElement;
 begin
-  if Assigned (res) and Assigned (node) then
+  if Assigned(res) and Assigned(node) then
   begin
     if res is TStringResourceDetails then
       nm := ResIdToStringsId (res.ResourceName)
@@ -2009,7 +2010,7 @@ begin
 
     tp := res.ResourceType;
 
-    while Assigned (node) do
+    while Assigned(node) do
     begin
       if GetNodeElement (node, elem) then
         if elem is TResExamName then

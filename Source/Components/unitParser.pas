@@ -15,74 +15,74 @@ const
   ttOpSub = 11;
   ttOpMul = 12;
   ttOpDiv = 13;
+
 type
+  TCharset = set of Char;
 
-TCharset = set of char;
+  TParser = class
+  private
+    FReader : TStreamTextReader;
 
-TParser = class
-private
-  fReader : TStreamTextReader;
+    FLineBuf : string;
+    FLineNo : Integer;
+    FLinePos : Integer;
 
-  fLineBuf : string;
-  fLineNo : Integer;
-  fLinePos : Integer;
+    FCh : Char;
+    FWhitespace: TCharSet;
+    FFirstIdChars: TCharSet;
+    FNextIdChars: TCharSet;
+    FFirstNumChars: TCharSet;
+    FNextNumChars: TCharSet;
 
-  fCh : char;
-  fWhitespace: TCharSet;
-  fFirstIdChars: TCharSet;
-  fNextIdChars: TCharSet;
-  fFirstNumChars: TCharSet;
-  fNextNumChars: TCharSet;
+    FTokenType : Integer;
+    FToken : string;
+    FTokenChar : Char;
+    FDecimalSeparator: Char;
+    FSOL: Boolean;
+    FFirstChar : Boolean;
+    FTokenSol : Boolean;
 
-  fTokenType : Integer;
-  fToken : string;
-  fTokenChar : char;
-  fDecimalSeparator: char;
-  fSOL: boolean;
-  fFirstChar : boolean;
-  fTokenSol : boolean;
+  protected
+    procedure RawGetToken (charset : TCharset; tp : Integer);
 
-protected
-  procedure RawGetToken (charset : TCharset; tp : Integer);
+  public
+    constructor Create (AStream : TStream);
+    destructor Destroy; override;
+    procedure Parse; virtual; abstract;
 
-public
-  constructor Create (AStream : TStream);
-  destructor Destroy; override;
-  procedure Parse; virtual; abstract;
+    function GetChar : Char;
+    function GetNonWhitespace : Char;
+    procedure SkipLine;
+    function GetToken : Boolean; virtual;
+    procedure SkipWhitespace;
+    procedure NextToken;
 
-  function GetChar : char;
-  function GetNonWhitespace : char;
-  procedure SkipLine;
-  function GetToken : boolean; virtual;
-  procedure SkipWhitespace;
-  procedure NextToken;
+    function NextIdentifier (const errMsg : string = 'Identifier expected') : string;
+    function NextString (const errMsg : string = 'String constant expected') : string;
+    function NextInteger (const errMsg : string = 'Integer constant expected') : Integer;
+    function NextChar (ch : Char) : Char;
 
-  function NextIdentifier (const errMsg : string = 'Identifier expected') : string;
-  function NextString (const errMsg : string = 'String constant expected') : string;
-  function NextInteger (const errMsg : string = 'Integer constant expected') : Integer;
-  function NextChar (ch : char) : char;
+    procedure ExpectChar (ch : Char); virtual;
+    function ExpectIdentifier (const errMsg : string = 'Identifier expected') : string;
+    function ExpectString (const errMsg : string = 'String constant expected') : string; virtual;
+    function ExpectInteger (const errMsg : string = 'Integer constant expected') : Integer; virtual;
 
-  procedure ExpectChar (ch : char); virtual;
-  function ExpectIdentifier (const errMsg : string = 'Identifier expected') : string;
-  function ExpectString (const errMsg : string = 'String constant expected') : string; virtual;
-  function ExpectInteger (const errMsg : string = 'Integer constant expected') : Integer; virtual;
+    property LinePos : Integer read FLinePos;
+    property LineNo : Integer read FLineNo;
+    property Ch : Char read FCh;
+    property SOL : Boolean read FSOL;
+    property TokenType : Integer read FTokenType;
+    property Whitespace : TCharSet read FWhitespace write FWhitespace;
+    property Token : string read FToken;
+    property TokenChar : Char read FTokenChar;
+    property TokenSOL : Boolean read FTokenSol;
 
-  property LinePos : Integer read fLinePos;
-  property LineNo : Integer read fLineNo;
-  property Ch : char read fCh;
-  property SOL : boolean read fSOL;
-  property TokenType : Integer read fTokenType;
-  property Whitespace : TCharSet read fWhitespace write fWhitespace;
-  property Token : string read fToken;
-  property TokenChar : char read fTokenChar;
-  property TokenSOL : boolean read fTokenSOL;
-
-  property FirstIdChars : TCharSet read fFirstIdChars write fFirstIdChars;
-  property FirstNumChars : TCharSet read fFirstNumChars write fFirstNumChars;
-  property NextIdChars : TCharSet read fNextIdChars write fNextIdChars;
-  property NextNumChars : TCharSet read fNextNumChars write fNextNumChars;
-  property DecimalSeparator : char read fDecimalSeparator write fDecimalSeparator;
-end;
+    property FirstIdChars : TCharSet read FFirstIdChars write FFirstIdChars;
+    property FirstNumChars : TCharSet read FFirstNumChars write FFirstNumChars;
+    property NextIdChars : TCharSet read FNextIdChars write FNextIdChars;
+    property NextNumChars : TCharSet read FNextNumChars write FNextNumChars;
+    property DecimalSeparator : Char read FDecimalSeparator write FDecimalSeparator;
+  end;
 
 const
   dtInclude = 1;
@@ -97,86 +97,87 @@ const
   dtError   = 10;
 
 type
-TCPreProcessor = class (TParser)
-private
-  fPathName: string;
-  fIdentifiers : TStringList;
-  fIfLevel : Integer;
-  fIncludePath: string;
-  fDirectives : TStringList;
-    fIncludeFile: string;
+  TCPreProcessor = class (TParser)
+  private
+    FPathName: string;
+    FIdentifiers : TStringList;
+    FIfLevel : Integer;
+    FIncludePath: string;
+    FDirectives : TStringList;
+    FIncludeFile: string;
 
-  procedure CheckIdentifiers;
-  procedure DoInclude;
-  procedure DoDefine;
-  procedure DoIfDef;
-  procedure DoIfNDef;
-  procedure DoEndif;
-  procedure DoUndef;
-  procedure DoElse;
-  procedure DoIf;
-  procedure DoPragma;
-  procedure DoError;
-  function GetIncludePathName (const FileName : string) : string;
-  procedure SkipIfElseBlock;
-protected
-  procedure HandleDirective;
-  procedure HandlePragma (const st : string); virtual;
-  function GetRestOfLine : string;
-  procedure NextFileString (const errMsg : string);
-public
-  constructor Create (AStream : TStream);
-  destructor Destroy; override;
-  property PathName : string read fPathName write fPathName;
-  property IncludePath : string read fIncludePath write fIncludePath;
-  property IncludeFile : string read fIncludeFile write fIncludeFile;
-  function GetToken : boolean; override;
+    procedure CheckIdentifiers;
+    procedure DoInclude;
+    procedure DoDefine;
+    procedure DoIfDef;
+    procedure DoIfNDef;
+    procedure DoEndif;
+    procedure DoUndef;
+    procedure DoElse;
+    procedure DoIf;
+    procedure DoPragma;
+    procedure DoError;
+    function GetIncludePathName (const FileName : string) : string;
+    procedure SkipIfElseBlock;
+  protected
+    procedure HandleDirective;
+    procedure HandlePragma (const st : string); virtual;
+    function GetRestOfLine : string;
+    procedure NextFileString (const errMsg : string);
+  public
+    constructor Create (AStream : TStream);
+    destructor Destroy; override;
+    property PathName : string read FPathName write FPathName;
+    property IncludePath : string read FIncludePath write FIncludePath;
+    property IncludeFile : string read FIncludeFile write FIncludeFile;
+    function GetToken : Boolean; override;
 
-  procedure ExpectChar (ch : char); override;
-  function ExpectString (const errMsg : string = 'String constant expected') : string; override;
-  function ExpectInteger (const errMsg : string = 'Integer constant expected') : Integer; override;
+    procedure ExpectChar (ch : Char); override;
+    function ExpectString (const errMsg : string = 'String constant expected') : string; override;
+    function ExpectInteger (const errMsg : string = 'Integer constant expected') : Integer; override;
 
-  function Defined (id : string) : boolean;
-  procedure AddIdentifier (const id, line : string);
-  procedure DeleteIdentifier (const id : string);
-  function IsIdentifier (const id : string) :boolean;
-  function Resolve (var TokenType : Integer; var st : string) : TValue;
-  function Calc (const st : string) : TValue;
-  function ResolveToken : TValue;
-end;
+    function Defined (id : string) : Boolean;
+    procedure AddIdentifier (const id, line : string);
+    procedure DeleteIdentifier (const id : string);
+    function IsIdentifier (const id : string) :Boolean;
+    function Resolve (var TokenType : Integer; var st : string) : TValue;
+    function Calc (const st : string) : TValue;
+    function ResolveToken : TValue;
+  end;
 
-EParser = class (Exception);
-EErrorPragma = class (Exception);
+  EParser = class (Exception);
+  EErrorPragma = class (Exception);
 
 implementation
 
-uses unitSearchString;
+uses
+  unitSearchString;
 
 { TParser }
 
 constructor TParser.Create(AStream: TStream);
 begin
-  fReader := TStreamTextReader.Create (AStream);
-  fWhitespace := [' ', #9, #10];
-  fFirstIdChars := ['a'..'z', 'A'..'Z', '_'];
-  fNextIdChars := fFirstIdChars + ['0'..'9'];
-  fNextNumChars := ['0'..'9'];
-  fFirstNumChars := ['$', '0'..'9'];
-  fDecimalSeparator := '.';
-  fSOL := True;
-  fFirstChar := True;
+  FReader := TStreamTextReader.Create (AStream);
+  FWhitespace := [' ', #9, #10];
+  FFirstIdChars := ['a'..'z', 'A'..'Z', '_'];
+  FNextIdChars := FFirstIdChars + ['0'..'9'];
+  FNextNumChars := ['0'..'9'];
+  FFirstNumChars := ['$', '0'..'9'];
+  FDecimalSeparator := '.';
+  FSOL := True;
+  FFirstChar := True;
 end;
 
 destructor TParser.Destroy;
 begin
-  fReader.Free;
+  FReader.Free;
 
   inherited;
 end;
 
-procedure TParser.ExpectChar(ch: char);
+procedure TParser.ExpectChar(ch: Char);
 begin
-  if (TokenType <> ttChar) or (fTokenChar <> ch) then
+  if (TokenType <> ttChar) or (FTokenChar <> ch) then
     raise EParser.Create(ch + ' expected');
 end;
 
@@ -184,7 +185,7 @@ function TParser.ExpectIdentifier(const errMsg: string): string;
 begin
   if TokenType <> ttIdentifier then
     raise EParser.Create(errMsg);
-  result := fToken;
+  result := FToken;
 end;
 
 function TParser.ExpectInteger(const errMsg: string): Integer;
@@ -203,97 +204,97 @@ begin
     raise EParser.Create(errMsg);
 end;
 
-function TParser.GetChar: char;
+function TParser.GetChar: Char;
 var
-  lineCont : boolean;
+  lineCont : Boolean;
 begin
   lineCont := False;
   repeat
     if lineCont then
       MessageBeep ($ffff);
-    while fLinePos >= Length (fLineBuf) do
+    while FLinePos >= Length (FLineBuf) do
     begin
-      if not fReader.ReadLn(fLineBuf) then
+      if not FReader.ReadLn(FLineBuf) then
       begin
-        fCh := #0;
-        result := fCh;
+        FCh := #0;
+        result := FCh;
         exit
       end;
-      fLinePos := 0;
-      fSOL := not LineCont;
-      fFirstChar := fSOL;
-      Inc (fLineNo);
+      FLinePos := 0;
+      FSOL := not LineCont;
+      FFirstChar := FSOL;
+      Inc (FLineNo);
     end;
 
-    fCh := fLineBuf [fLinePos + 1];
-    Inc (fLinePos);
+    FCh := FLineBuf [FLinePos + 1];
+    Inc (FLinePos);
     LineCont := True;
-  until (fCh <> '\') or (fLinePos < Length (fLineBuf));
+  until (FCh <> '\') or (FLinePos < Length (FLineBuf));
 
-  if fSOL and not (fCh in Whitespace) then
+  if FSOL and not (FCh in Whitespace) then
   begin
-    fSOL := fFirstChar;
-    fFirstChar := False
+    FSOL := FFirstChar;
+    FFirstChar := False
   end;
 
-  result := fCh;
+  result := FCh;
 end;
 
-function TParser.GetNonWhitespace: char;
+function TParser.GetNonWhitespace: Char;
 begin
   repeat
     result := GetChar
   until not (result in Whitespace)
 end;
 
-function TParser.GetToken : boolean;
+function TParser.GetToken : Boolean;
 var
   st : string;
 
 begin
   result := True;
-  fTokenType := ttUnknown;
+  FTokenType := ttUnknown;
   SkipWhitespace;
-  fTokenSOL := fSol;
-  if fCh in FirstIdChars then
+  FTokenSol := FSOL;
+  if FCh in FirstIdChars then
     RawGetToken (NextIdChars, ttIdentifier)
   else
-    if fCh in FirstNumChars then
+    if FCh in FirstNumChars then
     begin
       RawGetToken (NextNumChars, ttNumber);
-      if (fCh = DecimalSeparator) and not fSOL then
+      if (FCh = DecimalSeparator) and not FSOL then
       begin
-        st := fToken;
+        st := FToken;
         GetChar;
         RawGetToken (NextNumChars, ttNumber);
-        fToken := st + DecimalSeparator + fToken
+        FToken := st + DecimalSeparator + FToken
       end
       else
-        if (fCh = 'x') and (Token = '0') then
+        if (FCh = 'x') and (Token = '0') then
         begin
-          st := fToken;
+          st := FToken;
           GetChar;
           RawGetToken (NextNumChars + ['A'..'F', 'a'..'f'], ttNumber);
-          fToken := '$' + ftoken;
+          FToken := '$' + FToken;
         end
 
     end
     else
-      if fCh = #0 then
+      if FCh = #0 then
         result := False
       else
       begin
-        fTokenChar := fCh;
-        fTokenType := ttChar;
+        FTokenChar := FCh;
+        FTokenType := ttChar;
         GetChar;
       end
 end;
 
-function TParser.NextChar (ch :char) : char;
+function TParser.NextChar (ch :Char) : Char;
 begin
   NextToken;
   ExpectChar (ch);
-  result := fTokenChar;
+  result := FTokenChar;
 end;
 
 function TParser.NextIdentifier (const errMsg : string) : string;
@@ -321,12 +322,12 @@ end;
 
 procedure TParser.RawGetToken(charset: TCharset; tp: Integer);
 begin
-  fToken := fCh;
-  if fLinePos < Length (fLineBuf) then
+  FToken := FCh;
+  if FLinePos < Length (FLineBuf) then
     while GetChar in charset do
     begin
-      fToken := ftoken + fCh;
-      if fLinePos = Length (fLineBuf) then
+      FToken := FToken + FCh;
+      if FLinePos = Length (FLineBuf) then
       begin
         GetChar;
         break
@@ -334,21 +335,21 @@ begin
     end
   else
     GetChar;
-  fTokenType := tp
+  FTokenType := tp
 end;
 
 procedure TParser.SkipLine;
 begin
-  if not fSOL then
+  if not FSOL then
   begin
-    fLinePos := Length (fLineBuf);
+    FLinePos := Length (FLineBuf);
     GetChar
   end
 end;
 
 procedure TParser.SkipWhitespace;
 begin
-  while fCh in Whitespace do
+  while FCh in Whitespace do
     GetChar;
 end;
 
@@ -359,23 +360,23 @@ begin
   if not Defined (id) then
   begin
     CheckIdentifiers;
-    fIdentifiers.AddObject(id, TStrValue.Create(line))
+    FIdentifiers.AddObject(id, TStrValue.Create(line))
   end
 end;
 
 function TCPreProcessor.Calc(const st: string): TValue;
 begin
-  CalcExpression (st, fIdentifiers, result);
+  CalcExpression (st, FIdentifiers, result);
 end;
 
 procedure TCPreProcessor.CheckIdentifiers;
 begin
-  if fIdentifiers = Nil then
+  if FIdentifiers = Nil then
   begin
-    fIdentifiers := TStringList.Create;
-    fIdentifiers.Duplicates := dupError;
-    fIdentifiers.CaseSensitive := True;
-    fIdentifiers.Sorted := True
+    FIdentifiers := TStringList.Create;
+    FIdentifiers.Duplicates := dupError;
+    FIdentifiers.CaseSensitive := True;
+    FIdentifiers.Sorted := True
   end
 end;
 
@@ -385,27 +386,27 @@ begin
 
   FirstNumChars := ['0'..'9'];
 
-  fDirectives := TStringList.Create;
-  fDirectives.CaseSensitive := True;
-  fDirectives.AddObject ('include', TObject (dtInclude));
-  fDirectives.AddObject ('define',  TObject (dtDefine));
-  fDirectives.AddObject ('ifdef',   TObject (dtIfdef));
-  fDirectives.AddObject ('ifndef',  TObject (dtIfndef));
-  fDirectives.AddObject ('endif',   TObject (dtEndif));
-  fDirectives.AddObject ('undef',   TObject (dtUndef));
-  fDirectives.AddObject ('else',    TObject (dtElse));
-  fDirectives.AddObject ('if',      TObject (dtIf));
-  fDirectives.AddObject ('pragma',  TObject (dtPragma));
-  fDirectives.AddObject ('error',   TObject (dtError));
-  fDirectives.Sorted := True;
+  FDirectives := TStringList.Create;
+  FDirectives.CaseSensitive := True;
+  FDirectives.AddObject ('include', TObject (dtInclude));
+  FDirectives.AddObject ('define',  TObject (dtDefine));
+  FDirectives.AddObject ('ifdef',   TObject (dtIfdef));
+  FDirectives.AddObject ('ifndef',  TObject (dtIfndef));
+  FDirectives.AddObject ('endif',   TObject (dtEndif));
+  FDirectives.AddObject ('undef',   TObject (dtUndef));
+  FDirectives.AddObject ('else',    TObject (dtElse));
+  FDirectives.AddObject ('if',      TObject (dtIf));
+  FDirectives.AddObject ('pragma',  TObject (dtPragma));
+  FDirectives.AddObject ('error',   TObject (dtError));
+  FDirectives.Sorted := True;
 end;
 
-function TCPreProcessor.Defined(id: string): boolean;
+function TCPreProcessor.Defined(id: string): Boolean;
 begin
-  if fIdentifiers = Nil then
+  if FIdentifiers = Nil then
     result := False
   else
-    result := fIdentifiers.IndexOf (id) >= 0
+    result := FIdentifiers.IndexOf (id) >= 0
 end;
 
 procedure TCPreProcessor.DeleteIdentifier(const id: string);
@@ -413,7 +414,7 @@ begin
   if Defined (id) then
   begin
     CheckIdentifiers;
-    fIdentifiers.Delete (fIdentifiers.IndexOf (id))
+    FIdentifiers.Delete (FIdentifiers.IndexOf (id))
   end
   else
     raise EParser.CreateFmt ('Identifier %s not found', [id]);
@@ -423,14 +424,14 @@ destructor TCPreProcessor.Destroy;
 var
   i : Integer;
 begin
-  if Assigned (fIdentifiers) then
+  if Assigned(FIdentifiers) then
   begin
-    for i := fIdentifiers.Count - 1 downto 0 do
-      fIdentifiers.Objects [i].Free;
-    fIdentifiers.Free
+    for i := FIdentifiers.Count - 1 downto 0 do
+      FIdentifiers.Objects [i].Free;
+    FIdentifiers.Free
   end;
 
-  fDirectives.Free;
+  FDirectives.Free;
 
   inherited;
 end;
@@ -440,14 +441,14 @@ var
   id : string;
 begin
   NextIdentifier ('Identifier expected in #define');
-  id := fToken;
+  id := FToken;
   GetRestOfLine;
-  AddIdentifier (id, fToken);
+  AddIdentifier (id, FToken);
 end;
 
 procedure TCPreProcessor.DoElse;
 begin
-  if fIfLevel > 0 then
+  if FIfLevel > 0 then
     SkipIfElseBlock
   else
     raise EParser.Create('Unexpected #else');
@@ -456,9 +457,9 @@ end;
 
 procedure TCPreProcessor.DoEndif;
 begin
-  if fIfLevel > 0 then
+  if FIfLevel > 0 then
   begin
-    Dec (fIfLevel);
+    Dec (FIfLevel);
     SkipLine;
   end
   else
@@ -470,9 +471,9 @@ procedure TCPreProcessor.DoError;
 begin
   GetRestOfLine;
   if IncludeFile = '' then
-    raise EErrorPragma.CreateFmt ('#Error in line %d %s', [fLineNo, fToken])
+    raise EErrorPragma.CreateFmt ('#Error in line %d %s', [FLineNo, FToken])
   else
-    raise EErrorPragma.CreateFmt ('#Error in line %d:s %s', [fLineNo, IncludeFile, fToken])
+    raise EErrorPragma.CreateFmt ('#Error in line %d:s %s', [FLineNo, IncludeFile, FToken])
 end;
 
 procedure TCPreProcessor.DoIf;
@@ -481,14 +482,14 @@ var
   val : TValue;
 begin
   GetRestOfLine;
-  expr := fToken;
+  expr := FToken;
 
-  CalcExpression (expr, fIdentifiers, val);
+  CalcExpression (expr, FIdentifiers, val);
 
   if (val.tp <> vInteger) then
    raise EParser.Create('Must be an integer expression');
 
-  Inc (fIfLevel);
+  Inc (FIfLevel);
 
   if val.iVal = 0 then
     SkipIfElseBlock;
@@ -498,10 +499,10 @@ end;
 procedure TCPreProcessor.DoIfDef;
 begin
   NextIdentifier ('Identifier expected in ifdef');
-  Inc (fIfLevel);
+  Inc (FIfLevel);
   SkipLine;
 
-  if not Defined (fToken) then
+  if not Defined (FToken) then
     SkipIfElseBlock;
   SkipLine;
 end;
@@ -509,10 +510,10 @@ end;
 procedure TCPreProcessor.DoIfNDef;
 begin
   NextIdentifier ('Identifier expected in ifdef');
-  Inc (fIfLevel);
+  Inc (FIfLevel);
   SkipLine;
 
-  if Defined (fToken) then
+  if Defined (FToken) then
     SkipIfElseBlock;
   SkipLine;
 end;
@@ -522,8 +523,8 @@ var
   oldReader : TStreamTextReader;
   oldLinePos, oldLineNo, oldIfLevel : Integer;
   oldLineBuf : string;
-  oldSOL : boolean;
-  oldCh : char;
+  oldSOL : Boolean;
+  oldCh : Char;
   oldPathName : string;
   r : TStreamTextReader;
   f : TFileStream;
@@ -531,41 +532,41 @@ var
 begin
   NextFileString ('File name expected');
 
-  oldReader := fReader;
-  oldLinePos := fLinePos;
-  oldLineNo := fLineNo;
-  oldLineBuf := fLineBuf;
-  oldIfLevel := fIfLevel;
-  oldSol := fSOL;
-  oldCh := fCh;
+  oldReader := FReader;
+  oldLinePos := FLinePos;
+  oldLineNo := FLineNo;
+  oldLineBuf := FLineBuf;
+  oldIfLevel := FIfLevel;
+  oldSol := FSOL;
+  oldCh := FCh;
   oldPathName := PathName;
 
   r := Nil;
-  fName := GetIncludePathName (fToken);
+  fName := GetIncludePathName (FToken);
   f := TFileStream.Create(fName, fmOpenRead or fmShareDenyWrite);
   try
     r := TStreamTextReader.Create(f);
-    fLinePos := 0;
-    fLineNo := 0;
-    fReader := r;
-    fSOL := True;
-    fFirstChar := True;
-    fLineBuf := '';
-    fIfLevel := 0;
+    FLinePos := 0;
+    FLineNo := 0;
+    FReader := r;
+    FSOL := True;
+    FFirstChar := True;
+    FLineBuf := '';
+    FIfLevel := 0;
     PathName := ExtractFilePath (fName);
     IncludeFile := ExtractFileName (fName);
 
     Parse;
   finally
-    fReader := oldReader;
-    fLinePos := oldLinePos;
-    fLineNo := oldLineNo;
-    fFirstChar := False;
-    fLineBuf := oldLineBuf;
-    fIfLevel := oldIfLevel;
-    fSOL := oldSOL;
-    fCh := oldCh;
-    fPathName := oldPathName;
+    FReader := oldReader;
+    FLinePos := oldLinePos;
+    FLineNo := oldLineNo;
+    FFirstChar := False;
+    FLineBuf := oldLineBuf;
+    FIfLevel := oldIfLevel;
+    FSOL := oldSOL;
+    FCh := oldCh;
+    FPathName := oldPathName;
     r.Free;
     f.Free
   end;
@@ -582,13 +583,13 @@ var
   id : string;
 begin
   NextIdentifier ('Identifier expected in #undef');
-  id := fToken;
+  id := FToken;
   GetRestOfLine;
 
   DeleteIdentifier (id);
 end;
 
-procedure TCPreProcessor.ExpectChar(ch: char);
+procedure TCPreProcessor.ExpectChar(ch: Char);
 begin
   inherited;
 
@@ -597,7 +598,7 @@ end;
 function TCPreProcessor.ExpectInteger(const errMsg: string): Integer;
 begin
   if TokenType = ttIdentifier then
-    Resolve (fTokenType, fToken);
+    Resolve (FTokenType, FToken);
 
   result := inherited ExpectInteger (errMsg);
 end;
@@ -605,7 +606,7 @@ end;
 function TCPreProcessor.ExpectString(const errMsg: string): string;
 begin
   if TokenType = ttIdentifier then
-    Resolve (fTokenType, fToken);
+    Resolve (FTokenType, FToken);
 
   result := inherited ExpectString (errMsg);
 end;
@@ -613,7 +614,7 @@ end;
 function TCPreProcessor.GetIncludePathName(const FileName: string): string;
 var
   st, p : string;
-  ch : char;
+  ch : Char;
 begin
   result := PathName + fileName;
 
@@ -646,55 +647,55 @@ end;
 function TCPreProcessor.GetRestOfLine: string;
 begin
   result := '';
-  if fSol then
+  if FSOL then
   begin
-    fToken := '';
+    FToken := '';
     exit;
   end;
   SkipWhitespace;
-  fToken := '';
+  FToken := '';
   repeat
-    if fCh = '/' then
+    if FCh = '/' then
       if GetChar = '/' then
       begin
         SkipLine;
         break
       end
       else
-        if fCh = '*' then
+        if FCh = '*' then
         begin
           GetChar;
           repeat
-            if fLinePos >= Length (fLineBuf) then
+            if FLinePos >= Length (FLineBuf) then
               break;
 
-            if fCh = '*' then
+            if FCh = '*' then
             begin
               if GetChar = '/' then
                 break
             end
             else
               GetChar
-          until fLinePos >= Length (fLineBuf)
+          until FLinePos >= Length (FLineBuf)
         end
         else
-          fToken := fToken + '/' + fCh
+          FToken := FToken + '/' + FCh
     else
-      fToken := fToken + fCh;
-    if fLinePos = Length (fLineBuf) then
+      FToken := FToken + FCh;
+    if FLinePos = Length (FLineBuf) then
     begin
       GetChar;
       break
     end;
     GetChar
   until False;
-  fToken := Trim (fToken);
-  result := fToken;
+  FToken := Trim (FToken);
+  result := FToken;
 end;
 
-function TCPreProcessor.GetToken: boolean;
+function TCPreProcessor.GetToken: Boolean;
 var
-  retry : boolean;
+  retry : Boolean;
 begin
   result := True;
   retry := True;
@@ -704,63 +705,63 @@ begin
     result := inherited GetToken;
     if not result then
     begin
-      if fIfLevel <> 0 then
+      if FIfLevel <> 0 then
         raise EParser.Create('Unexpected end of file');
       Exit;
     end;
 
     if TokenType = ttChar then
-    case fTokenChar of
-      '/' : if fCh = '/' then
+    case FTokenChar of
+      '/' : if FCh = '/' then
             begin
               SkipLine;
               retry := True;
             end
             else
-            if fCh = '*' then
+            if FCh = '*' then
             begin
               repeat
                 if GetChar = #0 then break;
-                if (fCh = '*') and (GetChar = '/') then
+                if (FCh = '*') and (GetChar = '/') then
                   break;
-              until fCh = #0;
+              until FCh = #0;
               GetChar;
               retry := True;
             end
             else
-              fTokenType := ttOpDiv;
+              FTokenType := ttOpDiv;
       '#' :
-            if fTokenSOL then
+            if FTokenSol then
             begin
               inherited GetToken;
-              if fTokenType <> ttIdentifier then
+              if FTokenType <> ttIdentifier then
                 raise EParserError.Create('Syntax error in directive');
               HandleDirective;
               retry := True;
             end;
       '"' : begin
-              fToken := '';
-              while fCh <> #0 do
+              FToken := '';
+              while FCh <> #0 do
               begin
-                case fCh of
+                case FCh of
                   '"' : break;
                   '\' :
                     case GetChar of
-                      '"' : fToken := fToken + '"';
-                      'n' : fToken := fToken + #10;
-                      'r' : fToken := fToken + #13;
-                      't' : fToken := fToken + #9;
-                      '\' : fToken := fToken + '\';
-                      '0' : fToken := fToken + #0;
+                      '"' : FToken := FToken + '"';
+                      'n' : FToken := FToken + #10;
+                      'r' : FToken := FToken + #13;
+                      't' : FToken := FToken + #9;
+                      '\' : FToken := FToken + '\';
+                      '0' : FToken := FToken + #0;
                       else
                         raise EParserError.Create('Invalid escape sequence');
                     end;
                   else
-                    fToken := fToken + fCh
+                    FToken := FToken + FCh
                 end;
                 GetChar
               end;
-              fTokenType := ttString;
+              FTokenType := ttString;
               GetChar;
             end;
     end
@@ -771,9 +772,9 @@ procedure TCPreProcessor.HandleDirective;
 var
   idx : Integer;
 begin
-  idx := fDirectives.IndexOf(LowerCase (fToken));
+  idx := FDirectives.IndexOf(LowerCase (FToken));
   if idx >= 0 then
-  case Integer (fDirectives.Objects [idx]) of
+  case Integer (FDirectives.Objects [idx]) of
     dtInclude : DoInclude;
     dtDefine  : DoDefine;
     dtIfDef   : DoIfDef;
@@ -785,10 +786,10 @@ begin
     dtPragma  : DoPragma;
     dtError   : DoError;
     else
-      raise EParser.Create('Unknown directive #' + fToken)
+      raise EParser.Create('Unknown directive #' + FToken)
   end
   else
-    raise EParser.Create('Unknown directive #' + fToken)
+    raise EParser.Create('Unknown directive #' + FToken)
 end;
 
 procedure TCPreProcessor.HandlePragma(const st: string);
@@ -796,44 +797,44 @@ begin
 
 end;
 
-function TCPreProcessor.IsIdentifier(const id: string): boolean;
+function TCPreProcessor.IsIdentifier(const id: string): Boolean;
 begin
-  result := fIdentifiers.IndexOf(id) >= 0
+  result := FIdentifiers.IndexOf(id) >= 0
 end;
 
 procedure TCPreProcessor.NextFileString(const errMsg: string);
 begin
   GetChar;
-  if fCh = '<' then
+  if FCh = '<' then
   begin
     GetChar;
-    fToken := '';
-    while fCh <> #0 do
+    FToken := '';
+    while FCh <> #0 do
     begin
-      case fCh of
+      case FCh of
         '>' : break;
         else
-          fToken := fToken + fCh
+          FToken := FToken + FCh
       end;
       GetChar
     end;
-    fTokenType := ttString
+    FTokenType := ttString
   end
   else
     if ch = '"' then
     begin
       GetChar;
-      fToken := '';
-      while fCh <> #0 do
+      FToken := '';
+      while FCh <> #0 do
       begin
-        case fCh of
+        case FCh of
           '"' : break;
           else
-            fToken := fToken + fCh
+            FToken := FToken + FCh
         end;
         GetChar
       end;
-      fTokenType := ttString
+      FTokenType := ttString
     end
     else
       GetToken;
@@ -846,7 +847,7 @@ function TCPreProcessor.Resolve(var TokenType : Integer; var st: string): TValue
 begin
   if (TokenType = ttIdentifier) and IsIdentifier (st) then
   begin
-    CalcExpression (st, fIdentifiers, result);
+    CalcExpression (st, FIdentifiers, result);
 
     case result.tp of
       vString  : begin st := result.sVal; tokenType := ttString; end;
@@ -878,25 +879,25 @@ begin
   level := 0;
   repeat
     SkipWhitespace;
-    if fCh = #0 then Break;
-    if fCh = '#' then
+    if FCh = #0 then Break;
+    if FCh = '#' then
     begin
       GetChar;
       inherited GetToken;
-      if fToken = 'endif' then
+      if FToken = 'endif' then
         if level = 0 then
           break
         else
           Dec (level)
       else
-        if (fToken = 'ifdef') or (ftoken = 'ifndef') or (ftoken = 'if') then
+        if (FToken = 'ifdef') or (FToken = 'ifndef') or (FToken = 'if') then
           Inc (level)
     end
     else
-      fSOL := False;
+      FSOL := False;
     SkipLine
   until False;
-  Dec (fIfLevel)
+  Dec (FIfLevel)
 end;
 
 end.

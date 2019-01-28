@@ -63,7 +63,7 @@
         <DCC_F>false</DCC_F>
         <DCC_K>false</DCC_K>
         <DCC_N>true</DCC_N>
-        <DCC_Define>TULargeInteger;$(DCC_Define)</DCC_Define>
+        <DCC_DcuOutput>..\..\DCU</DCC_DcuOutput>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <VerInfo_Locale>1033</VerInfo_Locale>

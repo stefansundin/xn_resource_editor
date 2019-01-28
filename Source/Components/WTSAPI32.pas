@@ -81,14 +81,14 @@ var
 
 function WTSAPIOk : boolean;
 begin
-  result := gDLLHandle <> 0
+  Result := gDLLHandle <> 0
 end;
 
 function WTSGetCurrentConsoleSessionID : Integer;
 begin
-  result := 0;
-  if Assigned (WTSGetActiveConsoleSessionID) then
-    result := WTSGetActiveConsoleSessionID
+  Result := 0;
+  if Assigned(WTSGetActiveConsoleSessionID) then
+    Result := WTSGetActiveConsoleSessionID
 end;
 
 procedure InitWTSAPI;
@@ -103,7 +103,7 @@ begin
     WTSQueryUserToken := GetProcAddress (gDLLHandle, 'WTSQueryUserToken');
     WTSQuerySessionInformation := GetProcAddress (gDLLHandle, 'WTSQuerySessionInformationA');
 
-    if not Assigned (WTSRegisterSessionNotification) or not Assigned (WTSUnRegisterSessionNotification) then
+    if not Assigned(WTSRegisterSessionNotification) or not Assigned(WTSUnRegisterSessionNotification) then
     begin
       FreeLibrary (gDLLHandle);
       gDLLHandle := 0

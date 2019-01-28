@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ResourceForm, unitResourceMenus, cmpMenuDesigner, menus, ExtCtrls,
-  cmpPropertyListBox, ActnList;
+  cmpPropertyListBox, ActnList, System.Actions;
 
 type
   TfmMenuResource = class(TfmResource)
@@ -203,7 +203,7 @@ end;
 
 procedure TfmMenuResource.actMenuDeleteItemExecute(Sender: TObject);
 begin
-  if Assigned (menuDesigner1.SelectedItem) then
+  if Assigned(menuDesigner1.SelectedItem) then
   begin
     menuDesigner1.DeleteItem (menuDesigner1.SelectedItem);
     SaveResource (rstDeleteItem)

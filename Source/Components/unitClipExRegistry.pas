@@ -11,9 +11,9 @@ TCopyFormats = set of TCopyFormat;
 TClipExRegistry = class (TExRegistry)
 public
   procedure CopyKeyToClipboard (const keyName : string);
-  procedure CopyValuesToClipboard (values : TStrings; fmt : TCopyFormats = [cfRegEdt]);
+  procedure CopyValuesToClipboard (Values : TStrings; fmt : TCopyFormats = [cfRegEdt]);
   function PasteKeyFromClipboard : string;
-  procedure PasteValuesFromClipboard (values : TStrings = nil);
+  procedure PasteValuesFromClipboard (Values : TStrings = nil);
 end;
 
 function ClipboardHasRegEdtValue : boolean;
@@ -202,7 +202,7 @@ begin  // CopyKeyToClipboard
   end
 end;
 
-procedure TClipExRegistry.CopyValuesToClipboard(values: TStrings; fmt : TCopyFormats = [cfRegEdt]);
+procedure TClipExRegistry.CopyValuesToClipboard(Values: TStrings; fmt : TCopyFormats = [cfRegEdt]);
 var
   ddeSize : DWORD;
   i, err : Integer;
@@ -213,16 +213,16 @@ var
   txt : string;
   pName, pData : PChar;
 begin
-  ddeSize := sizeof (DWORD) + values.count * sizeof (TValueData);
-  for i := 0 to values.count - 1 do
+  ddeSize := sizeof (DWORD) + Values.count * sizeof (TValueData);
+  for i := 0 to Values.count - 1 do
   begin
-    err := RegQueryValueEx (CurrentKey, PChar (values [i]), Nil, Nil, Nil, @cbData);
-    if (values [i] = '') and (err = ERROR_FILE_NOT_FOUND) then
+    err := RegQueryValueEx (CurrentKey, PChar (Values [i]), Nil, Nil, Nil, @cbData);
+    if (Values [i] = '') and (err = ERROR_FILE_NOT_FOUND) then
       cbData := 0
     else
       if err <> ERROR_SUCCESS then
         raise EExRegistryException.Create (err, 'Unable to get value info');
-    Inc (ddeSize, DWORD (Length (values [i])) + 1 + cbData)
+    Inc (ddeSize, DWORD (Length (Values [i])) + 1 + cbData)
   end;
 
   ddeHandle := GlobalAlloc (GMEM_MOVEABLE, ddeSize);
@@ -232,22 +232,22 @@ begin
     ddeBuf := GlobalLock (ddeHandle);
     try
       ddeBufPos := 0;
-      PDWORD (ddeBuf)^ := values.count;
+      PDWORD (ddeBuf)^ := Values.count;
       Inc (ddeBufPos, sizeof (DWORD));
 
-      for i := 0 to values.count - 1 do
+      for i := 0 to Values.count - 1 do
       begin
         pValue := PValueData (ddeBuf + ddeBufPos);
         Inc (ddeBufPos, sizeof (TValueData));
         pName := ddeBuf + ddeBufPos;
-        Move (PChar (values [i])^, pName^, Length (values [i]) + 1);
-        Inc (ddeBufPos, Length (values [i]) + 1);
+        Move (PChar (Values [i])^, pName^, Length (Values [i]) + 1);
+        Inc (ddeBufPos, Length (Values [i]) + 1);
         pData := ddeBuf + ddeBufPos;
 
         pValue^.dataLen := ddeSize - ddeBufPos;
 
-        err := RegQueryValueEx (CurrentKey, PChar (values [i]), Nil, @pValue^.valueType, PBYTE (ddeBuf + ddeBufPos), @pValue^.dataLen);
-        if not ((values [i] = '') and (err = ERROR_FILE_NOT_FOUND)) then
+        err := RegQueryValueEx (CurrentKey, PChar (Values [i]), Nil, @pValue^.valueType, PBYTE (ddeBuf + ddeBufPos), @pValue^.dataLen);
+        if not ((Values [i] = '') and (err = ERROR_FILE_NOT_FOUND)) then
         begin
           if err <> ERROR_SUCCESS then
             raise EExRegistryException.Create (err, 'Unable to query value info.');
@@ -352,7 +352,7 @@ begin
 end;
 
 
-procedure TClipExRegistry.PasteValuesFromClipboard(values: TStrings = nil);
+procedure TClipExRegistry.PasteValuesFromClipboard(Values: TStrings = nil);
 var
   ddeHandle : THandle;
   ddeBuf, p : PChar;
@@ -361,8 +361,8 @@ var
   err : Integer;
   pName, pData : PChar;
 begin
-  if Assigned (values) then
-    values.Clear;
+  if Assigned(Values) then
+    Values.Clear;
   ddeHandle := Clipboard.GetAsHandle (CF_VALUES);
   if ddeHandle <> INVALID_HANDLE_VALUE then
   begin
@@ -385,8 +385,8 @@ begin
         err := RegSetValueEx (CurrentKey, pName, 0, value^.valueType, pData, value^.dataLen);
         if err <> ERROR_SUCCESS then
           raise EExRegistryException.Create (err, 'Unable to set value');
-        if Assigned (values) then
-          values.Add (pName);
+        if Assigned(Values) then
+          Values.Add (pName);
       end
 
     finally

@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, unitResourceDetails, TntStdCtrls;
+  Dialogs, StdCtrls, unitResourceDetails;
 
 type
   TdlgCloneResource = class(TForm)
@@ -14,27 +14,24 @@ type
     rbByName: TRadioButton;
     rbByLanguage: TRadioButton;
     Label1: TLabel;
-    ntedName: TTntEdit;
+    ntedName: TEdit;
     procedure FormShow(Sender: TObject);
   private
     function GetLanguage: LCID;
   protected
     procedure UpdateActions; override;
-    { Private declarations }
   public
     ResourceDetails : TResourceDetails;
 
     property Language : LCID read GetLanguage;
   end;
 
-var
-  dlgCloneResource: TdlgCloneResource;
-
 implementation
 
 {$R *.dfm}
 
-uses unitResourceMessages, ResourceForm;
+uses
+  unitResourceMessages, ResourceForm;
 
 resourcestring
   rstNeutral = 'Language Neutral';
@@ -78,8 +75,8 @@ begin
     for i := 0 to Languages.Count -1 do
       if Languages.Name [i] = cbLanguage.Text then
       begin
-        result := Languages.LocaleID [i];
-        break
+        Result := Languages.LocaleID [i];
+        Break
       end
 end;
 
@@ -87,7 +84,6 @@ procedure TdlgCloneResource.UpdateActions;
 begin
   ntedName.Enabled := rbByName.Checked;
   cbLanguage.Enabled := rbByLanguage.Checked;
-
 end;
 
 end.

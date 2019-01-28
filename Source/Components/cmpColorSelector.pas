@@ -9,16 +9,16 @@ type
   TPaletteEntries = array of TPaletteEntry;
   TColorSelector = class(TCustomControl)
   private
-    fPalette: HPalette;
-    fPaletteEntries : TPaletteEntries;
-    fColWidth, fRowHeight, fColCount, fRowCount : Integer;
-    fBackgroundColor: TColor;
-    fForegroundColor: TColor;
-    fOnColorSelect: TNotifyEvent;
-    fSelectedIdx : Integer;
-    fSelectedColor : TColor;   // For >256 colors only
-    fColorCount : Integer;
-    fLum: Integer;
+    FPalette: HPalette;
+    FPaletteEntries : TPaletteEntries;
+    FColWidth, FRowHeight, FColCount, FRowCount : Integer;
+    FBackgroundColor: TColor;
+    FForegroundColor: TColor;
+    FOnColorSelect: TNotifyEvent;
+    FSelectedIdx : Integer;
+    FSelectedColor : TColor;   // For >256 colors only
+    FColorCount : Integer;
+    FLum: Integer;
     procedure SetPalette(const Value: HPalette);
     procedure SetColorCount(const Value: Integer);
     procedure SetBackgroundColor(const Value: TColor);
@@ -37,7 +37,7 @@ type
   public
     constructor Create (AOwner : TComponent); override;
     destructor Destroy; override;
-    property Palette : HPalette read fPalette write SetPalette;
+    property Palette : HPalette read FPalette write SetPalette;
     procedure SetSelectedPaletteColor (color : TColor);
     function GetSelectedPaletteColor : TColor;
     property Color [idx : Integer] : TCOlor read GetColor;
@@ -45,13 +45,13 @@ type
     property Align;
     property Anchors;
     property Constraints;
-    property ColorCount : Integer read fColorCount write SetColorCount default 16;
-    property ForegroundColor : TColor read fForegroundColor write SetForegroundColor;
-    property BackgroundColor : TColor read fBackgroundColor write SetBackgroundColor;
-    property OnColorSelect : TNotifyEvent read fOnColorSelect write fOnColorSelect;
-    property ColumnCount : Integer read fColCount write SetColumnCount default 8;
+    property ColorCount : Integer read FColorCount write SetColorCount default 16;
+    property ForegroundColor : TColor read FForegroundColor write SetForegroundColor;
+    property BackgroundColor : TColor read FBackgroundColor write SetBackgroundColor;
+    property OnColorSelect : TNotifyEvent read FOnColorSelect write FOnColorSelect;
+    property ColumnCount : Integer read FColCount write SetColumnCount default 8;
     property OnDblClick;
-    property Luminescence : Integer read fLum write SetLum default HLSMAX div 2;
+    property Luminescence : Integer read FLum write SetLum default HLSMAX div 2;
   end;
 
   EColorError = class (Exception)
@@ -64,23 +64,23 @@ implementation
 
 procedure TColorSelector.CalcSettings;
 begin
-  if fPalette <> 0 then
+  if FPalette <> 0 then
   begin
-    if fColorCount mod fColCount = 0 then
-      fRowCount := fColorCount div fColCount
+    if FColorCount mod FColCount = 0 then
+      FRowCount := FColorCount div FColCount
     else
-      fRowCount := fColorCount div fColCount + 1;
+      FRowCount := FColorCount div FColCount + 1;
       
-    fColWidth := Width div fColCount;
-    fRowHeight := Height div fRowCount
+    FColWidth := Width div FColCount;
+    FRowHeight := Height div FRowCount
   end
 end;
 
 constructor TColorSelector.Create(AOwner: TComponent);
 begin
   inherited Create (AOwner);
-  fLum := HLSMAX div 2;
-  fColCount := 8;
+  FLum := HLSMAX div 2;
+  FColCount := 8;
   Palette := SystemPalette16;
   Width := 100;
   Height := 100;
@@ -90,24 +90,24 @@ end;
 
 destructor TColorSelector.Destroy;
 begin
-  if fPalette <> 0 then
-    DeleteObject (fPalette);
+  if FPalette <> 0 then
+    DeleteObject (FPalette);
   inherited
 end;
 
 function TColorSelector.GetColor(idx: Integer): TCOlor;
 begin
-  with fPaletteEntries [idx] do
-    result := RGB (peRed, peGreen, peBlue);
+  with FPaletteEntries [idx] do
+    Result := RGB (peRed, peGreen, peBlue);
 end;
 
 function TColorSelector.GetSelectedPaletteColor: TColor;
 begin
-  if fPalette <> 0 then
-    with fPaletteEntries [fSelectedIdx] do
-      result := RGB (peRed, peGreen, peBlue)
+  if FPalette <> 0 then
+    with FPaletteEntries [FSelectedIdx] do
+      Result := RGB (peRed, peGreen, peBlue)
   else
-    result := fSelectedColor;
+    Result := FSelectedColor;
 end;
 
 procedure TColorSelector.MouseDown(Button: TMouseButton;
@@ -125,7 +125,7 @@ begin
   ScreenToClient (p);
 
   selectedIdx := -1;
-  if fPalette = 0 then
+  if FPalette = 0 then
   begin
     b := TBitmap.Create;
     try
@@ -139,36 +139,36 @@ begin
   end
   else
   begin
-    selectedIdx := (x div fColWidth) + (y div fRowHeight) * fColCount;
+    selectedIdx := (x div FColWidth) + (y div FRowHeight) * FColCount;
     if selectedIdx < ColorCount then
     begin
 
-      with fPaletteEntries [selectedIdx] do
+      with FPaletteEntries [selectedIdx] do
         selectedColor := RGB (peRed, peGreen, peBlue)
     end
     else
       selectedColor := 0;
   end;
 
-  if (fPalette = 0) or (selectedIdx < ColorCount) then
+  if (FPalette = 0) or (selectedIdx < ColorCount) then
   begin
     changed := False;
 
     if Button = mbLeft then
     begin
-      changed := fForegroundColor <> selectedColor;
-      fForegroundColor := selectedColor
+      changed := FForegroundColor <> selectedColor;
+      FForegroundColor := selectedColor
     end;
 
     if Button = mbRight then
     begin
-      changed := fBackgroundColor <> selectedColor;
-      fBackgroundColor := selectedColor
+      changed := FBackgroundColor <> selectedColor;
+      FBackgroundColor := selectedColor
     end;
 
-    fSelectedIdx := selectedIdx;
-    fSelectedColor := selectedColor;
-    if Assigned (fOnColorSelect) and changed and not (csDestroying in ComponentState) then
+    FSelectedIdx := selectedIdx;
+    FSelectedColor := selectedColor;
+    if Assigned(FOnColorSelect) and changed and not (csDestroying in ComponentState) then
       OnColorSelect (self)
   end
 end;
@@ -185,15 +185,15 @@ begin
     y := 0;
     for i := 0 to ColorCount - 1 do
     begin
-      with fPaletteEntries [i] do
+      with FPaletteEntries [i] do
         Canvas.Brush.Color := RGB (peRed, peGreen, peBlue);
 
-      Canvas.Rectangle (x, y, x + fcolWidth, y + fRowHeight);
-      Inc (x, fcolWidth);
-      if x + fcolWidth > width then
+      Canvas.Rectangle (x, y, x + FColWidth, y + FRowHeight);
+      Inc (x, FColWidth);
+      if x + FColWidth > width then
       begin
         x := 0;
-        Inc (y, fRowHeight)
+        Inc (y, FRowHeight)
       end
     end
   end
@@ -224,7 +224,7 @@ begin
         ps := PRGBTriple (PChar (ps1) - bpss * sat);
         for hue := 0 to w - 1 do
         begin
-          iHLSToRGB (hue * HLSMAX div w, fLum, (h - sat) * HLSMAX div h, r, g, b);
+          iHLSToRGB (hue * HLSMAX div w, FLum, (h - sat) * HLSMAX div h, r, g, b);
           rt.rgbtRed := r;
           rt.rgbtGreen := g;
           rt.rgbtBlue := b;
@@ -244,7 +244,7 @@ end;
 
 procedure TColorSelector.SetBackgroundColor(const Value: TColor);
 begin
-  fBackgroundColor := Value;
+  FBackgroundColor := Value;
 end;
 
 procedure TColorSelector.SetColorCount(const Value: Integer);
@@ -262,11 +262,11 @@ end;
 
 procedure TColorSelector.SetColumnCount(const Value: Integer);
 begin
-  if value <> fColCount then
+  if value <> FColCount then
   begin
-    fColCount := value;
-    if fColCount = 0 then
-      fColCount := 1;
+    FColCount := value;
+    if FColCount = 0 then
+      FColCount := 1;
 
     CalcSettings;
 
@@ -276,16 +276,16 @@ end;
 
 procedure TColorSelector.SetForegroundColor(const Value: TColor);
 begin
-  fForegroundColor := Value;
+  FForegroundColor := Value;
 end;
 
 procedure TColorSelector.SetLum(const Value: Integer);
 begin
-  if Value <> fLum then
+  if Value <> FLum then
   begin
-    if fLum in [0..HLSMAX] then
+    if FLum in [0..HLSMAX] then
     begin
-      fLum := Value;
+      FLum := Value;
       Invalidate
     end
     else
@@ -297,21 +297,21 @@ procedure TColorSelector.SetPalette(const Value: HPalette);
 var
   colorCount : word;
 begin
-  if Value <> fPalette then
+  if Value <> FPalette then
   begin
-    if fPalette <> 0 then
+    if FPalette <> 0 then
     begin
-      DeleteObject (fPalette);
-      fPalette := 0
+      DeleteObject (FPalette);
+      FPalette := 0
     end;
 
     if value <> 0 then
       if GetObject (Value, sizeof (colorCount), @colorCount) <> 0 then
       begin
-        SetLength (fPaletteEntries, colorCount);
-        fColorCount := colorCount;
-        GetPaletteEntries (Value, 0, colorCount, fPaletteEntries [0]);
-        fPalette := CopyPalette (Value);
+        SetLength (FPaletteEntries, colorCount);
+        FColorCount := colorCount;
+        GetPaletteEntries (Value, 0, colorCount, FPaletteEntries [0]);
+        FPalette := CopyPalette (Value);
         CalcSettings;
         Invalidate
       end
@@ -319,7 +319,7 @@ begin
         raiseLastOSError
     else
     begin
-      fColorCount := -1;
+      FColorCount := -1;
       Invalidate
     end
   end
@@ -329,20 +329,20 @@ procedure TColorSelector.SetSelectedPaletteColor(color: TColor);
 var
   colorCount : word;
   rgb, i : LongInt;
-  fNewPal : HPALETTE;
+  NewPal : HPALETTE;
   logPal : PLogPalette;
 begin
-  if fPalette = 0 then
+  if FPalette = 0 then
     Exit;
 
-  if GetObject (fPalette, sizeof (colorCount), @colorCount) <> 0 then
+  if GetObject (FPalette, sizeof (colorCount), @colorCount) <> 0 then
   begin
     rgb := ColorToRGB (color);
-    SetLength (fPaletteEntries, colorCount);
-    GetPaletteEntries (fPalette, 0, colorCount, fPaletteEntries [0]);
-    fPaletteEntries [fSelectedIdx].peRed   := GetRValue (rgb);
-    fPaletteEntries [fSelectedIdx].peGreen := GetGValue (rgb);
-    fPaletteEntries [fSelectedIdx].peBlue  := GetBValue (rgb);
+    SetLength (FPaletteEntries, colorCount);
+    GetPaletteEntries (FPalette, 0, colorCount, FPaletteEntries [0]);
+    FPaletteEntries [FSelectedIdx].peRed   := GetRValue (rgb);
+    FPaletteEntries [FSelectedIdx].peGreen := GetGValue (rgb);
+    FPaletteEntries [FSelectedIdx].peBlue  := GetBValue (rgb);
 
     GetMem (logPal, sizeof (TLogPalette) + 256 * sizeof (TPaletteEntry));
     try
@@ -350,14 +350,14 @@ begin
       logPal^.palNumEntries := colorCount;
 
       for i := 0 to colorCount - 1 do
-        logPal^.palPalEntry [i] := fPaletteEntries [i];
+        logPal^.palPalEntry [i] := FPaletteEntries [i];
 
-      fNewPal := CreatePalette (logPal^);
-      if fNewPal <> 0 then
+      NewPal := CreatePalette (logPal^);
+      if NewPal <> 0 then
       try
-        Palette := fNewPal;
+        Palette := NewPal;
       finally
-        DeleteObject (fNewPal)
+        DeleteObject(NewPal)
       end
     finally
       FreeMem (logPal)

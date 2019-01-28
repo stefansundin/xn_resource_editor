@@ -37,7 +37,6 @@ object dlgCloneResource: TdlgCloneResource
     Width = 226
     Height = 21
     Anchors = [akLeft, akTop, akRight]
-    ItemHeight = 13
     Sorted = True
     TabOrder = 2
   end
@@ -81,7 +80,7 @@ object dlgCloneResource: TdlgCloneResource
     Caption = '&Language'
     TabOrder = 1
   end
-  object ntedName: TTntEdit
+  object ntedName: TEdit
     Left = 96
     Top = 68
     Width = 225

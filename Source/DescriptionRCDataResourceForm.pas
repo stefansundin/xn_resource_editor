@@ -4,12 +4,12 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  ResourceForm, StdCtrls, TntStdCtrls;
+  ResourceForm, StdCtrls;
 
 type
   TfmRCDataDescriptionResource = class(TfmResource)
     Label1: TLabel;
-    ntedDescription: TTntEdit;
+    ntedDescription: TEdit;
     procedure ntedDescriptionExit(Sender: TObject);
   private
     procedure SaveResource (const undoDetails : string);
@@ -19,12 +19,10 @@ type
     procedure UpdateFonts; override;
   end;
 
-var
-  fmRCDataDescriptionResource: TfmRCDataDescriptionResource;
-
 implementation
 
-uses unitResourceRCData;
+uses
+  unitResourceRCData;
 
 {$R *.DFM}
 
@@ -45,12 +43,12 @@ end;
 
 procedure TfmRCDataDescriptionResource.UpdateFonts;
 begin
-  UseInternationalFont (ntedDescription.Font);
+  UseInternationalFont(ntedDescription.Font);
 end;
 
 procedure TfmRCDataDescriptionResource.SaveResource (const undoDetails : string);
 var
-  details : TRCDataDescriptionResourceDetails;
+  details: TRCDataDescriptionResourceDetails;
 begin
   AddUndoEntry (undoDetails);
   details := Obj as TRCDataDescriptionResourceDetails;

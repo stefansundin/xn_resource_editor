@@ -6,7 +6,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, unitResourceDetails, cmpUCtrls, TntStdCtrls;
+  StdCtrls, unitResourceDetails, cmpUCtrls;
 
 type
   TdlgResourceProperties = class(TForm)
@@ -15,17 +15,14 @@ type
     cbLanguage: TComboBox;
     btnOK: TButton;
     btnCancel: TButton;
-    ntedName: TTntEdit;
+    ntedName: TEdit;
     procedure FormShow(Sender: TObject);
   private
     function GetLanguage: LCID;
-    { Private declarations }
   public
     ResourceDetails : TResourceDetails;
 
     property Language : LCID read GetLanguage;
-
-    { Public declarations }
   end;
 
 var

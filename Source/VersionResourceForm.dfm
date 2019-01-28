@@ -7,6 +7,8 @@ inherited fmVersionResource: TfmVersionResource
   ClientWidth = 777
   Menu = MainMenu1
   OnResize = FormResize
+  ExplicitWidth = 777
+  ExplicitHeight = 451
   PixelsPerInch = 96
   TextHeight = 13
   object Splitter1: TSplitter
@@ -55,7 +57,6 @@ inherited fmVersionResource: TfmVersionResource
       VertScrollBar.Increment = 17
       VertScrollBar.Range = 136
       Align = alClient
-      AutoScroll = False
       BorderStyle = bsNone
       TabOrder = 0
       TabStop = False
@@ -138,6 +139,12 @@ inherited fmVersionResource: TfmVersionResource
     AutoURLDetect = False
     AutoURLExecute = False
     Enabled = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
     TabOrder = 2
     Visible = False
     OnExit = mmoMessageExit

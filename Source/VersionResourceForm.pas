@@ -15,7 +15,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ResourceForm, StdCtrls, ComCtrls, ExtCtrls, Menus, ActnList,
-  cmpPropertyListBox, unitResourceVersionInfo, cmpCWRichEdit;
+  cmpPropertyListBox, unitResourceVersionInfo, cmpCWRichEdit, System.Actions;
 
 //=======================================================================
 // TfmResource class
@@ -114,7 +114,7 @@ const
  |                                                                            |
  | The function returns string representation of the version no               |
  *----------------------------------------------------------------------------*)
-function VersionToString (version : TULargeInteger) : string;
+function VersionToString(version: _ULARGE_INTEGER) : string;
 begin
   with version do
     result := Format ('%d.%d.%d.%d', [HiWord (HighPart), LoWord (HighPart), HiWord (LowPart), LoWord (LowPart)]);
@@ -130,7 +130,7 @@ end;
  |                                                                            |
  | The function returns the integer representation of the version string      |
  *----------------------------------------------------------------------------*)
-function StringToVersion (const version : string) : TULargeInteger;
+function StringToVersion (const version : string) : _ULARGE_INTEGER;
 var
   p : Integer;
   s : string;
@@ -193,7 +193,7 @@ end;
 procedure TfmVersionResource.SaveFlags;
 var
   flags : TVersionFileFlags;
-  v : TULargeInteger;
+  v : _ULARGE_INTEGER;
 begin
   if not fInitializing then     // Ignore check box 'OnClick' handlers
                                 // when we're being initialized.
@@ -214,8 +214,10 @@ begin
         FileFlags := flags
       end;
 
-      v := StringToVersion (PropertyListBox1.Properties [prProductVersion].PropertyValue);
-                                        // Has the product version changed ??
+(* TODO
+      v := StringToVersion(_ULARGE_INTEGER(PropertyListBox1.Properties[prProductVersion].PropertyValue));
+*)
+      // Has the product version changed ??
       if v.QuadPart <> ProductVersion.QuadPart then
       begin
         AddUndoEntry (rstChangeProductVersion);
@@ -240,8 +242,8 @@ end;
  *----------------------------------------------------------------------*)
 procedure TfmVersionResource.SetObject(const Value: TObject);
 var
-  fVersion : TULargeInteger;
-  pVersion : TULargeInteger;
+  fVersion : _ULARGE_INTEGER;
+  pVersion : _ULARGE_INTEGER;
   flags : TVersionFileFlags;
   k : TVersionStringValue;
   i : Integer;

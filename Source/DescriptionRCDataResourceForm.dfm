@@ -2,8 +2,6 @@ inherited fmRCDataDescriptionResource: TfmRCDataDescriptionResource
   Left = 330
   Top = 200
   Caption = 'fmRCDataDescriptionResource'
-  ExplicitWidth = 701
-  ExplicitHeight = 455
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -14,7 +12,7 @@ inherited fmRCDataDescriptionResource: TfmRCDataDescriptionResource
     AutoSize = False
     Caption = '&Description'
   end
-  object ntedDescription: TTntEdit
+  object ntedDescription: TEdit
     Left = 112
     Top = 12
     Width = 185

@@ -24,7 +24,8 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ResourceForm, cmpPropertyListBox, ExtCtrls, cmpBitmapEditor, unitResourceGraphics,
   cmpColorSelector, unitExIcon, ComCtrls, ImgList, ToolWin,
-  cmpSizingPageControl, ActnList, Menus, GifImage;
+  cmpSizingPageControl, ActnList, Menus, GifImage, System.Actions,
+  System.ImageList;
 
 const
   WM_STATUSBAR = WM_USER + $203;
@@ -34,7 +35,6 @@ type
   TfmGraphicsResource = class(TfmResource)
     pnlLeft: TPanel;
     Splitter1: TSplitter;
-    PropertyListBox1: TPropertyListBox;
     Splitter2: TSplitter;
     sbThumbnail: TScrollBox;
     Image1: TImage;
@@ -127,8 +127,10 @@ type
     procedure BitmapEditor1SelectionRectChange(Sender: TObject);
     procedure PopupMenu1Popup(Sender: TObject);
     procedure actImageAddImageExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     fPCWidth : Integer;
+    FPropertyListBox: TPropertyListBox;
     details : TGraphicsResourceDetails;
 
     procedure SetPaletteForPixelFormat (reset : Boolean);
@@ -145,6 +147,7 @@ type
     procedure UpdateActions; override;
 
   public
+    PropertyListBox1: TPropertyListBox;
     procedure PreviewKey (var key : Word; shift : TShiftState); override;
     procedure SaveResource (const undoDetails : string); virtual;
     procedure SelectAll; override;
@@ -323,6 +326,56 @@ end;
  |                                                                      |
  | Initialize the form.                                                 |
  *----------------------------------------------------------------------*)
+procedure TfmGraphicsResource.FormCreate(Sender: TObject);
+begin
+  PropertyListBox1 := TPropertyListBox.Create(pnlLeft);
+  PropertyListBox1.Name := 'PropertyListBox1';
+  PropertyListBox1.Parent := pnlLeft;
+  PropertyListBox1.Left := 1;
+  PropertyListBox1.Top := 1;
+  PropertyListBox1.Width := 183;
+  PropertyListBox1.Height := 120;
+  PropertyListBox1.Align := alTop;
+  PropertyListBox1.BorderStyle := bsNone;
+  PropertyListBox1.PopupMenu := PopupMenu1;
+  PropertyListBox1.TabOrder := 1;
+  PropertyListBox1.TabStop := False;
+  with TPropertyListProperty(PropertyListBox1.Properties.Add) do
+  begin
+    PropertyName := 'Width';
+    PropertyType := ptInteger;
+    Tag := 0;
+    ParentColor := False;
+    Color := clBlack;
+    ReadOnly := False;
+  end;
+  with TPropertyListProperty(PropertyListBox1.Properties.Add) do
+  begin
+    PropertyName := 'Height';
+    PropertyType := ptInteger;
+    Tag := 0;
+    ParentColor := False;
+    Color := clBlack;
+    ReadOnly := False;
+  end;
+  with TPropertyListProperty(PropertyListBox1.Properties.Add) do
+  begin
+    PropertyName := 'Pixel Format';
+    PropertyType := ptEnum;
+    Tag := 0;
+    EnumValues.Add('1 Bit');
+    EnumValues.Add('4 Bit');
+    EnumValues.Add('8 Bit');
+    EnumValues.Add('24 Bit');
+    EnumValues.Add('32 Bit');
+    ParentColor := False;
+    Color := clBlack;
+    ReadOnly := False;
+  end;
+  PropertyListBox1.ActualValueColWidth := 0;
+  PropertyListBox1.OnPropertyChanged := PropertyListBox1PropertyChanged;
+end;
+
 procedure TfmGraphicsResource.FormShow(Sender: TObject);
 begin
   sbThumbnail.DoubleBuffered := True;

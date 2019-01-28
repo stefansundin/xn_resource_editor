@@ -8,32 +8,31 @@ uses
 
 type
   TdlgAddResource = class(TForm)
-    ListView1: TListView;
+    ListView: TListView;
     btnOK: TButton;
     btnCancel: TButton;
     procedure FormCreate(Sender: TObject);
     procedure btnOKClick(Sender: TObject);
-    procedure ListView1DblClick(Sender: TObject);
+    procedure ListViewDblClick(Sender: TObject);
     procedure FormResize(Sender: TObject);
   private
-    fResourceDetailsClass: TResourceDetailsClass;
-    { Private declarations }
+    FResourceDetailsClass: TResourceDetailsClass;
   public
-    property ResourceDetailsClass : TResourceDetailsClass read fResourceDetailsClass;
-    { Public declarations }
+    property ResourceDetailsClass : TResourceDetailsClass read FResourceDetailsClass;
   end;
-
-var
-  dlgAddResource: TdlgAddResource;
 
 implementation
 
-uses MainForm, unitResourceGraphics, unitResourceMessages, unitResourceDialogs, unitResourceMenus, unitResourceXPManifests, unitResourceGIF, unitResourceVersionInfo, unitResourceToolbar, unitResourceAccelerator, unitResourceExaminer;
+uses
+  MainForm, unitResourceGraphics, unitResourceMessages, unitResourceDialogs,
+  unitResourceMenus, unitResourceXPManifests, unitResourceGIF,
+  unitResourceVersionInfo, unitResourceToolbar, unitResourceAccelerator,
+  unitResourceExaminer;
 
 {$R *.DFM}
 
 const
-  addableItems : array [0..13] of TResourceDetailsClass = (
+  CAddableItems : array [0..13] of TResourceDetailsClass = (
     TCursorGroupResourceDetails,
     TBitmapResourceDetails,
     TIconGroupResourceDetails,
@@ -52,33 +51,33 @@ const
 
 procedure TdlgAddResource.FormCreate(Sender: TObject);
 var
-  i : Integer;
+  i: Integer;
 begin
-  for i := Low (AddableItems) to High (AddableItems) do
-    with ListView1.Items.Add do
+  for i := Low(CAddableItems) to High(CAddableItems) do
+    with ListView.Items.Add do
     begin
-      Caption := GetTypeName (AddableItems [i].GetBaseType);
-      ImageIndex := GetTypeImage (AddableItems [i].GetBaseType);
+      Caption := GetTypeName(CAddableItems [i].GetBaseType);
+      ImageIndex := GetTypeImage(CAddableItems [i].GetBaseType);
     end
 end;
 
 procedure TdlgAddResource.btnOKClick(Sender: TObject);
 begin
-  if Assigned (ListView1.Selected) then
-    fResourceDetailsClass := AddableItems [ListView1.Selected.Index]
+  if Assigned(ListView.Selected) then
+    FResourceDetailsClass := CAddableItems[ListView.Selected.Index]
   else
-    fResourceDetailsClass := Nil
+    FResourceDetailsClass := Nil
 end;
 
-procedure TdlgAddResource.ListView1DblClick(Sender: TObject);
+procedure TdlgAddResource.ListViewDblClick(Sender: TObject);
 begin
-  btnOKClick (Self);
-  modalResult := mrOK
+  btnOKClick(Self);
+  modalResult := mrOK;
 end;
 
 procedure TdlgAddResource.FormResize(Sender: TObject);
 begin
-  ListView1.Columns [0].Width := ListView1.Width - 16;
+  ListView.Columns [0].Width := ListView.Width - 16;
 end;
 
 end.

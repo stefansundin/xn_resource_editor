@@ -93,7 +93,8 @@ type
 
 implementation
 
-uses WTSAPI32;
+uses
+  WTSAPI32;
 
 const WM_ICONMESSAGE = WM_USER + $200;
 var WM_TASKBARCREATED : DWORD;

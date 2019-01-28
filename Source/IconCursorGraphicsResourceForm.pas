@@ -6,18 +6,11 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, GraphicsResourceForm, Menus, ActnList, ImgList, ComCtrls,
   cmpColorSelector, ExtCtrls, ToolWin, cmpSizingPageControl,
-  cmpBitmapEditor, cmpPropertyListBox;
+  cmpBitmapEditor, cmpPropertyListBox, System.Actions, System.ImageList;
 
 type
   TfmIconCursorGraphicsResource = class(TfmGraphicsResource)
-  private
-    { Private declarations }
-  public
-    { Public declarations }
   end;
-
-var
-  fmIconCursorGraphicsResource: TfmIconCursorGraphicsResource;
 
 implementation
 

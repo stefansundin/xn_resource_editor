@@ -25,16 +25,18 @@ unit unitNewsStringsDisplayObject;
 
 interface
 
-uses Windows, Messages, Classes, SysUtils, Controls, Graphics, Forms, cmpMessageDisplay, cmpNewsRichEdit, Dialogs, SyncObjs, ComCtrls, StrUtils;
+uses
+  Windows, Messages, Classes, SysUtils, Controls, Graphics, Forms,
+  cmpMessageDisplay, cmpNewsRichEdit, Dialogs, SyncObjs, ComCtrls, StrUtils;
 
 type
   TNewsRichEditX = class (TNewsRichEdit)
   private
-    fAutoSize: boolean;
-    fTimerScrollDelta : Integer;
-    fRightMargin: Integer;
-    fObjectLink : TDisplayObjectLink;
-    fScrollingParent : TScrollingWinControl;
+    FAutoSize: boolean;
+    FTimerScrollDelta : Integer;
+    FRightMargin: Integer;
+    FObjectLink : TDisplayObjectLink;
+    FScrollingParent : TScrollingWinControl;
     procedure SetRightMargin(const Value: Integer);
     procedure ScrollIntoView;
   protected
@@ -56,8 +58,8 @@ type
   published
     constructor Create (AOwner : TComponent); override;
     destructor Destroy; override;
-    property AutoSize : boolean read fAutoSize write SetAutoSize default True;
-    property RightMargin : Integer read fRightMargin write SetRightMargin default 76;
+    property AutoSize : boolean read FAutoSize write SetAutoSize default True;
+    property RightMargin : Integer read FRightMargin write SetRightMargin default 76;
   end;
 
   TNewsStringsDisplayObjectLink = class (TWinControlObjectLink)
@@ -121,7 +123,8 @@ type
 
 implementation
 
-uses RichEdit, unitCharsetMap, unitRTF2HTML;
+uses
+  RichEdit, unitCharsetMap, unitRTF2HTML;
 
 { TNewsStringsDisplayObjectLink }
 
@@ -151,21 +154,21 @@ begin
   ctrl.CodePage := codepage;
 
   if AOwner.Parent is TScrollingWinControl then
-    ctrl.fScrollingParent := TScrollingWinControl (AOwner.Parent);
+    ctrl.FScrollingParent := TScrollingWinControl (AOwner.Parent);
 
-  ctrl.fObjectLink := self;
+  ctrl.FObjectLink := self;
   inherited Create (AOwner, ctrl, codepage);
   BeginUpdate;
   ctrl.BorderStyle := bsNone;
 
-  if Assigned (ctrl.fScrollingParent) then
-    w := ctrl.fScrollingParent.Width - Margin * 2 - GetSystemMetrics (SM_CXVSCROLL)
+  if Assigned(ctrl.FScrollingParent) then
+    w := ctrl.FScrollingParent.Width - Margin * 2 - GetSystemMetrics (SM_CXVSCROLL)
   else
     w := AOwner.Width;
 
   GetTextMetrics (AOwner.Canvas.Handle, tm);
   w1 := tm.tmAveCharWidth * ctrl.RightMargin;
-  if w1 > w then w := w1 else ctrl.fRightMargin := 0;
+  if w1 > w then w := w1 else ctrl.FRightMargin := 0;
 
   ctrl.AutoSize := True;
   ctrl.Width := w;
@@ -703,8 +706,8 @@ end;
 constructor TNewsRichEditX.Create(AOwner: TComponent);
 begin
   inherited;
-  fAutoSize := True;
-  fRightMargin := 76;
+  FAutoSize := True;
+  FRightMargin := 76;
 end;
 
 procedure TNewsRichEditX.CreateParams(var params: TCreateParams);
@@ -724,7 +727,7 @@ var
   p : TWinControl;
 begin
   p := Parent;
-  while Assigned (p) and not (p is TScrollingWinControl) do
+  while Assigned(p) and not (p is TScrollingWinControl) do
     p := p.Parent;
 
   result := TScrollingWinControl (p)
@@ -738,7 +741,7 @@ var
 begin
   result := 0;
   sp := FindScrollingParent;
-  if not Assigned (sp) then exit;
+  if not Assigned(sp) then exit;
   lineHeight := Abs (font.Height);
 
   result := (sp.ClientHeight div lineHeight) ;
@@ -768,7 +771,7 @@ begin
     if line + lines >= lineCount then
       lines := lineCount - line - 1;
 
-  if Assigned (sp) then
+  if Assigned(sp) then
     sp.VertScrollBar.Position := sp.VertScrollBar.Position + lines * Abs (Font.Height);
 
   pos := SendMessage (handle, EM_LINEINDEX, line + lines, 0);
@@ -792,7 +795,7 @@ procedure TNewsRichEditX.RequestSize(const Rect: TRect);
 begin
   inherited;
 
-  if fAutoSize then
+  if FAutoSize then
     BoundsRect := rect;
 end;
 
@@ -803,7 +806,7 @@ var
   deltaY, lineHeight : Integer;
 begin
   sp := FindScrollingParent;
-  if not Assigned (sp) then exit;
+  if not Assigned(sp) then exit;
 
   SendMessage (handle, EM_POSFROMCHAR, Integer (@pt), self.SelStart + self.SelLength);
 
@@ -833,7 +836,7 @@ begin
 
   if value <> AutoSize then
   begin
-    fAutoSize := Value;
+    FAutoSize := Value;
     if Value then
       SendMessage (Handle, EM_REQUESTRESIZE, 0, 0)
   end
@@ -844,14 +847,14 @@ var
   tm : TTextMetric;
   canvas : TControlCanvas;
 begin
-  if value <> fRightMargin then
+  if value <> FRightMargin then
   begin
-    fRightMargin := Value;
+    FRightMargin := Value;
 
     if not (csDesigning in ComponentState) then
       if value = 0 then
-        if Assigned (fScrollingParent) then
-          width := fScrollingParent.Width - fObjectLink.Margin * 2 - GetSystemMetrics (SM_CXVSCROLL)
+        if Assigned(FScrollingParent) then
+          width := FScrollingParent.Width - FObjectLink.Margin * 2 - GetSystemMetrics (SM_CXVSCROLL)
         else
           width := Parent.Width
       else
@@ -861,7 +864,7 @@ begin
           canvas.Control := self;
           canvas.Font.Assign(Font);
           GetTextMetrics (canvas.Handle, tm);
-          width := tm.tmAveCharWidth * fRightMargin
+          width := tm.tmAveCharWidth * FRightMargin
         finally
           canvas.Free
         end
@@ -892,12 +895,12 @@ var
   sp : TScrollingWinControl;
   xPos, yPos : Integer;
 begin
-  if Assigned (fObjectLink) then
-    fObjectLink.Owner.FocusObject(fObjectLink);
+  if Assigned(FObjectLink) then
+    FObjectLink.Owner.FocusObject(FObjectLink);
   if not Focused then
   begin
     sp := FindScrollingParent;
-    if Assigned (sp) then
+    if Assigned(sp) then
     begin
       xPos := sp.HorzScrollBar.Position;
       yPos := sp.VertScrollBar.Position;
@@ -917,19 +920,19 @@ var
   p : TPoint;
   sp : TScrollingWinControl;
 begin
-  fTimerScrollDelta := 0;
+  FTimerScrollDelta := 0;
   if (msg.Keys and MK_LBUTTON) <> 0 then
   begin
     sp := FindScrollingParent;
-    if Assigned (sp) then
+    if Assigned(sp) then
     begin
       p := Point (msg.xPos, msg.yPos);
       MapWindowPoints (Handle, sp.Handle, p, 1);
       if p.Y < sp.ClientRect.Top then
-        fTimerScrollDelta := p.Y - sp.ClientRect.Top
+        FTimerScrollDelta := p.Y - sp.ClientRect.Top
       else
         if p.Y > sp.ClientRect.Bottom then
-          fTimerScrollDelta := p.Y - sp.ClientRect.Bottom
+          FTimerScrollDelta := p.Y - sp.ClientRect.Bottom
     end
   end;
   inherited
@@ -945,12 +948,12 @@ var
   sp : TScrollingWinControl;
   xPos, yPos : Integer;
 begin
-  if Assigned (fObjectLink) then
-    fObjectLink.Owner.FocusObject(fObjectLink);
+  if Assigned(FObjectLink) then
+    FObjectLink.Owner.FocusObject(FObjectLink);
   if not Focused then
   begin
     sp := FindScrollingParent;
-    if Assigned (sp) then
+    if Assigned(sp) then
     begin
       xPos := sp.HorzScrollBar.Position;
       yPos := sp.VertScrollBar.Position;
@@ -971,20 +974,20 @@ var
   delta, ad : Integer;
   sp : TScrollingWinControl;
 begin
-  if fTimerScrollDelta <> 0 then
+  if FTimerScrollDelta <> 0 then
   begin
     sp := FindScrollingParent;
-    if Assigned (sp) then
+    if Assigned(sp) then
     begin
       delta := self.Font.Height;
-      ad := Abs (fTimerScrollDelta);
+      ad := Abs (FTimerScrollDelta);
       if ad < delta then
         delta := delta div 2
       else
         if ad > 4 * delta then
           delta := delta * 2;
 
-      if fTimerScrollDelta < 0 then
+      if FTimerScrollDelta < 0 then
         delta := -delta;
 
       sp.VertScrollBar.Position := sp.VertScrollBar.Position - delta
