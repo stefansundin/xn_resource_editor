@@ -1,7 +1,7 @@
 (*======================================================================*
  | DialogBox                                                            |
  |                                                                      |
- | Display a dialog box from a dialog resource template                 |
+ | Display a dialog box from a dialog resource Template                 |
  |                                                                      |
  | Version  Date        By    Description                               |
  | -------  ----------  ----  ------------------------------------------|
@@ -13,96 +13,97 @@ unit cmpDialogBox;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, commctrl, richedit, DialogConsts, DialogStrings, Menus;
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  CommCtrl, RichEdit, DialogConsts, DialogStrings, Menus;
 
 type
-  TOnDlgMessage = procedure (sender : TObject; var msg : TMessage; bcontinue : boolean) of object;
-  TOnGetControlImage = procedure (Sender: TObject; tp : Integer; const id : string; var Handle: HGDIOBJ) of object;
+  TOnDlgMessage = procedure(Sender: TObject; var Msg: TMessage; bcontinue: boolean) of object;
+  TOnGetControlImage = procedure(Sender: TObject; Tp: Integer; const Id: string; var Handle: HGDIOBJ) of object;
 
 //-----------------------------------------------------------------------
 // The DialogBox class
 
   TDialogBox = class(TWinControl)
   private
-    fResourceTemplate: pointer;
-    fExtendedTemplate : Boolean;
+    FResourceTemplate: Pointer;
+    FExtendedTemplate: Boolean;
 
-    fHwndDlg : HWND;
-    fHFontDlg : HFONT;
-    fOnDlgMessage: TOnDlgMessage;
+    FHwndDlg: HWND;
+    FHFontDlg: HFONT;
+    FOnDlgMessage: TOnDlgMessage;
 
-    fBaseUnitX, fBaseUnitY : Double;
-    fMargin: Integer;
-    fWidthAdjust: Integer;
-    fHeightAdjust: Integer;
-    fOnShow: TNotifyEvent;
-    fOnGetControlImage: TOnGetControlImage;
+    FBaseUnitX, FBaseUnitY: Double;
+    FMargin: Integer;
+    FWidthAdjust: Integer;
+    FHeightAdjust: Integer;
+    FOnShow: TNotifyEvent;
+    FOnGetControlImage: TOnGetControlImage;
 
-    fOrigStyle : DWORD;
-    fMenu : TMenuItem;
+    FOrigStyle: DWORD;
+    FMenu: TMenuItem;
 
-    procedure SetResourceTemplate(const Value: pointer);
-    procedure WmDestroy (var msg : TwmDestroy); message WM_DESTROY;
+    procedure SetResourceTemplate(const Value: Pointer);
+    procedure WmDestroy(var Msg: TWMDestroy); message WM_DESTROY;
     procedure InitDialogControls;
 
   protected
-    fOrigX, fOrigY : Integer;
-    fInitializing : boolean;
-    procedure HandleDlgMessage (var Msg : TMessage); virtual;
-    procedure PaintWindow (DC : HDC); override;
+    FOrigX, FOrigY: Integer;
+    FInitializing: boolean;
+    procedure HandleDlgMessage(var Msg: TMessage); virtual;
+    procedure PaintWindow(DC: HDC); override;
     function CanAutoSize(var NewWidth, NewHeight: Integer): Boolean; override;
-    property WidthAdjust : Integer read fWidthAdjust write fWidthAdjust;
-    property HeightAdjust : Integer read fHeightAdjust write fHeightAdjust;
-    procedure InitDlg (template : Pointer; const fontName : string; fontPoints, fontWeight, fontCharset : Integer; fontItalic : Boolean; const menu, cls : TSzOrID); virtual;
-    procedure InitCtrl (n : Integer; template : Pointer; extraCount : Integer; extraData : PChar; titleSzOrID : TSzOrID); virtual;
+    property WidthAdjust: Integer read FWidthAdjust write FWidthAdjust;
+    property HeightAdjust: Integer read FHeightAdjust write FHeightAdjust;
+    procedure InitDlg(Template: Pointer; const FontName: string; FontPoints, FontWeight, FontCharset: Integer; FontItalic: Boolean; const Menu, Cls: TSzOrID); virtual;
+    procedure InitCtrl(n: Integer; Template: Pointer; ExtraCount: Integer;
+      ExtraData: PWideChar; TitleSzOrID: TSzOrID); virtual;
 
-    property ExtendedTemplate : Boolean read fExtendedTemplate;
+    property ExtendedTemplate: Boolean read FExtendedTemplate;
 
-    property OrigStyle : DWORD read fOrigStyle write fOrigStyle;
-    property OrigX : Integer read fOrigX write fOrigX;
-    property OrigY : Integer read fOrigY write fOrigY;
+    property OrigStyle: DWORD read FOrigStyle write FOrigStyle;
+    property OrigX: Integer read FOrigX write FOrigX;
+    property OrigY: Integer read FOrigY write FOrigY;
 
-    function PointToDialogPoint (pt : TPoint) : TPoint;
-    function DialogPointtoPoint (pt : TPoint) : TPoint;
-    function RectToDialogRect (r : TRect) : TRect;
-    function DialogRectToRect (r : TRect) : TRect;
+    function PointToDialogPoint(pt: TPoint): TPoint;
+    function DialogPointtoPoint(pt: TPoint): TPoint;
+    function RectToDialogRect(r: TRect): TRect;
+    function DialogRectToRect(r: TRect): TRect;
 
-    property FontHandle : HFONT read fHFontDlg; // Must be read only!  Don't even think about it!
+    property FontHandle: HFONT read FHFontDlg; // Must be read only!  Don't even think about it!
     { Protected declarations }
   public
-    constructor Create (AOwner : TComponent); override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure SetBounds(ALeft, ATop, AWidth, AHeight: Integer); override;
 
-    property Margin : Integer read fMargin write fMargin;
-    property ResourceTemplate : pointer read fResourceTemplate write SetResourceTemplate;
+    property Margin: Integer read FMargin write FMargin;
+    property ResourceTemplate: Pointer read FResourceTemplate write SetResourceTemplate;
 
-    property DialogHandle : HWND read fHwndDlg;
-    procedure SetCtrlImage (hwndCtrl : HWND; isBtn : Boolean; tp : Integer; Handle : HGDIOBJ);
-    procedure GetImageType (const ctrlClass : TSZOrID; Style : DWORD; var isBtn : Boolean; var tp : Integer);
-    procedure SetCtrlImage1 (hwndCtrl : HWND; isBtn : Boolean; tp : Integer; id : TszOrID);
+    property DialogHandle: HWND read FHwndDlg;
+    procedure SetCtrlImage(HwndCtrl: HWND; IsBtn: Boolean; Tp: Integer; Handle: HGDIOBJ);
+    procedure GetImageType(const ctrlClass: TSZOrID; Style: DWORD; var IsBtn: Boolean; var Tp: Integer);
+    procedure SetCtrlImage1(HwndCtrl: HWND; IsBtn: Boolean; Tp: Integer; Id: TszOrID);
 
   published
-    property OnDlgMessage : TOnDlgMessage read fOnDlgMessage write fOnDlgmessage;
+    property OnDlgMessage: TOnDlgMessage read FOnDlgMessage write FOnDlgMessage;
     property AutoSize default True;
     property Color default clBtnFace;
     property OnKeyDown;
     property ParentColor;
     property OnResize;
-    property OnShow : TNotifyEvent read fOnShow write fOnShow;
-    property OnGetControlImage : TOnGetControlImage read fOnGetControlImage write fOnGetControlImage;
-    { Published declarations }
+    property OnShow: TNotifyEvent read FOnShow write FOnShow;
+    property OnGetControlImage: TOnGetControlImage read FOnGetControlImage write FOnGetControlImage;
   end;
 
 var
-  gWndAtom : TAtom;
+  gWndAtom: TAtom;
 
-procedure GetSzOrID (var p : PChar; var szOrID : TSzOrID);
+procedure GetSzOrID(var p: PChar; var szOrID: TSzOrID);
 
 implementation
 
 var
-  gTmpFont : HFONT = 0;
+  gTmpFont: HFONT = 0;
   FRichEditModule: THandle;
 
 (*----------------------------------------------------------------------*
@@ -120,44 +121,44 @@ var
  | WM_INITDIALOG.  Sorry about the global, but heaven help you if       |
  | try to simultaneously create two dialogs from diffent threads!       |
  *----------------------------------------------------------------------*)
-function DialogProc (hwndDlg : HWND; uMsg : UINT; wParam : WPARAM; lParam : LPARAM) : BOOL; stdcall;
+function DialogProc(hwndDlg: HWND; uMsg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL; stdcall;
 var
-  dlgInstance : TDialogBox;
-  msg : TMessage;
+  dlgInstance: TDialogBox;
+  Msg: TMessage;
 
 begin
   result := False;
   if uMsg = WM_INITDIALOG then
   begin
-    dlgInstance := TDialogBox (lParam);                 // Get the TDialogBox instance from lparam
-    SetProp (hwndDlg, PChar (gWndAtom), lParam);        // ... and save it in the gWndAtom property
-    dlgInstance.fhwndDlg := hwndDlg;
+    dlgInstance := TDialogBox(lParam);                 // Get the TDialogBox instance from lparam
+    SetProp(hwndDlg, PChar(gWndAtom), lParam);        // ... and save it in the gWndAtom property
+    dlgInstance.FHwndDlg := hwndDlg;
 
     if gTmpFont <> 0 then                               // Now do delayed WM_SETFONT.
     begin
-      SendMessage (hwndDlg, WM_SETFONT, gTmpFont, 0);
+      SendMessage(hwndDlg, WM_SETFONT, gTmpFont, 0);
       gTmpFont := 0
     end
   end
   else                                                  // Look up TDialogBox in prop.
 
-    dlgInstance := TDialogBox (GetProp (hwndDlg, PChar (gWndAtom)));
+    dlgInstance := TDialogBox(GetProp(hwndDlg, PChar(gWndAtom)));
 
-  if Assigned (dlgInstance) then
+  if Assigned(dlgInstance) then
   begin
-    msg.Msg := uMsg;
-    msg.WParam := wParam;
-    msg.LParam := lParam;
-    msg.Result := 0;
+    Msg.Msg := uMsg;
+    Msg.WParam := wParam;
+    Msg.LParam := lParam;
+    Msg.Result := 0;
 
-    dlgInstance.HandleDlgMessage (msg);
-    result := Bool (msg.Result);
+    dlgInstance.HandleDlgMessage(Msg);
+    result := Bool(Msg.Result);
 
     if uMsg = WM_DESTROY then                           // WM_DESTROY - remove the prop, otherwise
     begin                                               // the window won't be destroyed!
-      SetParent (dlgInstance.fhwndDlg, 0);
-      dlgInstance.fhwndDlg := 0;
-      RemoveProp (hwndDlg, PChar (gWndAtom));
+      SetParent(dlgInstance.FHwndDlg, 0);
+      dlgInstance.FHwndDlg := 0;
+      RemoveProp(hwndDlg, PChar(gWndAtom));
       result := True;
     end
   end
@@ -170,25 +171,25 @@ end;
 (*----------------------------------------------------------------------*
  | GetSzOrID                                                            |
  |                                                                      |
- | Get a 'string or ID' from a class, menu, title dialog template value |
- | pointer.                                                             |
+ | Get a 'string or ID' from a class, Menu, title dialog Template value |
+ | Pointer.                                                             |
  *----------------------------------------------------------------------*)
-procedure GetSzOrID (var p : PChar; var szOrID : TSzOrID);
+procedure GetSzOrID(var p: PChar; var szOrID: TSzOrID);
 begin
-  if (PWord (p)^ = $ffff) then
+  if(PWord(p)^ = $ffff) then
   begin
-    Inc (p, SizeOf (Word));
+    Inc(p, SizeOf(Word));
     szOrID.isID := True;
-    szOrId.id := PWord (p)^;
+    szOrId.Id := PWord(p)^;
     szOrId.sz := '';
-    Inc (p, SizeOf (Word));
+    Inc(p, SizeOf(Word));
   end
   else
   begin
     szOrId.isID := False;
-    szOrId.sz := PWideChar (p);
+    szOrId.sz := PWideChar(p);
     szOrId.Id := 0;
-    Inc (p, SizeOf (WideChar) * (Length (szOrId.sz) + 1))
+    Inc(p, SizeOf(WideChar) *(Length(szOrId.sz) + 1))
   end
 end;
 
@@ -203,16 +204,16 @@ end;
  *----------------------------------------------------------------------*)
 function TDialogBox.CanAutoSize(var NewWidth, NewHeight: Integer): Boolean;
 var
-  r : TRect;
-  w, h : Integer;
+  r: TRect;
+  w, h: Integer;
 begin
   Result := True;
-  if not (csDesigning in ComponentState) then
+  if not(csDesigning in ComponentState) then
   begin
-    if fHWndDlg <> 0 then
-      GetWindowRect (fHWndDlg, r)
+    if FHwndDlg <> 0 then
+      GetWindowRect(FHwndDlg, r)
     else
-      FillChar (r, SizeOf (r), 0);
+      FillChar(r, SizeOf(r), 0);
 
     w := r.Right - r.Left + 1;
     h := r.Bottom - r.Top + 1;
@@ -246,7 +247,7 @@ end;
  *----------------------------------------------------------------------*)
 destructor TDialogBox.Destroy;
 begin
-  fMenu.Free;
+  FMenu.Free;
 
   inherited;
 end;
@@ -257,8 +258,8 @@ begin
     result := pt
   else
   begin
-    result.x := Round (pt.x * fBaseUnitX / 4);
-    result.y := Round (pt.y * fBaseUnitY / 8)
+    result.x := Round(pt.x * fBaseUnitX / 4);
+    result.y := Round(pt.y * fBaseUnitY / 8)
   end
 end;
 
@@ -269,7 +270,7 @@ end;
  *----------------------------------------------------------------------*)
 function TDialogBox.DialogRectToRect(r: TRect): TRect;
 begin
-  MapDialogRect (DialogHandle, r);
+  MapDialogRect(DialogHandle, r);
   result := r;
 end;
 
@@ -279,79 +280,79 @@ end;
  |                                                                      |
  | HAndle dialog messages.                                              |
  *----------------------------------------------------------------------*)
-procedure TDialogBox.GetImageType(const ctrlClass : TSZOrID; Style : DWORD; var isBtn: Boolean; var tp: Integer);
+procedure TDialogBox.GetImageType(const ctrlClass: TSZOrID; Style: DWORD; var IsBtn: Boolean; var Tp: Integer);
 begin
-  isBtn := False;
-  tp := -1;
+  IsBtn := False;
+  Tp := -1;
 
-  if ctrlClass.id = BUTTON_ID then
+  if ctrlClass.Id = BUTTON_ID then
   begin
-    isBtn := True;
-    if (Style and BS_ICON) <> 0 then
-      tp := IMAGE_ICON
+    IsBtn := True;
+    if(Style and BS_ICON) <> 0 then
+      Tp := IMAGE_ICON
     else
-      if (Style and BS_BITMAP) <> 0 then
-        tp := IMAGE_BITMAP
+      if(Style and BS_BITMAP) <> 0 then
+        Tp := IMAGE_BITMAP
   end
   else
-    if ctrlClass.id = STATIC_ID then
+    if ctrlClass.Id = STATIC_ID then
     case Style and SS_TYPEMASK of
-      SS_ICON : tp := IMAGE_ICON;
-      SS_BITMAP : tp := IMAGE_BITMAP;
-      SS_ENHMETAFILE : tp := IMAGE_ENHMETAFILE
+      SS_ICON: Tp := IMAGE_ICON;
+      SS_BITMAP: Tp := IMAGE_BITMAP;
+      SS_ENHMETAFILE: Tp := IMAGE_ENHMETAFILE
     end;
 end;
 
 procedure TDialogBox.HandleDlgMessage(var Msg: TMessage);
 var
-  p : PWindowPos;
-  continueProcessing : boolean;
-  r : TRect;
+  p: PWindowPos;
+  continueProcessing: boolean;
+  r: TRect;
 
-  procedure GetFontBaseUnits (var baseX, baseY : Double);
+  procedure GetFontBaseUnits(var baseX, baseY: Double);
   var
-    r : TRect;
+    r: TRect;
   begin
-    r := Rect (0, 0, 4, 8);
-    MapDialogRect (fHWNDDlg, r);
+    r := Rect(0, 0, 4, 8);
+    MapDialogRect(FHwndDlg, r);
     baseX := r.Right;
     baseY := r.Bottom;
   end;
 
 begin
   ContinueProcessing := True;
-  if Assigned (fOnDlgMessage) and not (csDestroying in ComponentState) then
+  if Assigned(FOnDlgMessage) and not(csDestroying in ComponentState) then
   begin
-    msg.result := Ord (False);
-    OnDlgMessage (self, msg, ContinueProcessing)
+    Msg.result := Ord(False);
+    OnDlgMessage(self, Msg, ContinueProcessing)
   end;
 
   if continueProcessing then
   begin
-    msg.result := Ord (True);
-    case msg.Msg of
+    Msg.result := Ord(True);
+    case Msg.Msg of
       WM_INITDIALOG :
         begin           // Set the control bounds to the size of the dialog box
-          fInitializing := True;
+          FInitializing := True;
           try
-            GetWindowRect (fHwndDlg, r);
-            MapWindowPoints (HWND_DESKTOP, Parent.Handle, r, 2);
-            with r do SetBounds (Self.Left, self.Top, right - left, bottom - top);
-            GetFontBaseUnits (fBaseUnitX, fBaseUnitY)
+            GetWindowRect(FHwndDlg, r);
+            MapWindowPoints(HWND_DESKTOP, Parent.Handle, r, 2);
+            with r do SetBounds(Self.Left, self.Top, right - left, bottom - top);
+            GetFontBaseUnits(fBaseUnitX, fBaseUnitY)
           finally
-            fInitializing := False
+            FInitializing := False
           end
         end;
 
-      WM_SETFONT :      // Save the font so we can use it for (eg) newly created
+      WM_SETFONT:      // Save the font so we can use it for(eg) newly created
                         // controls
         begin
-          fHFontDlg := Msg.wParam;
-          Msg.Result := Ord (False)
+          FHFontDlg := Msg.wParam;
+          Msg.Result := Ord(False)
         end;
 
-      WM_CLOSE :        // Close clicked (etc.)  Destroy the dialog
-        DestroyWindow (fHwndDlg);
+      WM_CLOSE:        // Close clicked(etc.)  Destroy the dialog
+        DestroyWindow(FHwndDlg);
 
                         // Activate the dialog if it's clicked
       WM_LBUTTONDOWN,
@@ -359,23 +360,23 @@ begin
       WM_NCLBUTTONDOWN,
       WM_NCRBUTTONDOWN :
         begin
-          BringWindowToTop (Handle);
-          SetActiveWindow (Handle);
-          msg.result := Ord (False)
+          BringWindowToTop(Handle);
+          SetActiveWindow(Handle);
+          Msg.result := Ord(False)
         end;
 
                         // Don't allow moving the dialog
       WM_WINDOWPOSCHANGING :
       begin
-        if not fInitializing then
+        if not FInitializing then
         begin
-          p := PWindowPos (msg.LParam);
+          p := PWindowPos(Msg.LParam);
           p.Flags := p.Flags or SWP_NOMOVE
         end
       end;
 
       else
-        msg.result := Ord (FALSE);
+        Msg.result := Ord(FALSE);
     end
   end
 end;
@@ -386,9 +387,10 @@ end;
  |                                                                      |
  | Called for each control.  Override it to cache control info.         |
  *----------------------------------------------------------------------*)
-procedure TDialogBox.InitCtrl(n : Integer; template: Pointer; extraCount : Integer; extraData : PChar; titleSzOrID : TSzOrID);
+procedure TDialogBox.InitCtrl(n: Integer; Template: Pointer;
+  ExtraCount: Integer; ExtraData: PWideChar; TitleSzOrID: TSzOrID);
 begin
-// stub
+  // stub
 end;
 
 (*----------------------------------------------------------------------*
@@ -401,129 +403,129 @@ procedure TDialogBox.InitDialogControls;
 type
   pbytebool = ^ByteBool;
 var
-  Template : PDlgTemplate;
-  ItemTemplate : PdlgItemTemplate;
-  ExTemplate : PDlgTemplateEx;
-  ExItemTemplate : PDlgItemTemplateEx;
-  p : PChar;
-  tempSzOrID, dlgMenu, ctrlClass, ctrlTitle : TSzOrID;
-  i, ctrlCount, Style, id, fontPoint, fontWeight, fontCharset : Integer;
-  fontItalic : Boolean;
-  extraCount : Word;
-  tp : Integer;
-  gdiobj : HGDIOBJ;
-  szId, fontName : string;
-  isBtn : Boolean;
+  Template: PDlgTemplate;
+  ItemTemplate: PdlgItemTemplate;
+  ExTemplate: PDlgTemplateEx;
+  ExItemTemplate: PDlgItemTemplateEx;
+  p: PWideChar;
+  tempSzOrID, dlgMenu, ctrlClass, ctrlTitle: TSzOrID;
+  i, ctrlCount, Style, Id, fontPoint, FontWeight, FontCharset: Integer;
+  FontItalic: Boolean;
+  ExtraCount: Word;
+  Tp: Integer;
+  gdiobj: HGDIOBJ;
+  szId, FontName: string;
+  IsBtn: Boolean;
 begin
-  Template := PDlgTemplate (fResourceTemplate);
-  p := PChar (fResourceTemplate);
+  Template := PDlgTemplate(FResourceTemplate);
+  p := PWideChar(FResourceTemplate);
   if ExtendedTemplate then
   begin
-    ExTemplate := PDlgTemplateEx (fResourceTemplate);
-    Inc (p, SizeOf (TDlgTemplateEx));
+    ExTemplate := PDlgTemplateEx(FResourceTemplate);
+    Inc(p, SizeOf(TDlgTemplateEx));
     ctrlCount := ExTemplate^.cDlgItems;
     Style := ExTemplate^.Style;
   end
   else
   begin
     ExTemplate := nil;
-    Inc (p, SizeOf (TDlgTemplate));
+    Inc(p, SizeOf(TDlgTemplate));
     ctrlCount := Template^.cdit;
     Style := Template^.style
   end;
 
-  GetSzOrID (p, dlgMenu);  // menu
-  GetSzOrID (p, ctrlClass);  // class
-  GetSzOrID (p, tempSzOrID);  // title
+  GetSzOrID(p, dlgMenu);  // Menu
+  GetSzOrID(p, ctrlClass);  // class
+  GetSzOrID(p, tempSzOrID);  // title
 
-  fontName := '';
-  fontCharset := ANSI_CHARSET;
+  FontName := '';
+  FontCharset := ANSI_CHARSET;
   fontPoint := 8;
-  fontWeight := FW_NORMAL;
-  fontItalic := False;
+  FontWeight := FW_NORMAL;
+  FontItalic := False;
 
-  if (Style and DS_SETFONT) <> 0 then
+  if(Style and DS_SETFONT) <> 0 then
   begin
-    fontPoint := PWORD (p)^;
-    Inc (p, SizeOf (Word));     // pointsize
+    fontPoint := PWORD(p)^;
+    Inc(p, SizeOf(Word));     // pointsize
 
     if ExtendedTemplate then
     begin
-      fontWeight := PWORD (p)^;
-      Inc (p, SizeOf (Word));   // weight
+      FontWeight := PWORD(p)^;
+      Inc(p, SizeOf(Word));   // weight
 
-      fontItalic := PBYTEBOOL (p)^;
-      Inc (p);                  // italic
+      FontItalic := PBYTEBOOL(p)^;
+      Inc(p);                  // italic
 
-      fontCharset := PBYTE (p)^;
-      Inc (p);                  // Italic
+      FontCharset := PBYTE(p)^;
+      Inc(p);                  // Italic
     end;
 
-    GetSzOrId (p, tempSzOrID);   // Typeface
-    fontName := tempSzOrID.sz;
+    GetSzOrId(p, tempSzOrID);   // Typeface
+    FontName := tempSzOrID.sz;
   end;
 
   if ExtendedTemplate then
-    InitDlg (ExTemplate, fontName, fontPoint, fontWeight, fontCharset, fontItalic, dlgMenu, ctrlClass)
+    InitDlg(ExTemplate, FontName, fontPoint, FontWeight, FontCharset, FontItalic, dlgMenu, ctrlClass)
   else
-    InitDlg (Template, fontName, fontPoint, fontWeight, fontCharset, fontItalic, dlgMenu, ctrlClass);
+    InitDlg(Template, FontName, fontPoint, FontWeight, FontCharset, FontItalic, dlgMenu, ctrlClass);
 
-  if Assigned (OnGetControlImage) and (not dlgMenu.isID or (dlgMenu.id > 0)) then
+  if Assigned(OnGetControlImage) and(not dlgMenu.isID or(dlgMenu.Id > 0)) then
   begin
     if dlgMenu.isID then
-      szId := IntToStr (dlgMenu.id)
+      szId := IntToStr(dlgMenu.Id)
     else
       szId := dlgMenu.sz;
 
     gdiObj := 0;
-    OnGetControlImage (Self, -1, szId, gdiobj);
-    FreeAndNil (fMenu);
-    fMenu := TMenuItem (gdiObj);
+    OnGetControlImage(Self, -1, szId, gdiobj);
+    FreeAndNil(FMenu);
+    FMenu := TMenuItem(gdiObj);
   end;
 
   for i := 0 to ctrlCount - 1 do
   begin
-    p := PChar ((Integer (p) + 3) div 4 * 4);  // Align on DWORD
+    p := PChar((Integer(p) + 3) div 4 * 4);  // Align on DWORD
 
     if ExtendedTemplate then
     begin
-      ExItemTemplate := PDlgItemTemplateEx (p);
+      ExItemTemplate := PDlgItemTemplateEx(p);
       ItemTemplate := nil;
-      Inc (p, SizeOf (TDlgItemTemplateEx));
-      p := PChar ((Integer (p) + 3) div 4 * 4);  // Align on DWORD
+      Inc(p, SizeOf(TDlgItemTemplateEx));
+      p := PChar((Integer(p) + 3) div 4 * 4);  // Align on DWORD
       Style := ExItemTemplate^.Style;
-      id := ExItemTemplate^.id
+      Id := ExItemTemplate^.Id
     end
     else
     begin
-      ItemTemplate := PDlgITemTemplate (p);
+      ItemTemplate := PDlgITemTemplate(p);
       ExItemTemplate := nil;
-      Inc (p, SizeOf (TDlgItemTemplate));
+      Inc(p, SizeOf(TDlgItemTemplate));
       Style := ItemTemplate^.Style;
-      id := ItemTemplate^.id
+      Id := ItemTemplate^.Id
     end;
 
-    GetSzOrID (p, ctrlClass);     // control class
-    GetSzOrID (p, ctrlTitle);     // title
+    GetSzOrID(p, ctrlClass);     // control class
+    GetSzOrID(p, ctrlTitle);     // title
 
-    extraCount := PWord (p)^;
-    Inc (p, SizeOf (Word));
+    ExtraCount := PWord(p)^;
+    Inc(p, SizeOf(Word));
 
-    Inc (p, extraCount);
+    Inc(p, ExtraCount);
 
-    GetImageType (ctrlClass, Style, isBtn, tp);
+    GetImageType(ctrlClass, Style, IsBtn, Tp);
 
-    if tp <> -1 then
-      SetCtrlImage1 (GetDlgItem (fHWndDlg, id), isBtn, tp, ctrlTitle);
+    if Tp <> -1 then
+      SetCtrlImage1(GetDlgItem(FHwndDlg, Id), IsBtn, Tp, ctrlTitle);
 
     if ExtendedTemplate then
-      InitCtrl (i, ExItemTemplate, extraCount, p, ctrlTitle)
+      InitCtrl(i, ExItemTemplate, ExtraCount, p, ctrlTitle)
     else
-      InitCtrl (i, ItemTemplate, extraCount, p, ctrlTitle)
+      InitCtrl(i, ItemTemplate, ExtraCount, p, ctrlTitle)
   end
 end;
 
-procedure TDialogBox.InitDlg(template : Pointer; const fontName : string; fontPoints, fontWeight, fontCharset : Integer; fontItalic : Boolean; const menu, cls : TSzOrID);
+procedure TDialogBox.InitDlg(Template: Pointer; const FontName: string; FontPoints, FontWeight, FontCharset: Integer; FontItalic: Boolean; const Menu, Cls: TSzOrID);
 begin
 // stub
 end;
@@ -536,14 +538,14 @@ end;
  *----------------------------------------------------------------------*)
 procedure TDialogBox.PaintWindow(DC: HDC);
 var
-  r : TRect;
+  r: TRect;
 begin
   inherited;
-  if (csDesigning in ComponentState) then
+  if(csDesigning in ComponentState) then
   begin
     r := ClientRect;
-    InflateRect (r, -2, -2);
-    DrawEdge (DC, r, EDGE_RAISED, BF_RECT)
+    InflateRect(r, -2, -2);
+    DrawEdge(DC, r, EDGE_RAISED, BF_RECT)
   end
 end;
 
@@ -558,8 +560,8 @@ begin
     result := pt
   else
   begin
-    result.x := Round (pt.x * 4 / fBaseUnitX);
-    result.y := Round (pt.y * 8 / fBaseUnitY)
+    result.x := Round(pt.x * 4 / fBaseUnitX);
+    result.y := Round(pt.y * 8 / fBaseUnitY)
   end
 end;
 
@@ -574,10 +576,10 @@ begin
     result := r
   else
   begin
-    result.Left := Round (r.Left * 4 / fBaseUnitX);
-    result.Top := Round (r.Top * 8 / fBaseUnitY);
-    result.Right := Round (r.Right * 4 / fBaseUnitX);
-    result.Bottom := Round (r.Bottom * 8 / fBaseUnitY)
+    result.Left := Round(r.Left * 4 / fBaseUnitX);
+    result.Top := Round(r.Top * 8 / fBaseUnitY);
+    result.Right := Round(r.Right * 4 / fBaseUnitX);
+    result.Bottom := Round(r.Bottom * 8 / fBaseUnitY)
   end
 end;
 
@@ -588,8 +590,8 @@ end;
  *----------------------------------------------------------------------*)
 procedure TDialogBox.SetBounds(ALeft, ATop, AWidth, AHeight: Integer);
 begin
-  if fHWndDlg <> 0 then
-    SetWindowPos (fhWndDlg, 0, Margin, Margin, AWidth, AHeight, SWP_NOZORDER);
+  if FHwndDlg <> 0 then
+    SetWindowPos(FHwndDlg, 0, Margin, Margin, AWidth, AHeight, SWP_NOZORDER);
 
   inherited;
 end;
@@ -599,183 +601,183 @@ end;
  |                                                                      |
  | Set a static or button control's image.                              |
  *----------------------------------------------------------------------*)
-procedure TDialogBox.SetCtrlImage(hwndCtrl: HWND; isBtn: Boolean;
-  tp: Integer; Handle: HGDIOBJ);
+procedure TDialogBox.SetCtrlImage(HwndCtrl: HWND; IsBtn: Boolean;
+  Tp: Integer; Handle: HGDIOBJ);
 begin
   if Handle = 0 then
-    if tp = IMAGE_ICON then
-      Handle := LoadIcon (0, IDI_WINLOGO)
+    if Tp = IMAGE_ICON then
+      Handle := LoadIcon(0, IDI_WINLOGO)
     else
-      Handle := LoadBitmap (HInstance, 'PREVIEW');
+      Handle := LoadBitmap(HInstance, 'PREVIEW');
 
-  if isBtn then
-    SendMessage (hwndCtrl, BM_SETIMAGE, tp, Handle)
+  if IsBtn then
+    SendMessage(HwndCtrl, BM_SETIMAGE, Tp, Handle)
   else
-    SendMessage (hwndCtrl, STM_SETIMAGE, tp, Handle)
+    SendMessage(HwndCtrl, STM_SETIMAGE, Tp, Handle)
 end;
 
 (*----------------------------------------------------------------------*
  | TDialogBox.SetResourceTemplate                                       |
  |                                                                      |
- | Change the resource template.  Remove the old dialog (if any), and   |
+ | Change the resource Template.  Remove the old dialog(if any), and   |
  | show the new one instead.                                            |
  *----------------------------------------------------------------------*)
-procedure TDialogBox.SetCtrlImage1(hwndCtrl: HWND; isBtn: Boolean;
-  tp: Integer; id : TszOrID);
+procedure TDialogBox.SetCtrlImage1(HwndCtrl: HWND; IsBtn: Boolean;
+  Tp: Integer; Id: TszOrID);
 var
-  gdiObj : HGDIOBJ;
-  szId : string;
-  pszId : PWideChar;
+  gdiObj: HGDIOBJ;
+  szId: string;
+  pszId: PWideChar;
 begin
-  if tp <> -1 then
+  if Tp <> -1 then
   begin
     gdiobj := 0;
-    if Assigned (OnGetControlImage) then
+    if Assigned(OnGetControlImage) then
     begin
-      if id.isID then
-        szId := IntToStr (id.id)
+      if Id.isID then
+        szId := IntToStr(Id.Id)
       else
-        szId := id.sz;
-      OnGetControlImage (Self, tp, szId, gdiobj)
+        szId := Id.sz;
+      OnGetControlImage(Self, Tp, szId, gdiobj)
     end
     else
     begin
-      if id.isID then
-        pszId := PWideChar (id.id)
+      if Id.isID then
+        pszId := PWideChar(Id.Id)
       else
-        pszId := PWideChar (id.sz);
+        pszId := PWideChar(Id.sz);
 
-      gdiobj := LoadImageW (hInstance, pszId, tp, 0, 0, 0);
+      gdiobj := LoadImageW(hInstance, pszId, Tp, 0, 0, 0);
     end;
 
-    SetCtrlImage (hwndCtrl, isBtn, tp, gdiObj)
+    SetCtrlImage(HwndCtrl, IsBtn, Tp, gdiObj)
   end
 end;
 
-procedure TDialogBox.SetResourceTemplate(const Value: pointer);
+procedure TDialogBox.SetResourceTemplate(const Value: Pointer);
 var
-  s : TMemoryStream;
+  s: TMemoryStream;
 
   //-------------------------------------------------------------------------
-  // Create a extended resource template from the original one, but with the
-  // appropriate style, no menu, etc.
+  // Create a extended resource Template from the original one, but with the
+  // appropriate style, no Menu, etc.
 
-  function CreateAdjustedResourceTemplate : TMemoryStream;
+  function CreateAdjustedResourceTemplate: TMemoryStream;
   var
-    Template : PDlgTemplate;
-    ExTemplate : PDlgTemplateEx;
-    newTemplate : TDlgTemplateEx;
-    p : PChar;
-    szOrId : TSzOrId;
-    w : Word;
-    b : Byte;
-    i : Integer;
-    newItemTemplate : TDlgItemTemplateEx;
-    ItemTemplate : PDlgItemTemplate;
-    ExItemTemplate : PDlgItemTemplateEx;
+    Template: PDlgTemplate;
+    ExTemplate: PDlgTemplateEx;
+    newTemplate: TDlgTemplateEx;
+    p: PChar;
+    szOrId: TSzOrId;
+    w: Word;
+    b: Byte;
+    i: Integer;
+    newItemTemplate: TDlgItemTemplateEx;
+    ItemTemplate: PDlgItemTemplate;
+    ExItemTemplate: PDlgItemTemplateEx;
 
   begin
     Result := TMemoryStream.Create;
     try
-      Template := PDlgTemplate (fResourceTemplate);
-      if HiWord (Template^.Style) = $ffff then
+      Template := PDlgTemplate(FResourceTemplate);
+      if HiWord(Template^.Style) = $ffff then
       begin
-        fExtendedTemplate := True;
-        ExTemplate := PDlgTemplateEx (fResourceTemplate);
-        fOrigStyle := ExTemplate^.Style;
-        fOrigX := ExTemplate^.x;
-        fOrigY := ExTemplate^.y;
+        FExtendedTemplate := True;
+        ExTemplate := PDlgTemplateEx(FResourceTemplate);
+        FOrigStyle := ExTemplate^.Style;
+        FOrigX := ExTemplate^.x;
+        FOrigY := ExTemplate^.y;
 
         newTemplate := ExTemplate^;
-        newTemplate.style := (ExTemplate^.style and not (WS_POPUP or DS_CENTER or DS_CENTERMOUSE or DS_ABSALIGN)) or WS_CHILD or WS_VISIBLE;
+        newTemplate.style :=(ExTemplate^.style and not(WS_POPUP or DS_CENTER or DS_CENTERMOUSE or DS_ABSALIGN)) or WS_CHILD or WS_VISIBLE;
         newTemplate.x := 0;
         newTemplate.y := 0;
-        p := PChar (fResourceTemplate) + SizeOf (TDlgTemplateEx);
+        p := PChar(FResourceTemplate) + SizeOf(TDlgTemplateEx);
       end
       else
       begin
-        fExtendedTemplate := False;
-        fOrigStyle := Template^.Style;
-        fOrigX := Template^.x;
-        fOrigY := Template^.y;
+        FExtendedTemplate := False;
+        FOrigStyle := Template^.Style;
+        FOrigX := Template^.x;
+        FOrigY := Template^.y;
 
         newTemplate.dlgVer := 1;
         newTemplate.signature := $ffff;
         newTemplate.helpID := 0;
         newTemplate.exStyle := Template^.dwExtendedStyle;
-        newTemplate.Style := (Template^.Style and not (WS_POPUP or DS_CENTER or DS_CENTERMOUSE or DS_ABSALIGN)) or WS_CHILD or WS_VISIBLE;
+        newTemplate.Style :=(Template^.Style and not(WS_POPUP or DS_CENTER or DS_CENTERMOUSE or DS_ABSALIGN)) or WS_CHILD or WS_VISIBLE;
         newTemplate.cDlgItems := Template^.cdit;
         newTemplate.x := 0;
         newTemplate.y := 0;
         newTemplate.cx := Template^.cx;
         newTemplate.cy := Template^.cy;
-        p := PChar (fResourceTemplate) + SizeOf (TDlgTemplate);
+        p := PChar(FResourceTemplate) + SizeOf(TDlgTemplate);
       end;
 
-      Result.Write (newTemplate, SizeOf (newTemplate));
+      Result.Write(newTemplate, SizeOf(newTemplate));
 
-      GetSzOrID (p, szOrId);      // menu
-      szOrId.isID := False;         // Get rid of the menu!
+      GetSzOrID(p, szOrId);      // Menu
+      szOrId.isID := False;         // Get rid of the Menu!
       szOrID.sz := '';
-      WriteSzOrId (Result, szOrId);
+      WriteSzOrId(Result, szOrId);
 
-      GetSzOrID (p, szOrID);      // class
-      WriteSzOrID (Result, szOrID);
+      GetSzOrID(p, szOrID);      // class
+      WriteSzOrID(Result, szOrID);
 
-      GetSzOrID (p, szOrID);      // title
-      WriteSzOrID (Result, szOrID);
+      GetSzOrID(p, szOrID);      // title
+      WriteSzOrID(Result, szOrID);
 
-      if (fOrigStyle and DS_SETFONT) <> 0 then
+      if(FOrigStyle and DS_SETFONT) <> 0 then
       begin
                                   // Font point
-        Result.Write (PWord (p)^, SizeOf (Word));
-        Inc (p, SizeOf (Word));
+        Result.Write(PWord(p)^, SizeOf(Word));
+        Inc(p, SizeOf(Word));
 
-        if fExtendedTemplate then
+        if FExtendedTemplate then
         begin
-          Result.Write (PWord (p)^, SizeOf (Word));
-          Inc (p, SizeOf (Word)); // Font weight
+          Result.Write(PWord(p)^, SizeOf(Word));
+          Inc(p, SizeOf(Word)); // Font weight
 
-          Result.Write (PByte (p)^, SizeOf (Byte));
-          Inc (p, SizeOf (Byte)); // Font italic
+          Result.Write(PByte(p)^, SizeOf(Byte));
+          Inc(p, SizeOf(Byte)); // Font italic
 
-          Result.Write (PByte (p)^, SizeOf (Byte));
-          Inc (p, SizeOf (Byte)); // Font charset
+          Result.Write(PByte(p)^, SizeOf(Byte));
+          Inc(p, SizeOf(Byte)); // Font charset
         end
         else
         begin
           w := FW_NORMAL;
-          Result.Write (w, SizeOf (w));
+          Result.Write(w, SizeOf(w));
 
           b := 0;
-          Result.Write (b, SizeOf (b));
+          Result.Write(b, SizeOf(b));
 
           b := ANSI_CHARSET;
-          Result.Write (b, SizeOf (b))
+          Result.Write(b, SizeOf(b))
         end;
 
-        GetSzOrID (p, szOrID);
-        WriteSzOrID (Result, szOrID);
+        GetSzOrID(p, szOrID);
+        WriteSzOrID(Result, szOrID);
       end;
 
       for i := 0 to newTemplate.cDlgItems - 1 do
       begin
-        pad (Result);
+        pad(Result);
 
-        p := PChar ((Integer (p) + 3) div 4 * 4);  // Align on DWORD
+        p := PChar((Integer(p) + 3) div 4 * 4);  // Align on DWORD
 
         if ExtendedTemplate then
         begin
-          ExItemTemplate := PDlgItemTemplateEx (p);
-          Inc (p, SizeOf (TDlgItemTemplateEx));
-          p := PChar ((Integer (p) + 3) div 4 * 4);  // Align on DWORD
+          ExItemTemplate := PDlgItemTemplateEx(p);
+          Inc(p, SizeOf(TDlgItemTemplateEx));
+          p := PChar((Integer(p) + 3) div 4 * 4);  // Align on DWORD
 
           newItemTemplate := ExItemTemplate^;
         end
         else
         begin
-          ItemTemplate := PDlgITemTemplate (p);
-          Inc (p, SizeOf (TDlgItemTemplate));
+          ItemTemplate := PDlgITemTemplate(p);
+          Inc(p, SizeOf(TDlgItemTemplate));
 
           newItemTemplate.helpID := 0;
           newItemTemplate.exStyle := ItemTemplate^.dwExtendedStyle;
@@ -784,26 +786,26 @@ var
           newItemTemplate.y := ItemTemplate^.y;
           newItemTemplate.cx := ItemTemplate^.cx;
           newItemTemplate.cy := ItemTemplate^.cy;
-          newItemTemplate.id := ItemTemplate^.id
+          newItemTemplate.Id := ItemTemplate^.Id
         end;
 
-        Result.Write (newItemTemplate, SizeOf (newItemTemplate));
-        pad (Result);
+        Result.Write(newItemTemplate, SizeOf(newItemTemplate));
+        pad(Result);
 
-        GetSzOrID (p, szOrID);          // Class
-        WriteSzOrID (Result, szOrID);
+        GetSzOrID(p, szOrID);          // Class
+        WriteSzOrID(Result, szOrID);
 
-        GetSzOrID (p, szOrID);          // Title;
-        WriteSzOrID (Result, szOrID);
+        GetSzOrID(p, szOrID);          // Title;
+        WriteSzOrID(Result, szOrID);
 
-        w := PWord (p)^;
-        Inc (p, SizeOf (Word));
-        Result.Write (w, SizeOf (w));
+        w := PWord(p)^;
+        Inc(p, SizeOf(Word));
+        Result.Write(w, SizeOf(w));
 
         if w > 0 then
         begin
-          Result.Write (p^, w);
-          Inc (p, w)
+          Result.Write(p^, w);
+          Inc(p, w)
         end
       end
     except
@@ -814,33 +816,32 @@ var
 
 begin { SetResourceTemplate }
 
-  if fHWndDlg <> 0 then                 // Get rid of the old dialog (if any)
-    SendMessage (fHWndDlg, WM_CLOSE, 0, 0);
+  if FHwndDlg <> 0 then                 // Get rid of the old dialog(if any)
+    SendMessage(FHwndDlg, WM_CLOSE, 0, 0);
 
-  fResourceTemplate := value;
+  FResourceTemplate := value;
 
-  if Assigned (fResourceTemplate) then
+  if Assigned(FResourceTemplate) then
   begin
     s := CreateAdjustedResourceTemplate;
     try
-                                        // Create the dialog window.
-
-      if CreateDialogIndirectParamW (hInstance, PDlgTemplate (s.Memory)^, handle, @DialogProc, LPARAM (self)) = 0 then
+      // Create the dialog window.
+      if CreateDialogIndirectParamW(hInstance, PDlgTemplate(s.Memory)^, handle, @DialogProc, LPARAM(self)) = 0 then
         RaiseLastOSError;
     finally
       s.Free
     end;
 
-    if fHWndDlg <> 0 then               // Initialize and display the dialog.
+    if FHwndDlg <> 0 then               // Initialize and display the dialog.
     begin
       Parent.Invalidate;
       InitDialogControls;
-      ShowWindow (fHwndDlg, SW_SHOW);
+      ShowWindow(FHwndDlg, SW_SHOW);
       Realign;
       Resize;
       Invalidate;
-      if Assigned (fOnShow) then
-        fOnShow (Self);
+      if Assigned(FOnShow) then
+        FOnShow(Self);
     end
   end
 end;
@@ -850,10 +851,10 @@ end;
  |                                                                      |
  | TDialogBox has been destroyed.  Destroy the dialog too.              |
  *----------------------------------------------------------------------*)
-procedure TDialogBox.WmDestroy(var msg: TwmDestroy);
+procedure TDialogBox.WmDestroy(var Msg: TWMDestroy);
 begin
-  if fHWndDlg <> 0 then
-    SendMessage (fHWndDlg, WM_CLOSE, 0, 0);
+  if FHwndDlg <> 0 then
+    SendMessage(FHwndDlg, WM_CLOSE, 0, 0);
   inherited;
 end;
 
@@ -861,19 +862,21 @@ end;
 // Create an atom for thunking from dialog handle to TDialogBox, using
 // SetProp / GetProp.
 
-var icc : TInitCommonControlsEx;
+var
+  icc: TInitCommonControlsEx;
 const
   RichEditModuleName = 'RICHED32.DLL';
+
 initialization
-  icc.dwSize := SizeOf (icc);
+  icc.dwSize := SizeOf(icc);
   icc.dwICC := ICC_INTERNET_CLASSES or ICC_USEREX_CLASSES or ICC_DATE_CLASSES;
-  InitCommonControlsEx (icc);
+  InitCommonControlsEx(icc);
 
   FRichEditModule := LoadLibrary(RichEditModuleName);
   if FRichEditModule <= HINSTANCE_ERROR then FRichEditModule := 0;
 
-  gWndAtom := GlobalAddAtom ('DlgBox');
+  gWndAtom := GlobalAddAtom('DlgBox');
 finalization
-  FreeLibrary (FRichEditModule);
-  GlobalDeleteAtom (gWndAtom);
+  FreeLibrary(FRichEditModule);
+  GlobalDeleteAtom(gWndAtom);
 end.

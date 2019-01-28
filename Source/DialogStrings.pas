@@ -176,68 +176,68 @@ resourcestring
   rstDescending = 'Descending';
   rstShareImageLists = 'Share Image Lists';
 
-function StringToCString (const st : string) : string;
-function CStringToString (const st : string) : string;
+function StringToCString(const st: string): string;
+function CStringToString(const st: string): string;
 
 implementation
 
-function StringToCString (const st : string) : string;
+function StringToCString(const st: string): string;
 var
   i, p, l, c : Integer;
   st1 : string;
 begin
-  result := st;
-  l := Length (st);
+  Result := st;
+  l := Length(st);
   i := 0;
   p := 0;
   while i < l do
   begin
-    Inc (i);
-    Inc (p);
-    if st [i] < ' ' then
+    Inc(i);
+    Inc(p);
+    if st[i] < ' ' then
     begin
-      c := Ord (st [i]);
-      result [p] := '\';
-      Inc (p);
+      c := Ord(st[i]);
+      Result[p] := '\';
+      Inc(p);
 
       case c of
         13 : st1 := 'r';
         10 : st1 := 'n';
          9 : st1 := 't';
-        else st1 := 'x' + Format ('%2.2x', [c])
+        else st1 := 'x' + Format('%2.2x',[c])
       end;
 
-      Insert (st1, result, p);
-      Inc (p, Length (st1)-1)
+      Insert(st1, Result, p);
+      Inc(p, Length(st1) - 1)
     end
   end
 end;
 
-function CStringToString (const st : string) : string;
+function CStringToString(const st: string): string;
 var
-  i, l : Integer;
+  i, l: Integer;
 begin
-  result := st;
-  l := Length (st);
+  Result := st;
+  l := Length(st);
   i := 0;
   while i < l do
   begin
-    Inc (i);
+    Inc(i);
 
-    if result [i] = '\' then
+    if Result[i] = '\' then
     begin
-      Delete (result, i, 1);
-      case result [i] of
+      Delete(Result, i, 1);
+      case Result[i] of
         '\' :;
-        'n' : result [i] := #10;
-        'r' : result [i] := #13;
-        't' : result [i] := #9;
+        'n' : Result[i] := #10;
+        'r' : Result[i] := #13;
+        't' : Result[i] := #9;
         'x' : begin
-                result [i] := Char (StrToInt ('$' + Copy (result, i + 1, 2)));
-                Delete (result, i + 1, 2)
+                Result[i] := Char(StrToInt('$' + Copy(Result, i + 1, 2)));
+                Delete(Result, i + 1, 2)
               end;
 //        else
-//          raise Exception.Create ('Syntax error in C String')
+//          raise Exception.Create('Syntax error in C String')
       end
     end
   end

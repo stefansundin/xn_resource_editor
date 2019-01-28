@@ -1,0 +1,57 @@
+package ResourceEditorComponents;
+
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'Resource Editor Components'}
+{$LIBSUFFIX '103R'}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  vcl;
+
+contains
+  ResourceEditorComponentsReg in '..\..\Source\ResourceEditorComponentsReg.pas',
+  cmpBitmapEditor in '..\..\Source\cmpBitmapEditor.pas',
+  cmpDialogBox in '..\..\Source\cmpDialogBox.pas',
+  cmpDialogEditor in '..\..\Source\cmpDialogEditor.pas',
+  cmpGradientShape in '..\..\Source\cmpGradientShape.pas',
+  cmpMenuDesigner in '..\..\Source\cmpMenuDesigner.pas',
+  GraphFlip in '..\..\Source\GraphFlip.pas',
+  DialogButtonControls in '..\..\Source\DialogButtonControls.pas',
+  DialogComboBoxControls in '..\..\Source\DialogComboBoxControls.pas',
+  DialogConsts in '..\..\Source\DialogConsts.pas',
+  DialogEditControls in '..\..\Source\DialogEditControls.pas',
+  DialogHotkeyControls in '..\..\Source\DialogHotkeyControls.pas',
+  DialogListboxControls in '..\..\Source\DialogListboxControls.pas',
+  DialogListViewControls in '..\..\Source\DialogListViewControls.pas',
+  DialogProgressBarControls in '..\..\Source\DialogProgressBarControls.pas',
+  DialogScrollbarControls in '..\..\Source\DialogScrollbarControls.pas',
+  DialogSliderControls in '..\..\Source\DialogSliderControls.pas',
+  DialogStaticControls in '..\..\Source\DialogStaticControls.pas',
+  DialogStrings in '..\..\Source\DialogStrings.pas',
+  DialogUpDownControls in '..\..\Source\DialogUpDownControls.pas';
+
+end.
