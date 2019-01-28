@@ -20,6 +20,7 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_DcuOutput>..\..\DCU</DCC_DcuOutput>
 			<DesignOnlyPackage>false</DesignOnlyPackage>
 			<DllSuffix>D2010</DllSuffix>
 			<DCC_DependencyCheckOutputName>..\..\..\..\Documents\RAD Studio\7.0\Bpl\ResourceEditorComponentsD2010.bpl</DCC_DependencyCheckOutputName>
@@ -51,13 +52,44 @@
 			</DelphiCompile>
 			<DCCReference Include="rtl.dcp"/>
 			<DCCReference Include="vcl.dcp"/>
+			<DCCReference Include="vclie.dcp"/>
+			<DCCReference Include="vclimg.dcp"/>
 			<DCCReference Include="..\..\Source\Components\ResourceEditorComponentsReg.pas"/>
 			<DCCReference Include="..\..\Source\Components\cmpBitmapEditor.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpColorSelector.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpCWRichEdit.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpCWSpellChecker.pas"/>
 			<DCCReference Include="..\..\Source\Components\cmpDialogBox.pas"/>
 			<DCCReference Include="..\..\Source\Components\cmpDialogEditor.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpExSplitter.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpExWebBrowser.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpFakeCombobox.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpFileCopier.pas"/>
 			<DCCReference Include="..\..\Source\Components\cmpGradientShape.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpHexDump.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpHyperlinkButton.pas"/>
 			<DCCReference Include="..\..\Source\Components\cmpMenuDesigner.pas"/>
-			<DCCReference Include="..\..\Source\Components\GraphFlip.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpMessageDisplay.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpMRUList.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpNewsRichEdit.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpNTAboutBox.pas">
+				<Form>fmNTAboutBox</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\Source\Components\cmpPersistentOptions.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpPersistentPosition.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpPropertyListBox.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpRuler.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpRunOnce.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpSizingPageControl.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpSpellChecker.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpSplitterPanel.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpStandardSystemMenu.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpSuDoku.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpTextDisplay.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpTexturedPanel.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpThemedScrollBox.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpTrayIcon.pas"/>
+			<DCCReference Include="..\..\Source\Components\cmpUCtrls.pas"/>
 			<DCCReference Include="..\..\Source\Components\DialogButtonControls.pas"/>
 			<DCCReference Include="..\..\Source\Components\DialogComboBoxControls.pas"/>
 			<DCCReference Include="..\..\Source\Components\DialogConsts.pas"/>
@@ -71,6 +103,59 @@
 			<DCCReference Include="..\..\Source\Components\DialogStaticControls.pas"/>
 			<DCCReference Include="..\..\Source\Components\DialogStrings.pas"/>
 			<DCCReference Include="..\..\Source\Components\DialogUpDownControls.pas"/>
+			<DCCReference Include="..\..\Source\Components\GIFImage.pas"/>
+			<DCCReference Include="..\..\Source\Components\GraphFlip.pas"/>
+			<DCCReference Include="..\..\Source\Components\MiscUnitsReg.pas"/>
+			<DCCReference Include="..\..\Source\Components\MMPropZLIB.pas"/>
+			<DCCReference Include="..\..\Source\Components\MultiLanguage_tlb.pas"/>
+			<DCCReference Include="..\..\Source\Components\ras.pas"/>
+			<DCCReference Include="..\..\Source\Components\RichOle.pas"/>
+			<DCCReference Include="..\..\Source\Components\SpellCheckerForm.pas">
+				<Form>fmSpellChecker</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\Source\Components\twain.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitBTree.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitCExpression.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitCharsetMap.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitClipExRegistry.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitDefRegistry.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitEXGraphics.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitExIcon.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitExRegistry.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitHTMLHelp.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitHTMLHelpViewer.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitHTMLStringsDisplayObject.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitMidiGlobals.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitMidiTrackStream.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitNewsStringsDisplayObject.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitObjectCache.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitParser.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitPEFile.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitRCFile.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitResFile.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitResourceAccelerator.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitResourceDetails.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitResourceDialogs.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitResourceExaminer.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitResourceGIF.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitResourceGraphics.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitResourceHTML.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitResourceJPEG.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitResourceMenus.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitResourceMessages.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitResourcePNG.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitResourceRCData.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitResourceToolbar.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitResourceVersionInfo.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitResourceXPManifests.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitRTF2HTML.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitSearchString.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitStreamTextReader.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitVersionInfo.pas"/>
+			<DCCReference Include="..\..\Source\Components\unitVirtualMemory.pas"/>
+			<DCCReference Include="..\..\Source\Components\WTSAPI32.pas"/>
+			<DCCReference Include="..\..\Source\Components\XFace.pas"/>
+			<DCCReference Include="..\..\Source\Components\ExVirtualStringTree.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>
@@ -122,7 +207,7 @@
 						<VersionInfoKeys Name="OriginalFilename"/>
 						<VersionInfoKeys Name="ProductName"/>
 						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
-						<VersionInfoKeys Name="Last Compile">2019-01-28 14:42</VersionInfoKeys>
+						<VersionInfoKeys Name="Last Compile">2019-01-28 15:20</VersionInfoKeys>
 					</VersionInfoKeys>
 				</Delphi.Personality>
 			</BorlandProject>

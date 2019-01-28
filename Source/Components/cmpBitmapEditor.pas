@@ -2,8 +2,14 @@ unit cmpBitmapEditor;
 
 interface
 
+{$DEFINE GifImage}
+
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs;
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
+{$IFDEF GifImage}
+  GifImage,
+{$ENDIF}
+  Dialogs;
 
 type
   TDrawingTool = (

@@ -143,7 +143,7 @@ type
     N12: TMenuItem;
     actResourceClone: TAction;
     CloneResource1: TMenuItem;
-    vstResources: TVirtualStringTree;
+    vstResources: TExVirtualStringTree;
     XPManifest1: TXPManifest;
     tbMenu: TToolBar;
     btnFile: TToolButton;

@@ -39,7 +39,6 @@ contains
   cmpDialogEditor in '..\..\Source\Components\cmpDialogEditor.pas',
   cmpGradientShape in '..\..\Source\Components\cmpGradientShape.pas',
   cmpMenuDesigner in '..\..\Source\Components\cmpMenuDesigner.pas',
-  GraphFlip in '..\..\Source\Components\GraphFlip.pas',
   DialogButtonControls in '..\..\Source\Components\DialogButtonControls.pas',
   DialogComboBoxControls in '..\..\Source\Components\DialogComboBoxControls.pas',
   DialogConsts in '..\..\Source\Components\DialogConsts.pas',
@@ -52,6 +51,11 @@ contains
   DialogSliderControls in '..\..\Source\Components\DialogSliderControls.pas',
   DialogStaticControls in '..\..\Source\Components\DialogStaticControls.pas',
   DialogStrings in '..\..\Source\Components\DialogStrings.pas',
-  DialogUpDownControls in '..\..\Source\Components\DialogUpDownControls.pas';
+  DialogUpDownControls in '..\..\Source\Components\DialogUpDownControls.pas',
+  GIFImage in '..\..\Source\Components\GIFImage.pas',
+  GraphFlip in '..\..\Source\Components\GraphFlip.pas',
+  MMPropZLIB in '..\..\Source\Components\MMPropZLIB.pas',
+  unitExIcon in '..\..\Source\Components\unitExIcon.pas',
+  XFace in '..\..\Source\Components\XFace.pas';
 
 end.

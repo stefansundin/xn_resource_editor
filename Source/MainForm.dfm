@@ -54,7 +54,7 @@ object fmMain: TfmMain
     FullRepaint = False
     TabOrder = 1
   end
-  object vstResources: TVirtualStringTree
+  object vstResources: TExVirtualStringTree
     Left = 0
     Top = 51
     Width = 209
