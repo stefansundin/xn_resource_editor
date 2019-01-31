@@ -17,7 +17,6 @@ type
     procedure SetPicture(const Value: TPicture);
     procedure TileRect (rect : TRect);
     procedure SetTextureKind(const Value: TTextureKind);
-    { Private declarations }
   protected
     procedure Paint; override;
   public
@@ -25,7 +24,6 @@ type
     destructor Destroy; override;
 
     property Bitmap : TBitmap read fBitmap;
-    { Public declarations }
   published
     property Picture : TPicture read FPicture write SetPicture;
     property TExtureKind : TTextureKind read FTextureKind write SetTextureKind;

@@ -18,7 +18,6 @@ type
     procedure CreateWnd; override;
   public
     constructor Create (AOwner : TComponent); override;
-    { Public declarations }
   published
     property UseTheme : boolean read fUseTheme write SetUseTheme default True;
   end;

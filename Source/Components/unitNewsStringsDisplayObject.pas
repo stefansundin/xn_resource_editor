@@ -64,16 +64,16 @@ type
 
   TNewsStringsDisplayObjectLink = class (TWinControlObjectLink)
   private
-    fTextObjects : TList;
-    fUpdating : boolean;
-    fLevel1QuotesFontColor: TColor;
-    fFooterFontColor: TColor;
-    fHeaderFontColor: TColor;
-    fLevel2QuotesFontColor: TColor;
-    fLevel3QuotesFontColor: TColor;
-    fLastNoChunks : Integer;
-    fLastChunkLen : Integer;
-    fOwner : TMessageDisplay;
+    FTextObjects : TList;
+    FUpdating : boolean;
+    FLevel1QuotesFontColor: TColor;
+    FFooterFontColor: TColor;
+    FHeaderFontColor: TColor;
+    FLevel2QuotesFontColor: TColor;
+    FLevel3QuotesFontColor: TColor;
+    FLastNoChunks : Integer;
+    FLastChunkLen : Integer;
+    FOwner : TMessageDisplay;
     function GetRichEdit : TNewsRichEditX;
     procedure LoadFromTextObjects;
     function GetTextObjectCount: Integer;
@@ -107,11 +107,11 @@ type
     procedure BeginUpdate;
     procedure EndUpdate;
 
-    property HeaderFontColor : TColor read fHeaderFontColor write fHeaderFontColor;
-    property FooterFontColor : TColor read fFooterFontColor write fFooterFontColor;
-    property Level1QuotesFontColor : TColor read fLevel1QuotesFontColor write fLevel1QuotesFontColor;
-    property Level2QuotesFontColor : TColor read fLevel2QuotesFontColor write fLevel2QuotesFontColor;
-    property Level3QuotesFontColor : TColor read fLevel3QuotesFontColor write fLevel3QuotesFontColor;
+    property HeaderFontColor : TColor read FHeaderFontColor write FHeaderFontColor;
+    property FooterFontColor : TColor read FFooterFontColor write FFooterFontColor;
+    property Level1QuotesFontColor : TColor read FLevel1QuotesFontColor write FLevel1QuotesFontColor;
+    property Level2QuotesFontColor : TColor read FLevel2QuotesFontColor write FLevel2QuotesFontColor;
+    property Level3QuotesFontColor : TColor read FLevel3QuotesFontColor write FLevel3QuotesFontColor;
 
     property TextObjectCount : Integer read GetTextObjectCount;
     property RichEdit : TNewsRichEditX read GetRichEdit;
@@ -124,19 +124,19 @@ type
 implementation
 
 uses
-  RichEdit, unitCharsetMap, unitRTF2HTML;
+  RichEdit, Types, unitCharsetMap, unitRTF2HTML;
 
 { TNewsStringsDisplayObjectLink }
 
 procedure TNewsStringsDisplayObjectLink.AddTextObject(obj: TObject);
 begin
-  fTextObjects.Add(obj);
+  FTextObjects.Add(obj);
   LoadFromTextObjects
 end;
 
 procedure TNewsStringsDisplayObjectLink.BeginUpdate;
 begin
-  fUpdating := True
+  FUpdating := True
 end;
 
 constructor TNewsStringsDisplayObjectLink.Create(AOwner: TMessageDisplay;
@@ -146,9 +146,9 @@ var
   w, w1 : Integer;
   tm : TTextMetric;
 begin
-  fOwner := AOwner;
-  fTextObjects := TList.Create;
-  fTextObjects.Add(AObj);
+  FOwner := AOwner;
+  FTextObjects := TList.Create;
+  FTextObjects.Add(AObj);
   ctrl := TNewsRichEditX.Create(AOwner.Owner);
   ctrl.Parent := AOwner;
   ctrl.CodePage := codepage;
@@ -186,7 +186,7 @@ end;
 destructor TNewsStringsDisplayObjectLink.Destroy;
 begin
   Obj.Free;
-  fTextObjects.Free;
+  FTextObjects.Free;
 
   inherited;
 end;
@@ -200,14 +200,14 @@ end;
 procedure TNewsStringsDisplayObjectLink.DoOnURLMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  fOwner.OnURLClick (Sender, Button, Shift, RichEdit.URLText);
+  FOwner.OnURLClick (Sender, Button, Shift, RichEdit.URLText);
 end;
 
 procedure TNewsStringsDisplayObjectLink.EndUpdate;
 begin
-  if fUpdating then
+  if FUpdating then
   begin
-    fUpdating := False;
+    FUpdating := False;
     LoadFromTextObjects
   end
 end;
@@ -305,7 +305,7 @@ end;
 
 function TNewsStringsDisplayObjectLink.GetTextObjectCount: Integer;
 begin
-  result := fTextObjects.Count
+  result := FTextObjects.Count
 end;
 
 function TNewsStringsDisplayObjectLink.GetTruncateFrom: WideString;
@@ -449,7 +449,7 @@ var
   end;
 
 begin
-  if fUpdating then Exit;
+  if FUpdating then Exit;
   count := 0;
   ctrl := GetRichEdit;
   rtf := not Owner.RawMode;
@@ -471,9 +471,9 @@ begin
   else
     st := '';
 
-  for j := 0 to fTextObjects.Count - 1 do
+  for j := 0 to FTextObjects.Count - 1 do
   begin
-    s := TStrings (fTextObjects [j]);
+    s := TStrings (FTextObjects [j]);
     if not rtf then
     begin
       st := st + s.Text;
@@ -627,7 +627,7 @@ var
   cp, n, lastLen : Integer;
 
 begin
-  if fUpdating then Exit;
+  if FUpdating then Exit;
   ctrl := GetRichEdit;
   ctrl.RawText := Owner.RawMode;
 
@@ -637,22 +637,22 @@ begin
 //    cp := CP_ACP;
   n := 0;
   lastLen := 0;
-  for i := 0 to fTextObjects.Count - 1 do
+  for i := 0 to FTextObjects.Count - 1 do
   begin
     Inc (n);
-    st := StringReplace (TStrings (fTextObjects [i]).Text, 'url:', 'url: ', [rfReplaceAll, rfIgnoreCase]);
+    st := StringReplace (TStrings (FTextObjects [i]).Text, 'url:', 'url: ', [rfReplaceAll, rfIgnoreCase]);
 //    UnwrapURLS (st);
     ws := StringToWideString (st, cp);
     lastLen := Length (ws);
     ws1 := ws1 + ws;
   end;
 
-  if (n <> fLastNoChunks) or (lastLen <> fLastChunkLen) then
+  if (n <> FLastNoChunks) or (lastLen <> FLastChunkLen) then
   begin // It's important to *only* set ctrl.Text when we have to - for
         // performances and flicker reasons.
 
-    fLastNoChunks := n;
-    fLastChunkLen := lastLen;
+    FLastNoChunks := n;
+    FLastChunkLen := lastLen;
     ctrl.Text := ws1
   end
 end;
@@ -691,7 +691,7 @@ end;
 procedure TNewsStringsDisplayObjectLink.SetTextObject(objNo: Integer;
   obj: TObject);
 begin
-  fTextObjects [objNo] := obj;
+  FTextObjects [objNo] := obj;
   LoadFromTextObjects
 end;
 

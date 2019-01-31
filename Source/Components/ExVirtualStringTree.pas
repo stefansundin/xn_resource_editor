@@ -6,20 +6,19 @@ uses
   Windows, Messages, SysUtils, Classes, Controls, VirtualTrees, Forms;
 
 type
-  TVTIteratorProc = procedure (p : PVirtualNode; param : Integer; var continue : boolean) of object;
+  TVTIteratorProc = procedure (p: PVirtualNode; param: Integer; var continue: Boolean) of object;
 
   TCustomExVirtualStringTree = class(TCustomVirtualStringTree)
   private
-    fProportionalColumnSizes: boolean;
+    FProportionalColumnSizes: Boolean;
 
-    fColumnPCs : array of Integer;
-    fResizeCount : Integer;
-    procedure SetProportionalColumnSizes(const Value: boolean);
+    FColumnPCs: array of Integer;
+    FResizeCount: Integer;
+    procedure SetProportionalColumnSizes(const Value: Boolean);
     procedure SaveColumnPCs;
-    function GetNodeObject(node: PVirtualNode): TObject;
-    procedure SetNodeObject(node: PVirtualNode; const Value: TObject);
-    procedure CheckObject (p : PVirtualNode; param : Integer; var continue : boolean);
-    { Private declarations }
+    function GetNodeObject(Node: PVirtualNode): TObject;
+    procedure SetNodeObject(Node: PVirtualNode; const Value: TObject);
+    procedure CheckObject (p: PVirtualNode; param: Integer; var continue: Boolean);
   protected
     procedure Loaded; override;
     procedure Resize; override;
@@ -29,17 +28,15 @@ type
     procedure LockControl;
     procedure UnlockControl;
 
-    property ProportionalColumnSizes : boolean read fProportionalColumnSizes write SetProportionalColumnSizes;
+    property ProportionalColumnSizes: Boolean read FProportionalColumnSizes write SetProportionalColumnSizes;
     function GetOptionsClass: TTreeOptionsClass; override;
   public
-    constructor Create (AOwner : TComponent); override;
-    procedure SelectAndFocusNode (node : PVirtualNode; clearSel : boolean = True);
-    function FindNodeObject (obj : TObject; root : PVirtualNode = Nil) : PVirtualNode;
-    function ForEach (proc : TVTIteratorProc; param : Integer; root : PVirtualNode = Nil) : PVirtualNode;
+    constructor Create(AOwner: TComponent); override;
+    procedure SelectAndFocusNode(Node: PVirtualNode; ClearSel: Boolean = True);
+    function FindNodeObject(obj: TObject; root: PVirtualNode = Nil): PVirtualNode;
+    function ForEach(proc: TVTIteratorProc; param: Integer; root: PVirtualNode = Nil): PVirtualNode;
 
-
-    property NodeObject [node : PVirtualNode] : TObject read GetNodeObject write SetNodeObject;
-  published
+    property NodeObject[Node: PVirtualNode]: TObject read GetNodeObject write SetNodeObject;
   end;
 
   TExVirtualStringTree = class (TCustomExVirtualStringTree)
@@ -147,7 +144,7 @@ type
     property OnColumnResize;
     property OnCompareNodes;
     {$ifdef COMPILER_5_UP}
-      property OnContextPopup;
+    property OnContextPopup;
     {$endif COMPILER_5_UP}
     property OnCreateDataObject;
     property OnCreateDragManager;
@@ -236,11 +233,11 @@ end;
 
 procedure TCustomExVirtualStringTree.DoColumnResize(Column: TColumnIndex);
 begin
-  Inc (fResizeCount);
+  Inc (FResizeCount);
   try
     inherited;
   finally
-    Dec (fResizeCount)
+    Dec (FResizeCount)
   end
 end;
 
@@ -251,23 +248,23 @@ begin
   SaveColumnPCs
 end;
 
-procedure TCustomExVirtualStringTree.SelectAndFocusNode(node: PVirtualNode; clearSel : boolean = True);
+procedure TCustomExVirtualStringTree.SelectAndFocusNode(Node: PVirtualNode; ClearSel: Boolean = True);
 begin
-  if clearSel then
+  if ClearSel then
     ClearSelection;
-  if Assigned (node) then
+  if Assigned (Node) then
   begin
-    Selected [node] := True;
-    FocusedNode := node
+    Selected [Node] := True;
+    FocusedNode := Node
   end
 end;
 
 function TCustomExVirtualStringTree.GetNodeObject(
-  node: PVirtualNode): TObject;
+  Node: PVirtualNode): TObject;
 var
-  obj : PObject;
+  obj: PObject;
 begin
-  obj := GetNodeData (node);
+  obj := GetNodeData (Node);
   if Assigned (obj) and Assigned (obj^) then
     result := obj^
   else
@@ -285,7 +282,7 @@ begin
 
   if ProportionalColumnSizes then
   begin
-    fProportionalColumnSizes := False;
+    FProportionalColumnSizes := False;
     ProportionalColumnSizes := True
   end
 end;
@@ -297,13 +294,13 @@ end;
 
 procedure TCustomExVirtualStringTree.Resize;
 var
-  i, n, w, ww, bw : Integer;
-  hasVertScrollBar : boolean;
+  i, n, w, ww, bw: Integer;
+  hasVertScrollBar: Boolean;
 begin
   inherited;
-  if ProportionalColumnSizes and (fResizeCount = 0) and not (csDesigning in ComponentState) then
+  if ProportionalColumnSizes and (FResizeCount = 0) and not (csDesigning in ComponentState) then
   begin
-    Inc (fResizeCount);
+    Inc (FResizeCount);
     LockControl;
     try
       with Header do
@@ -320,7 +317,7 @@ begin
         w := 0;
         for i := 0 to Columns.Count - 2 do
         begin
-          n := fColumnPCs [i] * ww div 100;
+          n := FColumnPCs [i] * ww div 100;
           Columns [i].Width := n;
           Inc (w, n)
         end;
@@ -331,14 +328,14 @@ begin
       end
     finally
       UnlockControl;
-      Dec (fResizeCount);
+      Dec (FResizeCount);
     end
   end
 end;
 
 procedure TCustomExVirtualStringTree.SaveColumnPCs;
 var
-  i, bw, ww : Integer;
+  i, bw, ww: Integer;
 begin
   if not ProportionalColumnSizes then
     Exit;
@@ -348,31 +345,31 @@ begin
   ww := Width - 2 * bw;
 
   with Header do for i := 0 to Columns.Count - 1 do
-    fColumnPCs [i] := Columns [i].Width * 100 div ww
+    FColumnPCs [i] := Columns [i].Width * 100 div ww
 end;
 
-procedure TCustomExVirtualStringTree.SetNodeObject(node: PVirtualNode;
+procedure TCustomExVirtualStringTree.SetNodeObject(Node: PVirtualNode;
   const Value: TObject);
 var
-  obj : PObject;
+  obj: PObject;
 begin
-  obj := GetNodeData (node);
+  obj := GetNodeData (Node);
   if Assigned (obj) then
     obj^ := Value
 end;
 
 procedure TCustomExVirtualStringTree.SetProportionalColumnSizes(
-  const Value: boolean);
+  const Value: Boolean);
 var
-  w, i : Integer;
+  w, i: Integer;
 begin
-  if fProportionalColumnSizes <> Value then
+  if FProportionalColumnSizes <> Value then
   begin
-    fProportionalColumnSizes := Value;
+    FProportionalColumnSizes := Value;
     if (csLoading in ComponentState) or (csDesigning in ComponentState) then
       Exit;
 
-    Inc (fResizeCount);
+    Inc (FResizeCount);
     try
       with Header do
       begin
@@ -382,12 +379,12 @@ begin
 
         if ClientWidth - w > Columns [Columns.Count - 1].Width then
           Columns [Columns.Count - 1].Width := ClientWidth - w;
-        SetLength (fColumnPCs, Header.Columns.Count);
+        SetLength (FColumnPCs, Header.Columns.Count);
 
         SaveColumnPCs
       end
     finally
-      Dec (fResizecount)
+      Dec (FResizeCount)
     end
   end
 end;
@@ -398,25 +395,25 @@ begin
   RedrawWindow(Handle,nil,0, RDW_ERASE or RDW_FRAME or RDW_INVALIDATE or RDW_ALLCHILDREN)
 end;
 
-function TCustomExVirtualStringTree.FindNodeObject(obj: TObject; root : PVirtualNode): PVirtualNode;
+function TCustomExVirtualStringTree.FindNodeObject(obj: TObject; root: PVirtualNode): PVirtualNode;
 begin
   result := ForEach (CheckObject, Integer (obj), root)
 end;
 
-function TCustomExVirtualStringTree.ForEach(proc: TVTIteratorProc; param : Integer;
-  root: PVirtualNode) : PVirtualNode;
+function TCustomExVirtualStringTree.ForEach(proc: TVTIteratorProc; param: Integer;
+  root: PVirtualNode): PVirtualNode;
 var
-  cont : boolean;
-  node : PVirtualNode;
+  cont: Boolean;
+  Node: PVirtualNode;
 
-  procedure Iterate (n : PVirtualNode);
+  procedure Iterate (n: PVirtualNode);
   begin
     while n <> Nil do
     begin
       proc (n, param, cont);
       if not cont then
       begin
-        node := n;
+        Node := n;
         break
       end;
 
@@ -427,19 +424,20 @@ var
 
 begin
   if root = Nil then root := RootNode;
-  node := Nil;
+  Node := Nil;
   Iterate (GetFirstChild (root));
-  result := node
+  result := Node
 end;
 
 procedure TCustomExVirtualStringTree.CheckObject(p: PVirtualNode;
-  param: Integer; var continue: boolean);
+  param: Integer; var continue: Boolean);
 var
-  obj : TObject;
+  obj: TObject;
 begin
   obj := GetNodeObject (p);
   continue := Integer (obj) <> param
 end;
+
 
 { TExVirtualStringTree }
 

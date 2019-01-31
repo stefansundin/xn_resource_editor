@@ -26,20 +26,19 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
   private
-    fObject: TObject;
-    fResourceModule : TResourceModule;
+    FObject: TObject;
+    FResourceModule: TResourceModule;
   protected
     procedure SetObject(const Value: TObject); virtual;
-    function GetMenuItem : TMenuItem; virtual;
+    function GetMenuItem: TMenuItem; virtual;
   public
-    procedure PreviewKey (var key : Word; shift : TShiftState); virtual;
+    procedure PreviewKey (var key: Word; shift: TShiftState); virtual;
     procedure TidyUp; virtual;
     procedure UpdateFonts; virtual;
 
-    property ResourceModule : TResourceModule read fResourceModule write fResourceModule;
-    property Obj : TObject read fObject write SetObject;
-    property Menu : TMenuItem read GetMenuItem;
-    { Public declarations }
+    property ResourceModule: TResourceModule read FResourceModule write FResourceModule;
+    property Obj: TObject read FObject write SetObject;
+    property Menu: TMenuItem read GetMenuItem;
   end;
 
   TResourceObjectFormClass = class of TfmResourceObject;
@@ -60,7 +59,7 @@ implementation
  *----------------------------------------------------------------------*)
 procedure TfmResourceObject.SetObject(const Value: TObject);
 begin
-  fObject := Value;
+  FObject := Value;
   UpdateFonts;
 end;
 

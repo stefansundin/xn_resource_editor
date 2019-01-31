@@ -67,13 +67,9 @@ type
 
   protected
     procedure Loaded; override;
-    { Protected declarations }
   public
     procedure SetItemState (itemID, state : Integer);
     destructor Destroy; override;
-    { Public declarations }
-  published
-    { Published declarations }
   end;
 
 implementation

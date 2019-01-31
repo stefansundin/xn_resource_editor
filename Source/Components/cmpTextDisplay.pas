@@ -7,14 +7,6 @@ uses
 
 type
   TCustomTextDisplay = class(TCustomControl)
-  private
-    { Private declarations }
-  protected
-    { Protected declarations }
-  public
-    { Public declarations }
-  published
-    { Published declarations }
   end;
 
   TTextDisplay = class (TCustomTextDisplay)

@@ -8,12 +8,6 @@ uses
 
 type
   TSizingPageControl = class(TPageControl)
-  private
-    { Private declarations }
-  protected
-    { Protected declarations }
-  public
-    { Public declarations }
   published
     property AutoSize;
   end;

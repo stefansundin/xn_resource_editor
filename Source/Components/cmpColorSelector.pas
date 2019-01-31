@@ -29,11 +29,9 @@ type
     procedure CalcSettings;
     procedure WMSize(var Message: TWMSize); message WM_SIZE;
     function GetColor(idx: Integer): TCOlor;
-    { Private declarations }
   protected
     procedure Paint; override;
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
-    { Protected declarations }
   public
     constructor Create (AOwner : TComponent); override;
     destructor Destroy; override;

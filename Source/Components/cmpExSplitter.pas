@@ -30,7 +30,6 @@ type
     procedure SetShrunken(const Value: Boolean);
     function GetResizeControl: TControl;
     function GetResizeControlSize: Integer;
-    { Private declarations }
   protected
     procedure Paint; override;
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
@@ -42,9 +41,7 @@ type
     property Shrunken : Boolean read fShrunken write SetShrunken;
     property ResizeControlSize : Integer read GetResizeControlSize;
   published
-
     property ShrinkButton : Boolean read fShrinkButton write SetShrinkButton default True;
-    { Published declarations }
   end;
 
 

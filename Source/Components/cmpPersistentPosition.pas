@@ -64,16 +64,14 @@ type
   public
     constructor Create (AOwner : TComponent); override;
     destructor Destroy; override;
-    property ApplicationKey : string read GetAppKey;
-    { Public declarations }
 
     function GetValue (const valueName : string) : Integer;
     function GetSzValue (const valueName : string) : string;
     procedure SetValue (const valueName : string; value : Integer);
     procedure SetSzValue (const valueName, value : string);
 
+    property ApplicationKey : string read GetAppKey;
     property Position : TRect read GetPosition;
-
   published
     property Manufacturer : string read fManufacturer write fManufacturer;
     property Version : string read fVersion write fVersion;
@@ -81,7 +79,6 @@ type
     property SubKey : string read fSubKey write fSubKey;
     property Section : string read fSection write fSection;
     property Enabled : boolean read fEnabled write fEnabled default True;
-    { Published declarations }
   end;
 
 implementation

@@ -26,10 +26,10 @@ const
 type
 
   WTS_PROCESS_INFO = record
-    SessionID : DWORD;
-    ProcessID : DWORD;
-    pProcessName : PChar;
-    pUserSID : PSID;
+    SessionID: DWORD;
+    ProcessID: DWORD;
+    pProcessName: PChar;
+    pUserSID: PSID;
   end;
   PWTS_PROCESS_INFO = ^WTS_PROCESS_INFO;
 
@@ -53,38 +53,38 @@ type
     WTSClientProtocolType
   );
 
-  TfnWTSRegisterSessionNotification = function (handle : HWND; flags : DWORD) : BOOL; stdcall;
-  TfnWTSUnRegisterSessionNotification = function (handle : HWND) : BOOL; stdcall;
-  TfnWTSGetActiveConsoleSessionID = function : DWORD; stdcall;
-  TfnWTSEnumerateProcesses = function (hServer : THandle; reserved, Version : DWORD; var ppProcessInfo : PWTS_PROCESS_INFO; var pCount : DWORD) : BOOL; stdcall;
-  TfnWTSFreeMemory = procedure (mem : pointer); stdcall;
-  TfnWTSQueryUserToken = function (sessionId : ULONG; var token : THandle) : BOOL; stdcall;
-  TfnWTSQuerySessionInformation = function (hServer : THandle; sessionID : DWORD; WTSInfoClass : WTS_INFO_CLASS; var buffer : pointer; var size : DWORD) : BOOL; stdcall;
+  TfnWTSRegisterSessionNotification = function (handle: HWND; flags: DWORD): BOOL; stdcall;
+  TfnWTSUnRegisterSessionNotification = function (handle: HWND): BOOL; stdcall;
+  TfnWTSGetActiveConsoleSessionID = function: DWORD; stdcall;
+  TfnWTSEnumerateProcesses = function (hServer: THandle; reserved, Version: DWORD; var ppProcessInfo: PWTS_PROCESS_INFO; var pCount: DWORD): BOOL; stdcall;
+  TfnWTSFreeMemory = procedure (mem: pointer); stdcall;
+  TfnWTSQueryUserToken = function (sessionId: ULONG; var token: THandle): BOOL; stdcall;
+  TfnWTSQuerySessionInformation = function (hServer: THandle; sessionID: DWORD; WTSInfoClass: WTS_INFO_CLASS; var buffer: pointer; var size: DWORD): BOOL; stdcall;
 
 var
-  WTSRegisterSessionNotification : TfnWTSRegisterSessionNotification;
-  WTSUnRegisterSessionNotification : TfnWTSUnRegisterSessionNotification;
-  WTSGetActiveConsoleSessionID : TfnWTSGetActiveConsoleSessionID = nil;
-  WTSEnumerateProcesses : TfnWTSEnumerateProcesses;
-  WTSFreeMemory : TfnWTSFreeMemory;
-  WTSQueryUserToken : TfnWTSQueryUserToken;
-  WTSQuerySessionInformation : TfnWTSQuerySessionInformation;
+  WTSRegisterSessionNotification: TfnWTSRegisterSessionNotification;
+  WTSUnRegisterSessionNotification: TfnWTSUnRegisterSessionNotification;
+  WTSGetActiveConsoleSessionID: TfnWTSGetActiveConsoleSessionID = nil;
+  WTSEnumerateProcesses: TfnWTSEnumerateProcesses;
+  WTSFreeMemory: TfnWTSFreeMemory;
+  WTSQueryUserToken: TfnWTSQueryUserToken;
+  WTSQuerySessionInformation: TfnWTSQuerySessionInformation;
 
-function WTSAPIOk : boolean;
-function WTSGetCurrentConsoleSessionID : Integer;
+function WTSAPIOk: Boolean;
+function WTSGetCurrentConsoleSessionID: Integer;
 
 implementation
 
 var
-  gDLLHandle : THandle;
-  gKernelDLLHandle : THandle;
+  gDLLHandle: THandle;
+  gKernelDLLHandle: THandle;
 
-function WTSAPIOk : boolean;
+function WTSAPIOk: Boolean;
 begin
   Result := gDLLHandle <> 0
 end;
 
-function WTSGetCurrentConsoleSessionID : Integer;
+function WTSGetCurrentConsoleSessionID: Integer;
 begin
   Result := 0;
   if Assigned(WTSGetActiveConsoleSessionID) then

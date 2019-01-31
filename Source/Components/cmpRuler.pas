@@ -9,11 +9,11 @@ type
   TRulerOrientation = (ruHorizontal, ruVertical);
   TRuler = class(TCustomControl)
   private
-    fSmallTickSpacing: Integer;
-    fSmallTickLength: Integer;
-    fSmallTicksPerLargeTick: Integer;
-    fLargeTickLength: Integer;
-    fDialogBox: HWND;
+    FSmallTickSpacing: Integer;
+    FSmallTickLength: Integer;
+    FSmallTicksPerLargeTick: Integer;
+    FLargeTickLength: Integer;
+    FDialogBox: HWND;
     procedure SetLargeTickLength(const Value: Integer);
     procedure SetOrientation(const Value: TRulerOrientation);
     procedure SetSmallTickLength(const Value: Integer);
@@ -21,13 +21,12 @@ type
     procedure SetSmallTicksperLargeTick(const Value: Integer);
     function GetOrientation: TRulerOrientation;
     procedure SetDialogBox(const Value: HWND);
-    { Private declarations }
   protected
     procedure Loaded; override;
     procedure Paint; override;
   public
-    constructor Create (AOwner : TComponent); override;
-    property DialogBox : HWND read fDialogBox write SetDialogBox;
+    constructor Create(AOwner: TComponent); override;
+    property DialogBox: HWND read FDialogBox write SetDialogBox;
   published
     property Align;
     property Anchors;
@@ -39,11 +38,11 @@ type
     property Constraints;
     property ParentColor;
 
-    property SmallTickSpacing : Integer read fSmallTickSpacing write SetSmallTickSpacing default 10;
-    property SmallTicksPerLargeTick : Integer read fSmallTicksPerLargeTick write SetSmallTicksperLargeTick default 5;
-    property SmallTickLength : Integer read fSmallTickLength write SetSmallTickLength default 5;
-    property LargeTickLength : Integer read fLargeTickLength write SetLargeTickLength default 10;
-    property Orientation : TRulerOrientation read GetOrientation write SetOrientation stored False;
+    property SmallTickSpacing: Integer read FSmallTickSpacing write SetSmallTickSpacing default 10;
+    property SmallTicksPerLargeTick: Integer read FSmallTicksPerLargeTick write SetSmallTicksperLargeTick default 5;
+    property SmallTickLength: Integer read FSmallTickLength write SetSmallTickLength default 5;
+    property LargeTickLength: Integer read FLargeTickLength write SetLargeTickLength default 10;
+    property Orientation: TRulerOrientation read GetOrientation write SetOrientation stored False;
   end;
 
 implementation
@@ -52,24 +51,24 @@ implementation
 
 constructor TRuler.Create(AOwner: TComponent);
 begin
-  inherited Create (AOwner);
+  inherited Create(AOwner);
   Width := 180;
   Height := 40;
   BevelKind := bkTile;
   BevelInner := bvLowered;
   BevelOuter := bvLowered;
-  fLargeTickLength := 10;
-  fSmallTickLength := 5;
-  fSmallTicksPerLargeTick := 5;
-  fSmallTickSpacing := 10;
+  FLargeTickLength := 10;
+  FSmallTickLength := 5;
+  FSmallTicksPerLargeTick := 5;
+  FSmallTickSpacing := 10;
 end;
 
 function TRuler.GetOrientation: TRulerOrientation;
 begin
   if Width > Height then
-    result := ruHorizontal
+    Result := ruHorizontal
   else
-    result := ruVertical
+    Result := ruVertical
 end;
 
 procedure TRuler.Loaded;
@@ -79,12 +78,12 @@ end;
 
 procedure TRuler.Paint;
 var
-  x, y : Integer;
-  w, h : Integer;
-  t : Integer;
-  sm : Integer;
-  r : TRect;
-  offset : Integer;
+  x, y: Integer;
+  w, h: Integer;
+  t: Integer;
+  sm: Integer;
+  r: TRect;
+  offset: Integer;
 begin
   Canvas.Brush.Color := Color;
   Canvas.Font := Font;
@@ -92,10 +91,10 @@ begin
   w := ClientWidth;
   h := ClientHeight;
 
-  if fDialogBox <> 0 then
-    sm := fSmallTickSpacing
+  if FDialogBox <> 0 then
+    sm := FSmallTickSpacing
   else
-    sm := fSmallTickSpacing;
+    sm := FSmallTickSpacing;
 
   y := 0;
   x := 0;
@@ -105,110 +104,110 @@ begin
   if Orientation = ruHorizontal then
   begin
     repeat
-      Inc (offset, sm);
-      if fDialogBox <> 0 then
+      Inc(offset, sm);
+      if FDialogBox <> 0 then
       begin
-        r := Rect (0, 0, offset, 10);
-        MapDialogRect (fDialogBox, r);
-        x := r.Right
+        r := Rect(0, 0, offset, 10);
+        MapDialogRect(FDialogBox, r);
+        x := r.Right;
       end
       else
         x := offset;
-      Inc (t);
+      Inc(t);
       if x < w then
       begin
-        Canvas.MoveTo (x, y);
-        if t = fSmallTicksPerLargeTick then
+        Canvas.MoveTo(x, y);
+        if t = FSmallTicksPerLargeTick then
         begin
-          Canvas.LineTo (x, y + fLargeTickLength);
-          t := 0
+          Canvas.LineTo(x, y + FLargeTickLength);
+          t := 0;
         end
         else
-          Canvas.LineTo (x, y + fSmallTickLength)
+          Canvas.LineTo(x, y + FSmallTickLength);
       end
-    until x >= w
+    until x >= w;
   end
   else
   begin
     repeat
-      Inc (offset, sm);
-      if fDialogBox <> 0 then
+      Inc(offset, sm);
+      if FDialogBox <> 0 then
       begin
-        r := Rect (0, 0, 10, offset);
-        MapDialogRect (fDialogBox, r);
-        y := r.Bottom
+        r := Rect(0, 0, 10, offset);
+        MapDialogRect(FDialogBox, r);
+        y := r.Bottom;
       end
       else
         y := offset;
-        
-      Inc (t);
+
+      Inc(t);
       if y < h then
       begin
-        Canvas.MoveTo (x, y);
-        if t = fSmallTicksPerLargeTick then
+        Canvas.MoveTo(x, y);
+        if t = FSmallTicksPerLargeTick then
         begin
-          Canvas.LineTo (x + fLargeTickLength, y);
+          Canvas.LineTo(x + FLargeTickLength, y);
           t := 0
         end
         else
-          Canvas.LineTo (x + fSmallTickLength, y)
+          Canvas.LineTo(x + FSmallTickLength, y);
       end
-    until y >= h
+    until y >= h;
   end
 end;
 
 procedure TRuler.SetDialogBox(const Value: HWND);
 begin
-  fDialogBox := Value;
-  invalidate
+  FDialogBox := Value;
+  invalidate;
 end;
 
 procedure TRuler.SetLargeTickLength(const Value: Integer);
 begin
-  if value <> fLargeTickLength then
+  if Value <> FLargeTickLength then
   begin
-    fLargeTickLength := Value;
-    Invalidate
+    FLargeTickLength := Value;
+    Invalidate;
   end
 end;
 
 procedure TRuler.SetOrientation(const Value: TRulerOrientation);
 var
-  h : Integer;
+  h: Integer;
 begin
-  if value <> Orientation then
+  if Value <> Orientation then
   begin
     h := Height;
     Height := Width;
     Width := h;
-    Invalidate
+    Invalidate;
   end
 end;
 
 procedure TRuler.SetSmallTickLength(const Value: Integer);
 begin
-  if value <> fSmallTickLength then
+  if Value <> FSmallTickLength then
   begin
-    fSmallTickLength := Value;
-    Invalidate
+    FSmallTickLength := Value;
+    Invalidate;
   end
 end;
 
 procedure TRuler.SetSmallTickSpacing(const Value: Integer);
 begin
-  if value <> fSmallTickSpacing then
+  if Value <> FSmallTickSpacing then
   begin
-    fSmallTickSpacing := Value;
-    Invalidate
+    FSmallTickSpacing := Value;
+    Invalidate;
   end
 end;
 
 procedure TRuler.SetSmallTicksperLargeTick(const Value: Integer);
 begin
-  if value <> fSmallTicksPerLargeTick then
+  if Value <> FSmallTicksPerLargeTick then
   begin
-    fSmallTicksPerLargeTick := Value;
-    Invalidate
+    FSmallTicksPerLargeTick := Value;
+    Invalidate;
   end
 end;
 

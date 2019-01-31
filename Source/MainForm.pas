@@ -256,7 +256,6 @@ type
     procedure UpdateActions; override;
   public
     property PersistDirectoryName [section : string] : string read GetPersistDirectoryName write SetPersistDirectoryName;
-    { Public declarations }
   end;
 {$endregion}
 

@@ -8,18 +8,14 @@ uses
 type
   TuEdit = class(TEdit)
   private
-    fCodePage: Integer;
+    FCodePage: Integer;
     procedure SetCodePage(const Value: Integer);
-    procedure WMPaste (var msg : TwmPaste); message WM_PASTE;
+    procedure WMPaste (var msg: TwmPaste); message WM_PASTE;
     function GetWideText: WideString;
     procedure SetWideText(const Value: WideString);
-  protected
-    { Protected declarations }
   public
-    property CodePage : Integer read fCodePage write SetCodePage;
-    property WideText : WideString read GetWideText write SetWideText;
-  published
-    { Published declarations }
+    property CodePage: Integer read FCodePage write SetCodePage;
+    property WideText: WideString read GetWideText write SetWideText;
   end;
 
   TuComboBox = class(TComboBox)
@@ -27,8 +23,8 @@ type
     FuEditInstance: Pointer;
     FuDefEditProc: Pointer;
     FuListInstance: Pointer;
-    FuDefListProc : Pointer;
-    fCodePage: Integer;
+    FuDefListProc: Pointer;
+    FCodePage: Integer;
 
     procedure ListWndProc(var Message: TMessage);
     procedure SetCodePage(const Value: Integer);
@@ -42,13 +38,11 @@ type
     procedure DropDown; override;
     procedure EditWndProc(var Message: TMessage); override;
   public
-    constructor Create (AOwner : TComponent); override;
+    constructor Create (AOwner: TComponent); override;
     destructor Destroy; override;
-    property CodePage : Integer read fCodePage write SetCodePage;
+    property CodePage: Integer read FCodePage write SetCodePage;
 
-    property WideText : WideString read GetWideText write SetWideText;
-  published
-    { Published declarations }
+    property WideText: WideString read GetWideText write SetWideText;
   end;
 
 implementation
@@ -58,21 +52,21 @@ uses unitCharsetMap, ClipBrd;
 const
   CF_UNICODETEXT = 13;
 
-function WideStringFromClipboard (CodePage : Integer) : WideString;
+function WideStringFromClipboard (CodePage: Integer): WideString;
 var
   Data: THandle;
-  unicode : boolean;
+  Unicode: Boolean;
 begin
-  clipboard.Open;
-  unicode := Clipboard.HasFormat(CF_UNICODETEXT);
-  if unicode then
+  Clipboard.Open;
+  Unicode := Clipboard.HasFormat(CF_UNICODETEXT);
+  if Unicode then
     Data := GetClipboardData(CF_UNICODETEXT)
   else
     Data := GetClipboardData(CF_TEXT);
 
   try
     if Data <> 0 then
-      if unicode then
+      if Unicode then
         result := PWideChar(GlobalLock(Data))
       else
         result := PChar (GlobalLock (Data))
@@ -80,7 +74,7 @@ begin
       result := '';
   finally
     if Data <> 0 then GlobalUnlock(Data);
-    clipboard.Close;
+    Clipboard.Close;
   end;
 end;
 
@@ -94,10 +88,10 @@ end;
 
 procedure TuEdit.SetCodePage(const Value: Integer);
 begin
-  if fCodePage <> Value then
+  if FCodePage <> Value then
   begin
     Font.Charset := CodePageToCharset (Value);
-    fCodePage := Value;
+    FCodePage := Value;
   end
 end;
 
@@ -152,7 +146,7 @@ end;
 
 procedure TuComboBox.EditWndProc(var Message: TMessage);
 var
-  st : string;
+  st: string;
 
 begin
   if message.Msg = WM_PASTE then
@@ -173,7 +167,7 @@ end;
 
 procedure TuComboBox.ListWndProc(var Message: TMessage);
 var
-  callDefProc : boolean;
+  callDefProc: Boolean;
 begin
   case message.Msg of
     WM_DESTROY :
@@ -192,10 +186,10 @@ end;
 
 procedure TuComboBox.SetCodePage(const Value: Integer);
 begin
-  if fCodePage <> Value then
+  if FCodePage <> Value then
   begin
     Font.Charset := CodePageToCharset (Value);
-    fCodePage := Value;
+    FCodePage := Value;
     if FListHandle <> 0 then
       SendMessage (FListHandle, WM_SETFONT, SendMessage (FEditHandle, WM_GETFONT, 0, 0), 0);
   end

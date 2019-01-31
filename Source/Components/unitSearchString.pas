@@ -2,28 +2,28 @@ unit unitSearchString;
 
 interface
 
-uses Windows, Classes, SysUtils, StrUtils, unitCharsetMap;
+uses
+  Windows, Classes, SysUtils, StrUtils, unitCharsetMap;
 
 type
   TStrArray = array of string;
   TStringSearcher = class
   protected
-    fSearchString : String;
-    fOrWords : TStrArray;
-    fNotWords : TStrArray;
-    fAndWords : TStrArray;
+    FSearchString : String;
+    FOrWords : TStrArray;
+    FNotWords : TStrArray;
+    FAndWords : TStrArray;
 
-    nOrWords : Integer;
-    nAndWords : Integer;
-    nNotWords : Integer;
-    fCaseSensitive : boolean;
-
+    FCountOrWords : Integer;
+    FCountAndWords : Integer;
+    FCountNotWords : Integer;
+    FCaseSensitive : Boolean;
   public
-    constructor Create (const ASearchString : string; AcaseSensitive : boolean);
+    constructor Create (const ASearchString : string; AcaseSensitive : Boolean);
 
-    function Matches (AString : string) : boolean;
+    function Matches (AString : string) : Boolean;
     procedure Parse (searchString : string); virtual; abstract;
-    property CaseSensitive : boolean read fCaseSensitive write fCaseSensitive;
+    property CaseSensitive : Boolean read FCaseSensitive write FCaseSensitive;
   end;
 
   TGoogleLikeStringSearcher = class (TStringSearcher)
@@ -34,20 +34,19 @@ type
   TWStrArray = array of WideString;
   TWideStringSearcher = class
   protected
-    fCaseSensitive : boolean;
-    fSearchString : WideString;
-    fOrWords : TWStrArray;
-    fNotWords : TWStrArray;
-    fAndWords : TWStrArray;
+    FCaseSensitive : Boolean;
+    FSearchString : WideString;
+    FOrWords : TWStrArray;
+    FNotWords : TWStrArray;
+    FAndWords : TWStrArray;
 
-    nOrWords : Integer;
-    nAndWords : Integer;
-    nNotWords : Integer;
-
+    FCountOrWords : Integer;
+    FCountAndWords : Integer;
+    FCountNotWords : Integer;
   public
-    constructor Create (const ASearchString : WideString; ACaseSensitive : boolean);
+    constructor Create (const ASearchString : WideString; ACaseSensitive : Boolean);
 
-    function Matches (AString : WideString) : boolean;
+    function Matches (AString : WideString) : Boolean;
     procedure Parse (searchString : WideString); virtual; abstract;
   end;
 
@@ -61,30 +60,30 @@ function SplitString (const search : string; var s : string) : string;
 function SplitToken (var st : string) : string;
 function DelimPos (const delims : string; const st : string; out delim : char) : Integer;
 function DelimSplitString (const search : string; var s : string; out delim : char) : string;
-function WideContainsText (const AText, ASubText : WideString) : boolean;
+function WideContainsText (const AText, ASubText : WideString) : Boolean;
 function WidePosEx(const SubStr, S: WideString; Offset: Cardinal = 1): Integer;
 function WideSplitString (const search : WideString; var s : WideString) : WideString;
 function WideStrScan(const Str: PWideChar; Chr: WideChar): PWideChar;
 function SearchStringArray (arr : array of string; const st : string) : Integer;
-function StringArrayContains (arr : array of string; const st : string) : boolean;
+function StringArrayContains (arr : array of string; const st : string) : Boolean;
 function WideDequotedStr (st : WideString; q : WideChar = '"') : WideString;
 function WideQuotedStr (st : WideString; q : WideChar = '"') : WideString;
-function WildContains (const a, b : string) : boolean;
-function WWildContains (const a, b : WideString) : boolean;
+function WildContains (const a, b : string) : Boolean;
+function WWildContains (const a, b : WideString) : Boolean;
 
 
 implementation
 
 // nb.  Pos is a 'magic' function that internally has an (undocumented) wide version
 
-function WideContainsText (const AText, ASubText : WideString) : boolean;
+function WideContainsText (const AText, ASubText : WideString) : Boolean;
 begin
-  result := Pos (WideUpperCase (ASubText), WideUpperCase (AText)) > 0;
+  Result := Pos (WideUpperCase (ASubText), WideUpperCase (AText)) > 0;
 end;
 
-function WideContainsStr (const AText, ASubText : WideString) : boolean;
+function WideContainsStr (const AText, ASubText : WideString) : Boolean;
 begin
-  result := Pos (ASubText, AText) > 0;
+  Result := Pos (ASubText, AText) > 0;
 end;
 
 function WidePosEx(const SubStr, S: WideString; Offset: Cardinal = 1): Integer;
@@ -145,11 +144,11 @@ begin
     p := Pos (search, s);
   if p > 0 then
   begin
-    result := Trim (Copy (s, 1, p - 1));
+    Result := Trim (Copy (s, 1, p - 1));
     s := Trim (Copy (s, p + l, maxInt))
   end
   else
-    result := ''
+    Result := ''
 end;
 
 (*----------------------------------------------------------------------*
@@ -178,12 +177,12 @@ begin
     p := Pos (search, s);
   if p > 0 then
   begin
-    result := Trim (Copy (s, 1, p - 1));
+    Result := Trim (Copy (s, 1, p - 1));
     s := Trim (Copy (s, p + l, maxInt))
   end
   else
   begin
-    result := Trim (s);
+    Result := Trim (s);
     s := ''
   end
 end;
@@ -197,9 +196,9 @@ begin
   if p = 0 then p := MaxInt;
   if p1 = 0 then p1 := MaxInt;
   if p < p1 then
-    result := SplitString (' ', st)
+    Result := SplitString (' ', st)
   else
-    result := SplitString (#9, st)
+    Result := SplitString (#9, st)
 end;
 
 function WideStrScan(const Str: PWideChar; Chr: WideChar): PWideChar;
@@ -234,17 +233,17 @@ begin
     p := Pos (search, s);
   if p > 0 then
   begin
-    result := Trim (Copy (s, 1, p - 1));
+    Result := Trim (Copy (s, 1, p - 1));
     s := Trim (Copy (s, p + l, maxInt))
   end
   else
   begin
-    result := Trim (s);
+    Result := Trim (s);
     s := ''
   end
 end;
 
-function WildContains (const a, b : string) : boolean;
+function WildContains (const a, b : string) : Boolean;
 var
   p, offs, l, l1 : Integer;
 begin
@@ -253,22 +252,22 @@ begin
 
   if (l1 = 0) or (l = 0) then
   begin
-    result := False;
+    Result := False;
     Exit
   end;
 
   if b [l1] = '*' then
   begin
     if l1 = 1 then
-      result := True
+      Result := True
     else
-      result := AnsiContainsStr (a, Copy (b, 1, l1 - 1));
+      Result := AnsiContainsStr (a, Copy (b, 1, l1 - 1));
     exit
   end;
 
   if b [1] = '*' then
   begin
-    result := AnsiContainsStr (a, Copy (b, 2, l1 - 1));
+    Result := AnsiContainsStr (a, Copy (b, 2, l1 - 1));
     exit
   end;
 
@@ -294,10 +293,10 @@ begin
     end
   until (p <> 0) or (offs = 0);
 
-  result := p <> 0
+  Result := p <> 0
 end;
 
-function WWildContains (const a, b : WideString) : boolean;
+function WWildContains (const a, b : WideString) : Boolean;
 var
   p, offs, l, l1 : Integer;
 begin
@@ -306,13 +305,13 @@ begin
 
   if (l1 = 0) or (l = 0) then
   begin
-    result := False;
+    Result := False;
     Exit
   end;
 
   if b [l1] = '*' then
   begin
-    result := WideContainsStr (a, Copy (b, 1, l1 - 1));
+    Result := WideContainsStr (a, Copy (b, 1, l1 - 1));
     exit
   end;
 
@@ -338,19 +337,19 @@ begin
     end
   until (p <> 0) or (offs = 0);
 
-  result := p <> 0
+  Result := p <> 0
 end;
 
 { TStringSearcher }
 
-constructor TStringSearcher.Create(const ASearchString: string;  ACaseSensitive : boolean);
+constructor TStringSearcher.Create(const ASearchString: string;  ACaseSensitive : Boolean);
 begin
-  fCaseSensitive := ACaseSensitive;
-  fSearchString := ASearchString;
+  FCaseSensitive := ACaseSensitive;
+  FSearchString := ASearchString;
   Parse (ASearchString)
 end;
 
-function TStringSearcher.Matches(AString: string): boolean;
+function TStringSearcher.Matches(AString: string): Boolean;
 type
   TMatch = (mYes, mNo, mMaybe);
 var
@@ -358,37 +357,37 @@ var
   ok : TMatch;
 
 begin
-  if not fCaseSensitive then
+  if not FCaseSensitive then
     AString := UpperCase (AString);
   ok := mMaybe;
 
-  for i := 0 to nOrWords - 1 do
-    if WildContains (AString, fOrWords [i]) then
+  for i := 0 to FCountOrWords - 1 do
+    if WildContains (AString, FOrWords [i]) then
     begin
       ok := mYes;
       break
     end;
 
   if ok = mMaybe then
-    for i := 0 to nAndWords - 1 do
-      if not WildContains (AString, fAndWords [i]) then
+    for i := 0 to FCountAndWords - 1 do
+      if not WildContains (AString, FAndWords [i]) then
       begin
         ok := mNo;
         break
       end;
 
   if ok = mMaybe then
-    for i := 0 to nNotWords - 1 do
-      if WildContains (AString, fNotWords [i]) then
+    for i := 0 to FCountNotWords - 1 do
+      if WildContains (AString, FNotWords [i]) then
       begin
         ok := mNo;
         break
       end;
 
   if ok = mMaybe then
-    result := (nAndWords > 0) or (nNotWords > 0)
+    Result := (FCountAndWords > 0) or (FCountNotWords > 0)
   else
-    result := ok = mYes
+    Result := ok = mYes
 
 end;
 
@@ -411,13 +410,13 @@ var
   end;
 
 begin
-  if CompareText (fSearchString, searchString) = 0 then
+  if CompareText (FSearchString, searchString) = 0 then
     Exit;
-  fSearchString := searchString;
-  nAndWords := 0;
-  nOrWords := 0;
-  nNotWords := 0;
-  if not fCaseSensitive then
+  FSearchString := searchString;
+  FCountAndWords := 0;
+  FCountOrWords := 0;
+  FCountNotWords := 0;
+  if not FCaseSensitive then
     searchString := UpperCase (searchString);
 
   l := Length (searchString);
@@ -459,9 +458,9 @@ begin
 
     if s1 <> '' then
       case op of
-        opAnd : AddToVarArray (fAndWords, s1, nAndWords);
-        opOr  : AddToVarArray (fOrWords, s1, nOrWords);
-        opNot : AddToVarArray (fNotWords, s1, nNotWords)
+        opAnd : AddToVarArray (FAndWords, s1, FCountAndWords);
+        opOr  : AddToVarArray (FOrWords, s1, FCountOrWords);
+        opNot : AddToVarArray (FNotWords, s1, FCountNotWords)
       end;
 
     op := opAnd;
@@ -471,14 +470,14 @@ end;
 
 { TWideStringSearcher }
 
-constructor TWideStringSearcher.Create(const ASearchString: WideString; ACaseSensitive : boolean);
+constructor TWideStringSearcher.Create(const ASearchString: WideString; ACaseSensitive : Boolean);
 begin
-  fCaseSensitive := ACaseSensitive;
-  fSearchString := ASearchString;
+  FCaseSensitive := ACaseSensitive;
+  FSearchString := ASearchString;
   Parse (ASearchString)
 end;
 
-function TWideStringSearcher.Matches(AString: WideString): boolean;
+function TWideStringSearcher.Matches(AString: WideString): Boolean;
 type
   TMatch = (mYes, mNo, mMaybe);
 var
@@ -486,37 +485,37 @@ var
   ok : TMatch;
 
 begin
-  if not fCaseSensitive then
+  if not FCaseSensitive then
     AString := WideUpperCase (AString);
   ok := mMaybe;
 
-  for i := 0 to nOrWords - 1 do
-    if WWildContains (AString, fOrWords [i]) then
+  for i := 0 to FCountOrWords - 1 do
+    if WWildContains (AString, FOrWords [i]) then
     begin
       ok := mYes;
       break
     end;
 
   if ok = mMaybe then
-    for i := 0 to nAndWords - 1 do
-      if not WWildContains (AString, fAndWords [i]) then
+    for i := 0 to FCountAndWords - 1 do
+      if not WWildContains (AString, FAndWords [i]) then
       begin
         ok := mNo;
         break
       end;
 
   if ok = mMaybe then
-    for i := 0 to nNotWords - 1 do
-      if WWildContains (AString, fNotWords [i]) then
+    for i := 0 to FCountNotWords - 1 do
+      if WWildContains (AString, FNotWords [i]) then
       begin
         ok := mNo;
         break
       end;
 
   if ok = mMaybe then
-    result := (nAndWords > 0) or (nNotWords > 0)
+    Result := (FCountAndWords > 0) or (FCountNotWords > 0)
   else
-    result := ok = mYes
+    Result := ok = mYes
 end;
 
 { TGoogleLikeWideStringSearcher }
@@ -538,13 +537,13 @@ var
   end;
 
 begin
-  if WideCompareText (fSearchString, searchString) = 0 then
+  if WideCompareText (FSearchString, searchString) = 0 then
     Exit;
-  fSearchString := searchString;
-  nAndWords := 0;
-  nOrWords := 0;
-  nNotWords := 0;
-  if not fCaseSensitive then
+  FSearchString := searchString;
+  FCountAndWords := 0;
+  FCountOrWords := 0;
+  FCountNotWords := 0;
+  if not FCaseSensitive then
     searchString := WideUpperCase (searchString);
 
   l := Length (searchString);
@@ -586,9 +585,9 @@ begin
 
     if s1 <> '' then
       case op of
-        opAnd : AddToVarArray (fAndWords, s1, nAndWords);
-        opOr  : AddToVarArray (fOrWords, s1, nOrWords);
-        opNot : AddToVarArray (fNotWords, s1, nNotWords)
+        opAnd : AddToVarArray (FAndWords, s1, FCountAndWords);
+        opOr  : AddToVarArray (FOrWords, s1, FCountOrWords);
+        opNot : AddToVarArray (FNotWords, s1, FCountNotWords)
       end;
 
     op := opAnd;
@@ -609,24 +608,24 @@ function SearchStringArray (arr : array of string; const st : string) : Integer;
       c := CompareText (st, arr [m]);
 
       if c = 0 then
-        result := m
+        Result := m
       else
         if c > 0 then
-          result := bsearch (m + 1, e)
+          Result := bsearch (m + 1, e)
         else
-          result := bsearch (s, m - 1)
+          Result := bsearch (s, m - 1)
     end
     else
-      result := -1
+      Result := -1
   end;
 
 begin
-  result := bsearch (Low (arr), High (arr))
+  Result := bsearch (Low (arr), High (arr))
 end;
 
-function StringArrayContains (arr : array of string; const st : string) : boolean;
+function StringArrayContains (arr : array of string; const st : string) : Boolean;
 begin
-  result := SearchStringArray (arr, st) >= 0
+  Result := SearchStringArray (arr, st) >= 0
 end;
 
 function WideDequotedStr (st : WideString; q : WideChar) : WideString;
@@ -654,7 +653,7 @@ begin
       end
       else
         Inc (i);
-    result := Copy (st, 2, i);
+    Result := Copy (st, 2, i);
   end
 end;
 
@@ -674,23 +673,23 @@ var
 begin
   if delims = '' then
   begin
-    result := 0;
+    Result := 0;
     exit
   end;
 
-  result := MaxInt;
+  Result := MaxInt;
   for i := 1 to Length (delims) do
   begin
     p := Pos (delims [i], st);
-    if (p > 0) and (p < result) then
+    if (p > 0) and (p < Result) then
     begin
       delim := delims [i];
-      result := p
+      Result := p
     end
   end;
 
-  if result = MaxInt then
-    result := 0
+  if Result = MaxInt then
+    Result := 0
 end;
 
 function DelimSplitString (const search : string; var s : string; out delim : char) : string;
@@ -700,15 +699,14 @@ begin
   p := DelimPos (search, s, delim);
   if p > 0 then
   begin
-    result := Trim (Copy (s, 1, p - 1));
+    Result := Trim (Copy (s, 1, p - 1));
     s := Trim (Copy (s, p + 1, maxInt))
   end
   else
   begin
-    result := Trim (s);
+    Result := Trim (s);
     s := ''
   end
 end;
 
 end.
-

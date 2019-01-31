@@ -10,8 +10,6 @@ type
   TfmGroupResource = class(TfmResource)
     ScrollBox1: TScrollBox;
     Image1: TImage;
-  private
-    { Private declarations }
   protected
     procedure SetObject(const Value: TObject); override;
     function GetImportExportType: TImportExportType; override;
@@ -20,12 +18,10 @@ type
     procedure Copy; override;
   end;
 
-var
-  fmGroupResource: TfmGroupResource;
-
 implementation
 
-uses unitResourceGraphics, ClipBrd;
+uses
+  ClipBrd, unitResourceGraphics;
 
 {$R *.DFM}
 
@@ -33,7 +29,7 @@ uses unitResourceGraphics, ClipBrd;
 
 procedure TfmGroupResource.Copy;
 begin
-  Clipboard.Assign (Image1.Picture.Graphic);
+  Clipboard.Assign(Image1.Picture.Graphic);
 end;
 
 function TfmGroupResource.GetCanCopy: Boolean;
@@ -53,7 +49,7 @@ begin
   inherited;
   
   details := obj as TIconCursorGroupResourceDetails;
-  details.GetImage (Image1.Picture);
+  details.GetImage(Image1.Picture);
 end;
 
 end.

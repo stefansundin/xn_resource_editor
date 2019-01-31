@@ -7,30 +7,30 @@ uses
 
 type
   TVersionInfo = class
-    FModule : THandle;
-    FVersionInfo : PChar;
-    FVersionHeader : PChar;
-    FChildStrings : TStringList;
-    FTranslations : TList;
-    FFixedInfo : PVSFixedFileInfo;
-    FVersionResHandle : THandle;
-    FModuleLoaded : boolean;
+    FModule: THandle;
+    FVersionInfo: PChar;
+    FVersionHeader: PChar;
+    FChildStrings: TStringList;
+    FTranslations: TList;
+    FFixedInfo: PVSFixedFileInfo;
+    FVersionResHandle: THandle;
+    FModuleLoaded: Boolean;
   private
-    function GetInfo : boolean;
+    function GetInfo: Boolean;
     function GetKeyCount: Integer;
     function GetKeyName(idx: Integer): string;
     function GetKeyValue(const idx: string): string;
     procedure SetKeyValue(const idx, Value: string);
   public
-    constructor Create (AModule : THandle); overload;
-    constructor Create (AVersionInfo : PChar); overload;
-    constructor Create (const AFileName : string); overload;
+    constructor Create (AModule: THandle); overload;
+    constructor Create (AVersionInfo: PChar); overload;
+    constructor Create (const AFileName: string); overload;
     destructor Destroy; override;
-    procedure SaveToStream (strm : TStream);
+    procedure SaveToStream (strm: TStream);
 
-    property KeyCount : Integer read GetKeyCount;
-    property KeyName [idx : Integer] : string read GetKeyName;
-    property KeyValue [const idx : string] : string read GetKeyValue write SetKeyValue;
+    property KeyCount: Integer read GetKeyCount;
+    property KeyName [idx: Integer]: string read GetKeyName;
+    property KeyValue [const idx: string]: string read GetKeyValue write SetKeyValue;
   end;
 
 implementation
@@ -73,7 +73,7 @@ end;
 
 constructor TVersionInfo.Create(const AFileName: string);
 var
-  handle : THandle;
+  handle: THandle;
 begin
   handle := LoadLibraryEx (PChar (AFileName), 0, LOAD_LIBRARY_AS_DATAFILE);
   if handle <> 0 then
@@ -87,7 +87,7 @@ end;
 
 destructor TVersionInfo.Destroy;
 var
-  i : Integer;
+  i: Integer;
 begin
   for i := 0 to FChildStrings.Count - 1 do
     FChildStrings.Objects [i].Free;
@@ -101,19 +101,19 @@ begin
   inherited;
 end;
 
-function TVersionInfo.GetInfo : boolean;
+function TVersionInfo.GetInfo: Boolean;
 var
-  p : PChar;
-  t, wLength, wValueLength, wType : word;
-  key : string;
+  p: PChar;
+  t, wLength, wValueLength, wType: word;
+  key: string;
 
-  varwLength, varwValueLength, varwType : word;
-  varKey : string;
+  varwLength, varwValueLength, varwType: word;
+  varKey: string;
 
-  function GetVersionHeader (var p : PChar; var wLength, wValueLength, wType : word; var key : string) : Integer;
+  function GetVersionHeader (var p: PChar; var wLength, wValueLength, wType: word; var key: string): Integer;
   var
-    szKey : PWideChar;
-    baseP : PChar;
+    szKey: PWideChar;
+    baseP: PChar;
   begin
     baseP := p;
     wLength := PWord (p)^;
@@ -130,12 +130,12 @@ var
     key := szKey;
   end;
 
-  procedure GetStringChildren (var base : PChar; len : word);
+  procedure GetStringChildren (var base: PChar; len: word);
   var
-    p, strBase : PChar;
-    t, wLength, wValueLength, wType, wStrLength, wStrValueLength, wStrType : word;
-    key, value : string;
-    i, langID, codePage : Integer;
+    p, strBase: PChar;
+    t, wLength, wValueLength, wType, wStrLength, wStrValueLength, wStrType: word;
+    key, value: string;
+    i, langID, codePage: Integer;
 
   begin
     p := base;
@@ -171,12 +171,12 @@ var
     base := p
   end;
 
-  procedure GetVarChildren (var base : PChar; len : word);
+  procedure GetVarChildren (var base: PChar; len: word);
   var
-    p, strBase : PChar;
+    p, strBase: PChar;
     t, wLength, wValueLength, wType: word;
-    key : string;
-    v : DWORD;
+    key: string;
+    v: DWORD;
 
   begin
     p := base;
@@ -257,7 +257,7 @@ end;
 
 function TVersionInfo.GetKeyValue(const idx: string): string;
 var
-  i : Integer;
+  i: Integer;
 begin
   if GetInfo then
   begin
@@ -273,24 +273,24 @@ end;
 
 procedure TVersionInfo.SaveToStream(strm: TStream);
 var
-  zeros, v : DWORD;
-  wSize : WORD;
-  stringInfoStream : TMemoryStream;
-  strg : TVersionStringValue;
-  i, p, p1 : Integer;
-  wValue : WideString;
+  zeros, v: DWORD;
+  wSize: WORD;
+  stringInfoStream: TMemoryStream;
+  strg: TVersionStringValue;
+  i, p, p1: Integer;
+  wValue: WideString;
 
-  procedure PadStream (strm : TStream);
+  procedure PadStream (strm: TStream);
   begin
     if strm.Position mod 4 <> 0 then
       strm.Write (zeros, 4 - (strm.Position mod 4))
   end;
 
-  procedure SaveVersionHeader (strm : TStream; wLength, wValueLength, wType : word; const key : string; const value);
+  procedure SaveVersionHeader (strm: TStream; wLength, wValueLength, wType: word; const key: string; const value);
   var
-    wKey : WideString;
-    valueLen : word;
-    keyLen : word;
+    wKey: WideString;
+    valueLen: word;
+    keyLen: word;
   begin
     wKey := key;
     strm.Write (wLength, sizeof (wLength));
@@ -396,7 +396,7 @@ end;
 
 procedure TVersionInfo.SetKeyValue(const idx, Value: string);
 var
-  i : Integer;
+  i: Integer;
 begin
   if GetInfo then
   begin

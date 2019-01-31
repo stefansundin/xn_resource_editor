@@ -71,16 +71,13 @@ type
     procedure SetHeaderFont(const Value: TFont);
     procedure SetSignatureFont(const Value: TFont);
     procedure SetRawText(const Value: boolean);
-   { Private declarations }
   protected
     function GetCharFormatter : TCharFormatter; override;
-    { Protected declarations }
   public
     constructor Create (AOwner : TComponent); override;
     destructor Destroy; override;
     property TruncateFrom : WideString read fTruncateFrom write fTruncateFrom;
     property StrictSigSeparator : boolean read fStrictSigSeparator write fStrictSigSeparator;
-    { Public declarations }
   published
     property HeaderFont : TFont read fHeaderFont write SetHeaderFont;
     property Level1QuoteFont : TFont read fLevel1QuoteFont write SetLevel1QuoteFont;
@@ -88,7 +85,6 @@ type
     property Level3QuoteFont : TFont read fLevel3QuoteFont write SetLevel3QuoteFont;
     property SignatureFont : TFont read fSignatureFont write SetSignatureFont;
     property RawText : boolean read fRawText write SetRawText;
-    { Published declarations }
   end;
 
 implementation

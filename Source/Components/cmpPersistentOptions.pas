@@ -44,14 +44,14 @@ type
 // TOption class.
   TOption = class (TCollectionItem)
   private
-    fDefaultValue: string;
-    fName: string;
-    fEnumValues: TStringList;
-    fOptionType: TOptionType;
-    fIntVal : Integer;
-    fStrVal : string;
-    fBoolVal : boolean;
-    fDirty : boolean;
+    FDefaultValue: string;
+    FName: string;
+    FEnumValues: TStringList;
+    FOptionType: TOptionType;
+    FIntVal: Integer;
+    FStrVal: string;
+    FBoolVal: Boolean;
+    FDirty: Boolean;
 
     function GetBase: TPersistentOptions;
     function GetAsBoolean: Boolean;
@@ -67,78 +67,78 @@ type
     procedure SetAsInteger(const Value: Integer);
     procedure SetAsString(const Value: string);
     procedure Flush;
-    function GetHasDefaultValue: boolean;
+    function GetHasDefaultValue: Boolean;
   protected
-    function GetDisplayName : string; override;
+    function GetDisplayName: string; override;
   public
-    constructor Create (Collection : TCollection); override;
+    constructor Create (Collection: TCollection); override;
     destructor Destroy; override;
-    property Base : TPersistentOptions read GetBase;
+    property Base: TPersistentOptions read GetBase;
 
-    property AsInteger : Integer read GetAsInteger write SetAsInteger;
-    property AsString : string read GetAsString write SetAsString;
-    property AsBoolean : Boolean read GetAsBoolean write SetAsBoolean;
-    property AsEnum : string read GetAsEnum write SetAsEnum;
+    property AsInteger: Integer read GetAsInteger write SetAsInteger;
+    property AsString: string read GetAsString write SetAsString;
+    property AsBoolean: Boolean read GetAsBoolean write SetAsBoolean;
+    property AsEnum: string read GetAsEnum write SetAsEnum;
 
-    property HasDefaultValue : boolean read GetHasDefaultValue;
+    property HasDefaultValue: Boolean read GetHasDefaultValue;
 
   published
-    property Name : string read fName write fName;
-    property DefaultValue : string read fDefaultValue write fDefaultValue;
-    property EnumValues : TStrings read GetEnumValues write SetEnumValues;
-    property OptionType : TOptionType read fOptionType write SetOptionType;
+    property Name: string read FName write FName;
+    property DefaultValue: string read FDefaultValue write FDefaultValue;
+    property EnumValues: TStrings read GetEnumValues write SetEnumValues;
+    property OptionType: TOptionType read FOptionType write SetOptionType;
   end;
 
 //---------------------------------------------------------------------
 // TOptions class - a collection of options
   TOptions = class (TOwnedCollection)
   private
-    fDeleteObsoleteOptions: boolean;
+    FDeleteObsoleteOptions: Boolean;
     function GetOption(idx: Integer): TOption;
     function GetOptionByName(const name: string): TOption;
   public
     constructor Create(AOwner: TPersistent; ItemClass: TCollectionItemClass);
-    property Option [idx : Integer] : TOption read GetOption; default;
-    property OptionByName [const name : string] : TOption read GetOptionByName;
+    property Option [idx: Integer]: TOption read GetOption; default;
+    property OptionByName [const name: string]: TOption read GetOptionByName;
   published
-    property DeleteObsoleteOptions : boolean read fDeleteObsoleteOptions write fDeleteObsoleteOptions default True;
+    property DeleteObsoleteOptions: Boolean read FDeleteObsoleteOptions write FDeleteObsoleteOptions default True;
   end;
 
 //---------------------------------------------------------------------
 // TSection class
   TSection = class (TCollectionItem)
   private
-    fName: string;
-    fOptions: TOptions;
-    fSections: TSections;
+    FName: string;
+    FOptions: TOptions;
+    FSections: TSections;
     function GetOption(const name: string): TOption;
     function GetSection(const name: string): TSection;
   protected
-    function GetDisplayName : string; override;
+    function GetDisplayName: string; override;
   public
     constructor Create(Collection: TCollection); override;
     destructor Destroy; override;
 
-    property Option [const name : string] : TOption read GetOption;
-    property Section [const name : string] : TSection read GetSection;
+    property Option [const name: string]: TOption read GetOption;
+    property Section [const name: string]: TSection read GetSection;
   published
-    property Name : string read fName write fName;
-    property Options : TOptions read fOptions write fOptions;
-    property Sections : TSections read fSections write fSections;
+    property Name: string read FName write FName;
+    property Options: TOptions read FOptions write FOptions;
+    property Sections: TSections read FSections write FSections;
   end;
 
 //---------------------------------------------------------------------
 // TSections class - a collection of sections.
   TSections = class (TOwnedCollection)
   private
-    fDeleteObsoleteSections: boolean;
+    FDeleteObsoleteSections: Boolean;
     function GetSection(idx: Integer): TSection;
     function GetSectionByName(const name: string): TSection;
   public
-    property Section [idx : Integer] : TSection read GetSection; default;
-    property SectionByName [const name : string] : TSection read GetSectionByName;
+    property Section [idx: Integer]: TSection read GetSection; default;
+    property SectionByName [const name: string]: TSection read GetSectionByName;
   published
-    property DeleteObsoleteSections : boolean read fDeleteObsoleteSections write fDeleteObsoleteSections default False;
+    property DeleteObsoleteSections: Boolean read FDeleteObsoleteSections write FDeleteObsoleteSections default False;
   end;
 
 //---------------------------------------------------------------------
@@ -146,49 +146,47 @@ type
 // TIniFilePersistentOptions
   TPersistentOptions = class(TComponent)
   private
-    function GetPersist: boolean;
-    function GetLoading: boolean;
+    function GetPersist: Boolean;
+    function GetLoading: Boolean;
   private
-    fManufacturer: string;
-    fApplication: string;
-    fVersion: string;
-    fOptions: TOptions;
-    fSections: TSections;
-    fUpdating: boolean;
-    function GetDesigning: boolean;
+    FManufacturer: string;
+    FApplication: string;
+    FVersion: string;
+    FOptions: TOptions;
+    FSections: TSections;
+    FUpdating: Boolean;
+    function GetDesigning: Boolean;
     function GetOption(path: string): TOption;
     function GetSection(name: string): TSection;
     procedure SetApplication(const Value: string);
     procedure SetManufacturer(const Value: string);
     procedure SetVersion(const Value: string);
-    procedure RemoveLeadingSlash (var path : string);
+    procedure RemoveLeadingSlash (var path: string);
 
-    property Designing : boolean read GetDesigning;
-    property Loading : boolean read GetLoading;
-    property Persist : boolean read GetPersist;
-    function GetDirty: boolean;
-    { Private declarations }
+    property Designing: Boolean read GetDesigning;
+    property Loading: Boolean read GetLoading;
+    property Persist: Boolean read GetPersist;
+    function GetDirty: Boolean;
   protected
     procedure Loaded; override;
-    procedure DeleteOldOptions (const application, manufacturer, version : string); virtual; abstract;
-    property InUpdate : boolean read fUpdating;
+    procedure DeleteOldOptions (const application, manufacturer, version: string); virtual; abstract;
+    property InUpdate: Boolean read FUpdating;
   public
-    constructor Create (AOwner : TComponent); override;
+    constructor Create (AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Save; virtual; abstract;
     procedure Load; virtual; abstract;
     procedure BeginUpdate;
     procedure EndUpdate;
-    property Option [path : string] : TOption read GetOption; default;
-    property Section [name : string] : TSection read GetSection;
-    property Dirty : boolean read GetDirty;
-    { Public declarations }
+    property Option [path: string]: TOption read GetOption; default;
+    property Section [name: string]: TSection read GetSection;
+    property Dirty: Boolean read GetDirty;
   published
-    property Application : string read fApplication write SetApplication;
-    property Manufacturer : string read fManufacturer write SetManufacturer;
-    property Version : string read fVersion write SetVersion;
-    property Options : TOptions read fOptions write fOptions;
-    property Sections : TSections read fSections write fSections;
+    property Application: string read FApplication write SetApplication;
+    property Manufacturer: string read FManufacturer write SetManufacturer;
+    property Version: string read FVersion write SetVersion;
+    property Options: TOptions read FOptions write FOptions;
+    property Sections: TSections read FSections write FSections;
   end;
 
   TRegistryOptionsType = (otUser, otMachine);
@@ -197,20 +195,20 @@ type
 // registry
   TRegistryPersistentOptions = class (TPersistentOptions)
   private
-    fRegistryOptionsType: TRegistryOptionsType;
+    FRegistryOptionsType: TRegistryOptionsType;
     function GetRootKeyName: string;
-    procedure LoadOptions (reg : TRegistry; Options : TOptions; forceDefaults : boolean);
-    procedure LoadSections (reg : TRegistry; Sections : TSections; forceDefaults : boolean);
-    procedure SaveOptions (reg : TRegistry; Options : TOptions);
-    procedure SaveSections (reg : TRegistry; Sections : TSections);
+    procedure LoadOptions (reg: TRegistry; Options: TOptions; forceDefaults: Boolean);
+    procedure LoadSections (reg: TRegistry; Sections: TSections; forceDefaults: Boolean);
+    procedure SaveOptions (reg: TRegistry; Options: TOptions);
+    procedure SaveSections (reg: TRegistry; Sections: TSections);
   protected
-    procedure DeleteOldOptions (const application, manufacturer, version : string); override;
+    procedure DeleteOldOptions (const application, manufacturer, version: string); override;
   public
     procedure Load; override;
     procedure Save; override;
-    property RootKeyName : string read GetRootKeyName;
+    property RootKeyName: string read GetRootKeyName;
   published
-    property OptionsType : TRegistryOptionsType read fRegistryOptionsType write fRegistryOptionsType;
+    property OptionsType: TRegistryOptionsType read FRegistryOptionsType write FRegistryOptionsType;
   end;
 
 //---------------------------------------------------------------------
@@ -218,20 +216,20 @@ type
 // file
   TIniFilePersistentOptions = class (TPersistentOptions)
   private
-    fFileName: string;
-    function GetFileName : string;
-    procedure LoadOptions (iniFile : TIniFile; const section : string; Options : TOptions; forceDefaults : boolean);
-    procedure LoadSections (iniFile : TIniFile; const section : string; Sections : TSections; forceDefaults : boolean);
-    procedure SaveOptions (iniFile : TIniFile; const section : string; Options : TOptions);
-    procedure SaveSections (iniFile : TIniFile; const section : string; Sections : TSections);
+    FFileName: string;
+    function GetFileName: string;
+    procedure LoadOptions (iniFile: TIniFile; const section: string; Options: TOptions; forceDefaults: Boolean);
+    procedure LoadSections (iniFile: TIniFile; const section: string; Sections: TSections; forceDefaults: Boolean);
+    procedure SaveOptions (iniFile: TIniFile; const section: string; Options: TOptions);
+    procedure SaveSections (iniFile: TIniFile; const section: string; Sections: TSections);
     procedure SetFileName(const Value: string);
   protected
-    procedure DeleteOldOptions (const application, manufacturer, version : string); override;
+    procedure DeleteOldOptions (const application, manufacturer, version: string); override;
   public
     procedure Load; override;
     procedure Save; override;
   published
-    property FileName : string read fFileName write SetFileName;
+    property FileName: string read FFileName write SetFileName;
   end;
 
   EOptionError = class (Exception)
@@ -239,7 +237,7 @@ type
 
   EOptionTypeMismatch = class (EOptionError)
   public
-    constructor Create (Option : TOption);
+    constructor Create (Option: TOption);
   end;
 
 implementation
@@ -252,7 +250,7 @@ resourcestring
   rstOptionNotFound = 'Option %s not found in section %s';
 
 const
-  OptionTypeNames : array [TOptionType] of string = ('integer', 'boolean', 'string', 'emumerated');
+  OptionTypeNames: array [TOptionType] of string = ('integer', 'boolean', 'string', 'emumerated');
 
 { TPersistentOptions }
 
@@ -263,7 +261,7 @@ const
  *----------------------------------------------------------------------*)
 procedure TPersistentOptions.BeginUpdate;
 begin
-  fUpdating := True
+  FUpdating := True
 end;
 
 (*----------------------------------------------------------------------*
@@ -271,11 +269,11 @@ end;
  |                                                                      |
  | Constructor for TPersistentOptions                                   |
  *----------------------------------------------------------------------*)
-constructor TPersistentOptions.Create (AOwner : TComponent);
+constructor TPersistentOptions.Create (AOwner: TComponent);
 begin
   inherited Create (AOwner);
-  fOptions := TOptions.Create(self, TOption);
-  fSections := TSections.Create(self, TSection);
+  FOptions := TOptions.Create(self, TOption);
+  FSections := TSections.Create(self, TSection);
 end;
 
 (*----------------------------------------------------------------------*
@@ -287,8 +285,8 @@ destructor TPersistentOptions.Destroy;
 begin
   if Dirty then
     Save;
-  fOptions.Free;
-  fSections.Free;
+  FOptions.Free;
+  FSections.Free;
 
   inherited;
 end;
@@ -300,10 +298,10 @@ end;
  *----------------------------------------------------------------------*)
 procedure TPersistentOptions.EndUpdate;
 begin
-  if fUpdating and Dirty then
+  if FUpdating and Dirty then
     Save;
 
-  fUpdating := False
+  FUpdating := False
 end;
 
 (*----------------------------------------------------------------------*
@@ -311,9 +309,9 @@ end;
  |                                                                      |
  | Return True if the component is in 'design' mode.                    |
  *----------------------------------------------------------------------*)
-function TPersistentOptions.GetDesigning: boolean;
+function TPersistentOptions.GetDesigning: Boolean;
 begin
-  result := csDesigning in ComponentState
+  Result := csDesigning in ComponentState
 end;
 
 (*----------------------------------------------------------------------*
@@ -322,40 +320,40 @@ end;
  | Return True if any option has had it's value changed, but has not    |
  | yet been persisted to the registry or INI file.                      |
  *----------------------------------------------------------------------*)
-function TPersistentOptions.GetDirty: boolean;
+function TPersistentOptions.GetDirty: Boolean;
 
-  function OptionsDirty (options : TOptions) : boolean;
+  function OptionsDirty (options: TOptions): Boolean;
   var
-    i : Integer;
+    i: Integer;
   begin
-    result := False;
+    Result := False;
     for i := 0 to options.Count - 1 do
-      if options [i].fDirty then
+      if options [i].FDirty then
       begin
-        result := True;
+        Result := True;
         break
       end
   end;
 
-  function SectionsDirty (sections : TSections) : boolean;
+  function SectionsDirty (sections: TSections): Boolean;
   var
-    i : Integer;
-    section : TSection;
+    i: Integer;
+    section: TSection;
   begin
-    result := False;
+    Result := False;
     for i := 0 to sections.Count - 1 do
     begin
       section := sections [i];
-      result := OptionsDirty (section.Options);
-      if not result then
-        result := SectionsDirty (section.Sections);
-      if result then
+      Result := OptionsDirty (section.Options);
+      if not Result then
+        Result := SectionsDirty (section.Sections);
+      if Result then
         break
     end
   end;
 
 begin
-  result := OptionsDirty (Options) or SectionsDirty (Sections)
+  Result := OptionsDirty (Options) or SectionsDirty (Sections)
 end;
 
 (*----------------------------------------------------------------------*
@@ -379,18 +377,18 @@ end;
  |                                                                      |
  | The function always returns a valid TOption, or raised an exception  |
  *----------------------------------------------------------------------*)
-function TPersistentOptions.GetLoading: boolean;
+function TPersistentOptions.GetLoading: Boolean;
 begin
-  result := (csLoading in ComponentState);
+  Result := (csLoading in ComponentState);
 
 end;
 
 function TPersistentOptions.GetOption(path: string): TOption;
 var
-  p : PChar;
-  n : Integer;
-  s : TSection;
-  secName  : string;
+  p: PChar;
+  n: Integer;
+  s: TSection;
+  secName : string;
 begin
   RemoveLeadingSlash (path);
   p := StrRScan (PChar (path), '\');
@@ -404,11 +402,11 @@ begin
   end;
 
   if Assigned (s) then
-    result := s.Options.OptionByName [path]
+    Result := s.Options.OptionByName [path]
   else
-    result := Options.OptionByName [path];
+    Result := Options.OptionByName [path];
 
-  if result = Nil then
+  if Result = Nil then
   begin
     if Assigned (s) then
       secName := s.Name
@@ -425,9 +423,9 @@ end;
  | the registry or INI file - ie. it's not in design mode, and it's not |
  | Loading.                                                             |
  *----------------------------------------------------------------------*)
-function TPersistentOptions.GetPersist: boolean;
+function TPersistentOptions.GetPersist: Boolean;
 begin
-  result := not Designing and not (csLoading in ComponentState);
+  Result := not Designing and not (csLoading in ComponentState);
 end;
 
 (*----------------------------------------------------------------------*
@@ -450,7 +448,7 @@ end;
 function TPersistentOptions.GetSection(name: string): TSection;
 begin
   RemoveLeadingSlash (name);
-  result := Sections.SectionByName [name]
+  Result := Sections.SectionByName [name]
 end;
 
 (*----------------------------------------------------------------------*
@@ -472,7 +470,7 @@ end;
  | Remove the leading slash from a path.                                |
  *----------------------------------------------------------------------*)
 
-procedure TPersistentOptions.RemoveLeadingSlash (var path : string);
+procedure TPersistentOptions.RemoveLeadingSlash (var path: string);
 begin
   if Copy (path, 1, 1) = '\' then
     path := Copy (path, 2, MaxInt);
@@ -489,18 +487,18 @@ end;
  *----------------------------------------------------------------------*)
 procedure TPersistentOptions.SetApplication(const Value: string);
 var
-  oldApplication : string;
+  oldApplication: string;
 begin
-  if fApplication <> Value then
+  if FApplication <> Value then
   begin
-    oldApplication := fApplication;
+    oldApplication := FApplication;
     try
-      fApplication := Value;
+      FApplication := Value;
 
       if not (csLoading in ComponentState) then
         Save;
     except
-      fApplication := oldApplication;
+      FApplication := oldApplication;
       raise
     end;
 
@@ -519,17 +517,17 @@ end;
  *----------------------------------------------------------------------*)
 procedure TPersistentOptions.SetManufacturer(const Value: string);
 var
-  oldManufacturer : string;
+  oldManufacturer: string;
 begin
-  if fManufacturer <> Value then
+  if FManufacturer <> Value then
   begin
-    oldManufacturer := fManufacturer;
+    oldManufacturer := FManufacturer;
     try
-      fManufacturer := Value;
+      FManufacturer := Value;
       if not (csLoading in ComponentState) then
         Save;
     except
-      fManufacturer := oldManufacturer;
+      FManufacturer := oldManufacturer;
       raise
     end;
 
@@ -548,17 +546,17 @@ end;
  *----------------------------------------------------------------------*)
 procedure TPersistentOptions.SetVersion(const Value: string);
 var
-  oldVersion : string;
+  oldVersion: string;
 begin
-  if fVersion <> Value then
+  if FVersion <> Value then
   begin
-    oldVersion := fVersion;
+    oldVersion := FVersion;
     try
-      fVersion := Value;
+      FVersion := Value;
       if not (csLoading in ComponentState) then
         Save
     except
-      fVersion := oldVersion;
+      FVersion := oldVersion;
       raise
     end;
 
@@ -579,7 +577,7 @@ end;
 procedure TIniFilePersistentOptions.DeleteOldOptions(const application,
   manufacturer, version: string);
 var
-  appSave, manSave, verSave, f : string;
+  appSave, manSave, verSave, f: string;
 begin
   if not Persist then Exit;
 
@@ -588,35 +586,35 @@ begin
   manSave := self.Application;
   verSave := self.Application;
   try
-    self.fApplication := application;
-    self.fManufacturer := manufacturer;
-    self.fVersion := version;
+    self.FApplication := application;
+    self.FManufacturer := manufacturer;
+    self.FVersion := version;
 
     if GetFileName <> f then
       DeleteFile (GetFileName)
   finally
-    self.fApplication := application;
-    self.fManufacturer := manSave;
-    self.fVersion := verSave
+    self.FApplication := application;
+    self.FManufacturer := manSave;
+    self.FVersion := verSave
   end
 end;
 
 (*----------------------------------------------------------------------*
- | function TIniFilePersistentOptions.GetFileName : string              |
+ | function TIniFilePersistentOptions.GetFileName: string              |
  |                                                                      |
  | Get the INI file name                                                |
  *----------------------------------------------------------------------*)
 function TIniFilePersistentOptions.GetFileName: string;
 var
-  st : string;
-  p : Integer;
+  st: string;
+  p: Integer;
 begin
-  if fFileName <> '' then       // Use the FileName property if it's been set
+  if FFileName <> '' then       // Use the FileName property if it's been set
   begin
     if (Copy (fileName, 1, 1) = '\') or (Pos (':', fileName) <> 0) then
-      result := fFileName
+      Result := FFileName
     else
-      result := ExtractFilePath (ParamStr (0)) + fFileName
+      Result := ExtractFilePath (ParamStr (0)) + FFileName
   end
   else                          // Otherwise derive the file name from the
   begin                         // application name
@@ -630,7 +628,7 @@ begin
     else
       st := Application;
 
-    result := ExtractFilePath (ParamStr (0)) + st + '.ini'
+    Result := ExtractFilePath (ParamStr (0)) + st + '.ini'
   end
 end;
 
@@ -641,9 +639,9 @@ end;
  *----------------------------------------------------------------------*)
 procedure TIniFilePersistentOptions.Load;
 var
-  f : TIniFile;
-  openedOK : boolean;
-  fileName : string;
+  f: TIniFile;
+  openedOK: Boolean;
+  fileName: string;
 begin
   if not Persist then Exit;
 
@@ -665,19 +663,19 @@ end;
  |                                                                      |
  | Parameters:                                                          |
  |   iniFile: TIniFile;         The INI file to load from               |
- |   const section : string;    The section to load                     |
+ |   const section: string;    The section to load                     |
  |   Options: TOptions;         Options to populate                     |
- |   forceDefaults: boolean     Use default values, rather than load    |
+ |   forceDefaults: Boolean     Use default values, rather than load    |
  |                              from the INI file.  This will be true   |
  |                              if the INI file could not be found.     |
  *----------------------------------------------------------------------*)
-procedure TIniFilePersistentOptions.LoadOptions(iniFile: TIniFile; const section : string;
-  Options: TOptions; forceDefaults: boolean);
+procedure TIniFilePersistentOptions.LoadOptions(iniFile: TIniFile; const section: string;
+  Options: TOptions; forceDefaults: Boolean);
 var
-  i : Integer;
-  option : TOption;
-  sec : string;
-  sl : THashedStringList;
+  i: Integer;
+  option: TOption;
+  sec: string;
+  sl: THashedStringList;
 begin
   sec := section;
   if sec = '' then
@@ -697,19 +695,19 @@ begin
 
       if forceDefaults or (sl.IndexOfName(option.Name) = -1) then
       case option.OptionType of
-        otString  : option.fStrVal  := option.fDefaultValue;
-        otInteger : option.fIntVal  := StrToIntDef (option.fDefaultValue, 0);
-        otBoolean : option.fBoolVal := StrToBoolDef (option.fDefaultValue, False);
-        otEnum    : option.fIntVal  := option.fEnumValues.IndexOf(option.fDefaultValue)
+        otString : option.FStrVal  := option.FDefaultValue;
+        otInteger: option.FIntVal  := StrToIntDef (option.FDefaultValue, 0);
+        otBoolean: option.FBoolVal := StrToBoolDef (option.FDefaultValue, False);
+        otEnum   : option.FIntVal  := option.FEnumValues.IndexOf(option.FDefaultValue)
       end
       else
       case option.OptionType of
-        otString  : option.fStrVal  := sl.Values [option.Name];
-        otInteger : option.fIntVal  := StrToIntDef (sl.Values [option.Name], StrToIntDef (option.fDefaultValue, 0));
-        otBoolean : option.fBoolVal := StrToBoolDef (sl.Values [option.Name], StrToBoolDef (option.fDefaultValue, False));
-        otEnum    : option.fIntVal  := StrToIntDef (sl.Values [option.Name], option.fEnumValues.IndexOf(option.fDefaultValue))
+        otString : option.FStrVal  := sl.Values [option.Name];
+        otInteger: option.FIntVal  := StrToIntDef (sl.Values [option.Name], StrToIntDef (option.FDefaultValue, 0));
+        otBoolean: option.FBoolVal := StrToBoolDef (sl.Values [option.Name], StrToBoolDef (option.FDefaultValue, False));
+        otEnum   : option.FIntVal  := StrToIntDef (sl.Values [option.Name], option.FEnumValues.IndexOf(option.FDefaultValue))
       end;
-      option.fDirty := False
+      option.FDirty := False
     end
   finally
     sl.Free
@@ -723,19 +721,19 @@ end;
  |                                                                      |
  | Parameters:                                                          |
  |   iniFile: TIniFile;                 The INI file to load from       |
- |   const section : string             Root section name               |
+ |   const section: string             Root section name               |
  |   Sections: TSections                The sections to load            |
- |   forceDefaults: boolean             True if default values should   |
+ |   forceDefaults: Boolean             True if default values should   |
  |                                      always be used for the options. |
  |                                      (ie if the INI file could not   |
  |                                       be found.)                     |
  *----------------------------------------------------------------------*)
-procedure TIniFilePersistentOptions.LoadSections(iniFile: TIniFile; const section : string;
-  Sections: TSections; forceDefaults: boolean);
+procedure TIniFilePersistentOptions.LoadSections(iniFile: TIniFile; const section: string;
+  Sections: TSections; forceDefaults: Boolean);
 var
-  i : Integer;
-  sect : TSection;
-  ss : string;
+  i: Integer;
+  sect: TSection;
+  ss: string;
 begin
   for i := 0 to Sections.Count - 1 do
   begin
@@ -757,7 +755,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TIniFilePersistentOptions.Save;
 var
-  f : TIniFile;
+  f: TIniFile;
 begin
   if not Persist then Exit;
 
@@ -777,15 +775,15 @@ end;
  |                                                                      |
  | Parameters:                                                          |
  |   iniFile: TIniFile                  The INI file to save to.        |
- |   const section : string             The section to save             |
+ |   const section: string             The section to save             |
  |   Options: TOptions                  Options to save in the section  |
  *----------------------------------------------------------------------*)
-procedure TIniFilePersistentOptions.SaveOptions(iniFile: TIniFile; const section : string;
+procedure TIniFilePersistentOptions.SaveOptions(iniFile: TIniFile; const section: string;
   Options: TOptions);
 var
-  i : Integer;
-  option : TOption;
-  sec : string;
+  i: Integer;
+  option: TOption;
+  sec: string;
 
 begin
   sec := section;
@@ -801,12 +799,12 @@ begin
 
     if not option.HasDefaultValue then
     case option.OptionType of
-      otString  : iniFile.WriteString(sec, option.Name, option.AsString);
-      otInteger : iniFile.WriteInteger(sec, option.Name, option.AsInteger);
-      otBoolean : iniFile.WriteBool(sec, option.Name, option.AsBoolean);
-      otEnum    : iniFile.WriteString(sec, option.Name, option.GetAsEnum);
+      otString : iniFile.WriteString(sec, option.Name, option.AsString);
+      otInteger: iniFile.WriteInteger(sec, option.Name, option.AsInteger);
+      otBoolean: iniFile.WriteBool(sec, option.Name, option.AsBoolean);
+      otEnum   : iniFile.WriteString(sec, option.Name, option.GetAsEnum);
     end;
-    option.fDirty := False;
+    option.FDirty := False;
   end
 end;
 
@@ -817,15 +815,15 @@ end;
  |                                                                      |
  | Parameters:                                                          |
  |   iniFile: TIniFile                  The INI file to save to.        |
- |   const section : string             The root section to save        |
+ |   const section: string             The root section to save        |
  |   Sections: TSections                Sections to save                |
  *----------------------------------------------------------------------*)
-procedure TIniFilePersistentOptions.SaveSections(iniFile: TIniFile; const section : string;
+procedure TIniFilePersistentOptions.SaveSections(iniFile: TIniFile; const section: string;
   Sections: TSections);
 var
-  i : Integer;
-  sect : TSection;
-  ss : string;
+  i: Integer;
+  sect: TSection;
+  ss: string;
 begin
   for i := 0 to Sections.Count - 1 do
   begin
@@ -847,9 +845,9 @@ end;
  *----------------------------------------------------------------------*)
 procedure TIniFilePersistentOptions.SetFileName(const Value: string);
 begin
-  if value <> fFileName then
+  if value <> FFileName then
   begin
-    fFileName := Value;
+    FFileName := Value;
 
     // Delete the old INI file if we're not in design mode.
     DeleteOldOptions (Application, Manufacturer, Version);
@@ -867,8 +865,8 @@ end;
 procedure TRegistryPersistentOptions.DeleteOldOptions(const application,
   manufacturer, version: string);
 var
-  keyName : string;
-  reg : TRegistry;
+  keyName: string;
+  reg: TRegistry;
 begin
   if not Persist then Exit;
 
@@ -907,12 +905,12 @@ begin
     raise EOptionError.Create (rstNoAppName);
 
   if Manufacturer <> '' then
-    result := '\Software\' + Manufacturer + '\' + Application
+    Result := '\Software\' + Manufacturer + '\' + Application
   else
-    result := '\Software\' + Application;
+    Result := '\Software\' + Application;
 
   if Version <> '' then
-    result := result + '\' + Version
+    Result := Result + '\' + Version
 end;
 
 (*----------------------------------------------------------------------*
@@ -923,8 +921,8 @@ end;
 
 procedure TRegistryPersistentOptions.Load;
 var
-  reg : TRegistry;
-  openedOK : boolean;
+  reg: TRegistry;
+  openedOK: Boolean;
 begin
   if not Persist then Exit;
 
@@ -949,14 +947,14 @@ end;
  | Parameters:                                                          |
  |   reg: TRegistry                     Registry to load from           |
  |   Options: TOptions                  Options to load                 |
- |   forceDefaults : boolean            True if defaults should be used |
+ |   forceDefaults: Boolean            True if defaults should be used |
  |                                      This is set if the root         |
  |                                      registry key didn't exist.      |
  *----------------------------------------------------------------------*)
-procedure TRegistryPersistentOptions.LoadOptions(reg: TRegistry; Options: TOptions; forceDefaults : boolean);
+procedure TRegistryPersistentOptions.LoadOptions(reg: TRegistry; Options: TOptions; forceDefaults: Boolean);
 var
-  i : Integer;
-  option : TOption;
+  i: Integer;
+  option: TOption;
 begin
   for i := 0 to Options.Count - 1 do
   begin
@@ -964,19 +962,19 @@ begin
 
     if forceDefaults or not reg.ValueExists(option.Name) then
     case option.OptionType of
-      otString  : option.fStrVal  := option.fDefaultValue;
-      otInteger : option.fIntVal  := StrToIntDef (option.fDefaultValue, 0);
-      otBoolean : option.fBoolVal := StrToBoolDef (option.fDefaultValue, False);
-      otEnum    : option.fIntVal  := option.fEnumValues.IndexOf(option.fDefaultValue)
+      otString : option.FStrVal  := option.FDefaultValue;
+      otInteger: option.FIntVal  := StrToIntDef (option.FDefaultValue, 0);
+      otBoolean: option.FBoolVal := StrToBoolDef (option.FDefaultValue, False);
+      otEnum   : option.FIntVal  := option.FEnumValues.IndexOf(option.FDefaultValue)
     end
     else
     case option.OptionType of
-      otString  : option.fStrVal  := reg.ReadString  (option.Name);
-      otInteger : option.fIntVal  := reg.ReadInteger (option.Name);
-      otBoolean : option.fBoolVal := reg.ReadBool    (option.Name);
-      otEnum    : option.fIntVal  := reg.ReadInteger (option.Name)
+      otString : option.FStrVal  := reg.ReadString  (option.Name);
+      otInteger: option.FIntVal  := reg.ReadInteger (option.Name);
+      otBoolean: option.FBoolVal := reg.ReadBool    (option.Name);
+      otEnum   : option.FIntVal  := reg.ReadInteger (option.Name)
     end;
-    option.fDirty := False
+    option.FDirty := False
   end
 end;
 
@@ -988,13 +986,13 @@ end;
  | Parameters:                                                          |
  |   reg: TRegistry             Root key                                |
  |   Sections: TSections        Sections to load                        |
- |   forceDefaults : boolean    'True' is defaults should be used       |
+ |   forceDefaults: Boolean    'True' is defaults should be used       |
  *----------------------------------------------------------------------*)
-procedure TRegistryPersistentOptions.LoadSections(reg: TRegistry; Sections: TSections; forceDefaults : boolean);
+procedure TRegistryPersistentOptions.LoadSections(reg: TRegistry; Sections: TSections; forceDefaults: Boolean);
 var
-  i : Integer;
-  section : TSection;
-  reg1 : TRegistry;
+  i: Integer;
+  section: TSection;
+  reg1: TRegistry;
 begin
   if not forceDefaults then
     reg1 := TRegistry.Create (KEY_READ)
@@ -1027,7 +1025,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TRegistryPersistentOptions.Save;
 var
-  reg : TRegistry;
+  reg: TRegistry;
 begin
   if not Persist then Exit;
 
@@ -1058,9 +1056,9 @@ end;
 procedure TRegistryPersistentOptions.SaveOptions(reg: TRegistry;
   Options: TOptions);
 var
-  i, idx : Integer;
-  deleteValues : TStringList;
-  option : TOption;
+  i, idx: Integer;
+  deleteValues: TStringList;
+  option: TOption;
 
 begin
   deleteValues := TStringList.Create;
@@ -1086,15 +1084,15 @@ begin
           deleteValues.Delete(idx);
 
         case Option.OptionType of
-          otString  : reg.WriteString  (Option.Name, Option.fStrVal);
-          otInteger : reg.WriteInteger (Option.Name, Option.fIntVal);
-          otBoolean : reg.WriteBool    (Option.Name, Option.fBoolVal);
-          otEnum    : reg.WriteInteger (Option.Name, Option.fIntVal)
+          otString : reg.WriteString  (Option.Name, Option.FStrVal);
+          otInteger: reg.WriteInteger (Option.Name, Option.FIntVal);
+          otBoolean: reg.WriteBool    (Option.Name, Option.FBoolVal);
+          otEnum   : reg.WriteInteger (Option.Name, Option.FIntVal)
         end
       end
       else
         reg.DeleteValue(Option.Name);           // Delete 'default' values
-      Option.fDirty := False
+      Option.FDirty := False
     end;
 
     if Options.DeleteObsoleteOptions then          // Delete obsolete values.
@@ -1117,10 +1115,10 @@ end;
 procedure TRegistryPersistentOptions.SaveSections(reg: TRegistry;
   Sections: TSections);
 var
-  i, idx : Integer;
-  section : TSection;
-  reg1 : TRegistry;
-  deleteSections : TStringList;
+  i, idx: Integer;
+  section: TSection;
+  reg1: TRegistry;
+  deleteSections: TStringList;
 begin
   reg1 := Nil;
   deleteSections := TStringList.Create;
@@ -1170,7 +1168,7 @@ constructor TOptions.Create(AOwner: TPersistent;
   ItemClass: TCollectionItemClass);
 begin
   inherited Create (AOwner, ItemClass);
-  fDeleteObsoleteOptions := True
+  FDeleteObsoleteOptions := True
 end;
 
 (*----------------------------------------------------------------------*
@@ -1180,7 +1178,7 @@ end;
  *----------------------------------------------------------------------*)
 function TOptions.GetOption(idx: Integer): TOption;
 begin
-  result := TOption (Items [idx])
+  Result := TOption (Items [idx])
 end;
 
 (*----------------------------------------------------------------------*
@@ -1190,16 +1188,16 @@ end;
  *----------------------------------------------------------------------*)
 function TOptions.GetOptionByName(const name: string): TOption;
 var
-  o : TOption;
-  i : Integer;
+  o: TOption;
+  i: Integer;
 begin
-  result := Nil;
+  Result := Nil;
   for i := 0 to Count - 1 do
   begin
     o := Option [i];
     if AnsiSameText (Name, o.Name) then
     begin
-      result := o;
+      Result := o;
       break
     end
   end
@@ -1217,8 +1215,8 @@ begin
   inherited;
   if Base.Designing or Base.Loading then
   begin
-    fEnumValues := TStringList.Create;
-    fEnumValues.CaseSensitive := False
+    FEnumValues := TStringList.Create;
+    FEnumValues.CaseSensitive := False
   end
 end;
 
@@ -1229,7 +1227,7 @@ end;
  *----------------------------------------------------------------------*)
 destructor TOption.Destroy;
 begin
-  fEnumValues.Free;
+  FEnumValues.Free;
   inherited;
 end;
 
@@ -1240,7 +1238,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TOption.Flush;
 begin
-  if fDirty and not Base.InUpdate then
+  if FDirty and not Base.InUpdate then
     Base.Save
 end;
 
@@ -1253,7 +1251,7 @@ end;
 function TOption.GetAsBoolean: Boolean;
 begin
   if OptionType = otBoolean then
-    result := fBoolVal
+    Result := FBoolVal
   else
     raise EOptionTypeMismatch (self)
 end;
@@ -1267,7 +1265,7 @@ end;
 function TOption.GetAsEnum: string;
 begin
   if OptionType = otEnum then
-    result := EnumValues [fIntVal]
+    Result := EnumValues [FIntVal]
   else
     raise EOptionTypeMismatch (self)
 end;
@@ -1281,7 +1279,7 @@ end;
 function TOption.GetAsInteger: Integer;
 begin
   if OptionType = otInteger then
-    result := fIntVal
+    Result := FIntVal
   else
     raise EOptionTypeMismatch (self)
 end;
@@ -1295,7 +1293,7 @@ end;
 function TOption.GetAsString: String;
 begin
   if OptionType = otString then
-    result := fStrVal
+    Result := FStrVal
   else
     raise EOptionTypeMismatch (self)
 end;
@@ -1307,14 +1305,14 @@ end;
  *----------------------------------------------------------------------*)
 function TOption.GetBase: TPersistentOptions;
 var
-  own : TPersistent;
+  own: TPersistent;
 begin
   own := TOwnedCollection (Collection).Owner;
 
   while own is TSection do
     own := TOwnedCollection (TSection (own).Collection).Owner;
 
-  result := own as TPersistentOptions
+  Result := own as TPersistentOptions
 end;
 
 (*----------------------------------------------------------------------*
@@ -1324,39 +1322,39 @@ end;
  *----------------------------------------------------------------------*)
 function TOption.GetDisplayName: string;
 begin
-  result := Name
+  Result := Name
 end;
 
 (*----------------------------------------------------------------------*
- | function TOption.GetEnumValues : TStringList                         |
+ | function TOption.GetEnumValues: TStringList                         |
  |                                                                      |
  | 'Get' method for EnumValues property                                 |
  *----------------------------------------------------------------------*)
 function TOption.GetEnumValues: TStrings;
 begin
-  result := fEnumValues
+  Result := FEnumValues
 end;
 
 (*----------------------------------------------------------------------*
- | function TOption.GetHasDefaultValue : boolean                        |
+ | function TOption.GetHasDefaultValue: Boolean                        |
  |                                                                      |
  | Return True if the option's current value is it's default.           |
  *----------------------------------------------------------------------*)
-function TOption.GetHasDefaultValue: boolean;
+function TOption.GetHasDefaultValue: Boolean;
 begin
-  result := False;
+  Result := False;
   case OptionType of
-    otString  : result := AnsiCompareStr (DefaultValue, fStrVal) = 0;
-    otInteger : result := StrToIntDef (DefaultValue, 0) = fIntVal;
-    otBoolean : result := StrToBoolDef (DefaultValue, False) = fBoolVal;
-    otEnum    : result := fIntVal = EnumValues.IndexOf(DefaultValue)
+    otString : Result := AnsiCompareStr (DefaultValue, FStrVal) = 0;
+    otInteger: Result := StrToIntDef (DefaultValue, 0) = FIntVal;
+    otBoolean: Result := StrToBoolDef (DefaultValue, False) = FBoolVal;
+    otEnum   : Result := FIntVal = EnumValues.IndexOf(DefaultValue)
   end
 end;
 
 (*----------------------------------------------------------------------*
  | procedure TOption.SetAsBoolean                                       |
  |                                                                      |
- | Set the option's value if it's a boolean option - otherwise raise    |
+ | Set the option's value if it's a Boolean option - otherwise raise    |
  | an exception                                                         |
  *----------------------------------------------------------------------*)
 procedure TOption.SetAsBoolean(const Value: Boolean);
@@ -1364,10 +1362,10 @@ begin
   if OptionType <> otBoolean then
     raise EOptionTypeMismatch (self);
 
-  if Value <> fBoolVal then
+  if Value <> FBoolVal then
   begin
-    fDirty := True;
-    fBoolVal := Value;
+    FDirty := True;
+    FBoolVal := Value;
     Flush
   end
 end;
@@ -1382,8 +1380,8 @@ procedure TOption.SetAsEnum(const Value: string);
 begin
   if Value <> AsEnum then
   begin
-    fDirty := True;
-    fIntVal := EnumValues.IndexOf(Value);
+    FDirty := True;
+    FIntVal := EnumValues.IndexOf(Value);
     Flush
   end
 end;
@@ -1399,10 +1397,10 @@ begin
   if OptionType <> otInteger then
     raise EOptionTypeMismatch (self);
 
-  if Value <> fIntVal then
+  if Value <> FIntVal then
   begin
-    fDirty := True;
-    fIntVal := Value;
+    FDirty := True;
+    FIntVal := Value;
     Flush
   end
 end;
@@ -1418,10 +1416,10 @@ begin
   if OptionType <> otString then
     raise EOptionTypeMismatch (self);
 
-  if Value <> fStrVal then
+  if Value <> FStrVal then
   begin
-    fDirty := True;
-    fStrVal := Value;
+    FDirty := True;
+    FStrVal := Value;
     Flush
   end
 end;
@@ -1434,7 +1432,7 @@ end;
 procedure TOption.SetEnumValues(const Value: TStrings);
 begin
   if (OptionType = otEnum) then
-    fEnumValues.Assign(Value)
+    FEnumValues.Assign(Value)
 end;
 
 (*----------------------------------------------------------------------*
@@ -1444,21 +1442,21 @@ end;
  *----------------------------------------------------------------------*)
 procedure TOption.SetOptionType(const Value: TOptionType);
 begin
-  if fOptionType <> Value then
+  if FOptionType <> Value then
   begin
     if Base.Designing then
     begin
-      if not Base.Loading then fEnumValues.Clear
+      if not Base.Loading then FEnumValues.Clear
     end
     else
       if not Base.Loading or (Value <> otEnum) then
-        FreeAndNil (fEnumValues);
+        FreeAndNil (FEnumValues);
 
-    fOptionType := Value;
+    FOptionType := Value;
 
-    if fOptionType = otEnum then
+    if FOptionType = otEnum then
       if not Base.Designing and not Base.Loading then
-        fEnumValues := TStringList.Create
+        FEnumValues := TStringList.Create
   end
 end;
 
@@ -1473,8 +1471,8 @@ constructor TSection.Create(Collection: TCollection);
 begin
   inherited;
 
-  fOptions := TOptions.Create(self, TOption);
-  fSections := TSections.Create(self, TSection);
+  FOptions := TOptions.Create(self, TOption);
+  FSections := TSections.Create(self, TSection);
 end;
 
 (*----------------------------------------------------------------------*
@@ -1484,8 +1482,8 @@ end;
  *----------------------------------------------------------------------*)
 destructor TSection.Destroy;
 begin
-  fOptions.Free;
-  fSections.Free;
+  FOptions.Free;
+  FSections.Free;
 
   inherited;
 end;
@@ -1497,7 +1495,7 @@ end;
  *----------------------------------------------------------------------*)
 function TSection.GetDisplayName: string;
 begin
-  result := Name
+  Result := Name
 end;
 
 (*----------------------------------------------------------------------*
@@ -1507,7 +1505,7 @@ end;
  *----------------------------------------------------------------------*)
 function TSection.GetOption(const name: string): TOption;
 begin
-  result := Options.OptionByName [name];
+  Result := Options.OptionByName [name];
 end;
 
 (*----------------------------------------------------------------------*
@@ -1517,7 +1515,7 @@ end;
  *----------------------------------------------------------------------*)
 function TSection.GetSection(const name: string): TSection;
 begin
-  result := Sections.SectionByName [name];
+  Result := Sections.SectionByName [name];
 end;
 
 { EOptionTypeMismatch }
@@ -1536,7 +1534,7 @@ end;
  *----------------------------------------------------------------------*)
 function TSections.GetSection(idx: Integer): TSection;
 begin
-  result := TSection (Items [idx])
+  Result := TSection (Items [idx])
 end;
 
 (*----------------------------------------------------------------------*
@@ -1546,17 +1544,17 @@ end;
  *----------------------------------------------------------------------*)
 function TSections.GetSectionByName(const name: string): TSection;
 var
-  i, p : Integer;
-  s : TSection;
+  i, p: Integer;
+  s: TSection;
 begin
-  result := Nil;
+  Result := Nil;
 
   p := Pos ('\', name);
   if p > 0 then
   begin
     s := SectionByName [Trim (Copy (name, 1, p - 1))];
     if Assigned (s) then
-      result := s.Sections.SectionByName [Trim (Copy (name, p + 1, MaxInt))]
+      Result := s.Sections.SectionByName [Trim (Copy (name, p + 1, MaxInt))]
     else
       raise EOptionError.CreateFmt(rstSectionNotFound, [s.Name]);
   end
@@ -1566,12 +1564,12 @@ begin
     s := Section [i];
     if AnsiSameText (name, s.Name) then
     begin
-      result := s;
+      Result := s;
       break
     end
   end;
 
-  if not Assigned (result) then
+  if not Assigned (Result) then
     raise EOptionError.CreateFmt (rstSectionNotFound, [name])
 end;
 

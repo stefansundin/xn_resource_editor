@@ -32,9 +32,10 @@ unit unitRTF2HTML;
 
 interface
 
-uses Windows, Classes, SysUtils;
+uses
+  Windows, Classes, SysUtils;
 
-function RTF2HTML (const rtf : string; rawFragment : boolean = false) : string;
+function RTF2HTML(const RTF: string; RawFragment: Boolean = False): string;
 
 implementation
 
@@ -44,7 +45,7 @@ type
                 rtBold, rtBoldNone,
                 rtCf, rtColorTbl,
                 rtDeff, rtDefLang,
-                rtF, rtFontTbl, rtFs,
+                RTF, rtFontTbl, rtFs,
                 rtItalic, rtItalicNone,
                 rtPar, rtPard, rtPlain,
                 rtRtf,
@@ -53,7 +54,7 @@ type
                 rtUnderlineNone,
                 rtViewkind, rtUnknown);
 var
-  RTFTokens : array [Low (TRTFTokens)..Pred (rtUnknown)] of string =
+  RTFTokens: array [Low (TRTFTokens)..Pred (rtUnknown)] of string =
     ('ansi', 'ansicpg',
      'b', 'bnone',
      'cf', 'colortbl',
@@ -70,13 +71,13 @@ var
  |                                                                      |
  | Convert a token string to a token                                    |
  *----------------------------------------------------------------------*}
-function FindToken (const token : string) : TRTFTokens;
+function FindToken (const token: string): TRTFTokens;
 
-  function bsearch (s, e : TRTFTokens) : TRTFTokens;
+  function bsearch (s, e: TRTFTokens): TRTFTokens;
   var
-    m : TRTFTokens;
-    c : Integer;
-    si, ei : Integer;
+    m: TRTFTokens;
+    c: Integer;
+    si, ei: Integer;
   begin
     si := Integer (s);
     ei := Integer (e);
@@ -107,18 +108,18 @@ end;
  |                                                                      |
  | Convert an RTF string to an HTML string                              |
  *----------------------------------------------------------------------*}
-function RTF2HTML (const rtf : string; rawFragment : boolean = false) : string;
+function RTF2HTML (const RTF: string; RawFragment: Boolean = False): string;
 var
-  p : PChar;
-  ch : char;
-  value : string;
-  token : TRTFTokens;
-  HTMLTagStack : TStringList;
-  inBody : boolean;
-  colors : TList;
-  inTags : boolean;
+  p: PChar;
+  ch: char;
+  value: string;
+  token: TRTFTokens;
+  HTMLTagStack: TStringList;
+  inBody: Boolean;
+  colors: TList;
+  inTags: Boolean;
 
-  procedure Error (const st : string);
+  procedure Error (const st: string);
   begin
     raise Exception.Create(st);
   end;
@@ -126,19 +127,19 @@ var
   procedure CheckInBody; forward;
 
 // ------ Basic HTML generation routines...
-  procedure EmitChar (ch : char);
+  procedure EmitChar (ch: char);
   begin
     CheckInBody;
     result := result + ch;
   end;
 
-  procedure EmitStr (const st : string);
+  procedure EmitStr (const st: string);
   begin
     CheckInBody;
     result := result + st
   end;
 
-  procedure EmitText (const st : string);
+  procedure EmitText (const st: string);
   begin
     if inTags then
     begin
@@ -148,7 +149,7 @@ var
     EmitStr (st)
   end;
 
-  procedure EmitTextChar (ch : char);
+  procedure EmitTextChar (ch: char);
   begin
     if inTags then
     begin
@@ -156,10 +157,10 @@ var
       EmitStr (#13#10)
     end;
     case ch of
-      '>' : EmitStr ('&gt;');
-      '<' : EmitStr ('&lt;');
-      '"' : EmitStr ('&quot;');
-      '&' : EmitStr ('&amp;');
+      '>': EmitStr ('&gt;');
+      '<': EmitStr ('&lt;');
+      '"': EmitStr ('&quot;');
+      '&': EmitStr ('&amp;');
       else
         EmitChar (ch)
     end
@@ -169,7 +170,7 @@ var
   // Emit an HTML tag and push it onto the HTML tag stack so that it will
   // automatically get closed.
   //
-  procedure EmitTag (const tag, params : string);
+  procedure EmitTag (const tag, params: string);
   begin
     // Optimization - don't do <BODY><P>.  Just <BODY> will do
 
@@ -201,9 +202,9 @@ var
   // *only* if the tag is on the stack, pop and emit all tags up to and
   // including the tag.
   //
-  procedure PopTag (const tag : string);
+  procedure PopTag (const tag: string);
   var
-    st : string;
+    st: string;
   begin
     if HTMLTagStack.IndexOf(tag) >= 0 then
       while (HTMLTagStack.Count > 0) do
@@ -226,21 +227,21 @@ var
     if not inBody then
     begin
       inBody := True;
-      if not rawFragment then
+      if not RawFragment then
         EmitTag ('BODY', '');
     end
   end;
 
 // -----  Basic parsing routines
 
-  function GetChar : char;
+  function GetChar: char;
   begin
     ch := p^;
     result := ch;
     Inc (p)
   end;
 
-  function GetValue : string;
+  function GetValue: string;
   begin
     value := '';
     while not (GetChar in [' ', '\', '{', ';', #13, #10]) do
@@ -249,9 +250,9 @@ var
     result := value
   end;
 
-  function GetToken : TRTFTokens;
+  function GetToken: TRTFTokens;
   var
-    st : string;
+    st: string;
   begin
     st := '';
     while GetChar in ['A'..'Z', 'a'..'z'] do
@@ -261,7 +262,7 @@ var
     result := token
   end;
 
-  function GetTokenValue : string;
+  function GetTokenValue: string;
   begin
     value := '';
     while GetChar in ['A'..'Z', 'a'..'z'] do
@@ -286,12 +287,12 @@ var
   begin
     while not (GetChar in [#0, '}']) do
       case ch of
-        '\' : begin
+        '\': begin
                 GetToken;
                 GetValue;
               end;
-        ' ' : GetFontNameValue;
-        ';' : if GetChar <> '}' then
+        ' ': GetFontNameValue;
+        ';': if GetChar <> '}' then
                 Error ('} expected after ; in font table')
               else
                 break;
@@ -304,15 +305,15 @@ var
 
   procedure GetColorGroup;
   var
-    st : string;
-    rVal, gVal, bVal : byte;
+    st: string;
+    rVal, gVal, bVal: byte;
   begin
     rVal := 0;
     gVal := 0;
     bVal := 0;
     while ch <> #0 do
       case ch of
-        '\' : begin
+        '\': begin
                 st := GetTokenValue;
                 GetValue;
 
@@ -326,13 +327,13 @@ var
                       bVal := StrToIntDef (value, 0);
                 while GetChar = ' ' do;
               end;
-        ';' : begin
+        ';': begin
                 if colors = Nil then colors := TList.Create;
                 colors.Add(Pointer (RGB (rVal, gVal, bVal)));
                 GetChar;
                 break
               end;
-        ' ' : GetChar ();
+        ' ': GetChar ();
         else
           Error ('\ expected in color table');
       end
@@ -342,7 +343,7 @@ var
 
   procedure GetGroup;
   var
-    intVal : Integer;
+    intVal: Integer;
 
     procedure ProcessFontTable;
     begin
@@ -366,31 +367,31 @@ var
       GetToken;
       GetValue;
       case Token of
-        rtFontTbl       : ProcessFontTable;
-        rtColorTbl      : ProcessColorTable;
+        rtFontTbl      : ProcessFontTable;
+        rtColorTbl     : ProcessColorTable;
 
-        rtBold          : if value = '0' then PopTag ('B') else EmitTag ('B', '');
-        rtBoldNone      : PopTag ('B');
+        rtBold         : if value = '0' then PopTag ('B') else EmitTag ('B', '');
+        rtBoldNone     : PopTag ('B');
 
-        rtItalic        : if value = '0' then PopTag ('I') else EmitTag ('I', '');
-        rtItalicNone    : PopTag ('I');
+        rtItalic       : if value = '0' then PopTag ('I') else EmitTag ('I', '');
+        rtItalicNone   : PopTag ('I');
 
-        rtUnderline     : if value = '0' then PopTag ('U') else EmitTag ('U', '');
-        rtUnderlineNone : PopTag ('U');
+        rtUnderline    : if value = '0' then PopTag ('U') else EmitTag ('U', '');
+        rtUnderlineNone: PopTag ('U');
 
-        rtPard     : begin
+        rtPard    : begin
                        PopTag ('P');
                        EmitTag ('P', '');
                      end;
-        rtPar      : EmitText ('<BR>'+#13#10);
+        rtPar     : EmitText ('<BR>'+#13#10);
 
-        rtPlain    : begin
+        rtPlain   : begin
                        PopTag ('B');
                        PopTag ('U');
                        PopTag ('I');
                        PopTag ('FONT')
                      end;
-        rtCf       : begin
+        rtCf      : begin
                        intVal := StrToIntDef (value, -1);
                        if (intVal >= 0) and (colors <> Nil) and (intVal < colors.Count) then
                        begin
@@ -412,7 +413,7 @@ var
         #10, #13 :;
         '\' :
           case p [0] of
-            '''' : begin // Hex literal
+            '''': begin // Hex literal
                      Value := p [1] + p [2];
                      Inc (p, 3);
                      EmitTextChar (Char (StrToInt ('$' + Value)));
@@ -422,7 +423,7 @@ var
 
             else ProcessToken
           end;
-        '{' : GetGroup
+        '{': GetGroup
         else
           if (ch = ' ') and (p [0] = ' ') then
             EmitTextChar (#$a0)
@@ -435,18 +436,18 @@ var
 begin { RTF2HTML }
   inBody := False;              // Initialize globals
   result := '';
-  colors := Nil;
+  colors := nil;
   inTags := False;
-  p := @rtf [1];
+  p := @RTF [1];
 
   HTMLTagStack := TStringList.Create;
   try
     HTMLTagStack.CaseSensitive := False;
     while GetChar <> #0 do
       case ch of
-        #0 : break;
-        '{' : GetGroup;
-        '}' : Error ('Mismatched curly brackets')
+        #0: break;
+        '{': GetGroup;
+        '}': Error ('Mismatched curly brackets')
       end
   finally
                         // The HTML tag stack should be empty - but

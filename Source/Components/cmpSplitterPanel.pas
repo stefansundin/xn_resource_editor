@@ -85,9 +85,6 @@ type
     property BevelledSplitters : boolean read fBevelled write SetBevelled;
   public
     constructor Create (AOwner : TComponent); override;
-    { Public declarations }
-  published
-    { Published declarations }
   end;
 
   TSplitterPanel = class (TCustomSplitterPanel)

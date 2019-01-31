@@ -13,7 +13,8 @@ unit cmpMenuDesigner;
 interface
 
 uses
-  Windows, Messages, Menus, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, ExtCtrls;
+  Windows, Messages, Menus, SysUtils, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls;
 
 type
 
@@ -23,7 +24,7 @@ type
 // NB.  Tags is used to hold the menu item ID.  If it's selected then Tags is
 //      -(menu item ID + 3)
 //
-// NB.  Each time an item is selected, the path to it is save in the fPositionSnapshot
+// NB.  Each time an item is selected, the path to it is save in the FPositionSnapshot
 //      list.  If SetItems is called with the 'KeepPosition flag set', the item at the
 //      snapshot position will be selected.
 //
@@ -39,60 +40,59 @@ type
   protected
     procedure MenuChanged(Rebuild: Boolean); override;
   public
-    property ID : Integer read GetID write SetID;
-    property Selected : boolean read GetSelected write SetSelected;
+    property ID: Integer read GetID write SetID;
+    property Selected: boolean read GetSelected write SetSelected;
   end;
 
   TBaseMenuDesigner = class (TCustomControl)
   private
-    fItems: TMenuItem;
-    fSelectedItem: TMenuItem;
-    fOnSelectedItemChange: TNotifyEvent;
-    fDirty : boolean;
-    fPositionSnapshot : TList;
-    procedure PaintItems (x, y : Integer; items : TMenuItem);
-    procedure CalcItemsSize (items : TMenuItem; var stW, shortcutW, h : Integer);
-    function DrawTextWidth (lm, rm : Integer; const st : WideString) : Integer;
+    FItems: TMenuItem;
+    FSelectedItem: TMenuItem;
+    FOnSelectedItemChange: TNotifyEvent;
+    FDirty: boolean;
+    FPositionSnapshot: TList;
+    procedure PaintItems (x, y: Integer; items: TMenuItem);
+    procedure CalcItemsSize (items: TMenuItem; var stW, shortcutW, h: Integer);
+    function DrawTextWidth (lm, rm: Integer; const st: WideString): Integer;
     procedure SetSelectedItem(const Value: TMenuItem);
-    procedure WmGetDLGCode (var msg : TwmGetDlgCode); message WM_GETDLGCODE;
-    procedure DoChangeSelectedItem (value : TMenuItem);
+    procedure WmGetDLGCode (var msg: TwmGetDlgCode); message WM_GETDLGCODE;
+    procedure DoChangeSelectedItem (value: TMenuItem);
 
-    function AddChildItemAt (parent : TMenuItem; index : Integer) : TMenuItem;
+    function AddChildItemAt (parent: TMenuItem; index: Integer): TMenuItem;
     procedure TakeSnapshot;
-    function GetSnapshotItem : TMenuItem;
+    function GetSnapshotItem: TMenuItem;
     function GetSelectedItem: TMenuItem;
 
-    function DrawItem (item : TMenuITem; x, y, stw, shw, leftMargin, rightMargin, sth : Integer; vert : boolean) : Integer;
-    { Private declarations }
+    function DrawItem (item: TMenuITem; x, y, stw, shw, leftMargin, rightMargin, sth: Integer; vert: boolean): Integer;
   protected
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState;
       X, Y: Integer); override;
     function CanAutoSize(var NewWidth, NewHeight: Integer): Boolean; override;
 
-    function ItemAt (X, Y : Integer) : TMenuItem; virtual;
-    function ItemAtOffset (items : TMenuItem; XOffset, YOffset, X, Y : Integer) : TMenuItem;
-    procedure CalcSize (var w, h : Integer); virtual;
+    function ItemAt (X, Y: Integer): TMenuItem; virtual;
+    function ItemAtOffset (items: TMenuItem; XOffset, YOffset, X, Y: Integer): TMenuItem;
+    procedure CalcSize (var w, h: Integer); virtual;
     procedure KeyDown(var Key: Word; Shift: TShiftState); override;
     procedure DoExit; override;
     procedure DoEnter; override;
   public
-    constructor Create (AOwner : TComponent); override;
+    constructor Create (AOwner: TComponent); override;
     destructor Destroy; override;
-    property Items : TMenuItem read fItems;
-    property SelectedItem : TMenuItem read GetSelectedItem write SetSelectedItem;
-    procedure DeleteItem (item : TMenuItem);
+    property Items: TMenuItem read FItems;
+    property SelectedItem: TMenuItem read GetSelectedItem write SetSelectedItem;
+    procedure DeleteItem (item: TMenuItem);
 
-    function InsertItem (beforeItem : TMenuItem) : TMenuItem;
-    function AppendItem (afterItem : TMenuItem) : TMenuItem;
-    function AddChildItem (parentItem : TMenuItem) : TMenuItem;
+    function InsertItem (beforeItem: TMenuItem): TMenuItem;
+    function AppendItem (afterItem: TMenuItem): TMenuItem;
+    function AddChildItem (parentItem: TMenuItem): TMenuItem;
 
     procedure RestoreTags;
 
-    property Dirty : boolean read fDirty;
-    procedure SetItems(const Value: TMenuItem; keepPosition : boolean = False);
+    property Dirty: boolean read FDirty;
+    procedure SetItems(const Value: TMenuItem; keepPosition: boolean = False);
 
   published
-    property OnSelectedItemChange : TNotifyEvent read fOnSelectedItemChange write fOnSelectedItemChange;
+    property OnSelectedItemChange: TNotifyEvent read FOnSelectedItemChange write FOnSelectedItemChange;
     property Align;
     property Anchors;
     property AutoSize;
@@ -143,36 +143,30 @@ type
   end;
 
   TMenuDesigner = class(TBaseMenuDesigner)
-  private
-    { Private declarations }
   protected
     procedure Paint; override;
-    function ItemAt (X, Y : Integer) : TMenuItem; override;
-    procedure CalcSize (var w, h : Integer); override;
+    function ItemAt (X, Y: Integer): TMenuItem; override;
+    procedure CalcSize (var w, h: Integer); override;
   public
-    constructor Create (AOwner : TComponent); override;
+    constructor Create (AOwner: TComponent); override;
   published
   end;
 
   TPopupMenuDesigner = class (TBaseMenuDesigner)
-  private
-    { Private declarations }
   protected
     procedure Paint; override;
-    function ItemAt (X, Y : Integer) : TMenuItem; override;
-    procedure CalcSize (var w, h : Integer); override;
+    function ItemAt (X, Y: Integer): TMenuItem; override;
+    procedure CalcSize (var w, h: Integer); override;
   public
-    constructor Create (AOwner : TComponent); override;
-  published
-    { Published declarations }
+    constructor Create (AOwner: TComponent); override;
   end;
 
   TMenuItemDesigner = class (TCustomControl)
   end;
 
-function ExtractCaption (const st : WideString) : WideString;
-function ExtractShortcut (const st : WideString) : WideString;
-function MergeCaption (const st, shortcut : WideString) : WideString;
+function ExtractCaption (const st: WideString): WideString;
+function ExtractShortcut (const st: WideString): WideString;
+function MergeCaption (const st, shortcut: WideString): WideString;
 
 implementation
 
@@ -187,34 +181,34 @@ const
   mainMenuLeftMargin = 7;
   mainMenuRightMargin = 7;
 
-function ExtractCaption (const st : WideString) : WideString;
+function ExtractCaption (const st: WideString): WideString;
 var
-  p : Integer;
+  p: Integer;
 begin
-  result := st;
-  p := Pos (#9, result);
+  Result := st;
+  p := Pos (#9, Result);
   if p > 0 then
-    result := Copy (result, 1, p - 1)
+    Result := Copy (Result, 1, p - 1)
 end;
 
-function ExtractShortcut (const st : WideString) : WideString;
+function ExtractShortcut (const st: WideString): WideString;
 var
-  p : Integer;
+  p: Integer;
 begin
-  result := st;
-  p := Pos (#9, result);
+  Result := st;
+  p := Pos (#9, Result);
   if p > 0 then
-    result := Copy (result, p + 1, MaxInt)
+    Result := Copy (Result, p + 1, MaxInt)
   else
-    result := ''
+    Result := ''
 end;
 
-function MergeCaption (const st, shortcut : WideString) : WideString;
+function MergeCaption (const st, shortcut: WideString): WideString;
 begin
   if shortcut <> '' then
-    result := st + #9 + shortcut
+    Result := st + #9 + shortcut
   else
-    result := st
+    Result := st
 end;
 
 (*----------------------------------------------------------------------*
@@ -223,11 +217,11 @@ end;
  | Add a sub-menu.                                                      |
  |                                                                      |
  | Parameters                                                           |
- |    parentItem : TMenuItem          The parent of the new child menu  |
+ |    parentItem: TMenuItem          The parent of the new child menu  |
  *----------------------------------------------------------------------*)
 function TBaseMenuDesigner.AddChildItem(parentItem: TMenuItem): TMenuItem;
 begin
-  result := AddChildItemAt (parentItem, parentItem.Count);
+  Result := AddChildItemAt (parentItem, parentItem.Count);
 end;
 
 (*----------------------------------------------------------------------*
@@ -236,20 +230,20 @@ end;
  | Add a child item at the specified position.  Private                 |
  |                                                                      |
  | Parameters                                                           |
- |   parent : TMenuItem         The parent of the new child item        |
- |   index : Integer            Position of the child item.             |
+ |   parent: TMenuItem         The parent of the new child item        |
+ |   index: Integer            Position of the child item.             |
  *----------------------------------------------------------------------*)
-function TBaseMenuDesigner.AddChildItemAt(parent : TMenuItem; index: Integer): TMenuItem;
+function TBaseMenuDesigner.AddChildItemAt(parent: TMenuItem; index: Integer): TMenuItem;
 begin
   if Assigned (parent) then
   begin
-    result := TDesignerMenuItem.Create (self);
-    parent.Insert (index, result);
-    SelectedItem := result;
+    Result := TDesignerMenuItem.Create (self);
+    parent.Insert (index, Result);
+    SelectedItem := Result;
     Invalidate
   end
   else
-    result := Nil
+    Result := Nil
 end;
 
 (*----------------------------------------------------------------------*
@@ -258,19 +252,19 @@ end;
  | Append an item to a menu.                                            |
  |                                                                      |
  | Parameters                                                           |
- |    afterItem : TMenuItem          The item to insert after           |
+ |    afterItem: TMenuItem          The item to insert after           |
  *----------------------------------------------------------------------*)
 function TBaseMenuDesigner.AppendItem(afterItem: TMenuItem): TMenuItem;
 var
-  idx : Integer;
+  idx: Integer;
 begin
   if Assigned (afterItem) and Assigned (afterItem.Parent) then
   begin
     idx := afterItem.Parent.IndexOf (afterItem);
-    result := AddChildItemAt (afterItem.parent, idx + 1)
+    Result := AddChildItemAt (afterItem.parent, idx + 1)
   end
   else
-    result := Nil
+    Result := Nil
 end;
 
 (*----------------------------------------------------------------------*
@@ -287,15 +281,15 @@ end;
  | text and shortcut text is the left margin + the right margin.        |
  |                                             |                        |
  | Parameters                                                           |
- |    items : TMenuItem         The items to evaluate                   |
- |    var stW : Integer         The widest text width                   |
- |    var shortcutW : Integer   The widest shortcut width               |
- |    var h : Integer           The hieght of th menu.                  |
+ |    items: TMenuItem         The items to evaluate                   |
+ |    var stW: Integer         The widest text width                   |
+ |    var shortcutW: Integer   The widest shortcut width               |
+ |    var h: Integer           The hieght of th menu.                  |
  *----------------------------------------------------------------------*)
-procedure TBaseMenuDesigner.CalcItemsSize (items: TMenuItem; var stW, shortcutW, h : Integer);
+procedure TBaseMenuDesigner.CalcItemsSize (items: TMenuItem; var stW, shortcutW, h: Integer);
 var
-  st, s1 : WideString;
-  i, w0, w1, lh : Integer;
+  st, s1: WideString;
+  i, w0, w1, lh: Integer;
 
 begin
   inherited;
@@ -354,8 +348,8 @@ end;
 function TBaseMenuDesigner.CanAutoSize(var NewWidth,
   NewHeight: Integer): Boolean;
 var
-  calced : boolean;
-  w, h : Integer;
+  calced: boolean;
+  w, h: Integer;
 begin
   Result := True;
   if not (csDesigning in ComponentState) then
@@ -386,8 +380,8 @@ begin
   inherited;
   ControlStyle := ControlStyle + [csReflector];
   DoubleBuffered := True;
-  fItems := TDesignerMenuItem.Create (self);
-  fPositionSnapshot := TList.Create;
+  FItems := TDesignerMenuItem.Create (self);
+  FPositionSnapshot := TList.Create;
 end;
 
 (*----------------------------------------------------------------------*
@@ -398,13 +392,13 @@ end;
  *----------------------------------------------------------------------*)
 procedure TBaseMenuDesigner.DeleteItem(item: TMenuItem);
 var
-  selIdx : Integer;
-  parent : TMenuItem;
+  selIdx: Integer;
+  parent: TMenuItem;
 begin
   if Assigned (item) then
   begin
     selIDx := -1;
-    if fSelectedItem = item then
+    if FSelectedItem = item then
     begin
       parent := item.Parent;
       if parent <> Nil then
@@ -439,7 +433,7 @@ end;
  *----------------------------------------------------------------------*)
 destructor TBaseMenuDesigner.Destroy;
 begin
-  fPositionSnapshot.Free;
+  FPositionSnapshot.Free;
   inherited;
 end;
 
@@ -451,11 +445,11 @@ end;
  *----------------------------------------------------------------------*)
 procedure TBaseMenuDesigner.DoChangeSelectedItem(value: TMenuItem);
 begin
-  fSelectedItem := value;
+  FSelectedItem := value;
 
   TakeSnapshot;
 
-  if Assigned (fOnSelectedItemChange) and Assigned (fSelectedItem) and not (csDestroying in ComponentState) then
+  if Assigned (FOnSelectedItemChange) and Assigned (FSelectedItem) and not (csDestroying in ComponentState) then
     OnSelectedItemChange (self);
 end;
 
@@ -465,14 +459,14 @@ end;
  | Draw an item.                                                        |
  |                                                                      |
  | Parmeters:                                                           |
- |   item : TMenuItem                   The item to draw                |
- |   x : Integer                        Horizontal position             |
- |   stw : Integer                      Caption width.  -1 to calculate.|
- |   shw : Integer                      Shortcut width                  |
- |   leftMargin : Integer               Left margin                     |
- |   rightMargin : Integer              Right Margin                    |
- |   sth : Integer                      Item height                     |
- |   vert : boolean                     True if popup or drop down.     |
+ |   item: TMenuItem                   The item to draw                |
+ |   x: Integer                        Horizontal position             |
+ |   stw: Integer                      Caption width.  -1 to calculate.|
+ |   shw: Integer                      Shortcut width                  |
+ |   leftMargin: Integer               Left margin                     |
+ |   rightMargin: Integer              Right Margin                    |
+ |   sth: Integer                      Item height                     |
+ |   vert: boolean                     True if popup or drop down.     |
  |                                      False if main menu.             |
  |                                                                      |
  | nb.  If 'Vert' is set, the bo0unding rectangle is shrunk to avoid    |
@@ -493,20 +487,20 @@ begin
   Invalidate
 end;
 
-function TBaseMenuDesigner.DrawItem(item: TMenuITem; x, y, stw, shw, leftMargin, rightMargin, sth : Integer; vert: boolean) : Integer;
+function TBaseMenuDesigner.DrawItem(item: TMenuITem; x, y, stw, shw, leftMargin, rightMargin, sth: Integer; vert: boolean): Integer;
 var
-  st, s1 : WideString;
-  params : TDrawTextParams;
-  r : TRect;
-  extent, oldMode : Integer;
-  b : TBitmap;
+  st, s1: WideString;
+  params: TDrawTextParams;
+  r: TRect;
+  extent, oldMode: Integer;
+  b: TBitmap;
 
 // -----------------------------------------------------------------------
 // Helper function draws string in correct color, depending on item params
-  procedure DrawStr (left : Integer; const st : WideString);
+  procedure DrawStr (left: Integer; const st: WideString);
   var
-    r : TRect;
-    defFColor : TColor;
+    r: TRect;
+    defFColor: TColor;
   begin
     oldMode := SetBkMode (Canvas.Handle, TRANSPARENT);
     defFColor := Canvas.Font.Color;
@@ -599,7 +593,7 @@ begin
     else if s1 <> '' then                       // Draw the shortcut
       DrawStr (x + stw, s1);
   end;
-  result := extent
+  Result := extent
 end;
 
 (*----------------------------------------------------------------------*
@@ -608,13 +602,13 @@ end;
  | Return the width of a bounding rectangle that can contain a string   |
  | including a right and left margin.                                   |
  *----------------------------------------------------------------------*)
-function TBaseMenuDesigner.DrawTextWidth(lm, rm : Integer; const st: WideString): Integer;
+function TBaseMenuDesigner.DrawTextWidth(lm, rm: Integer; const st: WideString): Integer;
 var
-  r : TRect;
-  params : TDrawTextParams;
+  r: TRect;
+  params: TDrawTextParams;
 begin
   if st = '' then
-    result := lm + rm
+    Result := lm + rm
   else
   begin
     r := Rect (0, 0, 0, 0);
@@ -627,64 +621,64 @@ begin
 
     // nb.  DT_CALCRECT ensures that the text isn't actually drawn - just the rect is returned.
     DrawTextExW (Canvas.Handle, PWideChar (st), Length (st), r, DT_LEFT or DT_SINGLELINE or DT_CALCRECT, @params);
-    result := r.Right
+    Result := r.Right
   end
 end;
 
 function TBaseMenuDesigner.GetSelectedItem: TMenuItem;
 begin
-  if fSelectedItem is TDesignerMenuItem then
-    result := TDesignerMenuItem (fSelectedItem)
+  if FSelectedItem is TDesignerMenuItem then
+    Result := TDesignerMenuItem (FSelectedItem)
   else
-    result := Nil
+    Result := Nil
 end;
 
 function TBaseMenuDesigner.GetSnapshotItem: TMenuItem;
 var
-  i, v : Integer;
-  p : TMenuItem;
+  i, v: Integer;
+  p: TMenuItem;
 begin
-  p := fItems;
-  for i := 0 to fPositionSnapshot.Count - 1 do
+  p := FItems;
+  for i := 0 to FPositionSnapshot.Count - 1 do
   begin
     if not Assigned (p) then break;
-    v := Integer (fPositionSnapshot [i]);
+    v := Integer (FPositionSnapshot [i]);
     if v <> -1 then
       p := p.Items [v]
   end;
 
-  result := p;
+  Result := p;
 end;
 
 function TBaseMenuDesigner.InsertItem(beforeItem: TMenuItem): TMenuItem;
 var
-  idx : Integer;
+  idx: Integer;
 begin
   if Assigned (beforeItem) and Assigned (beforeItem.Parent) then
   begin
     idx := beforeItem.Parent.IndexOf (beforeItem);
-    result := AddChildItemAt (beforeItem.parent, idx);
-    SelectedItem := result
+    Result := AddChildItemAt (beforeItem.parent, idx);
+    SelectedItem := Result
   end
   else
-    result := Nil
+    Result := Nil
 end;
 
 function TBaseMenuDesigner.ItemAt(X, Y: Integer): TMenuItem;
 begin
-  result := Nil
+  Result := Nil
 end;
 
-function TBaseMenuDesigner.ItemAtOffset(items : TMenuItem; XOffset, YOffset, X,
+function TBaseMenuDesigner.ItemAtOffset(items: TMenuItem; XOffset, YOffset, X,
   Y: Integer): TMenuItem;
 var
-  w, m, h : Integer;
-  r : TRect;
-  i, lh, ew : Integer;
-  item : TMenuItem;
+  w, m, h: Integer;
+  r: TRect;
+  i, lh, ew: Integer;
+  item: TMenuItem;
 
 begin
-  result := Nil;
+  Result := Nil;
   CalcItemsSize (items, w, m, h);
 
   r.Left := XOffset;
@@ -708,12 +702,12 @@ begin
 
     if PtInRect (r, Point (X, Y)) then
     begin
-      result := item;
+      Result := item;
       break
     end;
 
     if (item.Count > 0) and TDesignerMenuItem (Item).Selected then
-      result := ItemAtOffset (item, XOffset + w + m, YOffset, X, Y);
+      Result := ItemAtOffset (item, XOffset + w + m, YOffset, X, Y);
 
     YOffset := YOffset + lh;
   end
@@ -721,9 +715,9 @@ end;
 
 procedure TBaseMenuDesigner.KeyDown(var Key: Word; Shift: TShiftState);
 var
-  vertMenu, vertParent : boolean;
-  parent, grandparent : TMenuItem;
-  gidx, idx : Integer;
+  vertMenu, vertParent: boolean;
+  parent, grandparent: TMenuItem;
+  gidx, idx: Integer;
 begin
   if Assigned (SelectedItem) and Assigned (selectedItem.Parent) then
   begin
@@ -794,7 +788,7 @@ end;
 procedure TBaseMenuDesigner.MouseDown(Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 var
-  i : TMenuItem;
+  i: TMenuItem;
 begin
   SetFocus;
   i := ItemAt (X, Y);
@@ -805,10 +799,10 @@ end;
 
 procedure TBaseMenuDesigner.PaintItems(x, y: Integer; items: TMenuItem);
 var
-  w, m, h : Integer;
-  lh, i : Integer;
-  item : TMenuItem;
-  r : TRect;
+  w, m, h: Integer;
+  lh, i: Integer;
+  item: TMenuItem;
+  r: TRect;
 begin
   CalcItemsSize (items, w, m, h);
 
@@ -840,9 +834,9 @@ end;
 
 procedure TBaseMenuDesigner.RestoreTags;
 
-  procedure RestoreItemTags (item : TMenuItem);
+  procedure RestoreItemTags (item: TMenuItem);
   var
-    i : Integer;
+    i: Integer;
   begin
     TDesignerMenuItem (item).Selected := False;
     for i := 0 to item.Count - 1 do
@@ -853,14 +847,14 @@ begin
   RestoreItemTags (Items)
 end;
 
-procedure TBaseMenuDesigner.SetItems(const Value: TMenuItem; keepPosition : boolean);
+procedure TBaseMenuDesigner.SetItems(const Value: TMenuItem; keepPosition: boolean);
 var
-  selItem : TMenuItem;
+  selItem: TMenuItem;
 
-  procedure AssignItem (src, dest : TMenuItem);
+  procedure AssignItem (src, dest: TMenuItem);
   var
-    i : Integer;
-    newItem : TMenuItem;
+    i: Integer;
+    newItem: TMenuItem;
   begin
     dest.Caption := src.Caption;
     dest.Tag := src.Tag;
@@ -878,7 +872,7 @@ var
 
 begin
   Items.Clear;
-  fSelectedItem := Nil;
+  FSelectedItem := Nil;
   AssignItem (value, items);
 
   if KeepPosition then
@@ -892,18 +886,18 @@ begin
   else
     SelectedItem := Items [0];
   ReAlign;
-  fDirty := False;
+  FDirty := False;
   Invalidate
 end;
 
 procedure TBaseMenuDesigner.SetSelectedItem(const Value: TMenuItem);
 var
-  p : TMenuItem;
+  p: TMenuItem;
 
-  procedure ClearSelection (items : TMenuItem);
+  procedure ClearSelection (items: TMenuItem);
   var
-    i : Integer;
-    item : TMenuItem;
+    i: Integer;
+    item: TMenuItem;
   begin
     for i := 0 to items.Count - 1 do
     begin
@@ -920,9 +914,9 @@ begin
   if Assigned (value) and not (value is TDesignerMenuItem) then
     raise Exception.Create ('Can''t select item');
 
-  if fSelectedItem <> value then
+  if FSelectedItem <> value then
   begin
-    ClearSelection (fItems);
+    ClearSelection (FItems);
     p := value;
     while Assigned (p) do
     begin
@@ -940,17 +934,17 @@ begin
 end;
 
 procedure TBaseMenuDesigner.TakeSnapshot;
-  procedure Snapshot (item : TMenuItem);
+  procedure Snapshot (item: TMenuItem);
   begin
     if Assigned (item) then
     begin
       Snapshot (item.Parent);
-      fPositionSnapshot.Add (pointer (item.MenuIndex))
+      FPositionSnapshot.Add (pointer (item.MenuIndex))
     end
   end;
 begin
-  fPositionSnapshot.Clear;
-  Snapshot (fSelectedItem);
+  FPositionSnapshot.Clear;
+  Snapshot (FSelectedItem);
 end;
 
 procedure TBaseMenuDesigner.WmGetDLGCode(var msg: TwmGetDlgCode);
@@ -962,12 +956,12 @@ end;
 
 procedure TMenuDesigner.CalcSize(var w, h: Integer);
 var
-  i : Integer;
-  w1, h1, y : Integer;
+  i: Integer;
+  w1, h1, y: Integer;
 
-  procedure CalcSubmenuExtent (item : TMenuItem; x, y : Integer; var w, h : Integer);
+  procedure CalcSubmenuExtent (item: TMenuItem; x, y: Integer; var w, h: Integer);
   var
-    i, wST, wShortCut, w1, h1 : Integer;
+    i, wST, wShortCut, w1, h1: Integer;
   begin
     if item.Count > 0 then
     begin
@@ -1013,15 +1007,15 @@ end;
 
 function TMenuDesigner.ItemAt(X, Y: Integer): TMenuItem;
 var
-  i, tm : Integer;
-  st : WideString;
-  item : TMenuItem;
-  r : TRect;
-  xp : Integer;
+  i, tm: Integer;
+  st: WideString;
+  item: TMenuItem;
+  r: TRect;
+  xp: Integer;
 begin
   tm := 3;
   xp := 0;
-  result := Nil;
+  Result := Nil;
   for i := 0 to Items.Count - 1 do
   begin
     item := Items.Items [i];
@@ -1033,21 +1027,21 @@ begin
 
     if PtInRect (r, Point (X, Y)) then
     begin
-      result := Item;
+      Result := Item;
       break
     end;
 
     if (item.Count > 0) and TDesignerMenuItem (item).Selected then
-      result := ItemAtOffset (item, xp + 1, r.Bottom, X, Y);
+      Result := ItemAtOffset (item, xp + 1, r.Bottom, X, Y);
     xp := r.right;
   end
 end;
 
 procedure TMenuDesigner.Paint;
 var
-  x, x1, i, tm : Integer;
-  item : TMenuItem;
-  r : TRect;
+  x, x1, i, tm: Integer;
+  item: TMenuItem;
+  r: TRect;
 begin
   inherited;
 
@@ -1086,7 +1080,7 @@ end;
 
 function TPopupMenuDesigner.ItemAt(X, Y: Integer): TMenuItem;
 begin
-  result := Nil;
+  Result := Nil;
 end;
 
 procedure TPopupMenuDesigner.Paint;
@@ -1098,30 +1092,30 @@ end;
 
 function TDesignerMenuItem.GetID: Integer;
 begin
-  result := Tag;
-  if result < -1 then
-     result := (-result) - 3
+  Result := Tag;
+  if Result < -1 then
+     Result := (-Result) - 3
 end;
 
 function TDesignerMenuItem.GetSelected: boolean;
 begin
-  result := Tag < -1
+  Result := Tag < -1
 end;
 
 procedure TDesignerMenuItem.MenuChanged(Rebuild: Boolean);
 begin
   inherited;
-  TBaseMenuDesigner (Owner).fDirty := True;
+  TBaseMenuDesigner (Owner).FDirty := True;
   TBaseMenuDesigner (Owner).Invalidate
 end;
 
 procedure TDesignerMenuItem.SetID(const Value: Integer);
 var
-  p : TMenuItem;
+  p: TMenuItem;
 
-  procedure CheckDuplicateIds (p : TMenuItem);
+  procedure CheckDuplicateIds (p: TMenuItem);
   var
-    i : Integer;
+    i: Integer;
   begin
     if (p is TDesignerMenuItem) and (p <> Self) and (TDesignerMenuItem (p).ID = Value) and (TDesignerMenuItem (p).ID <> -1) and (TDesignerMenuItem (p).ID <> 0) then
       raise Exception.Create ('Duplicate menu ID');

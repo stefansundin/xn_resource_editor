@@ -71,8 +71,6 @@ type
     property DropdownButtonWidth : Integer read GetDropdownButtonWidth;
     property ButtonRect : TRect read GetButtonRect;
     property ButtonPressed : Boolean read fButtonPressed write SetButtonPressed;
-
-    { Private declarations }
   protected
     procedure Paint; override;
     procedure Resize; override;
@@ -80,13 +78,11 @@ type
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState;X, Y: Integer); override;
     procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
-    { Protected declarations }
   public
     constructor Create (AOwner : TComponent); override;
     destructor Destroy; override;
     procedure SetFocus; override;
     function Focused : Boolean; override;
-    { Public declarations }
   published
     property Anchors;
     property AutoSelect : Boolean read GetAutoSelect write SetAutoSelect;
@@ -120,7 +116,6 @@ type
     property OnDblClick : TNotifyEvent read GetOnDblClick write SetOnDblClick;
     property OnKeyDown : TKeyEvent read fOnKeyDown write fOnKeyDown;
     property OnSpecialButtonClick : TNotifyEvent read fOnSpecialButtonClick write fOnSpecialButtonClick;
-    { Published declarations }
   end;
 
 implementation

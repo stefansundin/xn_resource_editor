@@ -9,15 +9,9 @@ uses
 type
   TfmRawResource = class(TfmResource)
     HexDump1: THexDump;
-  private
   protected
     procedure SetObject(const Value: TObject); override;
-  public
-    { Public declarations }
   end;
-
-var
-  fmRawResource: TfmRawResource;
 
 implementation
 
@@ -27,11 +21,11 @@ implementation
 
 procedure TfmRawResource.SetObject(const Value: TObject);
 var
-  details : TResourceDetails;
+  Details: TResourceDetails;
 begin
   inherited;
 
-  details := obj as TResourceDetails;
+  Details := obj as TResourceDetails;
 
   HexDump1.Address := details.Data.Memory;
   HexDump1.DataSize := details.Data.Size
