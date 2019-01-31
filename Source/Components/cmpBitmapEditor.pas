@@ -356,12 +356,12 @@ const
     '', '', '', rstText, rstEraser, rstAirbrush,
     rstGradientRect, rstGradientRect, rstGradientRect, rstGradientRect);
 begin
-  result := DrawingToolDescription [DrawingTool]
+  Result := DrawingToolDescription [DrawingTool]
 end;
 
 function TBitmapEditor.GetSelectionValid: Boolean;
 begin
-  result :=(FSelectionRect.Right <> -1) and (FSelectionRect.Bottom <> -1);
+  Result :=(FSelectionRect.Right <> -1) and (FSelectionRect.Bottom <> -1);
 end;
 
 procedure TBitmapEditor.Initialize;

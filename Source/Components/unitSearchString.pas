@@ -9,79 +9,79 @@ type
   TStrArray = array of string;
   TStringSearcher = class
   protected
-    FSearchString : String;
-    FOrWords : TStrArray;
-    FNotWords : TStrArray;
-    FAndWords : TStrArray;
+    FSearchString: String;
+    FOrWords: TStrArray;
+    FNotWords: TStrArray;
+    FAndWords: TStrArray;
 
-    FCountOrWords : Integer;
-    FCountAndWords : Integer;
-    FCountNotWords : Integer;
-    FCaseSensitive : Boolean;
+    FCountOrWords: Integer;
+    FCountAndWords: Integer;
+    FCountNotWords: Integer;
+    FCaseSensitive: Boolean;
   public
-    constructor Create (const ASearchString : string; AcaseSensitive : Boolean);
+    constructor Create (const ASearchString: string; AcaseSensitive: Boolean);
 
-    function Matches (AString : string) : Boolean;
-    procedure Parse (searchString : string); virtual; abstract;
-    property CaseSensitive : Boolean read FCaseSensitive write FCaseSensitive;
+    function Matches (AString: string): Boolean;
+    procedure Parse (searchString: string); virtual; abstract;
+    property CaseSensitive: Boolean read FCaseSensitive write FCaseSensitive;
   end;
 
   TGoogleLikeStringSearcher = class (TStringSearcher)
   public
-    procedure Parse (searchString : string); override;
+    procedure Parse (searchString: string); override;
   end;
 
   TWStrArray = array of WideString;
   TWideStringSearcher = class
   protected
-    FCaseSensitive : Boolean;
-    FSearchString : WideString;
-    FOrWords : TWStrArray;
-    FNotWords : TWStrArray;
-    FAndWords : TWStrArray;
+    FCaseSensitive: Boolean;
+    FSearchString: WideString;
+    FOrWords: TWStrArray;
+    FNotWords: TWStrArray;
+    FAndWords: TWStrArray;
 
-    FCountOrWords : Integer;
-    FCountAndWords : Integer;
-    FCountNotWords : Integer;
+    FCountOrWords: Integer;
+    FCountAndWords: Integer;
+    FCountNotWords: Integer;
   public
-    constructor Create (const ASearchString : WideString; ACaseSensitive : Boolean);
+    constructor Create (const ASearchString: WideString; ACaseSensitive: Boolean);
 
-    function Matches (AString : WideString) : Boolean;
-    procedure Parse (searchString : WideString); virtual; abstract;
+    function Matches (AString: WideString): Boolean;
+    procedure Parse (searchString: WideString); virtual; abstract;
   end;
 
   TGoogleLikeWideStringSearcher = class (TWideStringSearcher)
   public
-    procedure Parse (searchString : WideString); override;
+    procedure Parse (searchString: WideString); override;
   end;
 
-function ExtractString (const search : string; var s : string) : string;
-function SplitString (const search : string; var s : string) : string;
-function SplitToken (var st : string) : string;
-function DelimPos (const delims : string; const st : string; out delim : char) : Integer;
-function DelimSplitString (const search : string; var s : string; out delim : char) : string;
-function WideContainsText (const AText, ASubText : WideString) : Boolean;
+function ExtractString (const search: string; var s: string): string;
+function SplitString (const search: string; var s: string): string;
+function SplitToken (var st: string): string;
+function DelimPos (const delims: string; const st: string; out delim: char): Integer;
+function DelimSplitString (const search: string; var s: string; out delim: char): string;
+function WideContainsText (const AText, ASubText: WideString): Boolean;
 function WidePosEx(const SubStr, S: WideString; Offset: Cardinal = 1): Integer;
-function WideSplitString (const search : WideString; var s : WideString) : WideString;
+function WideSplitString (const search: WideString; var s: WideString): WideString;
 function WideStrScan(const Str: PWideChar; Chr: WideChar): PWideChar;
-function SearchStringArray (arr : array of string; const st : string) : Integer;
-function StringArrayContains (arr : array of string; const st : string) : Boolean;
-function WideDequotedStr (st : WideString; q : WideChar = '"') : WideString;
-function WideQuotedStr (st : WideString; q : WideChar = '"') : WideString;
-function WildContains (const a, b : string) : Boolean;
-function WWildContains (const a, b : WideString) : Boolean;
+function SearchStringArray (arr: array of string; const st: string): Integer;
+function StringArrayContains (arr: array of string; const st: string): Boolean;
+function WideDequotedStr (st: WideString; q: WideChar = '"'): WideString;
+function WideQuotedStr (st: WideString; q: WideChar = '"'): WideString;
+function WildContains (const a, b: string): Boolean;
+function WWildContains (const a, b: WideString): Boolean;
 
 
 implementation
 
 // nb.  Pos is a 'magic' function that internally has an (undocumented) wide version
 
-function WideContainsText (const AText, ASubText : WideString) : Boolean;
+function WideContainsText (const AText, ASubText: WideString): Boolean;
 begin
   Result := Pos (WideUpperCase (ASubText), WideUpperCase (AText)) > 0;
 end;
 
-function WideContainsStr (const AText, ASubText : WideString) : Boolean;
+function WideContainsStr (const AText, ASubText: WideString): Boolean;
 begin
   Result := Pos (ASubText, AText) > 0;
 end;
@@ -118,17 +118,17 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | function ExtractString : string                                      |
+ | function ExtractString: string                                      |
  |                                                                      |
  | Search for a substring.  If the substring is found, return the       |
  | characters up to the substring, and set the soure string to the      |
  | characters after it.  If it was not found, return an empty string    |
  | and leave the source string unchanged.                               |
  *----------------------------------------------------------------------*)
-function ExtractString (const search : string; var s : string) : string;
+function ExtractString (const search: string; var s: string): string;
 var
-  p, l : Integer;
-  pc : PChar;
+  p, l: Integer;
+  pc: PChar;
 
 begin
   l := Length (search);
@@ -152,17 +152,17 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | function SplitString : string                                        |
+ | function SplitString: string                                        |
  |                                                                      |
  | Search for a substring.  If the substring is found, return the       |
  | characters up to the substring, and set the soure string to the      |
  | characters after it.  If it was not found, return the entire source  |
  | string, and set the source string to an empty string                 |
  *----------------------------------------------------------------------*)
-function SplitString (const search : string; var s : string) : string;
+function SplitString (const search: string; var s: string): string;
 var
-  p, l : Integer;
-  pc : PChar;
+  p, l: Integer;
+  pc: PChar;
 begin
   l := Length (search);
   if l = 1 then
@@ -187,9 +187,9 @@ begin
   end
 end;
 
-function SplitToken (var st : string) : string;
+function SplitToken (var st: string): string;
 var
-  p, p1 : Integer;
+  p, p1: Integer;
 begin
   p := Pos (' ', st);
   p1 := Pos (#9, st);
@@ -215,10 +215,10 @@ begin
   end;
 end;
 
-function WideSplitString (const search : WideString; var s : WideString) : WideString;
+function WideSplitString (const search: WideString; var s: WideString): WideString;
 var
-  p, l : Integer;
-  pc : PWideChar;
+  p, l: Integer;
+  pc: PWideChar;
 begin
   l := Length (search);
   if l = 1 then
@@ -243,9 +243,9 @@ begin
   end
 end;
 
-function WildContains (const a, b : string) : Boolean;
+function WildContains (const a, b: string): Boolean;
 var
-  p, offs, l, l1 : Integer;
+  p, offs, l, l1: Integer;
 begin
   l := Length (a);
   l1 := Length (b);
@@ -296,9 +296,9 @@ begin
   Result := p <> 0
 end;
 
-function WWildContains (const a, b : WideString) : Boolean;
+function WWildContains (const a, b: WideString): Boolean;
 var
-  p, offs, l, l1 : Integer;
+  p, offs, l, l1: Integer;
 begin
   l := Length (a);
   l1 := Length (b);
@@ -342,7 +342,7 @@ end;
 
 { TStringSearcher }
 
-constructor TStringSearcher.Create(const ASearchString: string;  ACaseSensitive : Boolean);
+constructor TStringSearcher.Create(const ASearchString: string;  ACaseSensitive: Boolean);
 begin
   FCaseSensitive := ACaseSensitive;
   FSearchString := ASearchString;
@@ -353,8 +353,8 @@ function TStringSearcher.Matches(AString: string): Boolean;
 type
   TMatch = (mYes, mNo, mMaybe);
 var
-  i : Integer;
-  ok : TMatch;
+  i: Integer;
+  ok: TMatch;
 
 begin
   if not FCaseSensitive then
@@ -397,11 +397,11 @@ procedure TGoogleLikeStringSearcher.Parse(searchString: string);
 type
   tOP = (opAnd, opOr, opNot);
 var
-  l : Integer;
-  s1 : string;
-  op : tOp;
+  l: Integer;
+  s1: string;
+  op: tOp;
 
-  procedure AddToVarArray (var arr : TStrArray; const st : string; var n : Integer);
+  procedure AddToVarArray (var arr: TStrArray; const st: string; var n: Integer);
   begin
     if n = Length (arr) then
       SetLength (arr, n + 5);
@@ -458,9 +458,9 @@ begin
 
     if s1 <> '' then
       case op of
-        opAnd : AddToVarArray (FAndWords, s1, FCountAndWords);
-        opOr  : AddToVarArray (FOrWords, s1, FCountOrWords);
-        opNot : AddToVarArray (FNotWords, s1, FCountNotWords)
+        opAnd: AddToVarArray (FAndWords, s1, FCountAndWords);
+        opOr: AddToVarArray (FOrWords, s1, FCountOrWords);
+        opNot: AddToVarArray (FNotWords, s1, FCountNotWords)
       end;
 
     op := opAnd;
@@ -470,7 +470,7 @@ end;
 
 { TWideStringSearcher }
 
-constructor TWideStringSearcher.Create(const ASearchString: WideString; ACaseSensitive : Boolean);
+constructor TWideStringSearcher.Create(const ASearchString: WideString; ACaseSensitive: Boolean);
 begin
   FCaseSensitive := ACaseSensitive;
   FSearchString := ASearchString;
@@ -481,8 +481,8 @@ function TWideStringSearcher.Matches(AString: WideString): Boolean;
 type
   TMatch = (mYes, mNo, mMaybe);
 var
-  i : Integer;
-  ok : TMatch;
+  i: Integer;
+  ok: TMatch;
 
 begin
   if not FCaseSensitive then
@@ -524,11 +524,11 @@ procedure TGoogleLikeWideStringSearcher.Parse(searchString: WideString);
 type
   tOP = (opAnd, opOr, opNot);
 var
-  l : Integer;
-  s1 : WideString;
-  op : tOp;
+  l: Integer;
+  s1: WideString;
+  op: tOp;
 
-  procedure AddToVarArray (var arr : TWStrArray; const st : WideString; var n : Integer);
+  procedure AddToVarArray (var arr: TWStrArray; const st: WideString; var n: Integer);
   begin
     if n = Length (arr) then
       SetLength (arr, n + 5);
@@ -585,9 +585,12 @@ begin
 
     if s1 <> '' then
       case op of
-        opAnd : AddToVarArray (FAndWords, s1, FCountAndWords);
-        opOr  : AddToVarArray (FOrWords, s1, FCountOrWords);
-        opNot : AddToVarArray (FNotWords, s1, FCountNotWords)
+        opAnd:
+          AddToVarArray (FAndWords, s1, FCountAndWords);
+        opOr:
+          AddToVarArray (FOrWords, s1, FCountOrWords);
+        opNot:
+          AddToVarArray (FNotWords, s1, FCountNotWords)
       end;
 
     op := opAnd;
@@ -595,11 +598,11 @@ begin
   end
 end;
 
-function SearchStringArray (arr : array of string; const st : string) : Integer;
+function SearchStringArray (arr: array of string; const st: string): Integer;
 
-  function bsearch (s, e : Integer) : Integer;
+  function bsearch (s, e: Integer): Integer;
   var
-    m, c : Integer;
+    m, c: Integer;
   begin
     if s <= e then
     begin
@@ -623,14 +626,14 @@ begin
   Result := bsearch (Low (arr), High (arr))
 end;
 
-function StringArrayContains (arr : array of string; const st : string) : Boolean;
+function StringArrayContains (arr: array of string; const st: string): Boolean;
 begin
   Result := SearchStringArray (arr, st) >= 0
 end;
 
-function WideDequotedStr (st : WideString; q : WideChar) : WideString;
+function WideDequotedStr (st: WideString; q: WideChar): WideString;
 var
-  i, l : Integer;
+  i, l: Integer;
 begin
   l := Length (st);
   if (l > 0) and (st [1] = q) then
@@ -657,7 +660,7 @@ begin
   end
 end;
 
-function WideQuotedStr (st : WideString; q : WideChar) : WideString;
+function WideQuotedStr (st: WideString; q: WideChar): WideString;
 var
   I: Integer;
 begin
@@ -667,9 +670,9 @@ begin
   Result := q + Result + q;
 end;
 
-function DelimPos (const delims : string; const st : string; out delim : char) : Integer;
+function DelimPos (const delims: string; const st: string; out delim: char): Integer;
 var
-  i, p : Integer;
+  i, p: Integer;
 begin
   if delims = '' then
   begin
@@ -692,9 +695,9 @@ begin
     Result := 0
 end;
 
-function DelimSplitString (const search : string; var s : string; out delim : char) : string;
+function DelimSplitString (const search: string; var s: string; out delim: char): string;
 var
-  p : Integer;
+  p: Integer;
 begin
   p := DelimPos (search, s, delim);
   if p > 0 then

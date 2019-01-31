@@ -32,62 +32,61 @@ unit cmpTrayIcon;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, ShellAPI, Menus, SyncObjs;
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  ShellAPI, Menus, SyncObjs;
 
 type
   TTrayIcon = class;
 
-  TTaskbarCreatedEvent = procedure (sender : TObject; var RedoIcon : boolean) of object;
-  TXPFastUserSwitchEvent = procedure (sender : TObject; StatusCode, SessionID : DWORD) of object;
+  TTaskbarCreatedEvent = procedure (sender: TObject; var RedoIcon: Boolean) of object;
+  TXPFastUserSwitchEvent = procedure (sender: TObject; StatusCode, SessionID: DWORD) of object;
 
   TTrayIcon = class(TComponent)
   private
-    fWindowHandle : HWND;
-    fIcon : TIcon;
-    fEnabled : boolean;
-    fIconThere : boolean;
-    fHint : string;
-    fPopupMenu : TPopupMenu;
-    fAutoShow : boolean;
-    fObjectInstance : pointer;
-    fOldMainWProc : pointer;
+    FWindowHandle: HWND;
+    FIcon: TIcon;
+    FEnabled: Boolean;
+    FIconThere: Boolean;
+    FHint: string;
+    FPopupMenu: TPopupMenu;
+    FAutoShow: Boolean;
+    FObjectInstance: pointer;
+    FOldMainWProc: pointer;
 
-    fOnLeftBtnClick : TNotifyEvent;
-    fOnLeftBtnDblClick : TNotifyEvent;
-    fOnRightBtnClick : TNotifyEvent;
-    fOnMouseMove : TNotifyEvent;
-    fOnEndSession: TNotifyEvent;
-    fOnTaskbarCreated: TTaskbarCreatedEvent;
-    fOnXPFastUserSwitch: TXPFastUserSwitchEvent;
+    FOnLeftBtnClick: TNotifyEvent;
+    FOnLeftBtnDblClick: TNotifyEvent;
+    FOnRightBtnClick: TNotifyEvent;
+    FOnMouseMove: TNotifyEvent;
+    FOnEndSession: TNotifyEvent;
+    FOnTaskbarCreated: TTaskbarCreatedEvent;
+    FOnXPFastUserSwitch: TXPFastUserSwitchEvent;
 
     procedure WProc(var Msg: TMessage);
-    procedure MainWProc (var Msg : TMessage);
-    procedure UpdateIcon (Flags : integer);
+    procedure MainWProc (var Msg: TMessage);
+    procedure UpdateIcon (Flags: integer);
 
-    procedure SetIcon (value : TIcon);
-    procedure SetEnabled (value : boolean);
-    procedure SetHint (value : string);
-  protected
-    { Protected declarations }
+    procedure SetIcon (Value: TIcon);
+    procedure SetEnabled (Value: Boolean);
+    procedure SetHint (Value: string);
   public
-    constructor Create (AOwner : TComponent); override;
+    constructor Create (AOwner: TComponent); override;
     destructor Destroy; override;
     procedure RedoIcon;
-    procedure SetIconHandle (handle : HICON);
+    procedure SetIconHandle (Handle: HICON);
   published
-    property Icon : TIcon read fIcon write SetIcon;
-    property Enabled : boolean read fEnabled write SetEnabled;
-    property Hint : string read fHint write SetHint;
-    property PopupMenu : TPopupMenu read fPopupMenu write fPopupMenu;
-    property AutoShow : boolean read fAutoShow write fAutoShow;
+    property Icon: TIcon read FIcon write SetIcon;
+    property Enabled: Boolean read FEnabled write SetEnabled;
+    property Hint: string read FHint write SetHint;
+    property PopupMenu: TPopupMenu read FPopupMenu write FPopupMenu;
+    property AutoShow: Boolean read FAutoShow write FAutoShow;
 
-    property OnLeftBtnClick : TNotifyEvent read fOnLeftBtnClick write fOnLeftBtnClick;
-    property OnLeftBtnDblClick : TNotifyEvent read fOnLeftBtnDblClick write fOnLeftBtnDblClick;
-    property OnRightBtnClick : TNotifyEvent read fOnRightBtnClick write fOnRightBtnClick;
-    property OnMouseMove : TNotifyEvent read fOnMouseMove write fOnMouseMove;
-    property OnEndSession : TNotifyEvent read fOnEndSession write fOnEndSession;
-    property OnTaskbarCreated : TTaskbarCreatedEvent read fOnTaskbarCreated write fOnTaskbarCreated;
-    property OnXPFastUserSwitch : TXPFastUserSwitchEvent read fOnXPFastUserSwitch write fOnXPFastUserSwitch;
+    property OnLeftBtnClick: TNotifyEvent read FOnLeftBtnClick write FOnLeftBtnClick;
+    property OnLeftBtnDblClick: TNotifyEvent read FOnLeftBtnDblClick write FOnLeftBtnDblClick;
+    property OnRightBtnClick: TNotifyEvent read FOnRightBtnClick write FOnRightBtnClick;
+    property OnMouseMove: TNotifyEvent read FOnMouseMove write FOnMouseMove;
+    property OnEndSession: TNotifyEvent read FOnEndSession write FOnEndSession;
+    property OnTaskbarCreated: TTaskbarCreatedEvent read FOnTaskbarCreated write FOnTaskbarCreated;
+    property OnXPFastUserSwitch: TXPFastUserSwitchEvent read FOnXPFastUserSwitch write FOnXPFastUserSwitch;
 
   end;
 
@@ -97,94 +96,94 @@ uses
   WTSAPI32;
 
 const WM_ICONMESSAGE = WM_USER + $200;
-var WM_TASKBARCREATED : DWORD;
+var WM_TASKBARCREATED: DWORD;
 
-constructor TTrayIcon.Create (AOwner : TComponent);
+constructor TTrayIcon.Create (AOwner: TComponent);
 begin
   inherited Create (AOwner);
 
-  fIcon := TIcon.Create;
-  fIcon.Assign (Application.Icon);
+  FIcon := TIcon.Create;
+  FIcon.Assign (Application.Icon);
 
   WM_TASKBARCREATED := RegisterWindowMessage ('TaskbarCreated');
 
   if not (csDesigning in ComponentState) then
   begin
 
-    fObjectInstance := Classes.MakeObjectInstance (MainWProc);
-    fOldMainWProc := Pointer (SetWindowLong (Application.Handle, GWL_WNDPROC, Integer (fObjectInstance)));
+    FObjectInstance := Classes.MakeObjectInstance (MainWProc);
+    FOldMainWProc := Pointer (SetWindowLong (Application.Handle, GWL_WNDPROC, Integer (FObjectInstance)));
 
-    fWindowHandle := Classes.AllocateHWND (WProc);
+    FWindowHandle := Classes.AllocateHWND (WProc);
 
 
     if WTSAPIOk then
       WTSRegisterSessionNotification (Application.Handle, NOTIFY_FOR_ALL_SESSIONS);
-    fAutoShow := True;
+    FAutoShow := True;
 
   end
 end;
 
 destructor TTrayIcon.Destroy;
 begin
-  if fIconThere then
+  if FIconThere then
   begin
-    fIcon := Nil;
+    FIcon := Nil;
     UpdateIcon (0);
   end;
 
   if WTSAPIOk then
     WTSUnRegisterSessionNotification (Application.Handle); 
 
-  if Assigned (fObjectInstance) then
+  if Assigned (FObjectInstance) then
   begin
-    SetWindowLong (Application.Handle, GWL_WNDPROC, Integer (fOldMainWProc));
-    Classes.FreeObjectInstance (fObjectInstance)
+    SetWindowLong (Application.Handle, GWL_WNDPROC, Integer (FOldMainWProc));
+    Classes.FreeObjectInstance (FObjectInstance)
   end;
 
-  if fWindowHandle <> 0 then
-    Classes.DeallocateHWND (fWindowHandle);
-  fIcon.Free;
+  if FWindowHandle <> 0 then
+    Classes.DeallocateHWND (FWindowHandle);
+  FIcon.Free;
   inherited
 end;
 
 procedure TTrayIcon.WProc(var Msg: TMessage);
 var
-  pt : TPoint;
+  pt: TPoint;
 begin
   with msg do
     if msg = WM_ICONMESSAGE then
       case lParam of
         WM_RBUTTONDOWN :
           begin
-            if Assigned (fOnRightBtnClick) then
+            if Assigned (FOnRightBtnClick) then
             	OnRightBtnClick (self);
 
-            if Assigned (fPopupMenu) then
+            if Assigned (FPopupMenu) then
             begin
               GetCursorPos (pt);
-              if AutoShow then fPopupMenu.Items [0].default := True;
+              if AutoShow then FPopupMenu.Items [0].default := True;
               SetForegroundWindow (PopupList.Window);
-              fPopupMenu.Popup (pt.x, pt.y);
+              FPopupMenu.Popup (pt.x, pt.y);
               PostMessage (PopupList.Window, WM_NULL, 0, 0);
             end
           end;
 
         WM_LBUTTONDOWN :
-          if Assigned (fOnLeftBtnClick) then
+          if Assigned (FOnLeftBtnClick) then
             OnLeftBtnClick (self);
 
         WM_LBUTTONDBLCLK :
         begin
-          if Assigned (fOnLeftBtnDblClick) then
+          if Assigned (FOnLeftBtnDblClick) then
             OnLeftBtnDblClick (self);
 
-          if Assigned (fPopupMenu) and AutoShow then with fPopupMenu do
+          if Assigned (FPopupMenu) and AutoShow then with FPopupMenu do
             if Assigned (items [0]) then
               items [0].click
         end;
 
         WM_MOUSEMOVE :
-          if Assigned (fOnMouseMove) then
+          if Assigned (FOnMouseMove) then
             OnMouseMove (self);
       end
     else
@@ -192,23 +191,23 @@ begin
         Result := DefWindowProc(FWindowHandle, Msg, wParam, lParam)
 end;
 
-procedure TTrayIcon.UpdateIcon (flags : Integer);
+procedure TTrayIcon.UpdateIcon (flags: Integer);
 var
-  iconData : TNotifyIconData;
+  iconData: TNotifyIconData;
 begin
   if not (csDesigning in ComponentState) then
   begin
     iconData.cbSize := SizeOf (iconData);
-    iconData.Wnd := fWindowHandle;
+    iconData.Wnd := FWindowHandle;
     iconData.uID := Tag;
     iconData.uFlags :=NIF_ICON or NIF_TIP or NIF_MESSAGE;
     iconData.uCallbackMessage := WM_ICONMESSAGE;
-    StrPCopy (iconData.szTip, fHint);
+    StrPCopy (iconData.szTip, FHint);
 
-    if Assigned (fIcon) and fEnabled then
+    if Assigned (FIcon) and FEnabled then
     begin
-      iconData.hIcon := fIcon.Handle;
-      if fIconThere then
+      iconData.hIcon := FIcon.Handle;
+      if FIconThere then
       begin
     	iconData.uFlags := flags;
         Shell_NotifyIcon (NIM_MODIFY, @iconData)
@@ -216,53 +215,53 @@ begin
       else
       begin
 	Shell_NotifyIcon (NIM_ADD, @iconData);
-        fIconThere := True
+        FIconThere := True
       end
     end
     else
     begin
       Shell_NotifyIcon (NIM_DELETE, @iconData);
-      fIconThere := False
+      FIconThere := False
     end
   end
 end;
 
-procedure TTrayIcon.SetIcon (value : TIcon);
+procedure TTrayIcon.SetIcon (Value: TIcon);
 begin
-  if fIcon <> value then
+  if FIcon <> Value then
   begin
-    fIcon.Assign (value);
+    FIcon.Assign (Value);
     UpdateIcon (NIF_ICON);
   end
 end;
 
-procedure TTrayIcon.SetHint (value : String);
+procedure TTrayIcon.SetHint (Value: String);
 begin
-  if fHint <> value then
+  if FHint <> Value then
   begin
-    fHint := value;
+    FHint := Value;
     UpdateIcon (NIF_TIP);
   end
 end;
 
-procedure TTrayIcon.SetEnabled (value : boolean);
+procedure TTrayIcon.SetEnabled (Value: Boolean);
 begin
-  if value <> fEnabled then
+  if Value <> FEnabled then
   begin
-    fEnabled := value;
+    FEnabled := Value;
     UpdateIcon (NIF_ICON or NIF_TIP or NIF_MESSAGE);
   end
 end;
 
 procedure TTrayIcon.RedoIcon;
 begin
-  fIconThere := False;
+  FIconThere := False;
   UpdateIcon (NIF_ICON or NIF_TIP or NIF_MESSAGE);
 end;
 
 procedure TTrayIcon.MainWProc(var Msg: TMessage);
 var
-  redoI : boolean;
+  redoI: Boolean;
 begin
   if Msg.Msg = WM_TASKBARCREATED then
   begin
@@ -285,14 +284,14 @@ begin
           OnXPFastUserSwitch (self, Msg.WParam, Msg.LParam)
       end;
 
-  Msg.Result := CallWindowProc (fOldMainWProc, Application.Handle, Msg.Msg, Msg.WParam, Msg.LParam);
+  Msg.Result := CallWindowProc (FOldMainWProc, Application.Handle, Msg.Msg, Msg.WParam, Msg.LParam);
 end;
 
 procedure TTrayIcon.SetIconHandle(handle: HICON);
 begin
-  if fIcon.Handle <> handle then
+  if FIcon.Handle <> handle then
   begin
-    fIcon.Handle := handle;
+    FIcon.Handle := handle;
     UpdateIcon (NIF_ICON);
   end
 end;

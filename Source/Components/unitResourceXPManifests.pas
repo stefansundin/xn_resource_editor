@@ -47,7 +47,7 @@ const
 
 class function TXPManifestResourceDetails.GetBaseType: WideString;
 begin
-  result := IntToStr (Integer (RT_XPMANIFEST));
+  Result := IntToStr (Integer (RT_XPMANIFEST));
 end;
 
 procedure TXPManifestResourceDetails.InitNew;

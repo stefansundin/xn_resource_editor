@@ -81,7 +81,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TfmResourceObject.FormDestroy(Sender: TObject);
 begin
-  fmResourceObject := Nil
+  fmResourceObject := nil
 end;
 
 (*----------------------------------------------------------------------*
@@ -91,7 +91,7 @@ end;
  *----------------------------------------------------------------------*)
 function TfmResourceObject.GetMenuItem: TMenuItem;
 begin
-  result := Nil
+  Result := nil
 end;
 
 procedure TfmResourceObject.PreviewKey(var key: Word; shift: TShiftState);

@@ -68,14 +68,14 @@ type
   TResExamNamedElement = class (TResExamElement)
   private
     FName: WideString;
-    function GetCanRedo: boolean;
-    function GetCanUndo: boolean;
+    function GetCanRedo: Boolean;
+    function GetCanUndo: Boolean;
     function GetRedoDescription: string;
     function GetUndoDescription: string;
   protected
     FUndoNames : TObjectList;
     FRedoNames : TObjectList;
-    FUndoing, FRedoing : boolean;
+    FUndoing, FRedoing : Boolean;
 
     constructor Create (AOwner : TObject; const AName : WideString);
     procedure SetName (const value : WideString); virtual;
@@ -85,8 +85,8 @@ type
     procedure Undo;
     procedure Redo;
     property Name : WideString read FName write SetName;
-    property CanRedo : boolean read GetCanRedo;
-    property CanUndo : boolean read GetCanUndo;
+    property CanRedo : Boolean read GetCanRedo;
+    property CanUndo : Boolean read GetCanUndo;
     property UndoDescription : string read GetUndoDescription;
     property RedoDescription : string read GetRedoDescription;
   end;
@@ -206,7 +206,7 @@ type
     FResourceModule : TResourceModule;
     FSections : TObjectList;
 
-    FOwnsModule : boolean;
+    FOwnsModule : Boolean;
     function GetResource(idx: Integer): TResourceDetails;
     function GetResourceCount: Integer;
     function GetSection(idx: Integer): TResExamSection;
@@ -218,7 +218,7 @@ type
     function GetExportOrdinal(idx: Integer): Integer;
     function GetResourceSection: TResExamSection;
   protected
-    constructor Create (AResourceModule : TResourceModule; AOwnsModule : boolean; DontExamine : boolean); overload;
+    constructor Create (AResourceModule : TResourceModule; AOwnsModule : Boolean; DontExamine : Boolean); overload;
 
     property ResourceCount : Integer read GetResourceCount;
     property Resource [idx : Integer] : TResourceDetails read GetResource;
@@ -237,7 +237,7 @@ type
     destructor Destroy; override;
 
     procedure Examine;
-    procedure SetResourceModule (rm : TResourceModule; ownsModule : boolean);
+    procedure SetResourceModule (rm : TResourceModule; ownsModule : Boolean);
 
     property ResourceSection : TResExamSection read GetResourceSection;
     property SectionCount : Integer read GetSectionCount;
@@ -379,14 +379,14 @@ end;
  | Parameters:                                                          |
  |   AResourceModule: TResourceModule   The module to examine           |
  |                                                                      |
- |   AOwnsModule : boolean              If this is true we take         |
+ |   AOwnsModule : Boolean              If this is true we take         |
  |                                      ownership of the module, and    |
  |                                      delete it when we're deleted.   |
  |                                                                      |
- |  DontExamine : boolean               If this is true, dont examine   |
+ |  DontExamine : Boolean               If this is true, dont examine   |
  |                                      the module in the constructor.  |
  *----------------------------------------------------------------------*)
-constructor TResourceExaminer.Create(AResourceModule: TResourceModule; AOwnsModule : boolean; DontExamine : boolean);
+constructor TResourceExaminer.Create(AResourceModule: TResourceModule; AOwnsModule : Boolean; DontExamine : Boolean);
 begin
   FSections := TObjectList.Create;
   FResourceModule := AResourceModule;
@@ -840,7 +840,7 @@ begin
   Result := GetExaminer.ExportOrdinal [idx];
 end;
 
-procedure TResourceExaminer.SetResourceModule(rm: TResourceModule; ownsModule : boolean);
+procedure TResourceExaminer.SetResourceModule(rm: TResourceModule; ownsModule : Boolean);
 begin
   FSections.Clear;
 
@@ -886,12 +886,12 @@ begin
   inherited;
 end;
 
-function TResExamNamedElement.GetCanUndo: boolean;
+function TResExamNamedElement.GetCanUndo: Boolean;
 begin
   Result := Assigned(FUndoNames) and (FUndoNames.Count > 0);
 end;
 
-function TResExamNamedElement.GetCanRedo: boolean;
+function TResExamNamedElement.GetCanRedo: Boolean;
 begin
   Result := Assigned(FRedoNames) and (FRedoNames.Count > 0);
 end;

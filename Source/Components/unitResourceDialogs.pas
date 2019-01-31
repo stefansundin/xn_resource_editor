@@ -117,7 +117,7 @@ end;
 
 class function TDialogResourceDetails.GetBaseType: WideString;
 begin
-  result := IntToStr (Integer (RT_DIALOG));
+  Result := IntToStr (Integer (RT_DIALOG));
 end;
 
 procedure TDialogResourceDetails.InitAddControl(cls: TSzOrID; id: DWORD;

@@ -53,26 +53,26 @@ const
   SHGFP_TYPE_CURRENT = 0;
   SHGFP_TYPE_DEFAULT = 1;
 begin
-  SetLength (result, MAX_PATH + 1);
-  if Succeeded (ShGetFolderPath (0, CSIDL_PROGRAM_FILES, 0, SHGFP_TYPE_CURRENT, PChar (result))) then
-    result := PChar (result)
+  SetLength (Result, MAX_PATH + 1);
+  if Succeeded (ShGetFolderPath (0, CSIDL_PROGRAM_FILES, 0, SHGFP_TYPE_CURRENT, PChar (Result))) then
+    Result := PChar (Result)
   else
-    result := 'c:\Program Files'
+    Result := 'c:\Program Files'
 end;
 
 function GetPathFromHKLM (const key, value : string) : string;
 var
   reg : TRegistry;
 begin
-  result := '';
+  Result := '';
   reg := TRegistry.Create (KEY_READ);
   try
     reg.RootKey := HKEY_LOCAL_MACHINE;
     if reg.OpenKey(key, false) then
     begin
-      result := reg.ReadString(value);
-      if (result <> '') and (result [Length (result)] = '\') then
-        Delete (result, Length (result), 1)
+      Result := reg.ReadString(value);
+      if (Result <> '') and (Result [Length (Result)] = '\') then
+        Delete (Result, Length (Result), 1)
     end
   finally
     reg.Free
@@ -83,54 +83,54 @@ end;
 
 function TBCB5IncludePathPackage.GetName: string;
 begin
-  result := 'Borland C++ Builder 5.0';
+  Result := 'Borland C++ Builder 5.0';
 end;
 
 function TBCB5IncludePathPackage.GetRootDirectory: string;
 begin
-  result := ProgramFilesPath + '\Borland\CBuilder5';
+  Result := ProgramFilesPath + '\Borland\CBuilder5';
 end;
 
 { TBCB6IncludePathPackage }
 
 function TBCB6IncludePathPackage.GetName: string;
 begin
-  result := 'Borland C++ Builder 6.0';
+  Result := 'Borland C++ Builder 6.0';
 end;
 
 function TBCB6IncludePathPackage.GetRootDirectory: string;
 begin
-  result := ProgramFilesPath + '\Borland\CBuilder6';
+  Result := ProgramFilesPath + '\Borland\CBuilder6';
 end;
 
 { TBDS4IncludePathPackage }
 
 function TBDS4IncludePathPackage.GetName: string;
 begin
-  result := 'Borland Developer Studio 2006';
+  Result := 'Borland Developer Studio 2006';
 end;
 
 function TBDS4IncludePathPackage.GetRootDirectory: string;
 begin
-  result := GetPathFromHKLM ('Software\Borland\BDS\4.0', 'RootDir');
+  Result := GetPathFromHKLM ('Software\Borland\BDS\4.0', 'RootDir');
 end;
 
 { TVsIncludePathPackage }
 
 function TVsIncludePathPackage.GetIncludePath: string;
 begin
-  result := inherited GetIncludePath;
-  result := result + ';' + GetRootDirectory + '\MFC\Include';
+  Result := inherited GetIncludePath;
+  Result := Result + ';' + GetRootDirectory + '\MFC\Include';
 end;
 
 function TVsIncludePathPackage.GetName: string;
 begin
-  result := 'Microsoft Visual Studio C++ 6.0';
+  Result := 'Microsoft Visual Studio C++ 6.0';
 end;
 
 function TVsIncludePathPackage.GetRootDirectory: string;
 begin
-  result := GetPathFromHKLM ('Software\Microsoft\VisualStudio\6.0\Setup\Microsoft Visual C++', 'ProductDir');
+  Result := GetPathFromHKLM ('Software\Microsoft\VisualStudio\6.0\Setup\Microsoft Visual C++', 'ProductDir');
 end;
 
 { TMSDotNetIncludePathPackage }
@@ -140,22 +140,22 @@ var
   rootDir : string;
   frameworkDir : string;
 begin
-  result := GetPathFromHKLM ('Software\Microsoft\VisualStudio\7.0\VC\VC_OBJECTS_PLATFORM_INFO\Win32\Directories', 'Include Dirs');
+  Result := GetPathFromHKLM ('Software\Microsoft\VisualStudio\7.0\VC\VC_OBJECTS_PLATFORM_INFO\Win32\Directories', 'Include Dirs');
   rootDir := GetRootDirectory + '\';
   frameworkDir := ProgramFilesPath + '\Microsoft.net\sdk\';
 
-  result := StringReplace (result, '$(VCInstallDir)', rootDir, [rfReplaceAll, rfIgnoreCase]);
-  result := StringReplace (result, '$(FrameworkSDKDir)', frameworkDir, [rfReplaceAll, rfIgnoreCase]);
+  Result := StringReplace (Result, '$(VCInstallDir)', rootDir, [rfReplaceAll, rfIgnoreCase]);
+  Result := StringReplace (Result, '$(FrameworkSDKDir)', frameworkDir, [rfReplaceAll, rfIgnoreCase]);
 end;
 
 function TMSDotNetIncludePathPackage.GetName: string;
 begin
-  result := 'Microsoft Visual Studio .Net C++';
+  Result := 'Microsoft Visual Studio .Net C++';
 end;
 
 function TMSDotNetIncludePathPackage.GetRootDirectory: string;
 begin
-  result := GetPathFromHKLM ('Software\Microsoft\VisualStudio\7.0\Setup\VC', 'ProductDir');
+  Result := GetPathFromHKLM ('Software\Microsoft\VisualStudio\7.0\Setup\VC', 'ProductDir');
 end;
 
 { TMSDotNet2003IncludePathPackage }
@@ -165,22 +165,22 @@ var
   rootDir : string;
   frameworkDir : string;
 begin
-  result := GetPathFromHKLM ('Software\Microsoft\VisualStudio\7.1\VC\VC_OBJECTS_PLATFORM_INFO\Win32\Directories', 'Include Dirs');
+  Result := GetPathFromHKLM ('Software\Microsoft\VisualStudio\7.1\VC\VC_OBJECTS_PLATFORM_INFO\Win32\Directories', 'Include Dirs');
   rootDir := GetRootDirectory + '\';
   frameworkDir := ProgramFilesPath + '\Microsoft.net\sdk\';
 
-  result := StringReplace (result, '$(VCInstallDir)', rootDir, [rfReplaceAll, rfIgnoreCase]);
-  result := StringReplace (result, '$(FrameworkSDKDir)', frameworkDir, [rfReplaceAll, rfIgnoreCase]);
+  Result := StringReplace (Result, '$(VCInstallDir)', rootDir, [rfReplaceAll, rfIgnoreCase]);
+  Result := StringReplace (Result, '$(FrameworkSDKDir)', frameworkDir, [rfReplaceAll, rfIgnoreCase]);
 end;
 
 function TMSDotNet2003IncludePathPackage.GetName: string;
 begin
-  result := 'Microsoft Visual Studio .Net 2003 C++';
+  Result := 'Microsoft Visual Studio .Net 2003 C++';
 end;
 
 function TMSDotNet2003IncludePathPackage.GetRootDirectory: string;
 begin
-  result := GetPathFromHKLM ('Software\Microsoft\VisualStudio\7.1\Setup\VC', 'ProductDir');
+  Result := GetPathFromHKLM ('Software\Microsoft\VisualStudio\7.1\Setup\VC', 'ProductDir');
 end;
 
 begin

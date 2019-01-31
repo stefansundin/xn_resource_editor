@@ -10,9 +10,9 @@ uses
 type
   TPropertyPageRCSettingsData = class (TPropertyPageData)
   private
-    fIncludePathType : Integer;
-    fCustomIncludePath : string;
-    fIncludePathPackageName : string;
+    FIncludePathType: Integer;
+    FCustomIncludePath: string;
+    FIncludePathPackageName: string;
   protected
     procedure Initialize; override;
   public
@@ -29,23 +29,23 @@ type
     procedure rbCustomIncludePathClick(Sender: TObject);
     procedure vstIncludePackagesChecked(Sender: TBaseVirtualTree;
       Node: PVirtualNode);
-    procedure vstIncludePackagesGetText(Sender: TBaseVirtualTree;
-      Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType;
-      var CellText: WideString);
     procedure vstIncludePackagesInitNode(Sender: TBaseVirtualTree; ParentNode,
       Node: PVirtualNode; var InitialStates: TVirtualNodeInitStates);
     procedure FormDestroy(Sender: TObject);
+    procedure vstIncludePackagesGetText(Sender: TBaseVirtualTree;
+      Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType;
+      var CellText: string);
   private
-    fIncludePathPackages : TIncludePathPackages;
-    fData : TPropertyPageRCSettingsData;
-    function GetNodePackage (node : PVirtualNode) : TIncludePathPackage;
-    function GetNodeForPackage (const packageName : string) : PVirtualNode;
+    FIncludePathPackages: TIncludePathPackages;
+    FData: TPropertyPageRCSettingsData;
+    function GetNodePackage (Node: PVirtualNode): TIncludePathPackage;
+    function GetNodeForPackage (const packageName: string): PVirtualNode;
     procedure UpdateCustomText;
   protected
     procedure UpdateActions; override;
   public
-    class function GetDataClass : TPropertyPageDataClass; override;
-    procedure PopulateControls (AData : TPropertyPageData); override;
+    class function GetDataClass: TPropertyPageDataClass; override;
+    procedure PopulateControls (AData: TPropertyPageData); override;
   end;
 
 var
@@ -64,32 +64,32 @@ type
 
 class function TfmPropertyPageRCSettings.GetDataClass: TPropertyPageDataClass;
 begin
-  result := TPropertyPageRCSettingsData;
+  Result := TPropertyPageRCSettingsData;
 end;
 
 procedure TfmPropertyPageRCSettings.PopulateControls(AData: TPropertyPageData);
 var
-  node : PVirtualNode;
+  Node: PVirtualNode;
 begin
   Inherited;
-  fIncludePathPackages := TIncludePathPackages.Create;
-  vstIncludePackages.RootNodeCount := fIncludePathPackages.Count;
+  FIncludePathPackages := TIncludePathPackages.Create;
+  vstIncludePackages.RootNodeCount := FIncludePathPackages.Count;
 
-  fData := TPropertyPageRCSettingsData (AData);
+  FData := TPropertyPageRCSettingsData (AData);
 
-  case fData.fIncludePathType of
-    includePathPackage : begin
+  case FData.FIncludePathType of
+    includePathPackage: begin
                            rbCompilerIncludePath.Checked := True;
-                           node := GetNodeForPackage (fData.fIncludePathPackageName);
-                           if Assigned (node) then
-                             node.CheckState := csCheckedNormal
+                           Node := GetNodeForPackage (FData.FIncludePathPackageName);
+                           if Assigned (Node) then
+                             Node.CheckState := csCheckedNormal
                          end;
 
-    includePathEnv     : rbEnvironmentVariableIncludePath.Checked:= True;
+    includePathEnv    : rbEnvironmentVariableIncludePath.Checked:= True;
 
-    includePathCustom  : begin
+    includePathCustom : begin
                            rbCustomIncludePath.Checked := True;
-                           edCustomIncludePath.Text := fData.fCustomIncludePath
+                           edCustomIncludePath.Text := FData.FCustomIncludePath
                          end;
   end;
   UpdateCustomText
@@ -97,18 +97,18 @@ end;
 
 procedure TfmPropertyPageRCSettings.UpdateActions;
 begin
-  case fData.fIncludePathType of
-    includePathPackage : begin
+  case FData.FIncludePathType of
+    includePathPackage: begin
                            vstIncludePackages.Enabled := True;
                            btnCustomIncludePath.Enabled := False;
                            edCustomIncludePath.Enabled := False;
                          end;
-    includePathCustom  : begin
+    includePathCustom : begin
                            vstIncludePackages.Enabled := False;
                            btnCustomIncludePath.Enabled := True;
                            edCustomIncludePath.Enabled := True;
                          end;
-    includePathEnv     : begin
+    includePathEnv    : begin
                            vstIncludePackages.Enabled := False;
                            btnCustomIncludePath.Enabled := False;
                            edCustomIncludePath.Enabled := False;
@@ -117,111 +117,111 @@ begin
 end;
 
 function TfmPropertyPageRCSettings.GetNodePackage(
-  node: PVirtualNode): TIncludePathPackage;
+  Node: PVirtualNode): TIncludePathPackage;
 var
-  data : PObject;
+  Data: PObject;
 begin
-  data := PObject (vstIncludePackages.GetNodeData(node));
-  result := TIncludePathPackage (data^);
+  Data := PObject (vstIncludePackages.GetNodeData(Node));
+  Result := TIncludePathPackage (Data^);
 end;
 
 function TfmPropertyPageRCSettings.GetNodeForPackage(
   const packageName: string): PVirtualNode;
 begin
-  result := vstIncludePackages.GetFirst;
-  while Assigned (result) do
+  Result := vstIncludePackages.GetFirst;
+  while Assigned (Result) do
   begin
-    if SameText (GetNodePackage (result).Name, packageName) then
+    if SameText (GetNodePackage (Result).Name, packageName) then
       break
     else
-      result := vstIncludePackages.GetNext(result)
+      Result := vstIncludePackages.GetNext(Result)
   end
 end;
 
 procedure TfmPropertyPageRCSettings.UpdateCustomText;
 var
-  st : string;
+  st: string;
 begin
-  case fData.fIncludePathType of
-    includePathPackage : st := GetIncludePathForPackage (fData.fIncludePathPackageName);
-    includePathCustom  : st := fData.fCustomIncludePath;
-    includePathEnv     : st := GetEnvironmentVariable ('Include');
+  case FData.FIncludePathType of
+    includePathPackage: st := GetIncludePathForPackage (FData.FIncludePathPackageName);
+    includePathCustom : st := FData.FCustomIncludePath;
+    includePathEnv    : st := GetEnvironmentVariable ('Include');
   end;
 
   edCustomIncludePath.Text := st;
-  fData.fCustomIncludePath := st;
+  FData.FCustomIncludePath := st;
 end;
 
 { TPropertyPageRCSettingsData }
 
 procedure TPropertyPageRCSettingsData.Apply;
 begin
-  gProperties.IncludePathType := fIncludePathType;
-  case fIncludePathType of
-    includePathPackage :  gProperties.IncludePathPackageName := fIncludePathPackageName;
-    includePathCustom  :  gProperties.IncludePath := fCustomIncludePath;
+  gProperties.IncludePathType := FIncludePathType;
+  case FIncludePathType of
+    includePathPackage:  gProperties.IncludePathPackageName := FIncludePathPackageName;
+    includePathCustom :  gProperties.IncludePath := FCustomIncludePath;
   end
 end;
 
 procedure TPropertyPageRCSettingsData.Initialize;
 begin
-  fIncludePathType := gProperties.IncludePathType;
-  fCustomIncludePath := gProperties.IncludePath;
-  fIncludePathPackageName := gProperties.IncludePathPackageName
+  FIncludePathType := gProperties.IncludePathType;
+  FCustomIncludePath := gProperties.IncludePath;
+  FIncludePathPackageName := gProperties.IncludePathPackageName
 end;
 
 procedure TfmPropertyPageRCSettings.FormDestroy(Sender: TObject);
 begin
   inherited;
-  fIncludePathPackages.Free;
+  FIncludePathPackages.Free;
 end;
 
 procedure TfmPropertyPageRCSettings.vstIncludePackagesInitNode(
   Sender: TBaseVirtualTree; ParentNode, Node: PVirtualNode;
   var InitialStates: TVirtualNodeInitStates);
 var
-  data : PObject;
+  Data: PObject;
 begin
-  data := PObject (vstIncludePackages.GetNodeData(node));
-  data^ := fIncludePathPackages.Package [node^.Index];
+  Data := PObject (vstIncludePackages.GetNodeData(Node));
+  Data^ := FIncludePathPackages.Package [Node^.Index];
   Node^.CheckType := ctRadioButton ;
-end;
-
-procedure TfmPropertyPageRCSettings.vstIncludePackagesGetText(
-  Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
-  TextType: TVSTTextType; var CellText: WideString);
-var
-  package : TIncludePathPackage;
-begin
-  package := GetNodePackage(node);
-  if Assigned (package) then
-    CellText := package.Name
 end;
 
 procedure TfmPropertyPageRCSettings.vstIncludePackagesChecked(
   Sender: TBaseVirtualTree; Node: PVirtualNode);
 begin
   inherited;
-  if node.CheckState = csCheckedNormal then
+  if Node.CheckState = csCheckedNormal then
   begin
-    fData.fIncludePathPackageName := GetNodePackage (Node).Name;
+    FData.FIncludePathPackageName := GetNodePackage (Node).Name;
     UpdateCustomText
   end;
 end;
 
+procedure TfmPropertyPageRCSettings.vstIncludePackagesGetText(
+  Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
+  TextType: TVSTTextType; var CellText: string);
+var
+  package: TIncludePathPackage;
+begin
+  Package := GetNodePackage(Node);
+  if Assigned (package) then
+    CellText := package.Name
+end;
+
 procedure TfmPropertyPageRCSettings.rbCustomIncludePathClick(Sender: TObject);
 var
-  compilerPath : boolean;
-  p : PVirtualNode;
-  package : TIncludePathPackage;
+  CompilerPath: Boolean;
+  p: PVirtualNode;
+  Package: TIncludePathPackage;
 begin
-  compilerPath := rbCompilerIncludePath.Checked;
+  CompilerPath := rbCompilerIncludePath.Checked;
 
   p := vstIncludePackages.GetFirst;
   while Assigned (p) do
   begin
     package := GetNodePackage(p);
-    if compilerPath and SameText (package.Name, fData.fIncludePathPackageName) then
+    if CompilerPath and SameText (package.Name, FData.FIncludePathPackageName) then
       p.CheckState := csCheckedNormal
     else
       p.CheckState := csUncheckedNormal;
@@ -230,12 +230,12 @@ begin
   end;
 
   if rbCompilerIncludePath.Checked then
-    fData.fIncludePathType := includePathPackage
+    FData.FIncludePathType := includePathPackage
   else
     if rbEnvironmentVariableIncludePath.Checked then
-      fData.fIncludePathType := includePathEnv
+      FData.FIncludePathType := includePathEnv
     else
-      fData.fIncludePathType := includePathCustom;
+      FData.FIncludePathType := includePathCustom;
 
   UpdateCustomText;
 end;

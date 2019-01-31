@@ -31,34 +31,34 @@ interface
 uses Windows, Messages, Classes, SysUtils, cmpDialogEditor, DialogConsts;
 
 type
-//----------------------------------------------------------------
-// TComboBoxControlInfo
-TComboBoxControlInfo = class (TStandardControlInfo)
-private
-  fEditWnd : HWND;
-  fListBoxWnd : HWND;
+  //----------------------------------------------------------------
+  // TComboBoxControlInfo
+  TComboBoxControlInfo = class (TStandardControlInfo)
+  private
+    FEditWnd: HWND;
+    FListBoxWnd: HWND;
 
-  procedure GetCBHandles;
-protected
-  function GetClassSzOrID : TszOrID; override;
-  function GetStyle : DWORD; override;
-  procedure SetStyle(st: DWORD; value: boolean); override;
-  procedure Init; override;
+    procedure GetCBHandles;
+  protected
+    function GetClassSzOrID: TszOrID; override;
+    function GetStyle: DWORD; override;
+    procedure SetStyle(st: DWORD; Value: Boolean); override;
+    procedure Init; override;
 
-public
-  constructor Create (AOwner : TDialogEditor; AItemID : Integer; AControlHWND : HWND; ADropControl : TDropControl); override;
-  class procedure CreateControlParams (var params : TCreateControlParams); override;
-  class function GetDescription : string; override;
+  public
+    constructor Create (AOwner: TDialogEditor; AItemID: Integer; AControlHWND: HWND; ADropControl: TDropControl); override;
+    class procedure CreateControlParams (var Params: TCreateControlParams); override;
+    class function GetDescription: string; override;
 
-  function GetPropertyCount(kind: TPropertyKind): Integer; override;
-  function GetPropertyEnumCount(kind: TPropertyKind; idx: Integer): Integer; override;
-  function GetPropertyEnumName(kind: TPropertyKind; idx, enum: Integer): string; override;
-  function GetPropertyName(kind: TPropertyKind; idx: Integer): string; override;
-  function GetPropertyValue(kind: TPropertyKind; idx: Integer): Variant; override;
-  function GetPropertyType(kind: TPropertyKind; idx: Integer): TPropertyType; override;
-  procedure SetPropertyValue(kind: TPropertyKind; idx: Integer;const Value: Variant); override;
+    function GetPropertyCount(kind: TPropertyKind): Integer; override;
+    function GetPropertyEnumCount(kind: TPropertyKind; idx: Integer): Integer; override;
+    function GetPropertyEnumName(kind: TPropertyKind; idx, enum: Integer): string; override;
+    function GetPropertyName(kind: TPropertyKind; idx: Integer): string; override;
+    function GetPropertyValue(kind: TPropertyKind; idx: Integer): Variant; override;
+    function GetPropertyType(kind: TPropertyKind; idx: Integer): TPropertyType; override;
+    procedure SetPropertyValue(kind: TPropertyKind; idx: Integer;const Value: Variant); override;
 
-end;
+  end;
 
 implementation
 
@@ -68,30 +68,30 @@ const
   ComboBoxControlPropertyGeneralCount = 0;
   ComboBoxControlPropertyStyleCount = 10;
   ComboBoxControlPropertyExtendedCount = 0;
-  ComboBoxControlPropertyCount : array [TPropertyKind] of Integer = (ComboBoxControlPropertyGeneralCount, ComboBoxControlPropertyStyleCount, ComboBoxControlPropertyExtendedCount);
-//  ComboBoxControlPropertyGeneralName : array [0..ComboBoxControlPropertyGeneralCount - 1] of string = (rstCaption);
-  ComboBoxControlPropertyStyleName : array [0..ComboBoxControlPropertyStyleCount - 1] of string = (rstType, rstOwnerDraw, rstSort, rstVScroll, rstNoIntegralHeight, rstOEMConvert, rstAutoHScroll, rstDisableNoScroll, rstUppercase, rstLowercase);
-//  ComboBoxControlPropertyExtendedName : array [0..ComboBoxControlPropertyExtendedCount - 1] of string = (rstRTLReadingOrder, rstRightAlignedText);
-//  ComboBoxControlPropertyGeneralType : array [0..ComboBoxControlPropertyGeneralCount - 1] of TPropertyType = (ptString);
-  ComboBoxControlPropertyStyleType : array [0..ComboBoxControlPropertyStyleCount - 1] of TPropertyType = (ptEnum, ptEnum, ptBoolean, ptBoolean, ptBoolean, ptBoolean, ptBoolean, ptBoolean, ptBoolean, ptBoolean);
-//  ComboBoxControlPropertyExtendedType : array [0..ComboBoxControlPropertyExtendedCount - 1] of TPropertyType = (ptBoolean, ptBoolean);
+  ComboBoxControlPropertyCount: array [TPropertyKind] of Integer = (ComboBoxControlPropertyGeneralCount, ComboBoxControlPropertyStyleCount, ComboBoxControlPropertyExtendedCount);
+//  ComboBoxControlPropertyGeneralName: array [0..ComboBoxControlPropertyGeneralCount - 1] of string = (rstCaption);
+  ComboBoxControlPropertyStyleName: array [0..ComboBoxControlPropertyStyleCount - 1] of string = (rstType, rstOwnerDraw, rstSort, rstVScroll, rstNoIntegralHeight, rstOEMConvert, rstAutoHScroll, rstDisableNoScroll, rstUppercase, rstLowercase);
+//  ComboBoxControlPropertyExtendedName: array [0..ComboBoxControlPropertyExtendedCount - 1] of string = (rstRTLReadingOrder, rstRightAlignedText);
+//  ComboBoxControlPropertyGeneralType: array [0..ComboBoxControlPropertyGeneralCount - 1] of TPropertyType = (ptString);
+  ComboBoxControlPropertyStyleType: array [0..ComboBoxControlPropertyStyleCount - 1] of TPropertyType = (ptEnum, ptEnum, ptBoolean, ptBoolean, ptBoolean, ptBoolean, ptBoolean, ptBoolean, ptBoolean, ptBoolean);
+//  ComboBoxControlPropertyExtendedType: array [0..ComboBoxControlPropertyExtendedCount - 1] of TPropertyType = (ptBoolean, ptBoolean);
 
 type
   TComboBoxInfo = record
-    cbSize : DWORD;
-    rcItem : TRect;
-    rcButton : TRect;
-    stateButton : DWORD;
-    hwndCombo : DWORD;
-    hwndEdit : DWORD;
-    hwndList : DWORD
+    cbSize: DWORD;
+    rcItem: TRect;
+    rcButton: TRect;
+    stateButton: DWORD;
+    hwndCombo: DWORD;
+    hwndEdit: DWORD;
+    hwndList: DWORD
   end;
   PComboBoxInfo = ^TComboBoxInfo;
 
-TfnGetComboBoxInfo = function (hwndCombo : HWND; pcbi : PComboBoxInfo) : Boolean; stdcall;
+TfnGetComboBoxInfo = function (hwndCombo: HWND; pcbi: PComboBoxInfo): Boolean; stdcall;
 
 var
-  fnGetComboBoxInfo : TfnGetComboBoxInfo = nil;
+  fnGetComboBoxInfo: TfnGetComboBoxInfo = nil;
 
 { TComboBoxControlInfo }
 
@@ -105,8 +105,8 @@ constructor TComboBoxControlInfo.Create(AOwner: TDialogEditor;
 begin
   inherited;
 
-  fEditWnd := $ffffffff;
-  fListBoxWnd := $ffffffff
+  FEditWnd := $ffffffff;
+  FListBoxWnd := $ffffffff
 end;
 
 (*----------------------------------------------------------------------*
@@ -115,14 +115,14 @@ end;
  | Set default styles                                                   |
  |                                                                      |
  | Parameters:                                                          |
- |   var params: TCreateControlParams                                   |
+ |   var Params: TCreateControlParams                                   |
  *----------------------------------------------------------------------*)
 class procedure TComboBoxControlInfo.CreateControlParams(
-  var params: TCreateControlParams);
+  var Params: TCreateControlParams);
 begin
   inherited;
-  params.Style := params.Style or WS_TABSTOP or WS_VSCROLL or CBS_DROPDOWN;
-  params.exStyle := params.exStyle or WS_EX_CLIENTEDGE;
+  Params.Style := Params.Style or WS_TABSTOP or WS_VSCROLL or CBS_DROPDOWN;
+  Params.exStyle := Params.exStyle or WS_EX_CLIENTEDGE;
 end;
 
 (*----------------------------------------------------------------------*
@@ -132,17 +132,17 @@ end;
  *----------------------------------------------------------------------*)
 procedure TComboBoxControlInfo.GetCBHandles;
 var
-  info : TComboBoxInfo;
+  Info: TComboBoxInfo;
 begin
-  if fEditWnd = $ffffffff then
+  if FEditWnd = $ffffffff then
   begin
-    FillChar (info, SizeOf (info), 0);
-    info.cbSize := SizeOf (info);
+    FillChar (Info, SizeOf (Info), 0);
+    Info.cbSize := SizeOf (Info);
 
     if Assigned (fnGetComboboxInfo) then
-      fnGetComboBoxInfo (ControlHandle, @info);
-    fEditWnd := info.hwndEdit;
-    fListBoxWnd := info.hwndList
+      fnGetComboBoxInfo (ControlHandle, @Info);
+    FEditWnd := Info.hwndEdit;
+    FListBoxWnd := Info.hwndList
   end
 end;
 
@@ -196,8 +196,8 @@ begin
     case kind of
       pkStyle :
         case idx of
-          0 : Result := 3;  // 'Type' property - Simple; DropDown; DroppdownList
-          1 : Result := 3;  // 'OwnerDraw' propery - No; Fixed; Variable
+          0: Result := 3;  // 'Type' property - Simple; DropDown; DroppdownList
+          1: Result := 3;  // 'OwnerDraw' propery - No; Fixed; Variable
         end
     end;
   end
@@ -225,17 +225,17 @@ begin
     case kind of
       pkStyle :
         case idx of
-          0 :                   // 'Type' property
+          0:                   // 'Type' property
             case enum of
-              0 : Result := rstSimple;
-              1 : Result := rstDropdown;
-              2 : Result := rstDropdownList
+              0: Result := rstSimple;
+              1: Result := rstDropdown;
+              2: Result := rstDropdownList
             end;
-          1 :                   // 'OwnerDraw' property
+          1:                   // 'OwnerDraw' property
             case enum of
-              0 : Result := rstNo;
-              1 : Result := rstFixed;
-              2 : Result := rstVariable
+              0: Result := rstNo;
+              1: Result := rstFixed;
+              2: Result := rstVariable
             end
         end
     end
@@ -257,9 +257,9 @@ begin
     Dec (idx, inherited GetPropertyCount (kind));
     Result := '';
     case kind of
-//      pkGeneral : Result := StaticControlPropertyGeneralName [idx];
-      pkStyle   : Result := ComboBoxControlPropertyStyleName [idx];
-//      pkExtended : Result := StaticControlPropertyExtendedName [idx];
+//      pkGeneral: Result := StaticControlPropertyGeneralName [idx];
+      pkStyle  : Result := ComboBoxControlPropertyStyleName [idx];
+//      pkExtended: Result := StaticControlPropertyExtendedName [idx];
     end
   end
 end;
@@ -279,9 +279,9 @@ begin
     Dec (idx, inherited GetPropertyCount (kind));
     Result := ptInteger;
     case kind of
-//      pkGeneral : Result := StaticControlPropertyGeneralType [idx];
-      pkStyle   : Result := ComboBoxControlPropertyStyleType [idx];
-//      pkExtended : Result := StaticControlPropertyExtendedType [idx];
+//      pkGeneral: Result := StaticControlPropertyGeneralType [idx];
+      pkStyle  : Result := ComboBoxControlPropertyStyleType [idx];
+//      pkExtended: Result := StaticControlPropertyExtendedType [idx];
     end
   end
 end;
@@ -289,7 +289,7 @@ end;
 (*----------------------------------------------------------------------*
  | TComboBoxControlInfo.GetPropertyValue                                |
  |                                                                      |
- | Get a property value.                                                |
+ | Get a property Value.                                                |
  |                                                                      |
  | Parameters:                                                          |
  |   kind: TPropertyKind; idx: Integer                                  |
@@ -306,29 +306,29 @@ begin
     case kind of
       pkStyle :
         case idx of
-          0 : case Style and 3 of       // 'Type' property
-                CBS_SIMPLE : Result := 0;
-                CBS_DROPDOWN : Result := 1;
-                CBS_DROPDOWNLIST : Result := 2;
+          0: case Style and 3 of       // 'Type' property
+                CBS_SIMPLE: Result := 0;
+                CBS_DROPDOWN: Result := 1;
+                CBS_DROPDOWNLIST: Result := 2;
                 else
                   Result := 0
               end;
                                         // OwnerDraw property
-          1 : if HasStyle [CBS_OWNERDRAWFIXED] then
+          1: if HasStyle [CBS_OWNERDRAWFIXED] then
                 Result := 1
               else
                 if HasStyle [CBS_OWNERDRAWVARIABLE] then
                   Result := 2
                 else
                   Result := 0;
-          2 : Result := HasStyle [CBS_SORT];
-          3 : Result := HasStyle [WS_VSCROLL];
-          4 : Result := HasStyle [CBS_NOINTEGRALHEIGHT];
-          5 : Result := HasStyle [CBS_OEMCONVERT];
-          6 : Result := HasStyle [CBS_AUTOHSCROLL];
-          7 : Result := HasStyle [CBS_DISABLENOSCROLL];
-          8 : Result := HasStyle [CBS_UPPERCASE];
-          9 : Result := HasStyle [CBS_LOWERCASE];
+          2: Result := HasStyle [CBS_SORT];
+          3: Result := HasStyle [WS_VSCROLL];
+          4: Result := HasStyle [CBS_NOINTEGRALHEIGHT];
+          5: Result := HasStyle [CBS_OEMCONVERT];
+          6: Result := HasStyle [CBS_AUTOHSCROLL];
+          7: Result := HasStyle [CBS_DISABLENOSCROLL];
+          8: Result := HasStyle [CBS_UPPERCASE];
+          9: Result := HasStyle [CBS_LOWERCASE];
         end
     end
   end
@@ -341,7 +341,7 @@ begin
     Result := inherited GetStyle;
 
     GetCBHandles;
-    if fListBoxWnd <> 0 then
+    if FListBoxWnd <> 0 then
       if (GetWindowLong (ControlHandle, GWL_STYLE) and WS_VSCROLL) <> 0 then
         Result := Result or WS_VSCROLL
   end
@@ -352,14 +352,14 @@ end;
 procedure TComboBoxControlInfo.Init;
 begin
   GetCBHandles;
-  if (fListBoxWnd <> 0) and ((fOrigStyle and WS_VSCROLL) <> 0) then
+  if (FListBoxWnd <> 0) and ((fOrigStyle and WS_VSCROLL) <> 0) then
     SetStyle (WS_VSCROLL, True)
 end;
 
 procedure TComboBoxControlInfo.SetPropertyValue(kind: TPropertyKind;
   idx: Integer; const Value: Variant);
 var
-  recreateRequired : Boolean;
+  recreateRequired: Boolean;
 begin
   if idx < inherited GetPropertyCount (kind) then
     inherited SetPropertyValue (kind, idx, Value)
@@ -374,9 +374,9 @@ begin
           0 :
             begin
               case Value of
-                0 : SetMaskedStyle (CBS_SIMPLE, 3);
-                1 : SetMaskedStyle (CBS_DROPDOWN, 3);
-                2 : SetMaskedStyle (CBS_DROPDOWNLIST, 3)
+                0: SetMaskedStyle (CBS_SIMPLE, 3);
+                1: SetMaskedStyle (CBS_DROPDOWN, 3);
+                2: SetMaskedStyle (CBS_DROPDOWNLIST, 3)
               end;
 
               recreateRequired := True
@@ -385,22 +385,22 @@ begin
           1 :
             begin
               case Value of
-                0 : SetMaskedStyle (0, CBS_OWNERDRAWFIXED or CBS_OWNERDRAWVARIABLE);
-                1 : SetMaskedStyle (CBS_OWNERDRAWFIXED, CBS_OWNERDRAWFIXED or CBS_OWNERDRAWVARIABLE);
-                2 : SetMaskedStyle (CBS_OWNERDRAWVARIABLE, CBS_OWNERDRAWFIXED or CBS_OWNERDRAWVARIABLE)
+                0: SetMaskedStyle (0, CBS_OWNERDRAWFIXED or CBS_OWNERDRAWVARIABLE);
+                1: SetMaskedStyle (CBS_OWNERDRAWFIXED, CBS_OWNERDRAWFIXED or CBS_OWNERDRAWVARIABLE);
+                2: SetMaskedStyle (CBS_OWNERDRAWVARIABLE, CBS_OWNERDRAWFIXED or CBS_OWNERDRAWVARIABLE)
               end;
 
               recreateRequired := True
             end;
 
-          2 : HasStyle [CBS_SORT] := Value;
-          3 : HasStyle [WS_VSCROLL] := Value;
-          4 : HasStyle [CBS_NOINTEGRALHEIGHT] := Value;
-          5 : HasStyle [CBS_OEMCONVERT] := Value;
-          6 : HasStyle [CBS_AUTOHSCROLL] := Value;
-          7 : begin HasStyle [CBS_DISABLENOSCROLL] := Value; recreateRequired := True; end;
-          8 : HasStyle [CBS_UPPERCASE] := Value;
-          9 : HasStyle [CBS_LOWERCASE] := Value;
+          2: HasStyle [CBS_SORT] := Value;
+          3: HasStyle [WS_VSCROLL] := Value;
+          4: HasStyle [CBS_NOINTEGRALHEIGHT] := Value;
+          5: HasStyle [CBS_OEMCONVERT] := Value;
+          6: HasStyle [CBS_AUTOHSCROLL] := Value;
+          7: begin HasStyle [CBS_DISABLENOSCROLL] := Value; recreateRequired := True; end;
+          8: HasStyle [CBS_UPPERCASE] := Value;
+          9: HasStyle [CBS_LOWERCASE] := Value;
         end
     end;
 
@@ -413,20 +413,20 @@ begin
 end;
 
 var
-  hUser32 : THandle;
+  hUser32: THandle;
 
-procedure TComboBoxControlInfo.SetStyle(st: DWORD; value: boolean);
+procedure TComboBoxControlInfo.SetStyle(st: DWORD; Value: Boolean);
 begin
   inherited;
 
   if st = WS_VSCROLL then
   begin
     GetCBHandles;
-    if fListBoxWnd <> 0 then
+    if FListBoxWnd <> 0 then
       if Value then
-        SetWindowLong (fListBoxWnd, GWL_STYLE, GetWindowLong (fListBoxWnd, GWL_STYLE) or WS_VSCROLL)
+        SetWindowLong (FListBoxWnd, GWL_STYLE, GetWindowLong (FListBoxWnd, GWL_STYLE) or WS_VSCROLL)
       else
-        SetWindowLong (fListBoxWnd, GWL_STYLE, GetWindowLong (fListBoxWnd, GWL_STYLE) and not WS_VSCROLL)
+        SetWindowLong (FListBoxWnd, GWL_STYLE, GetWindowLong (FListBoxWnd, GWL_STYLE) and not WS_VSCROLL)
   end
 end;
 

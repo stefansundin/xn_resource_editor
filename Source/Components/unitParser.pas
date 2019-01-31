@@ -185,13 +185,13 @@ function TParser.ExpectIdentifier(const errMsg: string): string;
 begin
   if TokenType <> ttIdentifier then
     raise EParser.Create(errMsg);
-  result := FToken;
+  Result := FToken;
 end;
 
 function TParser.ExpectInteger(const errMsg: string): Integer;
 begin
   if tokenType = ttNumber then
-    result := StrToInt (token)
+    Result := StrToInt (token)
   else
     raise EParser.Create(errMsg);
 end;
@@ -199,7 +199,7 @@ end;
 function TParser.ExpectString(const errMsg: string): string;
 begin
   if tokenType = ttString then
-    result := Token
+    Result := Token
   else
     raise EParser.Create(errMsg);
 end;
@@ -217,7 +217,7 @@ begin
       if not FReader.ReadLn(FLineBuf) then
       begin
         FCh := #0;
-        result := FCh;
+        Result := FCh;
         exit
       end;
       FLinePos := 0;
@@ -237,14 +237,14 @@ begin
     FFirstChar := False
   end;
 
-  result := FCh;
+  Result := FCh;
 end;
 
 function TParser.GetNonWhitespace: Char;
 begin
   repeat
-    result := GetChar
-  until not (result in Whitespace)
+    Result := GetChar
+  until not (Result in Whitespace)
 end;
 
 function TParser.GetToken : Boolean;
@@ -252,7 +252,7 @@ var
   st : string;
 
 begin
-  result := True;
+  Result := True;
   FTokenType := ttUnknown;
   SkipWhitespace;
   FTokenSol := FSOL;
@@ -281,7 +281,7 @@ begin
     end
     else
       if FCh = #0 then
-        result := False
+        Result := False
       else
       begin
         FTokenChar := FCh;
@@ -294,7 +294,7 @@ function TParser.NextChar (ch :Char) : Char;
 begin
   NextToken;
   ExpectChar (ch);
-  result := FTokenChar;
+  Result := FTokenChar;
 end;
 
 function TParser.NextIdentifier (const errMsg : string) : string;
@@ -306,13 +306,13 @@ end;
 function TParser.NextInteger(const errMsg: string): Integer;
 begin
   NextToken;
-  result := ExpectInteger (errMsg);
+  Result := ExpectInteger (errMsg);
 end;
 
 function TParser.NextString(const errMsg: string) : string;
 begin
   NextToken;
-  result := ExpectString (errMsg);
+  Result := ExpectString (errMsg);
 end;
 
 procedure TParser.NextToken;
@@ -366,7 +366,7 @@ end;
 
 function TCPreProcessor.Calc(const st: string): TValue;
 begin
-  CalcExpression (st, FIdentifiers, result);
+  CalcExpression (st, FIdentifiers, Result);
 end;
 
 procedure TCPreProcessor.CheckIdentifiers;
@@ -404,9 +404,9 @@ end;
 function TCPreProcessor.Defined(id: string): Boolean;
 begin
   if FIdentifiers = Nil then
-    result := False
+    Result := False
   else
-    result := FIdentifiers.IndexOf (id) >= 0
+    Result := FIdentifiers.IndexOf (id) >= 0
 end;
 
 procedure TCPreProcessor.DeleteIdentifier(const id: string);
@@ -600,7 +600,7 @@ begin
   if TokenType = ttIdentifier then
     Resolve (FTokenType, FToken);
 
-  result := inherited ExpectInteger (errMsg);
+  Result := inherited ExpectInteger (errMsg);
 end;
 
 function TCPreProcessor.ExpectString(const errMsg: string): string;
@@ -608,7 +608,7 @@ begin
   if TokenType = ttIdentifier then
     Resolve (FTokenType, FToken);
 
-  result := inherited ExpectString (errMsg);
+  Result := inherited ExpectString (errMsg);
 end;
 
 function TCPreProcessor.GetIncludePathName(const FileName: string): string;
@@ -616,9 +616,9 @@ var
   st, p : string;
   ch : Char;
 begin
-  result := PathName + fileName;
+  Result := PathName + fileName;
 
-  if not FileExists (result) then
+  if not FileExists (Result) then
   begin
     st := IncludePath;
     if st = '' then
@@ -634,19 +634,19 @@ begin
         if (ch <> '\') and (ch <> ':') then
           p := p + '\';
 
-        result := p + fileName;
-        if FileExists (result) then
+        Result := p + fileName;
+        if FileExists (Result) then
           Exit
       end
     end;
 
-    result := FileName
+    Result := FileName
   end
 end;
 
 function TCPreProcessor.GetRestOfLine: string;
 begin
-  result := '';
+  Result := '';
   if FSOL then
   begin
     FToken := '';
@@ -690,20 +690,20 @@ begin
     GetChar
   until False;
   FToken := Trim (FToken);
-  result := FToken;
+  Result := FToken;
 end;
 
 function TCPreProcessor.GetToken: Boolean;
 var
   retry : Boolean;
 begin
-  result := True;
+  Result := True;
   retry := True;
   while retry do
   begin
     retry := False;
-    result := inherited GetToken;
-    if not result then
+    Result := inherited GetToken;
+    if not Result then
     begin
       if FIfLevel <> 0 then
         raise EParser.Create('Unexpected end of file');
@@ -799,7 +799,7 @@ end;
 
 function TCPreProcessor.IsIdentifier(const id: string): Boolean;
 begin
-  result := FIdentifiers.IndexOf(id) >= 0
+  Result := FIdentifiers.IndexOf(id) >= 0
 end;
 
 procedure TCPreProcessor.NextFileString(const errMsg: string);
@@ -847,12 +847,12 @@ function TCPreProcessor.Resolve(var TokenType : Integer; var st: string): TValue
 begin
   if (TokenType = ttIdentifier) and IsIdentifier (st) then
   begin
-    CalcExpression (st, FIdentifiers, result);
+    CalcExpression (st, FIdentifiers, Result);
 
-    case result.tp of
-      vString  : begin st := result.sVal; tokenType := ttString; end;
-      vInteger : begin st := IntToStr (result.iVal); tokenType := ttNumber; end;
-      vReal    : begin st := FloatToStr (result.rVal); tokenType := ttNumber; end;
+    case Result.tp of
+      vString  : begin st := Result.sVal; tokenType := ttString; end;
+      vInteger : begin st := IntToStr (Result.iVal); tokenType := ttNumber; end;
+      vReal    : begin st := FloatToStr (Result.rVal); tokenType := ttNumber; end;
     end
   end
 end;
@@ -860,12 +860,12 @@ end;
 function TCPreProcessor.ResolveToken: TValue;
 begin
   if (TokenType = ttNumber) or (TokenType = ttIdentifier) then
-    result := Calc (Token)
+    Result := Calc (Token)
   else
     if TokenType = ttString then
     begin
-      result.tp := vString;
-      result.sVal := Token
+      Result.tp := vString;
+      Result.sVal := Token
     end
     else
       raise EParser.Create('Value expected');

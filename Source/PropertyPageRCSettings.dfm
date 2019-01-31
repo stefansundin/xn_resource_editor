@@ -31,13 +31,7 @@ inherited fmPropertyPageRCSettings: TfmPropertyPageRCSettings
     Width = 231
     Height = 109
     Anchors = [akLeft, akTop, akRight, akBottom]
-    CheckImageKind = ckSystem
     Header.AutoSizeIndex = 0
-    Header.Font.Charset = DEFAULT_CHARSET
-    Header.Font.Color = clWindowText
-    Header.Font.Height = -11
-    Header.Font.Name = 'MS Shell Dlg 2'
-    Header.Font.Style = []
     Header.Options = [hoAutoResize, hoColumnResize, hoDrag]
     NodeDataSize = 4
     TabOrder = 2

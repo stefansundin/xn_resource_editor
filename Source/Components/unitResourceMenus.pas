@@ -7,40 +7,40 @@ uses Windows, Classes, SysUtils, Contnrs, unitResourceDetails, Menus;
 type
 TMenuResourceDetails = class (TResourceDetails)
   private
-    fHelpID : Integer;                    // Extended menu's help ID
+    fHelpID: Integer;                    // Extended menu's help ID
   protected
-    constructor Create (AParent : TResourceModule; ALanguage : Integer; const AName, AType : WideString; ASize : Integer; AData : pointer); override;
+    constructor Create (AParent: TResourceModule; ALanguage: Integer; const AName, AType: WideString; ASize: Integer; AData: pointer); override;
 
   public
     destructor Destroy; override;
 
-    class function GetBaseType : WideString; override;
-    procedure ChangeData (newData : TMemoryStream); override;
+    class function GetBaseType: WideString; override;
+    procedure ChangeData (newData: TMemoryStream); override;
 
     procedure InitNew; override;
-    procedure GetItems (items : TMenuItem);
-    procedure SetItems (items : TMenuItem);
+    procedure GetItems (items: TMenuItem);
+    procedure SetItems (items: TMenuItem);
 end;
 
 implementation
 
 type
   TMenuExTemplateHeader = packed record
-    wVersion : word;
-    wOffset : word;
-    dwHelpId : DWORD;
+    wVersion: word;
+    wOffset: word;
+    dwHelpId: DWORD;
   end;
   PMenuExTemplateHeader = ^TMenuExTemplateHeader;
 
   TMenuHeader = packed record
-    wVersion : word;
-    cbHeaderSize : word;
+    wVersion: word;
+    cbHeaderSize: word;
   end;
   PMenuHeader = ^TMenuHeader;
 
   TNormalMenuItem = packed record
-    resInfo : word;
-    menuText : array [0..10] of WideChar;
+    resInfo: word;
+    menuText: array [0..10] of WideChar;
   end;
   PNormalMenuItem = ^TNormalMenuItem;
 
@@ -66,19 +66,19 @@ end;
 
 class function TMenuResourceDetails.GetBaseType: WideString;
 begin
-  result := IntToStr (Integer (RT_MENU));
+  Result := IntToStr (Integer (RT_MENU));
 end;
 
 procedure TMenuResourceDetails.GetItems(items: TMenuItem);
 var
-  p : PChar;
-  owner : TComponent;
+  p: PChar;
+  owner: TComponent;
 
-  procedure GetNormalItems (rootItem : TMenuItem);
+  procedure GetNormalItems (rootItem: TMenuItem);
   var
-    flags, id : word;
-    caption : WideString;
-    item : TMenuItem;
+    flags, id: word;
+    caption: WideString;
+    item: TMenuItem;
   begin
     repeat
       flags := PWord (p)^;
@@ -118,15 +118,15 @@ var
   end;
 
 
-  procedure GetExtendedItems (rootItem : TMenuItem);
+  procedure GetExtendedItems (rootItem: TMenuItem);
   var
-    tp : DWORD;
-    state : DWORD;
-    uID : UINT;
-    bResInfo : word;
-    caption : WideString;
-    helpID : DWORD;
-    item : TMenuItem;
+    tp: DWORD;
+    state: DWORD;
+    uID: UINT;
+    bResInfo: word;
+    caption: WideString;
+    helpID: DWORD;
+    item: TMenuItem;
 
   begin
     repeat
@@ -201,7 +201,7 @@ end;
 
 procedure TMenuResourceDetails.InitNew;
 var
-  p : PChar;
+  p: PChar;
 begin
   Data.SetSize (sizeof (TMenuExTemplateHeader) + 20);
   ZeroMemory (data.Memory, data.Size);
@@ -233,17 +233,17 @@ end;
 
 procedure TMenuResourceDetails.SetItems(items: TMenuItem);
 var
-  st : TMemoryStream;
-  offset : Integer;
-  i : Integer;
+  st: TMemoryStream;
+  offset: Integer;
+  i: Integer;
 
-  procedure SaveOldStyleMenu (rootItem : TMenuItem; lastItem : boolean);
+  procedure SaveOldStyleMenu (rootItem: TMenuItem; lastItem: Boolean);
   var
-    flags : word;
-    id : word;
-    i : Integer;
-    wCaption : WideString;
-    c : byte;
+    flags: word;
+    id: word;
+    i: Integer;
+    wCaption: WideString;
+    c: byte;
   begin
     flags := 0;
     c := 0;
@@ -286,16 +286,16 @@ var
       SaveOldStyleMenu (rootItem.Items [i], i = rootItem.Count - 1)
   end;
 
-  procedure SaveNewStyleMenu (rootItem : TMenuItem; lastItem : boolean);
+  procedure SaveNewStyleMenu (rootItem: TMenuItem; lastItem: Boolean);
   var
-    tp : DWORD;
-    state : DWORD;
-    uID : UINT;
-    bResInfo : word;
-    wCaption : WideString;
-    helpID : DWORD;
-    c : byte;
-    i : Integer;
+    tp: DWORD;
+    state: DWORD;
+    uID: UINT;
+    bResInfo: word;
+    wCaption: WideString;
+    helpID: DWORD;
+    c: byte;
+    i: Integer;
 
   begin
     tp := 0;
@@ -359,7 +359,7 @@ begin
     st.CopyFrom (data, sizeof (TMenuHeader));
 
     case PMenuHeader (st.Memory)^.wVersion of
-      0 : for i:= 0 to items.Count - 1 do
+      0: for i:= 0 to items.Count - 1 do
             SaveOldStyleMenu (items.Items [i], i = items.Count - 1);
       1 :
         begin

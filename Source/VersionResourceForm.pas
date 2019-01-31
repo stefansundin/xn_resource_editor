@@ -54,15 +54,15 @@ type
     procedure actStringAddStringExecute(Sender: TObject);
     procedure PropertyListBox1PropertyChanged(Sender: TObject);
   private
-    fInitializing : Boolean;
-    fSelectedItem : TListItem;
-    fAdding : Boolean;
-    fDetails : TVersionInfoResourceDetails;
+    FInitializing: Boolean;
+    FSelectedItem: TListItem;
+    FAdding: Boolean;
+    FDetails: TVersionInfoResourceDetails;
     procedure SaveFlags;
-    function GetNewStringName : string;
+    function GetNewStringName: string;
   protected
     procedure SetObject(const Value: TObject); override;
-    function GetMenuItem : TMenuItem; override;
+    function GetMenuItem: TMenuItem; override;
     procedure UpdateActions; override;
   end;
 
@@ -106,14 +106,14 @@ const
  | Convert a version large integer to a string                                |
  |                                                                            |
  | Parameters:                                                                |
- |   version : TULargeInteger     The version integer to convert              |
+ |   version: TULargeInteger     The version integer to convert              |
  |                                                                            |
  | The function returns string representation of the version no               |
  *----------------------------------------------------------------------------*)
-function VersionToString(version: _ULARGE_INTEGER) : string;
+function VersionToString(version: _ULARGE_INTEGER): string;
 begin
   with version do
-    result := Format ('%d.%d.%d.%d', [HiWord (HighPart), LoWord (HighPart), HiWord (LowPart), LoWord (LowPart)]);
+    Result := Format ('%d.%d.%d.%d', [HiWord (HighPart), LoWord (HighPart), HiWord (LowPart), LoWord (LowPart)]);
 end;
 
 (*----------------------------------------------------------------------------*
@@ -122,16 +122,16 @@ end;
  | Convert a version string to a large integer                                |
  |                                                                            |
  | Parameters:                                                                |
- |   version : string       The version string to convert                     |
+ |   version: string       The version string to convert                     |
  |                                                                            |
  | The function returns the integer representation of the version string      |
  *----------------------------------------------------------------------------*)
-function StringToVersion (const version : string) : _ULARGE_INTEGER;
+function StringToVersion (const version: string): _ULARGE_INTEGER;
 var
-  p : Integer;
-  s : string;
-  hh, h, l, ll : word;
-  ok : boolean;
+  p: Integer;
+  s: string;
+  hh, h, l, ll: word;
+  ok: Boolean;
 begin
   hh := 0;
   ll := 0;
@@ -188,13 +188,13 @@ end;
  *----------------------------------------------------------------------*)
 procedure TfmVersionResource.SaveFlags;
 var
-  flags : TVersionFileFlags;
-  v : _ULARGE_INTEGER;
+  flags: TVersionFileFlags;
+  v: _ULARGE_INTEGER;
 begin
-  if not fInitializing then     // Ignore check box 'OnClick' handlers
+  if not FInitializing then     // Ignore check box 'OnClick' handlers
                                 // when we're being initialized.
 
-    with fDetails do
+    with FDetails do
     begin
       flags := FileFlags;
       if PropertyListBox1.Properties [prDebug].PropertyValue then flags := flags + [ffDebug] else flags := flags - [ffDebug];
@@ -238,16 +238,16 @@ end;
  *----------------------------------------------------------------------*)
 procedure TfmVersionResource.SetObject(const Value: TObject);
 var
-  fVersion : _ULARGE_INTEGER;
-  pVersion : _ULARGE_INTEGER;
-  flags : TVersionFileFlags;
-  k : TVersionStringValue;
-  i : Integer;
+  fVersion: _ULARGE_INTEGER;
+  pVersion: _ULARGE_INTEGER;
+  flags: TVersionFileFlags;
+  k: TVersionStringValue;
+  i: Integer;
 begin
   inherited;
-  fDetails := ResourceDetails as TVersionInfoResourceDetails;
-  fInitializing := True;
-  with fDetails do
+  FDetails := ResourceDetails as TVersionInfoResourceDetails;
+  FInitializing := True;
+  with FDetails do
   try
     fVersion := FileVersion;
     pVersion := ProductVersion;
@@ -282,7 +282,7 @@ begin
       EndUpdate
     end
   finally
-    fInitializing := False
+    FInitializing := False
   end
 end;
 
@@ -293,7 +293,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TfmVersionResource.actStringDeleteStringExecute(Sender: TObject);
 var
-  n : Integer;
+  n: Integer;
 begin
   if Assigned(lvVersionStrings.Selected) then
   begin
@@ -301,7 +301,7 @@ begin
     n := lvVersionStrings.Selected.Index;
 
     // Delete the string from the resouce
-    fDetails.DeleteKey (n);
+    FDetails.DeleteKey (n);
 
     // Delete the string from the list view
     lvVersionStrings.Selected.Delete;
@@ -323,18 +323,18 @@ end;
  *----------------------------------------------------------------------*)
 procedure TfmVersionResource.actStringModifyStringExecute(Sender: TObject);
 var
-  idx : Integer;
+  idx: Integer;
 begin
   if Assigned(lvVersionStrings.Selected) then
   begin
-    fSelectedItem := lvVersionStrings.Selected;
-    idx := fDetails.IndexOf(fSelectedItem.Caption);
+    FSelectedItem := lvVersionStrings.Selected;
+    idx := FDetails.IndexOf(FSelectedItem.Caption);
     if idx > -1 then
     begin
       mmoMessage.Width := lvVersionStrings.Width - 2;
       mmoMessage.Top := lvVersionStrings.Selected.DisplayRect (drLabel).Bottom + 1;
       mmoMessage.Left := lvVersionStrings.Left + 1;
-      mmoMessage.Text := fDetails.Key [idx].Value;
+      mmoMessage.Text := FDetails.Key [idx].Value;
       mmoMessage.Visible := True;
       mmoMessage.Enabled := True;
       mmoMessage.SetFocus
@@ -352,20 +352,20 @@ procedure TfmVersionResource.mmoMessageExit(Sender: TObject);
 begin
   mmoMessage.Enabled := False;
   mmoMessage.Visible := False;
-  if mmoMessage.CanUndo or fAdding then
+  if mmoMessage.CanUndo or FAdding then
   begin
-    if fAdding then
+    if FAdding then
       AddUndoEntry (rstAddString)
     else
       AddUndoEntry (rstChangeString);
 
                                 // Update the resource
-    fDetails.SetKeyValue (fSelectedItem.Caption, mmoMessage.Text);
+    FDetails.SetKeyValue (FSelectedItem.Caption, mmoMessage.Text);
 
                                 // Update the list view
-    fSelectedItem.SubItems [0] := StringToCString (mmoMessage.Text)
+    FSelectedItem.SubItems [0] := StringToCString (mmoMessage.Text)
   end;
-  fAdding := False;
+  FAdding := False;
 end;
 
 (*----------------------------------------------------------------------*
@@ -379,7 +379,7 @@ begin
   if s <> Item.Caption then
   begin
     AddUndoEntry (rstChangeStringName);
-    fDetails.ChangeKey (Item.Caption, s)
+    FDetails.ChangeKey (Item.Caption, s)
   end
 end;
 
@@ -410,7 +410,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TfmVersionResource.lvVersionStringsDblClick(Sender: TObject);
 var
-  p : TPoint;
+  p: TPoint;
 begin
   if Assigned(lvVersionStrings.Selected) then
   begin
@@ -433,7 +433,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TfmVersionResource.UpdateActions;
 var
-  sel : Boolean;
+  sel: Boolean;
 begin
   sel := Assigned(lvVersionStrings.Selected) and lvVersionStrings.Focused;
   actStringDeleteString.Enabled := sel;
@@ -448,7 +448,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TfmVersionResource.actStringAddStringExecute(Sender: TObject);
 var
-  keyName : string;
+  keyName: string;
 begin
   keyName := GetNewStringName;
   with lvVersionStrings.Items.Add do
@@ -456,7 +456,7 @@ begin
     Caption := keyName;
     SubItems.Add ('');
     Selected := True;
-    fAdding := True;
+    FAdding := True;
     actStringModifyString.Enabled := True;
     actStringModifyString.Execute
   end
@@ -469,7 +469,7 @@ end;
  *----------------------------------------------------------------------*)
 function TfmVersionResource.GetNewStringName: string;
 var
-  m : Integer;
+  m: Integer;
 begin
   m := 1;
   repeat

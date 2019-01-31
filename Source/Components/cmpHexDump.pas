@@ -33,13 +33,13 @@ type
     FShowAddress: Boolean;
     FBorder: TBorderStyle;
     FHexData: THexStrArray;
-    FLineAddr: array[0..15] of char;
-    FReadOnly: boolean;
+    FLineAddr: array[0..15] of Char;
+    FReadOnly: Boolean;
     FCurrentLinePos: Integer;
     FAddressWidth : Integer;
-    FEditCharacters : boolean;
-    FLowNibble : boolean;
-    FChanges: boolean;
+    FEditCharacters : Boolean;
+    FLowNibble : Boolean;
+    FChanges: Boolean;
     FOnChanges: TNotifyEvent;
     FAddressOffset: Integer;
 
@@ -67,11 +67,11 @@ type
     procedure WMSetFocus (var Message : TWMSetFocus); message WM_SETFOCUS;
     procedure WMKillFocus (var Message : TWMKillFocus); message WM_KILLFOCUS;
     procedure WMChar (var Message : TWMChar); message WM_CHAR;
-    procedure SetReadOnly(const Value: boolean);
+    procedure SetReadOnly(const Value: Boolean);
     procedure SetCurrentLinePos(const Value: Integer);
     procedure SetCaretPos;
-    procedure SetEditCharacters(const Value: boolean);
-    procedure SetLowNibble(const Value: boolean);
+    procedure SetEditCharacters(const Value: Boolean);
+    procedure SetLowNibble(const Value: Boolean);
     procedure SetChanged;
     procedure SetAddressOffset(const Value: Integer);
   protected
@@ -85,12 +85,12 @@ type
     destructor Destroy; override;
     property CurrentLine: Integer read FCurrentLine write SetCurrentLine;
     property CurrentLinePos : Integer read FCurrentLinePos write SetCurrentLinePos;
-    property EditCharacters : boolean read FEditCharacters write SetEditCharacters;
+    property EditCharacters : Boolean read FEditCharacters write SetEditCharacters;
     property Address: Pointer read FAddress write SetAddress;
     property DataSize: Integer read FDataSize write SetDataSize;
     property AddressOffset : Integer read FAddressOffset write SetAddressOffset;
-    property LowNibble : boolean read FLowNibble write SetLowNibble;
-    property Changes : boolean read FChanges write FChanges;
+    property LowNibble : Boolean read FLowNibble write SetLowNibble;
+    property Changes : Boolean read FChanges write FChanges;
   published
     property Align;
     property Anchors;
@@ -144,7 +144,7 @@ type
     property OnStartDock;
     property OnStartDrag;
     property OnUnDock;
-    property ReadOnly : boolean read FReadOnly write SetReadOnly;
+    property ReadOnly : Boolean read FReadOnly write SetReadOnly;
     property ShowAddress: Boolean read FShowAddress write SetShowAddress default True;
     property ShowCharacters: Boolean read FShowCharacters write SetShowCharacters default True;
     property AddressColor: TColor index 0 read GetFileColor write SetFileColor default clBlack;
@@ -230,17 +230,17 @@ end;
 
 procedure THexDump.WMSize(var Message: TWMSize);
 var
-  offset : Integer;
-  obpl : Integer;
+  Offset : Integer;
+  Obpl : Integer;
 begin
   inherited;
-  obpl := fBytesPerLine;
-  offset := CurrentLine * FBytesPerLine + CurrentLinePos;
+  Obpl := fBytesPerLine;
+  Offset := CurrentLine * FBytesPerLine + CurrentLinePos;
   CalcPaintParams;
-  if (FBytesPerLine > 0) and (obpl <> FBytesPerLine) then
+  if (FBytesPerLine > 0) and (Obpl <> FBytesPerLine) then
   begin
-    FCurrentLine := offset div FBytesPerLine;
-    FCurrentLinePos := offset mod FBytesPerLine;
+    FCurrentLine := Offset div FBytesPerLine;
+    FCurrentLinePos := Offset mod FBytesPerLine;
     SetCaretPos;
   end;
   AdjustScrollBars;
@@ -309,7 +309,7 @@ end;
 
 procedure THexDump.CalcPaintParams;
 const
-  Divisor: array[boolean] of Integer = (3,4);
+  Divisor: array[Boolean] of Integer = (3,4);
 var
   CharsPerLine: Integer;
 
@@ -556,8 +556,8 @@ procedure THexDump.SetAddress(Value: Pointer);
 begin
   FActive := Value <> nil;
   FAddress := Value;
-  fCurrentLine := 0;
-  fTopLine := 0;
+  FCurrentLine := 0;
+  FTopLine := 0;
   SetScrollPos(Handle, SB_VERT, FTopLine, True);
   Invalidate;
 end;
@@ -616,7 +616,7 @@ begin
   FItemWidth := Canvas.TextWidth('D') + 1;
 end;
 
-procedure THexDump.SetReadOnly(const Value: boolean);
+procedure THexDump.SetReadOnly(const Value: Boolean);
 begin
   if value <> FReadOnly then
   begin
@@ -695,7 +695,7 @@ begin
   end
 end;
 
-procedure THexDump.SetEditCharacters(const Value: boolean);
+procedure THexDump.SetEditCharacters(const Value: Boolean);
 begin
   if FEditCharacters <> Value then
   begin
@@ -704,7 +704,7 @@ begin
   end
 end;
 
-procedure THexDump.SetLowNibble(const Value: boolean);
+procedure THexDump.SetLowNibble(const Value: Boolean);
 begin
   if FLowNibble <> Value then
   begin
@@ -715,18 +715,18 @@ end;
 
 procedure THexDump.WMChar(var Message: TWMChar);
 var
-  ch : char;
-  offset : Integer;
+  ch : Char;
+  Offset : Integer;
   data : byte;
-  changes : boolean;
+  changes : Boolean;
   b : byte;
 begin
   inherited;
 
-  ch := char (message.CharCode);
+  ch := Char (message.CharCode);
   if ch in [' '..#$ff] then
   begin
-    offset := CurrentLine * FBytesPerLine + CurrentLinePos;
+    Offset := CurrentLine * FBytesPerLine + CurrentLinePos;
     changes := False;
     if EditCharacters then
       changes := True

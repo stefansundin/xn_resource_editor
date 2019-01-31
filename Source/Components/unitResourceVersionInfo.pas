@@ -10,22 +10,22 @@ type
 
   TVersionStringValue = class
   private
-    fKeyName : string;
-    fValue : string;
-    fLangId : Integer;
-    fCodePage : Integer;
+    FKeyName : string;
+    FValue : string;
+    FLangId : Integer;
+    FCodePage : Integer;
 
   public
     constructor Create (const AKeyName, AValue : string; ALangId, ACodePage : Integer);
-    property KeyName : string read fKeyName;
-    property Value : string read fValue;
+    property KeyName : string read FKeyName;
+    property Value : string read FValue;
   end;
 
   TVersionInfoResourceDetails = class (TResourceDetails)
   private
-    fChildStrings : TObjectList;
-    fFixedInfo : PVSFixedFileInfo;
-    fTranslations : TList;
+    FChildStrings : TObjectList;
+    FFixedInfo : PVSFixedFileInfo;
+    FTranslations : TList;
     procedure GetFixedFileInfo;
     procedure UpdateData;
     procedure ExportToStream (strm : TStream; const ext : string);
@@ -78,7 +78,7 @@ procedure TVersionInfoResourceDetails.ChangeData(newData: TMemoryStream);
 begin
   inherited;
 
-  fFixedInfo := nil;
+  FFixedInfo := nil;
 end;
 
 procedure TVersionInfoResourceDetails.ChangeKey(const AOldKey,
@@ -91,7 +91,7 @@ begin
     idx := IndexOf (AOldKey);
     if idx > -1 then
     begin
-      Key [idx].fKeyName := ANewKey;
+      Key [idx].FKeyName := ANewKey;
       UpdateData
     end
     else
@@ -103,30 +103,30 @@ constructor TVersionInfoResourceDetails.Create(AParent: TResourceModule;
   ALanguage: Integer; const AName, AType: WideString; ASize: Integer;
   AData: pointer);
 begin
-  fChildStrings := TObjectList.Create;
-  fTranslations := TList.Create;
+  FChildStrings := TObjectList.Create;
+  FTranslations := TList.Create;
   inherited Create (AParent, ALanguage, AName, AType, ASize, AData);
 end;
 
 constructor TVersionInfoResourceDetails.CreateNew(AParent: TResourceModule;
   ALanguage: Integer; const AName: WideString);
 begin
-  fChildStrings := TObjectList.Create;
-  fTranslations := TList.Create;
+  FChildStrings := TObjectList.Create;
+  FTranslations := TList.Create;
   inherited;
 
 end;
 
 procedure TVersionInfoResourceDetails.DeleteKey(idx: Integer);
 begin
-  fChildStrings.Delete (idx);
+  FChildStrings.Delete (idx);
   UpdateData
 end;
 
 destructor TVersionInfoResourceDetails.Destroy;
 begin
-  fChildStrings.Free;
-  fTranslations.Free;
+  FChildStrings.Free;
+  FTranslations.Free;
   inherited;
 end;
 
@@ -173,26 +173,26 @@ var
 
 begin { ExportToStream }
   GetFixedFileInfo;
-  if fFixedInfo <> Nil then
+  if FFixedInfo <> Nil then
   begin
     zeros := 0;
 
-    SaveVersionHeader (strm, 0, sizeof (fFixedInfo^), 0, 'VS_VERSION_INFO', fFixedInfo^);
+    SaveVersionHeader (strm, 0, sizeof (FFixedInfo^), 0, 'VS_VERSION_INFO', FFixedInfo^);
 
-    if fChildStrings.Count > 0 then
+    if FChildStrings.Count > 0 then
     begin
       stringInfoStream := TMemoryStream.Create;
       try
         SaveVersionHeader (stringInfoStream, 0, 0, 0, IntToHex (ResourceLanguage, 4) + IntToHex (CodePage, 4), zeros);
 
-        for i := 0 to fChildStrings.Count - 1 do
+        for i := 0 to FChildStrings.Count - 1 do
         begin
           PadStream (stringInfoStream);
 
           p := stringInfoStream.Position;
-          strg := TVersionStringValue (fChildStrings [i]);
-          wValue := strg.fValue;
-          SaveVersionHeader (stringInfoStream, 0, Length (strg.fValue) + 1, 1, strg.KeyName, wValue [1]);
+          strg := TVersionStringValue (FChildStrings [i]);
+          wValue := strg.FValue;
+          SaveVersionHeader (stringInfoStream, 0, Length (strg.FValue) + 1, 1, strg.KeyName, wValue [1]);
           wSize := stringInfoStream.Size - p;
           stringInfoStream.Seek (p, soFromBeginning);
           stringInfoStream.Write (wSize, sizeof (wSize));
@@ -217,7 +217,7 @@ begin { ExportToStream }
       strm.Seek (0, soFromEnd)
     end;
 
-    if fTranslations.Count > 0 then
+    if FTranslations.Count > 0 then
     begin
       PadStream (strm);
       p := strm.Position;
@@ -227,16 +227,16 @@ begin { ExportToStream }
       p1 := strm.Position;
       SaveVersionHeader (strm, 0, 0, 0, 'Translation', zeros);
 
-      for i := 0 to fTranslations.Count - 1 do
+      for i := 0 to FTranslations.Count - 1 do
       begin
-        v := Integer (fTranslations [i]);
+        v := Integer (FTranslations [i]);
         strm.Write (v, sizeof (v))
       end;
 
       wSize := strm.Size - p1;
       strm.Seek (p1, soFromBeginning);
       strm.Write (wSize, sizeof (wSize));
-      wSize := sizeof (Integer) * fTranslations.Count;
+      wSize := sizeof (Integer) * FTranslations.Count;
       strm.Write (wSize, sizeof (wSize));
 
       wSize := strm.Size - p;
@@ -255,30 +255,30 @@ end;
 
 class function TVersionInfoResourceDetails.GetBaseType: WideString;
 begin
-  result := IntToStr (Integer (RT_VERSION));
+  Result := IntToStr (Integer (RT_VERSION));
 end;
 
 function TVersionInfoResourceDetails.GetFileFlags: TVersionFileFlags;
 var
-  flags : Integer;
+  Flags : Integer;
 begin
   GetFixedFileInfo;
-  result := [];
-  flags := fFixedInfo^.dwFileFlags and fFixedInfo^.dwFileFlagsMask;
+  Result := [];
+  Flags := FFixedInfo^.dwFileFlags and FFixedInfo^.dwFileFlagsMask;
 
-  if (flags and VS_FF_DEBUG)        <> 0 then result := result + [ffDebug];
-  if (flags and VS_FF_INFOINFERRED) <> 0 then result := result + [ffInfoInferred];
-  if (flags and VS_FF_PATCHED)      <> 0 then result := result + [ffPatched];
-  if (flags and VS_FF_PRERELEASE)   <> 0 then result := result + [ffPreRelease];
-  if (flags and VS_FF_PRIVATEBUILD) <> 0 then result := result + [ffPrivateBuild];
-  if (flags and VS_FF_SPECIALBUILD) <> 0 then result := result + [ffSpecialBuild];
+  if (Flags and VS_FF_DEBUG)        <> 0 then Result := Result + [ffDebug];
+  if (Flags and VS_FF_INFOINFERRED) <> 0 then Result := Result + [ffInfoInferred];
+  if (Flags and VS_FF_PATCHED)      <> 0 then Result := Result + [ffPatched];
+  if (Flags and VS_FF_PRERELEASE)   <> 0 then Result := Result + [ffPreRelease];
+  if (Flags and VS_FF_PRIVATEBUILD) <> 0 then Result := Result + [ffPrivateBuild];
+  if (Flags and VS_FF_SPECIALBUILD) <> 0 then Result := Result + [ffSpecialBuild];
 end;
 
 function TVersionInfoResourceDetails.GetFileVersion: _ULARGE_INTEGER;
 begin
   GetFixedFileInfo;
-  Result.LowPart := fFixedInfo^.dwFileVersionLS;
-  Result.HighPart := fFixedInfo^.dwFileVersionMS;
+  Result.LowPart := FFixedInfo^.dwFileVersionLS;
+  Result.HighPart := FFixedInfo^.dwFileVersionMS;
 end;
 
 procedure TVersionInfoResourceDetails.GetFixedFileInfo;
@@ -306,7 +306,7 @@ var
     Inc (p, (lstrlenw (szKey) + 1) * sizeof (WideChar));
     while Integer (p) mod 4 <> 0 do
       Inc (p);
-    result := p - baseP;
+    Result := p - baseP;
     key := szKey;
   end;
 
@@ -328,8 +328,8 @@ var
       codePage := StrToInt ('$' + Copy (key, 5, 4));
 
       strBase := p;
-      fChildStrings.Clear;
-      fTranslations.Clear;
+      FChildStrings.Clear;
+      FTranslations.Clear;
 
       while (p - strBase) < wLength do
       begin
@@ -346,7 +346,7 @@ var
 
         if codePage = 0 then
           codePage := self.codePage;
-        fChildStrings.Add (TVersionStringValue.Create (key, Value, langID, codePage));
+        FChildStrings.Add (TVersionStringValue.Create (key, Value, langID, codePage));
       end
     end;
     base := p
@@ -366,28 +366,28 @@ var
       Dec (wLength, t);
 
       strBase := p;
-      fTranslations.Clear;
+      FTranslations.Clear;
 
       while (p - strBase) < wLength do
       begin
         v := PDWORD (p)^;
         Inc (p, sizeof (DWORD));
-        fTranslations.Add (pointer (v));
+        FTranslations.Add (pointer (v));
       end
     end;
     base := p
   end;
 
 begin
-  if fFixedInfo <> nil then Exit;
+  if FFixedInfo <> nil then Exit;
 
   p := data.memory;
   GetVersionHeader (p, wLength, wValueLength, wType, key);
 
   if wValueLength <> 0 then
   begin
-    fFixedInfo := PVSFixedFileInfo (p);
-    if fFixedInfo^.dwSignature <> $feef04bd then
+    FFixedInfo := PVSFixedFileInfo (p);
+    if FFixedInfo^.dwSignature <> $feef04bd then
       raise Exception.Create (rstInvalidVersionInfoResource);
 
     Inc (p, wValueLength);
@@ -395,7 +395,7 @@ begin
       Inc (p);
   end
   else
-    fFixedInfo := Nil;
+    FFixedInfo := Nil;
 
   while wLength > (p - data.memory) do
   begin
@@ -416,20 +416,20 @@ function TVersionInfoResourceDetails.GetKey(
   idx: Integer): TVersionStringValue;
 begin
   GetFixedFileInfo;
-  result := TVersionStringValue (fChildStrings [idx])
+  Result := TVersionStringValue (FChildStrings [idx])
 end;
 
 function TVersionInfoResourceDetails.GetKeyCount: Integer;
 begin
   GetFixedFileInfo;
-  result := fChildStrings.Count
+  Result := FChildStrings.Count
 end;
 
 function TVersionInfoResourceDetails.GetProductVersion: _ULARGE_INTEGER;
 begin
   GetFixedFileInfo;
-  result.LowPart := fFixedInfo^.dwProductVersionLS;
-  result.HighPart := fFixedInfo^.dwProductVersionMS
+  Result.LowPart := FFixedInfo^.dwProductVersionLS;
+  Result.HighPart := FFixedInfo^.dwProductVersionMS
 end;
 
 function TVersionInfoResourceDetails.IndexOf(
@@ -438,13 +438,13 @@ var
   i : Integer;
   k : TVersionStringValue;
 begin
-  result := -1;
+  Result := -1;
   for i := 0 to KeyCount - 1 do
   begin
     k := Key [i];
     if CompareText (k.KeyName, AKeyName) = 0 then
     begin
-      result := i;
+      Result := i;
       break
     end
   end
@@ -504,30 +504,30 @@ end;
 procedure TVersionInfoResourceDetails.SetFileFlags(
   const Value: TVersionFileFlags);
 var
-  flags : DWORD;
+  Flags : DWORD;
 begin
   GetFixedFileInfo;
 
-  flags := 0;
-  if ffDebug in value then flags := flags or VS_FF_DEBUG;
-  if ffInfoInferred in value then flags := flags or VS_FF_INFOINFERRED;
-  if ffPatched in value then flags := flags or VS_FF_PATCHED;
-  if ffPreRelease in value then flags := flags or VS_FF_PRERELEASE;
-  if ffPrivateBuild in value then flags := flags or VS_FF_PRIVATEBUILD;
-  if ffSpecialBuild in value then flags := flags or VS_FF_SPECIALBUILD;
+  Flags := 0;
+  if ffDebug in value then Flags := Flags or VS_FF_DEBUG;
+  if ffInfoInferred in value then Flags := Flags or VS_FF_INFOINFERRED;
+  if ffPatched in value then Flags := Flags or VS_FF_PATCHED;
+  if ffPreRelease in value then Flags := Flags or VS_FF_PRERELEASE;
+  if ffPrivateBuild in value then Flags := Flags or VS_FF_PRIVATEBUILD;
+  if ffSpecialBuild in value then Flags := Flags or VS_FF_SPECIALBUILD;
 
-  if (fFixedInfo^.dwFileFlags and fFixedInfo^.dwFileFlagsMask) <> flags then
-    fFixedInfo^.dwFileFlags := (fFixedInfo^.dwFileFlags and not fFixedInfo^.dwFileFlagsMask) or flags;
+  if (FFixedInfo^.dwFileFlags and FFixedInfo^.dwFileFlagsMask) <> Flags then
+    FFixedInfo^.dwFileFlags := (FFixedInfo^.dwFileFlags and not FFixedInfo^.dwFileFlagsMask) or Flags;
 end;
 
 procedure TVersionInfoResourceDetails.SetFileVersion(
   const Value: _ULARGE_INTEGER);
 begin
   GetFixedFileInfo;
-  if (value.LowPart <> fFixedInfo^.dwFileVersionLS) or (value.HighPart <> fFixedInfo^.dwFileVersionMS) then
+  if (value.LowPart <> FFixedInfo^.dwFileVersionLS) or (value.HighPart <> FFixedInfo^.dwFileVersionMS) then
   begin
-    fFixedInfo^.dwFileVersionLS := value.LowPart;
-    fFixedInfo^.dwFileVersionMS := value.HighPart;
+    FFixedInfo^.dwFileVersionLS := value.LowPart;
+    FFixedInfo^.dwFileVersionMS := value.HighPart;
   end
 end;
 
@@ -542,19 +542,19 @@ begin
   if idx = -1 then
   begin
     if AKeyName <> '' then
-      idx := fChildStrings.Add (TVersionStringValue.Create (AKeyNAme, AValue, ResourceLanguage, CodePage))
+      idx := FChildStrings.Add (TVersionStringValue.Create (AKeyNAme, AValue, ResourceLanguage, CodePage))
   end
   else
   begin
     k := Key [idx];
-    if (AValue <> k.fValue) or (AKeyName <> k.fKeyName) then
+    if (AValue <> k.FValue) or (AKeyName <> k.FKeyName) then
     begin
-      k.fKeyName := AKeyName;
-      k.fValue := AValue;
+      k.FKeyName := AKeyName;
+      k.FValue := AValue;
     end
   end;
 
-  result := idx;
+  Result := idx;
   UpdateData
 end;
 
@@ -562,10 +562,10 @@ procedure TVersionInfoResourceDetails.SetProductVersion(
   const Value: _ULARGE_INTEGER);
 begin
   GetFixedFileInfo;
-  if (value.LowPart <> fFixedInfo^.dwProductVersionLS) or (value.HighPart <> fFixedInfo^.dwProductVersionMS) then
+  if (value.LowPart <> FFixedInfo^.dwProductVersionLS) or (value.HighPart <> FFixedInfo^.dwProductVersionMS) then
   begin
-    fFixedInfo^.dwProductVersionLS := value.LowPart;
-    ffixedInfo^.dwProductVersionMS := value.HighPart;
+    FFixedInfo^.dwProductVersionLS := value.LowPart;
+    FFixedInfo^.dwProductVersionMS := value.HighPart;
   end
 end;
 
@@ -589,10 +589,10 @@ end;
 
 constructor TVersionStringValue.Create(const AKeyName, AValue: string; ALangId, ACodePage : Integer);
 begin
-  fKeyName := AKeyName;
-  fValue := AValue;
-  fLangId := ALangId;
-  fCodePage := ACodePage;
+  FKeyName := AKeyName;
+  FValue := AValue;
+  FLangId := ALangId;
+  FCodePage := ACodePage;
 end;
 
 initialization

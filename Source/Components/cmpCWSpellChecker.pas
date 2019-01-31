@@ -8,13 +8,13 @@ uses
 type
   TCWSpellChecker = class(TSpellChecker)
   private
-    fEXRichEdit: TCustomExRichEdit;
+    FEXRichEdit: TCustomExRichEdit;
   protected
   public
     destructor Destroy; override;
-    function CheckAndShowModal (SkipFirstLine : boolean) : Integer;
+    function CheckAndShowModal (SkipFirstLine: Boolean): Integer;
   published
-    property ExRichEdit : TCustomExRichEdit read fEXRichEdit write fEXRichEdit;
+    property ExRichEdit: TCustomExRichEdit read FEXRichEdit write FEXRichEdit;
   end;
 
 implementation
@@ -24,28 +24,28 @@ uses
 
 { TCWSpellChecker }
 
-function TCWSpellChecker.CheckAndShowModal (SkipFirstLine : boolean) : Integer;
+function TCWSpellChecker.CheckAndShowModal (SkipFirstLine: Boolean): Integer;
 var
-  ss, se : Integer;
-  txt : WideString;
-  suggestions : TStrings;
+  ss, se: Integer;
+  Txt: WideString;
+  Suggestions: TStrings;
 begin
-  result := mrOK;
+  Result := mrOK;
   if not Assigned (ExRichEdit) then Exit;
   if Assigned (fmSpellChecker) then Exit;
 
-  txt := ExRichEdit.Text;
-  suggestions := TStringList.Create;
+  Txt := ExRichEdit.Text;
+  Suggestions := TStringList.Create;
   try
-    if not Check (txt, 1, ss, se, suggestions, SkipFirstLine) then
+    if not Check (Txt, 1, ss, se, Suggestions, SkipFirstLine) then
     begin
       fmSpellChecker := TfmSpellChecker.Create(Owner);
       fmSpellChecker.QuoteChars := QuoteChars;
-      fmSpellChecker.Initialize (self, ss, se, suggestions);
-      result := fmSpellChecker.ShowModal
+      fmSpellChecker.Initialize (self, ss, se, Suggestions);
+      Result := fmSpellChecker.ShowModal
     end
   finally
-    suggestions.Free
+    Suggestions.Free
   end
 end;
 

@@ -26,7 +26,7 @@ unit cmpSpellChecker;
 interface
 
 uses
-  Windows, SysUtils, Classes, ConTnrs, StrUtils;
+  Windows, SysUtils, Classes, Contnrs, StrUtils;
 
 type
 //==============================================================
@@ -36,16 +36,16 @@ type
 
   TSpeller = class
   private
-    fCodePage : Integer;
-    pi : TProcessInformation;
-    fHInputWrite, fHErrorRead, fHOutputRead : THandle;
+    FCodePage: Integer;
+    FProcessInformation: TProcessInformation;
+    FHInputWrite, FHErrorRead, FHOutputRead: THandle;
   public
-    constructor Create (const APath, ACmd : string; ACodePage : Integer);
+    constructor Create (const APath, ACmd: string; ACodePage: Integer);
     destructor Destroy; override;
-    procedure SpellCommand (const cmd : string);
-    function GetResponse : string;
-    function GetCheckResponse : string;
-    property CodePage : Integer read fCodePage;
+    procedure SpellCommand (const cmd: string);
+    function GetResponse: string;
+    function GetCheckResponse: string;
+    property CodePage: Integer read FCodePage;
   end;
 
 //==============================================================
@@ -56,19 +56,19 @@ type
 
   TISpellLanguage = class
   private
-    fCmd: string;
-    fPath : string;
-    fCodePage: Integer;
-    fLang: Integer;
-    fName: string;
+    FCmd: string;
+    FPath: string;
+    FCodePage: Integer;
+    FLang: Integer;
+    FName: string;
   public
-    constructor Create (const APath, AName : string; ACodePage, ALang : Integer; const ACmd : string);
+    constructor Create (const APath, AName: string; ACodePage, ALang: Integer; const ACmd: string);
 
-    property CodePage : Integer read fCodePage;
-    property Cmd : string read fCmd;      // Cmd to send to ISpell.exe
-    property Lang : Integer read fLang;   // Language ID
-    property Name : string read fName;
-    property Path : string read fPath;
+    property CodePage: Integer read FCodePage;
+    property Cmd: string read FCmd;      // Cmd to send to ISpell.exe
+    property Lang: Integer read FLang;   // Language ID
+    property Name: string read FName;
+    property Path: string read FPath;
   end;
 
 //==============================================================
@@ -79,39 +79,39 @@ type
 
   TSpellChecker = class(TComponent)
   private
-    fLanguageIdx: Integer;
-    fSpeller : TSpeller;
-    fQuoteChars: string;
+    FLanguageIdx: Integer;
+    FSpeller: TSpeller;
+    FQuoteChars: string;
     procedure SetLanguageIdx(const Value: Integer);
     procedure Initialize;
   protected
   public
-    constructor Create (AOwner : TComponent); override;
+    constructor Create (AOwner: TComponent); override;
     destructor Destroy; override;
 
-    class function LanguageCount : Integer;
-    class function Language (idx : Integer) : TISpellLanguage;
+    class function LanguageCount: Integer;
+    class function Language (idx: Integer): TISpellLanguage;
 
-    function CheckWord (const ws : WideString; suggestions : TStrings = Nil) : boolean;
-    function Check (const ws : WideString; startPos : Integer; var selStart, selEnd : Integer; suggestions : TStrings = Nil; SkipFirstLine : boolean = False) : boolean;
-    procedure Add (const word : WideString);
-    property LanguageIdx : Integer read fLanguageIdx write SetLanguageIdx default -1;
-    property QuoteChars : string read fQuoteChars write fQuoteChars;
+    function CheckWord (const ws: WideString; Suggestions: TStrings = Nil): Boolean;
+    function Check (const ws: WideString; startPos: Integer; var selStart, selEnd: Integer; Suggestions: TStrings = Nil; SkipFirstLine: Boolean = False): Boolean;
+    procedure Add (const word: WideString);
+    property LanguageIdx: Integer read FLanguageIdx write SetLanguageIdx default -1;
+    property QuoteChars: string read FQuoteChars write FQuoteChars;
   end;
 
 EISpell = class (Exception)
 end;
 
 var
-  gDefaultISpellLanguage : Integer = -1;
+  gDefaultISpellLanguage: Integer = -1;
 
 implementation
 
 uses ActiveX, unitDefRegistry, iniFiles, unitCharsetMap, unitSearchString;
 
 var
-  gISpellLanguages : TObjectList = Nil;
-  gCoInitialize : boolean = False;
+  gISpellLanguages: TObjectList = Nil;
+  gCoInitialize: Boolean = False;
 
 
 { TSpellChecker }
@@ -126,10 +126,10 @@ var
  *----------------------------------------------------------------------*)
 procedure TSpellChecker.Add(const word: WideString);
 begin
-  if not Assigned (fSpeller) then
+  if not Assigned (FSpeller) then
     Initialize;
-  if Assigned (fSpeller) then
-    fSpeller.SpellCommand('*' + WideStringToString (word, fSpeller.CodePage));
+  if Assigned (FSpeller) then
+    FSpeller.SpellCommand('*' + WideStringToString (word, FSpeller.CodePage));
 end;
 
 (*----------------------------------------------------------------------*
@@ -140,31 +140,31 @@ end;
  |                                                                      |
  | If it returns false, also fill in the selStart and selEnd variables  |
  | to indicate the (1-based) position and length of the misspelt        |
- | word, and fil in the optional list of suggestions.                   |
+ | word, and fil in the optional list of Suggestions.                   |
  |                                                                      |
  | Parameters:                                                          |
  |   const ws: WideString;      The string of words to check            |
  |   var startPos: Integer;     The starting position for the search    |
- |   var selStart : Integer     Returns position of first misspelling   |
- |   var selEnd : Integer;      Returns the end position of the "       |
- |   suggestions : TStrings     Optional list of suggestions filled in  |
+ |   var selStart: Integer     Returns position of first misspelling   |
+ |   var selEnd: Integer;      Returns the end position of the "       |
+ |   Suggestions: TStrings     Optional list of Suggestions filled in  |
  |                              when there is a misspelling.            |
  *----------------------------------------------------------------------*)
 function TSpellChecker.Check(const ws: WideString; startPos: Integer;
-  var selStart, selEnd: Integer; suggestions: TStrings; SkipFirstLine : boolean): boolean;
+  var selStart, selEnd: Integer; Suggestions: TStrings; SkipFirstLine: Boolean): Boolean;
 var
-  l, p, lp : Integer;
-  sw, ew : Integer;
-  ch : WideChar;
-  InQuoteLine : boolean;
+  l, p, lp: Integer;
+  sw, ew: Integer;
+  ch: WideChar;
+  InQuoteLine: Boolean;
 
   //--------------------------------------------------------------
   // Check the individual word at sw..ew
-  function DoCheck : boolean;
+  function DoCheck: Boolean;
   begin
     if sw <> -1 then
     begin
-      result := CheckWord (Copy (ws, sw, ew - sw + 1), suggestions);
+      result := CheckWord (Copy (ws, sw, ew - sw + 1), Suggestions);
       if not result then
       begin
         selStart := sw;
@@ -268,31 +268,31 @@ end;
  |                                                                      |
  | Parameters:                                                          |
  |   const ws: WideString               The word to check               |
- |   suggestions: TStrings              Optional suggestions returned   |
+ |   Suggestions: TStrings              Optional Suggestions returned   |
  |                                      if the word was misspelt        |
  |                                                                      |
  | The function returns False if the word was misspelt                  |
  *----------------------------------------------------------------------*)
 function TSpellChecker.CheckWord(const ws: WideString;
-  suggestions: TStrings): boolean;
+  Suggestions: TStrings): Boolean;
 var
-  resp : string;
+  resp: string;
 begin
-  if not Assigned (fSpeller) then
+  if not Assigned (FSpeller) then
     Initialize;
-  if Assigned (fSpeller) then
+  if Assigned (FSpeller) then
   begin                         // Send word to ispell.exe
-    fSpeller.SpellCommand(WideStringToString (ws, fSpeller.CodePage));
-    resp := fSpeller.GetResponse;
+    FSpeller.SpellCommand(WideStringToString (ws, FSpeller.CodePage));
+    resp := FSpeller.GetResponse;
     result := resp = '';        // If blank line received the word was
                                 // spelt OK.
-    if Assigned (suggestions) then
+    if Assigned (Suggestions) then
     begin
       Suggestions.BeginUpdate;
       Suggestions.Clear;
       try
         if (not result) then
-        begin                   // Misspelt word.  Parse the suggestions
+        begin                   // Misspelt word.  Parse the Suggestions
           SplitString (':', resp);
 
           while resp <> '' do
@@ -315,7 +315,7 @@ end;
 constructor TSpellChecker.Create(AOwner: TComponent);
 begin
   inherited;
-  fLanguageIdx := -1;
+  FLanguageIdx := -1;
 end;
 
 (*----------------------------------------------------------------------*
@@ -325,7 +325,7 @@ end;
  *----------------------------------------------------------------------*)
 destructor TSpellChecker.Destroy;
 begin
-  fSpeller.Free;
+  FSpeller.Free;
   inherited;
 end;
 
@@ -334,13 +334,13 @@ end;
  *----------------------------------------------------------------------*)
 procedure TSpellChecker.Initialize;
 begin
-  if fLanguageIdx = -1 then        // If not language was specified...
-    fLanguageIdx := gDefaultISpellLanguage;
+  if FLanguageIdx = -1 then        // If not language was specified...
+    FLanguageIdx := gDefaultISpellLanguage;
 
-  FreeAndNil (fSpeller);
-  if (fLanguageIdx >= 0) and Assigned (gISpellLanguages) and (fLanguageIdx < gISpellLanguages.Count) then
-    with TISpellLanguage (gISpellLanguages [fLanguageIdx]) do
-      fSpeller := TSpeller.Create(Path, Cmd, CodePage);
+  FreeAndNil (FSpeller);
+  if (FLanguageIdx >= 0) and Assigned (gISpellLanguages) and (FLanguageIdx < gISpellLanguages.Count) then
+    with TISpellLanguage (gISpellLanguages [FLanguageIdx]) do
+      FSpeller := TSpeller.Create(Path, Cmd, CodePage);
 end;
 
 (*----------------------------------------------------------------------*
@@ -366,9 +366,9 @@ end;
 
 procedure TSpellChecker.SetLanguageIDx(const Value: Integer);
 begin
-  if fLanguageIdx <> Value then
+  if FLanguageIdx <> Value then
   begin
-    fLanguageIdx := Value;
+    FLanguageIdx := Value;
     if not (csDesigning in ComponentState) then
       Initialize
   end
@@ -391,18 +391,18 @@ end;
 constructor TISpellLanguage.Create(const APath, AName: string; ACodePage, ALang: Integer;
   const ACmd: string);
 begin
-  fPath := APath;
-  fName := AName;
-  fCodePage := ACodePage;
-  fLang := ALang;
-  fCmd := ACmd;
+  FPath := APath;
+  FName := AName;
+  FCodePage := ACodePage;
+  FLang := ALang;
+  FCmd := ACmd;
 end;
 
-procedure CreateSTDHandles (const sa : TSecurityAttributes; var hInputRead, hInputWrite, hOutputRead, hOutputWrite, hErrorRead, hErrorWrite : THandle);
+procedure CreateSTDHandles (const sa: TSecurityAttributes; var hInputRead, hInputWrite, hOutputRead, hOutputWrite, hErrorRead, hErrorWrite: THandle);
 var
-  hOutputReadTmp : THandle;
-  hInputWriteTmp : THandle;
-  hErrorReadTmp : THandle;
+  hOutputReadTmp: THandle;
+  hInputWriteTmp: THandle;
+  hErrorReadTmp: THandle;
 begin
   hOutputReadTmp := 0;
   hInputWriteTmp := 0;
@@ -464,26 +464,26 @@ end;
  | Parameters:                                                          |
  |   const APath,                                                       |
  |   ACmd: string;                                                      |
- |   ACodePage : Integer                                                |
+ |   ACodePage: Integer                                                |
  *----------------------------------------------------------------------*)
-constructor TSpeller.Create(const APath, ACmd: string; ACodePage : Integer);
+constructor TSpeller.Create(const APath, ACmd: string; ACodePage: Integer);
 var
-  si : TStartupInfo;
-  buf : string;
-  hInputRead, hOutputWrite, hErrorWrite : THandle;
-  sa : TSecurityAttributes;
+  si: TStartupInfo;
+  buf: string;
+  hInputRead, hOutputWrite, hErrorWrite: THandle;
+  sa: TSecurityAttributes;
 begin
-  fCodePage := ACodePage;
+  FCodePage := ACodePage;
   SetEnvironmentVariable ('HOME', PChar (APath));
 
   sa.nLength := sizeof (TSecurityAttributes);
   sa.lpSecurityDescriptor := Nil;
   sa.bInheritHandle := True;
 
-  FillChar (pi, SizeOf (pi), 0);
+  FillChar (FProcessInformation, SizeOf (FProcessInformation), 0);
   FillChar (si, SizeOf (si), 0);
 
-  CreateStdHandles (sa, hInputRead, fHInputWrite, fHOutputRead, hOutputWrite, fHErrorRead, hErrorWrite);
+  CreateStdHandles (sa, hInputRead, FHInputWrite, FHOutputRead, hOutputWrite, FHErrorRead, hErrorWrite);
 
   try
     si.cb := SizeOf (si);
@@ -493,7 +493,7 @@ begin
     si.hStdError := hErrorWrite;
     si.wShowWindow := SW_HIDE;
 
-    if not CreateProcess (nil, PChar (ACmd),  @sa, @sa, True, 0, nil, nil, si, pi) then
+    if not CreateProcess (nil, PChar (ACmd),  @sa, @sa, True, 0, nil, nil, si, FProcessInformation) then
       RaiseLastOSError;
   finally
     CloseHandle (hOutputWrite);
@@ -512,20 +512,20 @@ end;
  *----------------------------------------------------------------------*)
 destructor TSpeller.Destroy;
 begin
-  if PI.hProcess <> 0 then
+  if FProcessInformation.hProcess <> 0 then
   begin
     SpellCommand(^Z);     // Send Ctrl-Z to ISpell to terminate it
-    WaitForSingleObject (PI.hProcess, 1000);      // Wait for it to finish
+    WaitForSingleObject (FProcessInformation.hProcess, 1000);      // Wait for it to finish
   end;
 
   try
-    if pi.hThread <> 0 then CloseHandle (PI.hThread);
-    if pi.hProcess <> 0 then CloseHandle (PI.hProcess);
-    if fHInputWrite <> 0 then CloseHandle (fHInputWrite);
-    if fHErrorRead <> 0 then CloseHandle (fHErrorRead);
-    if fHOutputRead <> 0 then CloseHandle (fHOutputRead);
+    if FProcessInformation.hThread <> 0 then CloseHandle (FProcessInformation.hThread);
+    if FProcessInformation.hProcess <> 0 then CloseHandle (FProcessInformation.hProcess);
+    if FHInputWrite <> 0 then CloseHandle (FHInputWrite);
+    if FHErrorRead <> 0 then CloseHandle (FHErrorRead);
+    if FHOutputRead <> 0 then CloseHandle (FHOutputRead);
   except on E: Exception do
-    TerminateProcess(PI.hProcess,0);
+    TerminateProcess(FProcessInformation.hProcess,0);
   end;
   inherited;
 end;
@@ -537,14 +537,14 @@ end;
  *----------------------------------------------------------------------*)
 function TSpeller.GetCheckResponse: string;
 var
-  l : DWORD;
+  l: DWORD;
 
  // ReadPipe
  //
  // Read from a pipe.  If there's nothing in the pipe return an empty string
-  function ReadPipe (pipeHandle : THandle; var s : string) : boolean;
+  function ReadPipe (pipeHandle: THandle; var s: string): Boolean;
   var
-    avail : DWORD;
+    avail: DWORD;
   begin
     if not PeekNamedPipe (pipeHandle, nil, 0, nil, @avail, nil) then
       RaiseLastOSError;
@@ -568,11 +568,11 @@ begin { GetCheckResponse }
   Sleep (100);
   repeat
         { Try stdout first }
-    if ReadPipe (fHOutputRead, result) then
+    if ReadPipe (FHOutputRead, result) then
       break;
 
       {  Try stderr}
-    if ReadPipe (fHErrorRead, result) then
+    if ReadPipe (FHErrorRead, result) then
       raise EISpell.Create (result);
 
     Sleep (100);
@@ -592,10 +592,10 @@ end;
  *----------------------------------------------------------------------*)
 function TSpeller.GetResponse: string;
 var
-  avail : DWORD;
+  avail: DWORD;
 begin
   SetLength (result, 2048);
-  if ReadFile (fHOutputRead, result [1], 2048, avail, nil) then
+  if ReadFile (FHOutputRead, result [1], 2048, avail, nil) then
   begin
     SetLength (result, avail);
     result := Trim (result)
@@ -611,23 +611,23 @@ end;
  *----------------------------------------------------------------------*)
 procedure TSpeller.SpellCommand(const cmd: string);
 var
-  n : DWORD;
+  n: DWORD;
 begin
-  WriteFile (fHInputWrite, (cmd + #13#10) [1], Length (cmd) + 2, n, Nil);
+  WriteFile (FHInputWrite, (cmd + #13#10) [1], Length (cmd) + 2, n, Nil);
 end;
 
 procedure InitISpell;
 var
-  reg : TDefRegistry;
-  ISpellPath, path, s, name, cmd : string;
-  f : TSearchRec;
-  sections : TStrings;
-  i : Integer;
-  sectionLanguage : Integer;
+  reg: TDefRegistry;
+  ISpellPath, path, s, name, cmd: string;
+  f: TSearchRec;
+  sections: TStrings;
+  i: Integer;
+  sectionLanguage: Integer;
 
-  function SpellerForLocale (locale : Integer) : Integer;
+  function SpellerForLocale (locale: Integer): Integer;
   var
-    i : Integer;
+    i: Integer;
   begin
     result := -1;
 

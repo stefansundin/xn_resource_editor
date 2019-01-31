@@ -30,8 +30,8 @@ type
   TfmResource = class(TfmResourceObject)
   private
     function GetResourceDetails: TResourceDetails;
-    function GetCanRedo: boolean;
-    function GetCanUndo: boolean;
+    function GetCanRedo: Boolean;
+    function GetCanUndo: Boolean;
     function GetRedoDescription: string;
     function GetUndoDescription: string;
   protected
@@ -41,11 +41,11 @@ type
     function GetCanCopy: Boolean; virtual;
     function GetCanCut: Boolean; virtual;
     function GetCanPaste: Boolean; virtual;
-    function GetCanSelectAll : boolean; virtual;
+    function GetCanSelectAll: Boolean; virtual;
     function GetCanDelete: Boolean; virtual;
 
   public
-    procedure AddUndoEntry (const undoDetails : string);
+    procedure AddUndoEntry (const undoDetails: string);
     procedure Undo;
     procedure Redo;
     procedure Cut; virtual;
@@ -54,27 +54,27 @@ type
     procedure SelectAll; virtual;
     procedure EditDelete; virtual;
 
-    property ResourceDetails : TResourceDetails read GetResourceDetails;
+    property ResourceDetails: TResourceDetails read GetResourceDetails;
 
-    property CanUndo : boolean read GetCanUndo;
-    property CanRedo : boolean read GetCanRedo;
-    property UndoDescription : string read GetUndoDescription;
-    property RedoDescription : string read GetRedoDescription;
-    property ImportExportType : TImportExportType read GetImportExportType;
+    property CanUndo: Boolean read GetCanUndo;
+    property CanRedo: Boolean read GetCanRedo;
+    property UndoDescription: string read GetUndoDescription;
+    property RedoDescription: string read GetRedoDescription;
+    property ImportExportType: TImportExportType read GetImportExportType;
 
-    property CanCopy : Boolean read GetCanCopy;
-    property CanCut : Boolean read GetCanCut;
-    property CanPaste : Boolean read GetCanPaste;
-    property CanSelectAll : Boolean read GetCanSelectAll;
-    property CanDelete : Boolean read GetCanDelete;
+    property CanCopy: Boolean read GetCanCopy;
+    property CanCut: Boolean read GetCanCut;
+    property CanPaste: Boolean read GetCanPaste;
+    property CanSelectAll: Boolean read GetCanSelectAll;
+    property CanDelete: Boolean read GetCanDelete;
   end;
 
 var
   fmResource: TfmResource;
 
 procedure ClearUndoDetails;
-procedure SetInternationalFont (const name : TFontName; height : Integer);
-procedure UseInternationalFont (font : TFont);
+procedure SetInternationalFont (const name: TFontName; height: Integer);
+procedure UseInternationalFont (font: TFont);
 
 implementation
 
@@ -85,12 +85,12 @@ type
 // TUndoEntry class
 
   TUndoEntry = class
-    fDetails : string;
-    fLanguage : Integer;
-    fName : string;
-    fData : TMemoryStream;
+    FDetails: string;
+    FLanguage: Integer;
+    FName: string;
+    FData: TMemoryStream;
 
-    constructor Create (const details : string; res : TResourceDetails);
+    constructor Create (const Details: string; res: TResourceDetails);
     destructor Destroy; override;
   end;
 
@@ -99,13 +99,13 @@ type
 
   TUndoDetails = class
   private
-    fUndoStack : TObjectStack;
-    fRedoStack : TObjectStack;
-    fResourceDetails : TResourceDetails;
+    FUndoStack: TObjectStack;
+    FRedoStack: TObjectStack;
+    FResourceDetails: TResourceDetails;
 
-    constructor Create (ResourceDetails : TResourceDetails);
+    constructor Create (ResourceDetails: TResourceDetails);
     destructor Destroy; override;
-    procedure AddUndoEntry (const details : string);
+    procedure AddUndoEntry (const Details: string);
     procedure Undo;
     procedure Redo;
     procedure ClearRedoStack;
@@ -113,8 +113,8 @@ type
 
 
 var
-  gUndoDetails : TObjectList;
-  gInternationalFont : TFont = Nil;
+  gUndoDetails: TObjectList;
+  gInternationalFont: TFont = Nil;
 
 {$R *.DFM}
 
@@ -124,7 +124,7 @@ var
 (*----------------------------------------------------------------------*
  | procedue ClearUndoDetails                                            |
  |                                                                      |
- | Clear all undo details.                                              |
+ | Clear all undo Details.                                              |
  *----------------------------------------------------------------------*)
 procedure ClearUndoDetails;
 begin
@@ -139,7 +139,7 @@ begin
   gInternationalFont.Height := gProperties.InternationalFontHeight;
 end;
 
-procedure UseInternationalFont (font : TFont);
+procedure UseInternationalFont (font: TFont);
 begin
   if not Assigned (gInternationalFont) then
     CreateInternationalFont;
@@ -148,7 +148,7 @@ begin
     font.Assign(gInternationalFont)
 end;
 
-procedure SetInternationalFont (const name : TFontName; height : Integer);
+procedure SetInternationalFont (const name: TFontName; height: Integer);
 begin
   FreeAndNil (gInternationalFont);
   gProperties.InternationalFontName := name;
@@ -166,22 +166,22 @@ end;
  *----------------------------------------------------------------------*)
 procedure TfmResource.AddUndoEntry (const undoDetails: string);
 var
-  details : TUndoDetails;
+  Details: TUndoDetails;
 begin
   if ResourceDetails.Tag = 0 then       // Any existing undo info?
   begin
                                          // No.  Create it
-    details := TUndoDetails.Create (ResourceDetails);
-    resourceDetails.Dirty := True;
-    resourceDetails.Tag := Integer (details);
-    gUndoDetails.Add (details)
+    Details := TUndoDetails.Create (ResourceDetails);
+    ResourceDetails.Dirty := True;
+    ResourceDetails.Tag := Integer (Details);
+    gUndoDetails.Add (Details)
   end
   else
-    details := TUndoDetails (resourceDetails.Tag);
+    Details := TUndoDetails (ResourceDetails.Tag);
 
-  details.ClearRedoStack;               // Clear the redo stack to prevent memory run-away
+  Details.ClearRedoStack;               // Clear the redo stack to prevent memory run-away
 
-  details.AddUndoEntry (undoDetails);
+  Details.AddUndoEntry (undoDetails);
 end;
 
 procedure TfmResource.Copy;
@@ -223,43 +223,43 @@ end;
  | TfmResource.GetCanRedo                                               |
  |                                                                      |
  | 'Get' handler for CanRedo property.  Returns true if the resource    |
- | details has items in it's redo list                                  |
+ | Details has items in it's redo list                                  |
  *----------------------------------------------------------------------*)
-function TfmResource.GetCanRedo: boolean;
+function TfmResource.GetCanRedo: Boolean;
 var
-  details : TUndoDetails;
+  Details: TUndoDetails;
 begin
   if ResourceDetails.Tag <> 0 then
   begin
-    details := TUndoDetails (resourceDetails.Tag);
-    result := details.fRedoStack.Count > 0
+    Details := TUndoDetails (ResourceDetails.Tag);
+    Result := Details.FRedoStack.Count > 0
   end
   else
-    result := False
+    Result := False
 end;
 
 (*----------------------------------------------------------------------*
  | TfmResource.GetCanUndo                                               |
  |                                                                      |
  | 'Get' handler for CanUndo property.  Returns true if the resource    |
- | details has items in it's undo list                                  |
+ | Details has items in it's undo list                                  |
  *----------------------------------------------------------------------*)
-function TfmResource.GetCanSelectAll: boolean;
+function TfmResource.GetCanSelectAll: Boolean;
 begin
   Result := False
 end;
 
-function TfmResource.GetCanUndo: boolean;
+function TfmResource.GetCanUndo: Boolean;
 var
-  details : TUndoDetails;
+  Details: TUndoDetails;
 begin
   if ResourceDetails.Tag <> 0 then
   begin
-    details := TUndoDetails (resourceDetails.Tag);
-    result := details.fUndoStack.Count > 0
+    Details := TUndoDetails (ResourceDetails.Tag);
+    Result := Details.FUndoStack.Count > 0
   end
   else
-    result := False
+    Result := False
 end;
 
 (*----------------------------------------------------------------------*
@@ -281,19 +281,19 @@ end;
  *----------------------------------------------------------------------*)
 function TfmResource.GetRedoDescription: string;
 var
-  details : TUndoDetails;
-  entry : TUndoEntry;
+  Details: TUndoDetails;
+  entry: TUndoEntry;
 begin
-  result := '';
+  Result := '';
   if ResourceDetails.Tag <> 0 then
   begin
-    details := TUndoDetails (resourceDetails.Tag);
-    if details.fRedoStack.Count > 0 then
+    Details := TUndoDetails (ResourceDetails.Tag);
+    if Details.FRedoStack.Count > 0 then
     begin
-      entry := TUndoEntry (details.fRedoStack.Peek);
+      entry := TUndoEntry (Details.FRedoStack.Peek);
 
       if Assigned (entry) then
-        result := entry.fDetails
+        Result := entry.FDetails
     end
   end
 end;
@@ -306,7 +306,7 @@ end;
  *----------------------------------------------------------------------*)
 function TfmResource.GetResourceDetails: TResourceDetails;
 begin
-  result := Obj as TResourceDetails
+  Result := Obj as TResourceDetails
 end;
 
 (*----------------------------------------------------------------------*
@@ -317,19 +317,19 @@ end;
  *----------------------------------------------------------------------*)
 function TfmResource.GetUndoDescription: string;
 var
-  details : TUndoDetails;
-  entry : TUndoEntry;
+  Details: TUndoDetails;
+  entry: TUndoEntry;
 begin
-  result := '';
+  Result := '';
   if ResourceDetails.Tag <> 0 then
   begin
-    details := TUndoDetails (resourceDetails.Tag);
-    if details.fUndoStack.Count > 0 then
+    Details := TUndoDetails (ResourceDetails.Tag);
+    if Details.FUndoStack.Count > 0 then
     begin
-      entry := TUndoEntry (details.fUndoStack.Peek);
+      entry := TUndoEntry (Details.FUndoStack.Peek);
 
       if Assigned (entry) then
-        result := entry.fDetails
+        Result := entry.FDetails
     end
   end
 end;
@@ -342,23 +342,23 @@ end;
 (*----------------------------------------------------------------------*
  | TfmResource.Redo                                                     |
  |                                                                      |
- | 'Redo' the last change for the resource details.                     |
+ | 'Redo' the last change for the resource Details.                     |
  *----------------------------------------------------------------------*)
 procedure TfmResource.Redo;
 var
-  details : TUndoDetails;
+  Details: TUndoDetails;
 begin
   if ResourceDetails.Tag <> 0 then
   begin
-    details := TUndoDetails (resourceDetails.Tag);
-    details.Redo;
+    Details := TUndoDetails (ResourceDetails.Tag);
+    Details.Redo;
   end
 end;
 
 (*----------------------------------------------------------------------*
  | TfmResource.SetObject                                                |
  |                                                                      |
- | 'Set' property handler overridden to initialize the details undo     |
+ | 'Set' property handler overridden to initialize the Details undo     |
  | stack.  Note that the redo stack is cleared here to prevent          |
  | unlimited memory usage.                                              |
  *----------------------------------------------------------------------*)
@@ -369,20 +369,20 @@ end;
 
 procedure TfmResource.SetObject(const Value: TObject);
 var
-  details : TUndoDetails;
+  Details: TUndoDetails;
 begin
   if Assigned (Obj) and (Value <> Obj) then
     if ResourceDetails.Tag <> 0 then
     begin
-      details := TUndoDetails (resourceDetails.Tag);  // ie.   The *old* object's
-                                                      // details
+      Details := TUndoDetails (ResourceDetails.Tag);  // ie.   The *old* object's
+                                                      // Details
 
-      details.ClearRedoStack;
+      Details.ClearRedoStack;
 
-      if details.fUndoStack.Count = 0 then
+      if Details.FUndoStack.Count = 0 then
       begin
         ResourceDetails.Tag := 0;
-        gUndoDetails.Remove (details)
+        gUndoDetails.Remove (Details)
       end
     end;
   inherited;  // Call inherited to set the 'obj' property
@@ -395,12 +395,12 @@ end;
  *----------------------------------------------------------------------*)
 procedure TfmResource.Undo;
 var
-  details : TUndoDetails;
+  Details: TUndoDetails;
 begin
   if ResourceDetails.Tag <> 0 then
   begin
-    details := TUndoDetails (resourceDetails.Tag);
-    details.Undo;
+    Details := TUndoDetails (ResourceDetails.Tag);
+    Details.Undo;
   end
 end;
 
@@ -414,9 +414,9 @@ end;
  |                                                                      |
  | Add an entry to the undo list                                        |
  *----------------------------------------------------------------------*)
-procedure TUndoDetails.AddUndoEntry(const details: string);
+procedure TUndoDetails.AddUndoEntry(const Details: string);
 begin
-  fUndoStack.Push (TUndoEntry.Create (details, fResourceDetails));
+  FUndoStack.Push (TUndoEntry.Create (Details, FResourceDetails));
 end;
 
 (*----------------------------------------------------------------------*
@@ -426,8 +426,8 @@ end;
  *----------------------------------------------------------------------*)
 procedure TUndoDetails.ClearRedoStack;
 begin
-  while fRedoStack.Count > 0 do
-    fRedoStack.Pop.Free;
+  while FRedoStack.Count > 0 do
+    FRedoStack.Pop.Free;
 end;
 
 (*----------------------------------------------------------------------*
@@ -435,11 +435,11 @@ end;
  |                                                                      |
  | Constructor for TUndoDetails.  Create the undo and redo stacks       |
  *----------------------------------------------------------------------*)
-constructor TUndoDetails.Create (ResourceDetails : TResourceDetails);
+constructor TUndoDetails.Create (ResourceDetails: TResourceDetails);
 begin
-  fResourceDetails := ResourceDetails;
-  fUndoStack := TObjectStack.Create;
-  fRedoStack := TObjectStack.Create;
+  FResourceDetails := ResourceDetails;
+  FUndoStack := TObjectStack.Create;
+  FRedoStack := TObjectStack.Create;
 end;
 
 (*----------------------------------------------------------------------*
@@ -450,11 +450,11 @@ destructor TUndoDetails.Destroy;
 begin
   ClearRedoStack;
 
-  while fUndoStack.Count > 0 do // Clear the undo stack
-    fUndoStack.Pop.Free;
+  while FUndoStack.Count > 0 do // Clear the undo stack
+    FUndoStack.Pop.Free;
 
-  fUndoStack.Free;              // nb.  Object stacks don't own their Objects!
-  fRedoStack.Free;
+  FUndoStack.Free;              // nb.  Object stacks don't own their Objects!
+  FRedoStack.Free;
   inherited;
 end;
 
@@ -465,15 +465,15 @@ end;
  *----------------------------------------------------------------------*)
 procedure TUndoDetails.Redo;
 var
-  entry : TUndoEntry;
+  entry: TUndoEntry;
 begin
-  if fRedoStack.Count > 0 then
+  if FRedoStack.Count > 0 then
   begin
-    entry := TUndoEntry (fRedoStack.Pop);
-    fUndoStack.Push (TUndoEntry.Create (entry.fDetails, fResourceDetails));
-    fResourceDetails.ResourceName := entry.fName;
-    fResourceDetails.ResourceLanguage := entry.fLanguage;
-    fResourceDetails.ChangeData (entry.fData);
+    entry := TUndoEntry (FRedoStack.Pop);
+    FUndoStack.Push (TUndoEntry.Create (entry.FDetails, FResourceDetails));
+    FResourceDetails.ResourceName := entry.FName;
+    FResourceDetails.ResourceLanguage := entry.FLanguage;
+    FResourceDetails.ChangeData (entry.FData);
     entry.Free
   end
 end;
@@ -485,15 +485,15 @@ end;
  *----------------------------------------------------------------------*)
 procedure TUndoDetails.Undo;
 var
-  entry : TUndoEntry;
+  entry: TUndoEntry;
 begin
-  if fUndoStack.Count > 0 then
+  if FUndoStack.Count > 0 then
   begin
-    entry := TUndoEntry (fUndoStack.Pop);
-    fRedoStack.Push (TUndoEntry.Create (entry.fDetails, fResourceDetails));
-    fResourceDetails.ResourceName := entry.fName;
-    fResourceDetails.ResourceLanguage := entry.fLanguage;
-    fResourceDetails.ChangeData (entry.fData);
+    entry := TUndoEntry (FUndoStack.Pop);
+    FRedoStack.Push (TUndoEntry.Create (entry.FDetails, FResourceDetails));
+    FResourceDetails.ResourceName := entry.FName;
+    FResourceDetails.ResourceLanguage := entry.FLanguage;
+    FResourceDetails.ChangeData (entry.FData);
     entry.Free
   end
 end;
@@ -503,18 +503,18 @@ end;
 
 { TUndoEntry }
 
-constructor TUndoEntry.Create(const details : string; res : TResourceDetails);
+constructor TUndoEntry.Create(const Details: string; res: TResourceDetails);
 begin
-  fData := TMemoryStream.Create;
-  fData.CopyFrom (res.Data, 0);
-  fLanguage := res.ResourceLanguage;
-  fDetails := details;
-  fName := res.ResourceName
+  FData := TMemoryStream.Create;
+  FData.CopyFrom (res.Data, 0);
+  FLanguage := res.ResourceLanguage;
+  FDetails := Details;
+  FName := res.ResourceName
 end;
 
 destructor TUndoEntry.Destroy;
 begin
-  fData.Free;
+  FData.Free;
   inherited;
 end;
 

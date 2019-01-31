@@ -6,32 +6,32 @@ uses
   Windows, Classes, SysUtils, Graphics, MultiLanguage_TLB, RichEdit;
 
 var
-  CP_USASCII : Integer = 0;
-  DefaultCodePage : Integer = 0;
+  CP_USASCII: Integer = 0;
+  DefaultCodePage: Integer = 0;
 
-function MIMECharsetNameToCodepage (const MIMECharsetName : string) : Integer;
-function CharsetNameToCodepage (const CharsetName : string) : Integer;
-function CodepageToMIMECharsetName (codepage : Integer) : string;
-function CodepageToCharsetName (codepage : Integer) : string;
-function CharsetToCodePage (FontCharset : TFontCharset) : Integer;
-function CodePageToCharset (codePage : Integer) : TFontCharset;
-function WideStringToString (const ws : WideString; codePage : Integer) : string;
-function StringToWideString (const st : string; codePage : Integer) : WideString;
-function StringToGDIString (const s : string; codePage : Integer) : string;
-function GDIStringToString (const s : string; codePage : Integer) : string;
-function URLSuffixToCodePage (urlSuffix : string) : Integer;
-procedure GetCharsetNames (sl : TStrings);
+function MIMECharsetNameToCodepage (const MIMECharsetName: string): Integer;
+function CharsetNameToCodepage (const CharsetName: string): Integer;
+function CodepageToMIMECharsetName (codepage: Integer): string;
+function CodepageToCharsetName (codepage: Integer): string;
+function CharsetToCodePage (FontCharset: TFontCharset): Integer;
+function CodePageToCharset (codePage: Integer): TFontCharset;
+function WideStringToString (const ws: WideString; codePage: Integer): string;
+function StringToWideString (const st: string; codePage: Integer): WideString;
+function StringToGDIString (const s: string; codePage: Integer): string;
+function GDIStringToString (const s: string; codePage: Integer): string;
+function URLSuffixToCodePage (urlSuffix: string): Integer;
+procedure GetCharsetNames (sl: TStrings);
 function TrimEx(const S: string): string;
-function IsWideCharAlpha (ch : WideChar) : boolean;
-function IsWideCharAlnum (ch : WideChar) : boolean;
-procedure FontToCharFormat(font: TFont; codePage : Integer; var Format: TCharFormatW);
-function WideStringToUTF8 (const ws : WideString) : string;
-function UTF8ToWideString (const st : string) : WideString;
+function IsWideCharAlpha (ch: WideChar): Boolean;
+function IsWideCharAlnum (ch: WideChar): Boolean;
+procedure FontToCharFormat(font: TFont; codePage: Integer; var Format: TCharFormatW);
+function WideStringToUTF8 (const ws: WideString): string;
+function UTF8ToWideString (const st: string): WideString;
 
 var
-  gIMultiLanguage : IMultiLanguage = Nil;
-  gMultilanguageLoaded : boolean = False;
-  gMultiLang : boolean = False;
+  gIMultiLanguage: IMultiLanguage = Nil;
+  gMultilanguageLoaded: Boolean = False;
+  gMultiLang: Boolean = False;
 
 implementation
 
@@ -40,16 +40,16 @@ uses
 
 type
   TCharsetRec = record
-    Name : string;
-    URLSuffix : string;
-    CodePage : Integer;
-    CharSet : TFontCharSet;
-    MIMECharsetName : string;
-    CharsetName : string
+    Name: string;
+    URLSuffix: string;
+    CodePage: Integer;
+    CharSet: TFontCharSet;
+    MIMECharsetName: string;
+    CharsetName: string
   end;
 
 var
-  gCharsetMap : array [0..35] of TCharsetRec = (
+  gCharsetMap: array [0..35] of TCharsetRec = (
     (Name:'US ASCII';                      URLSuffix:'';    CodePage: 0; Charset:0;   MIMECharsetName:'';            CharsetName:'ANSI_CHARSET'       ),
     (Name:'US ASCII';                      URLSuffix:'';    CodePage: 0; Charset:0;   MIMECharsetName:'us-ascii';    CharsetName:'ANSI_CHARSET'       ),
     (Name:'Western Europe (ISO)';          URLSuffix:'';    CodePage:28591; Charset:0;   MIMECharsetName:'iso-8859-1';        CharsetName:'ANSI_CHARSET'       ),
@@ -88,7 +88,7 @@ var
     (Name:'Unicode (UTF-8)';               URLSuffix:'';    CodePage:65001; Charset:0;   MIMECharsetName:'utf-8';             CharsetName:'BALTIC_CHARSET'     )
   );
 
-  CharsetMap : array of TCharsetRec;
+  CharsetMap: array of TCharsetRec;
 
 
 
@@ -96,10 +96,10 @@ procedure LoadMultilanguage;
 type
   PMIMECPInfo = ^tagMIMECPInfo;
 var
-  enum : IEnumCodepage;
-  p, info : PMIMECPInfo;
-  i, j, c, ct : DWORD;
-  found : boolean;
+  enum: IEnumCodepage;
+  p, info: PMIMECPInfo;
+  i, j, c, ct: DWORD;
+  found: Boolean;
 begin
   if (not gMultilanguageLoaded) or (giMultiLanguage = Nil) then
   begin
@@ -176,187 +176,187 @@ begin
   end
 end;
 
-function MIMECharsetNameToCodepage (const MIMECharsetName : string) : Integer;
+function MIMECharsetNameToCodepage (const MIMECharsetName: string): Integer;
 var
-  i : Integer;
+  i: Integer;
 begin
   LoadMultiLanguage;
 
   if CompareText (MIMECharsetName, 'us-ascii') = 0 then
-    result := CP_USASCII
+    Result := CP_USASCII
   else
   begin
-    result := 0;
+    Result := 0;
     i := Pos ('-', MIMECharsetName);
     if i > 0 then
       if CompareText (Copy (MIMECharsetName, 1, i - 1), 'windows') = 0 then
-        result := StrToIntDef (Copy (MIMECharsetName, i + 1, MaxInt), 1252);
+        Result := StrToIntDef (Copy (MIMECharsetName, i + 1, MaxInt), 1252);
 
-    if result = 0 then
+    if Result = 0 then
     begin
-      result := CP_USASCII;
+      Result := CP_USASCII;
       for i := Low (CharsetMap) to High (CharsetMap) do
         if CompareText (CharsetMap [i].MIMECharsetName, MIMECharsetName) = 0 then
         begin
-          result := CharsetMap [i].codepage;
+          Result := CharsetMap [i].codepage;
           break
         end
     end
   end
 end;
 
-function CharsetNameToCodepage (const CharsetName : string) : Integer;
+function CharsetNameToCodepage (const CharsetName: string): Integer;
 var
-  i : Integer;
+  i: Integer;
 begin
   LoadMultiLanguage;
-  result := CP_USASCII;
+  Result := CP_USASCII;
   for i := Low (CharsetMap) to High (CharsetMap) do
     if CompareText (CharsetMap [i].Name, CharsetName) = 0 then
     begin
-      result := CharsetMap [i].codepage;
+      Result := CharsetMap [i].codepage;
       break
     end
 end;
 
-function CodepageToMIMECharsetName (codepage : Integer) : string;
+function CodepageToMIMECharsetName (codepage: Integer): string;
 var
-  i : Integer;
+  i: Integer;
 begin
   LoadMultiLanguage;
-  result := '';
+  Result := '';
 
   for i := Low (CharsetMap) to High (CharsetMap) do
     if CharsetMap [i].Codepage = codepage then
     begin
-      result := CharsetMap [i].MIMECharsetName;
+      Result := CharsetMap [i].MIMECharsetName;
       break
     end
 end;
 
-function CodepageToCharsetName (codepage : Integer) : string;
+function CodepageToCharsetName (codepage: Integer): string;
 var
-  i : Integer;
+  i: Integer;
 begin
   LoadMultiLanguage;
-  result := '';
+  Result := '';
 
   for i := Low (CharsetMap) to High (CharsetMap) do
     if CharsetMap [i].Codepage = codepage then
     begin
-      result := CharsetMap [i].Name;
+      Result := CharsetMap [i].Name;
       break
     end
 end;
 
-function CharsetToCodePage (FontCharset : TFontCharset) : Integer;
+function CharsetToCodePage (FontCharset: TFontCharset): Integer;
 var
-  i : Integer;
+  i: Integer;
 begin
   LoadMultiLanguage;
-  result := CP_USASCII;
+  Result := CP_USASCII;
   for i := Low (CharsetMap) to High (CharsetMap) do
     if CharsetMap [i].CharSet = FontCharset then
     begin
-      result := CharsetMap [i].CodePage;
+      Result := CharsetMap [i].CodePage;
       break
     end
 end;
 
-function CodePageToCharset (codePage : Integer) : TFontCharset;
+function CodePageToCharset (codePage: Integer): TFontCharset;
 var
-  i : Integer;
+  i: Integer;
 begin
   LoadMultiLanguage;
-  result := 0;
+  Result := 0;
   if codepage <> 65001 then
     for i := Low (CharsetMap) to High (CharsetMap) do
       if CharsetMap [i].Codepage = codepage then
       begin
-        result := CharsetMap [i].CharSet;
+        Result := CharsetMap [i].CharSet;
         break
       end
 end;
 
-function WideStringToString (const ws : WideString; codePage : Integer) : string;
+function WideStringToString (const ws: WideString; codePage: Integer): string;
 var
-  dlen, len : DWORD;
-  mode : DWORD;
+  dlen, len: DWORD;
+  mode: DWORD;
 begin
   LoadMultiLanguage;
 
   len := Length (ws);
   dlen := len * 4;
-  SetLength (result, dlen);  // Dest string may be longer than source string if it's UTF-8
+  SetLength (Result, dlen);  // Dest string may be longer than source string if it's UTF-8
   if codePage = -1 then
     codePage := CP_USASCII;
 
   if gMultiLang and (codePage <> CP_ACP) then
   begin
     mode := 0;
-    if not SUCCEEDED (gIMultiLanguage.ConvertStringFromUnicode(mode, codepage, PWideChar (ws), len, PChar (result), dlen)) then
+    if not SUCCEEDED (gIMultiLanguage.ConvertStringFromUnicode(mode, codepage, PWideChar (ws), len, PChar (Result), dlen)) then
       dlen := 0
   end
   else
-    dlen := WideCharToMultiByte(codePage, 0, PWideChar (ws), len, PAnsiChar(result), len * 4, nil, nil);
+    dlen := WideCharToMultiByte(codePage, 0, PWideChar (ws), len, PAnsiChar(Result), len * 4, nil, nil);
 
   if dlen = 0 then
-    result := ws
+    Result := ws
   else
-    SetLength (result, dlen)
+    SetLength (Result, dlen)
 end;
 
-function StringToWideString (const st : string; codePage : Integer) : WideString;
+function StringToWideString (const st: string; codePage: Integer): WideString;
 var
-  len, dlen, mode : DWORD;
+  len, dlen, mode: DWORD;
 begin
   LoadMultiLanguage;
   if codePage = -1 then
     codePage := CP_USASCII;
   if st = '' then
-    result := ''
+    Result := ''
   else
   begin
     len := Length (st);
     dlen := len * 4;
-    SetLength (result, dlen);
+    SetLength (Result, dlen);
 
     if gMultiLang and (codePage <> CP_ACP) then
     begin
       mode := 0;
-      if not SUCCEEDED (gIMultiLanguage.ConvertStringToUnicode(mode, codepage, PChar (st), len, PWideChar (result), dlen)) then
+      if not SUCCEEDED (gIMultiLanguage.ConvertStringToUnicode(mode, codepage, PChar (st), len, PWideChar (Result), dlen)) then
         dlen := 0;
     end
     else
-      dlen := MultiByteToWideChar (codepage, 0, PAnsiChar(st), len, PWideChar (result), len * 4);
+      dlen := MultiByteToWideChar (codepage, 0, PAnsiChar(st), len, PWideChar (Result), len * 4);
 
     if dlen = 0 then
-      result := st
+      Result := st
     else
-      SetLength (result, dlen)
+      SetLength (Result, dlen)
   end
 end;
 
-function URLSuffixToCodePage (urlSuffix : string) : Integer;
+function URLSuffixToCodePage (urlSuffix: string): Integer;
 var
-  i : Integer;
+  i: Integer;
 begin
   LoadMultiLanguage;
   urlSuffix := LowerCase (urlSuffix);
-  result := CP_USASCII;
+  Result := CP_USASCII;
   if urlSuffix <> '' then
     for i := Low (CharsetMap) to High (CharsetMap) do
       if CharsetMap [i].URLSuffix = urlSuffix then
       begin
-        result := CharsetMap [i].CodePage;
+        Result := CharsetMap [i].CodePage;
         break
       end
 end;
 
-procedure GetCharsetNames (sl : TStrings);
+procedure GetCharsetNames (sl: TStrings);
 var
-  i : Integer;
-  lst : string;
+  i: Integer;
+  lst: string;
 begin
   LoadMultiLanguage;
   sl.Clear;
@@ -392,13 +392,13 @@ begin
   Result:= StrToIntDef(Buffer, GetACP);
 end;
 
-function StringToGDIString (const s : String; codePage : Integer) : string;
+function StringToGDIString (const s: String; codePage: Integer): string;
 var
-  cs : TFontCharset;
-  i : Integer;
-  destCP : Integer;
-  mode : DWORD;
-  len, dlen : DWORD;
+  cs: TFontCharset;
+  i: Integer;
+  destCP: Integer;
+  mode: DWORD;
+  len, dlen: DWORD;
 begin
   LoadMultiLanguage;
   cs := CodePageToCharset (codePage);
@@ -412,30 +412,30 @@ begin
     end;
 
   if (destCP = -1) or (destCP = codePage) or (gIMultiLanguage.IsConvertible (codePage, destCP) <> S_OK) then
-    result := s
+    Result := s
   else
   begin
     mode := 0;
     len := Length (s);
     dlen := len * 4;
-    SetLength (result, dlen);
-    if not SUCCEEDED (gIMultiLanguage.ConvertString (mode, codepage, destCP, PChar (s), len, PChar (result), dlen)) then
+    SetLength (Result, dlen);
+    if not SUCCEEDED (gIMultiLanguage.ConvertString (mode, codepage, destCP, PChar (s), len, PChar (Result), dlen)) then
       dlen := 0;
 
     if dlen = 0 then
-      result := s
+      Result := s
     else
-      SetLength (result, dlen)
+      SetLength (Result, dlen)
   end
 end;
 
-function GDIStringToString (const s : string; codePage : Integer) : string;
+function GDIStringToString (const s: string; codePage: Integer): string;
 var
-  cs : TFontCharset;
-  i : Integer;
-  srcCP : Integer;
-  mode : DWORD;
-  len, dlen : DWORD;
+  cs: TFontCharset;
+  i: Integer;
+  srcCP: Integer;
+  mode: DWORD;
+  len, dlen: DWORD;
 begin
   LoadMultiLanguage;
   cs := CodePageToCharset (codePage);
@@ -449,35 +449,35 @@ begin
     end;
 
   if (srcCP = -1) or (srcCP = codePage) or (gIMultiLanguage.IsConvertible (srcCP, codePage) <> S_OK) then
-    result := s
+    Result := s
   else
   begin
     mode := 0;
     len := Length (s);
     dlen := len * 4;
-    SetLength (result, dlen);
-    if not SUCCEEDED (gIMultiLanguage.ConvertString (mode, srcCP, codepage, PChar (s), len, PChar (result), dlen)) then
+    SetLength (Result, dlen);
+    if not SUCCEEDED (gIMultiLanguage.ConvertString (mode, srcCP, codepage, PChar (s), len, PChar (Result), dlen)) then
       dlen := 0;
 
     if dlen = 0 then
-      result := s
+      Result := s
     else
-      SetLength (result, dlen)
+      SetLength (Result, dlen)
   end
 end;
 
-function IsWideCharAlpha (ch : WideChar) : boolean;
+function IsWideCharAlpha (ch: WideChar): Boolean;
 var
-  w : word;
+  w: word;
 begin
   w := Word (ch);
 
   if w < $80 then       // Ascii range
-    result := (w >=  $41) and (w <=  $5a) or
+    Result := (w >=  $41) and (w <=  $5a) or
               (w >=  $61) and (w <=  $7a)
   else
   if w < $250 then     // Latin & extensions
-    result := (w >=  $c0) and (w <=  $d6) or
+    Result := (w >=  $c0) and (w <=  $d6) or
               (w >=  $d8) and (w <=  $f6) or
               (w >=  $f7) and (w <=  $ff) or
               (w >= $100) and (w <= $17f) or
@@ -485,39 +485,39 @@ begin
               (w >= $1c4) and (w <= $233)
   else
   if w < $370 then  // IPA Extensions
-    result := (w >= $250) and (w <= $2ad)
+    Result := (w >= $250) and (w <= $2ad)
 
   else
   if w < $400 then // Greek & Coptic
-    result := (w >= $386) and (w < $3ff)
+    Result := (w >= $386) and (w < $3ff)
 
   else
   if w < $530 then      // Cryllic
-    result := (w >= $400) and (w <= $47f) or
+    Result := (w >= $400) and (w <= $47f) or
               (w >= $500) and (w <= $52f)
   else
   if w < $590 then      // Armenian
-    result := (w >= $531) and (w <= $556) or
+    Result := (w >= $531) and (w <= $556) or
               (w >= $561) and (w <= $587)
   else
 
-    result := True;     // Can't be bothered to do any more - for the moment!
+    Result := True;     // Can't be bothered to do any more - for the moment!
 end;
 
-function IsWideCharAlnum (ch : WideChar) : boolean;
+function IsWideCharAlnum (ch: WideChar): Boolean;
 var
-  w : word;
+  w: word;
 begin
   w := Word (ch);
   if (w >= $30) and (w <= $39) then
-    result := True
+    Result := True
   else
-    result := IsWideCharAlpha (ch)
+    Result := IsWideCharAlpha (ch)
 end;
 
-procedure FontToCharFormat(font: TFont; codePage : Integer; var Format: TCharFormatW);
+procedure FontToCharFormat(font: TFont; codePage: Integer; var Format: TCharFormatW);
 var
-  wFontName : WideString;
+  wFontName: WideString;
 begin
   FillChar (Format, SizeOf (Format), 0);
 
@@ -556,14 +556,14 @@ begin
   lstrcpynw (Format.szFaceName, PWideChar (wFontName),LF_FACESIZE - 1) ;
 end;
 
-function WideStringToUTF8 (const ws : WideString) : string;
+function WideStringToUTF8 (const ws: WideString): string;
 begin
-  result := WideStringToString (ws, CP_UTF8);
+  Result := WideStringToString (ws, CP_UTF8);
 end;
 
-function UTF8TOWideString (const st : string) : WideString;
+function UTF8TOWideString (const st: string): WideString;
 begin
-  result := StringToWideString (st, CP_UTF8);
+  Result := StringToWideString (st, CP_UTF8);
 end;
 
 initialization

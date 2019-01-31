@@ -88,19 +88,19 @@ function FindToken (const token: string): TRTFTokens;
       m := TRTFTokens (si + (ei - si) div 2);
       c := AnsiCompareText (token, RTFTokens [m]);
       if c > 0 then
-        result := bsearch (Succ (m), e)
+        Result := bsearch (Succ (m), e)
       else
         if c < 0 then
-          result := bsearch (s, Pred (m))
+          Result := bsearch (s, Pred (m))
         else
-          result := m
+          Result := m
     end
     else
-      result := rtUnknown;
+      Result := rtUnknown;
   end;
 
 begin
-  result := bsearch (Low (TRTFTokens), Pred (rtUnknown))
+  Result := bsearch (Low (TRTFTokens), Pred (rtUnknown))
 end;
 
 {*----------------------------------------------------------------------*
@@ -130,13 +130,13 @@ var
   procedure EmitChar (ch: char);
   begin
     CheckInBody;
-    result := result + ch;
+    Result := Result + ch;
   end;
 
   procedure EmitStr (const st: string);
   begin
     CheckInBody;
-    result := result + st
+    Result := Result + st
   end;
 
   procedure EmitText (const st: string);
@@ -237,7 +237,7 @@ var
   function GetChar: char;
   begin
     ch := p^;
-    result := ch;
+    Result := ch;
     Inc (p)
   end;
 
@@ -247,7 +247,7 @@ var
     while not (GetChar in [' ', '\', '{', ';', #13, #10]) do
       value := value + ch;
     if ch <> ' ' then Dec (p);
-    result := value
+    Result := value
   end;
 
   function GetToken: TRTFTokens;
@@ -259,7 +259,7 @@ var
       st := st + ch;
     Dec (p);
     token := FindToken (st);
-    result := token
+    Result := token
   end;
 
   function GetTokenValue: string;
@@ -268,7 +268,7 @@ var
     while GetChar in ['A'..'Z', 'a'..'z'] do
       value := value + ch;
     Dec (p);
-    result := value;
+    Result := value;
   end;
 
 //----- Parse a font group structure
@@ -367,42 +367,54 @@ var
       GetToken;
       GetValue;
       case Token of
-        rtFontTbl      : ProcessFontTable;
-        rtColorTbl     : ProcessColorTable;
+        rtFontTbl:
+          ProcessFontTable;
+        rtColorTbl:
+          ProcessColorTable;
 
-        rtBold         : if value = '0' then PopTag ('B') else EmitTag ('B', '');
-        rtBoldNone     : PopTag ('B');
+        rtBold:
+          if value = '0' then PopTag ('B') else EmitTag ('B', '');
+        rtBoldNone:
+          PopTag ('B');
 
-        rtItalic       : if value = '0' then PopTag ('I') else EmitTag ('I', '');
-        rtItalicNone   : PopTag ('I');
+        rtItalic:
+          if value = '0' then PopTag ('I') else EmitTag ('I', '');
+        rtItalicNone:
+          PopTag ('I');
 
-        rtUnderline    : if value = '0' then PopTag ('U') else EmitTag ('U', '');
-        rtUnderlineNone: PopTag ('U');
+        rtUnderline:
+          if value = '0' then PopTag ('U') else EmitTag ('U', '');
+        rtUnderlineNone:
+          PopTag ('U');
 
-        rtPard    : begin
-                       PopTag ('P');
-                       EmitTag ('P', '');
-                     end;
-        rtPar     : EmitText ('<BR>'+#13#10);
+        rtPard:
+          begin
+            PopTag ('P');
+            EmitTag ('P', '');
+          end;
+        rtPar:
+          EmitText ('<BR>'+#13#10);
 
-        rtPlain   : begin
-                       PopTag ('B');
-                       PopTag ('U');
-                       PopTag ('I');
-                       PopTag ('FONT')
-                     end;
-        rtCf      : begin
-                       intVal := StrToIntDef (value, -1);
-                       if (intVal >= 0) and (colors <> Nil) and (intVal < colors.Count) then
-                       begin
-                         intVal := Integer (colors [intVal]);
-                         PopTag ('FONT');
-                         EmitTag ('FONT', Format ('Color=#%2.2x%2.2x%2.2x', [
-                                                  getRValue (intVal),
-                                                  getGValue (intVal),
-                                                  getBValue (intVal)]));
-                       end
-                     end
+        rtPlain:
+          begin
+            PopTag ('B');
+            PopTag ('U');
+            PopTag ('I');
+            PopTag ('FONT')
+          end;
+        rtCf:
+          begin
+            intVal := StrToIntDef (value, -1);
+            if (intVal >= 0) and (colors <> Nil) and (intVal < colors.Count) then
+            begin
+              intVal := Integer (colors [intVal]);
+              PopTag ('FONT');
+              EmitTag ('FONT', Format ('Color=#%2.2x%2.2x%2.2x', [
+                getRValue (intVal),
+                getGValue (intVal),
+                getBValue (intVal)]));
+            end
+          end
       end
     end;
 
@@ -413,15 +425,16 @@ var
         #10, #13 :;
         '\' :
           case p [0] of
-            '''': begin // Hex literal
-                     Value := p [1] + p [2];
-                     Inc (p, 3);
-                     EmitTextChar (Char (StrToInt ('$' + Value)));
-                   end;
+            '''':
+              begin // Hex literal
+                Value := p [1] + p [2];
+                Inc (p, 3);
+                EmitTextChar (Char (StrToInt ('$' + Value)));
+              end;
             '{', '}', '/' :
-                   EmitTextChar (GetChar);
-
-            else ProcessToken
+              EmitTextChar (GetChar);
+            else
+              ProcessToken
           end;
         '{': GetGroup
         else
@@ -435,7 +448,7 @@ var
 
 begin { RTF2HTML }
   inBody := False;              // Initialize globals
-  result := '';
+  Result := '';
   colors := nil;
   inTags := False;
   p := @RTF [1];

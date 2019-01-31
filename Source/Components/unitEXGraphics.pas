@@ -52,15 +52,15 @@ begin
     Inc (hue, HLSMAX);
 
   if hue < HLSMAX div 6 then
-    result := ( n1 + (((n2-n1)*hue+(HLSMAX div 12)) div (HLSMAX div 6)) )
+    Result := ( n1 + (((n2-n1)*hue+(HLSMAX div 12)) div (HLSMAX div 6)) )
   else
     if hue < HLSMAX div 2 then
-      result := n2
+      Result := n2
     else
       if hue < (HLSMAX*2) div 3 then
-        result := n1 + (((n2-n1)*(((HLSMAX*2) div 3)-hue)+(HLSMAX div 12)) div (HLSMAX div 6))
+        Result := n1 + (((n2-n1)*(((HLSMAX*2) div 3)-hue)+(HLSMAX div 12)) div (HLSMAX div 6))
       else
-        result := n1
+        Result := n1
 end;
 
 procedure iHLSToRGB (hue, lum, sat : Integer; var r, g, b : Integer);
@@ -94,17 +94,17 @@ end;
 function max (x, y : Integer) : Integer;
 begin
   if x > y then
-    result := x
+    Result := x
   else
-    result := y
+    Result := y
 end;
 
 function min (x, y : Integer) : Integer;
 begin
   if x < y then
-    result := x
+    Result := x
   else
-    result := y
+    Result := y
 end;
 
 
@@ -229,7 +229,7 @@ begin
         peBlue :=  c shr 16 and $ff
       end;
 {$R+}
-    result := CreatePalette (logPalette^);
+    Result := CreatePalette (logPalette^);
   finally
     FreeMem (logPalette)
   end

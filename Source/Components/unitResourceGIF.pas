@@ -52,7 +52,7 @@ end;
 
 function TGifResourceDetails.GetWidth: Integer;
 begin
-  result := PWORD (PChar (data) + 6)^;
+  Result := PWORD (PChar (data) + 6)^;
 end;
 
 procedure TGifResourceDetails.InitNew;

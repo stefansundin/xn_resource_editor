@@ -40,45 +40,45 @@ type
 
   TPersistentPosition = class(TComponent)
   private
-    fOldOwnerWindowMethod : TWndMethod;
-    fObjectInstance : pointer;
-    fManufacturer: string;
-    fProduct: string;
-    fVersion: string;
-    fSubKey: string;
-    fSaved : boolean;
-    fMoved : boolean;
-    fEnabled: boolean;
-    fSubclassed : boolean;
-    fSection: string;
-    procedure OwnerWindowMethod (var msg : TMessage);
+    FOldOwnerWindowMethod: TWndMethod;
+    FObjectInstance: pointer;
+    FManufacturer: string;
+    FProduct: string;
+    FVersion: string;
+    FSubKey: string;
+    FSaved: Boolean;
+    FMoved: Boolean;
+    FEnabled: Boolean;
+    FSubclassed: Boolean;
+    FSection: string;
+    procedure OwnerWindowMethod (var msg: TMessage);
     function GetAppKey: string;
     procedure MoveToPosition;
     function GetPosition: TRect;
     procedure SavePosition;
-    function CreateReg(canCreate: boolean; var reg : TRegistry): boolean;
+    function CreateReg(canCreate: Boolean; var reg: TRegistry): Boolean;
     procedure Subclass;
     procedure UnSubClass;
   protected
     procedure Loaded; override;
   public
-    constructor Create (AOwner : TComponent); override;
+    constructor Create (AOwner: TComponent); override;
     destructor Destroy; override;
 
-    function GetValue (const valueName : string) : Integer;
-    function GetSzValue (const valueName : string) : string;
-    procedure SetValue (const valueName : string; value : Integer);
-    procedure SetSzValue (const valueName, value : string);
+    function GetValue (const valueName: string): Integer;
+    function GetSzValue (const valueName: string): string;
+    procedure SetValue (const valueName: string; value: Integer);
+    procedure SetSzValue (const valueName, value: string);
 
-    property ApplicationKey : string read GetAppKey;
-    property Position : TRect read GetPosition;
+    property ApplicationKey: string read GetAppKey;
+    property Position: TRect read GetPosition;
   published
-    property Manufacturer : string read fManufacturer write fManufacturer;
-    property Version : string read fVersion write fVersion;
-    property Product : string read fProduct write fProduct;
-    property SubKey : string read fSubKey write fSubKey;
-    property Section : string read fSection write fSection;
-    property Enabled : boolean read fEnabled write fEnabled default True;
+    property Manufacturer: string read FManufacturer write FManufacturer;
+    property Version: string read FVersion write FVersion;
+    property Product: string read FProduct write FProduct;
+    property SubKey: string read FSubKey write FSubKey;
+    property Section: string read FSection write FSection;
+    property Enabled: Boolean read FEnabled write FEnabled default True;
   end;
 
 implementation
@@ -94,8 +94,8 @@ resourcestring
 constructor TPersistentPosition.Create(AOwner: TComponent);
 begin
   inherited Create (AOwner);
-  fEnabled := True;
-  fManufacturer := rstWoozle;
+  FEnabled := True;
+  FManufacturer := rstWoozle;
 end;
 
 {*----------------------------------------------------------------------*
@@ -106,18 +106,18 @@ end;
  | The function returns false if the registry key couldn't be opened    |
  | - maybe because canCreate was false and it didn't already exist      |
  *----------------------------------------------------------------------*}
-function TPersistentPosition.CreateReg(canCreate: boolean; var reg : TRegistry): boolean;
+function TPersistentPosition.CreateReg(canCreate: Boolean; var reg: TRegistry): Boolean;
 var
-  attr : DWORD;
+  attr: DWORD;
 begin
   attr := KEY_READ;
   if canCreate then attr := attr or KEY_WRITE;
   reg := TRegistry.Create (attr);
   try
-    if fSection = '' then
+    if FSection = '' then
       result := reg.OpenKey(ApplicationKey + '\Position', canCreate)
     else
-      result := reg.OpenKey(ApplicationKey + '\Position\' + fSection, canCreate)
+      result := reg.OpenKey(ApplicationKey + '\Position\' + FSection, canCreate)
   except
     FreeAndNil (reg);
     raise
@@ -132,8 +132,8 @@ end;
 destructor TPersistentPosition.Destroy;
 begin
   UnSubclass;
-  if Assigned (fObjectInstance) then
-    Classes.FreeObjectInstance (fObjectInstance);
+  if Assigned (FObjectInstance) then
+    Classes.FreeObjectInstance (FObjectInstance);
   inherited;
 end;
 
@@ -144,7 +144,7 @@ end;
  *----------------------------------------------------------------------*}
 function TPersistentPosition.GetAppKey: string;
 var
-  prod : string;
+  prod: string;
 begin
   if Product = '' then
     prod := Application.Title
@@ -170,7 +170,7 @@ end;
  *----------------------------------------------------------------------*}
 function TPersistentPosition.GetSzValue(const valueName: string): string;
 var
-  reg : TRegistry;
+  reg: TRegistry;
 begin
   if CreateReg (false, reg) then
   try
@@ -187,7 +187,7 @@ end;
  *----------------------------------------------------------------------*}
 function TPersistentPosition.GetValue(const valueName: string): Integer;
 var
-  reg : TRegistry;
+  reg: TRegistry;
 begin
   result := 0;
   if CreateReg (false, reg) then
@@ -223,13 +223,13 @@ end;
  *----------------------------------------------------------------------*}
 procedure TPersistentPosition.MoveToPosition;
 var
-  fm : TForm;
-  wp : TWindowPlacement;
-  wasVisible : boolean;
-  reg : TRegistry;
+  fm: TForm;
+  wp: TWindowPlacement;
+  wasVisible: Boolean;
+  reg: TRegistry;
 begin
-  if fMoved or not fEnabled then Exit;
-  fMoved := True;
+  if FMoved or not FEnabled then Exit;
+  FMoved := True;
   if Owner is TForm then
   begin
     fm := TForm (Owner);
@@ -243,9 +243,9 @@ begin
         wasVisible := fm.Visible;
         if wasVisible then
           case TWindowState (reg.ReadInteger ('State')) of
-            wsNormal : wp.ShowCmd := SW_SHOW;
-            wsMinimized : wp.showCmd := SW_SHOWMINIMIZED;
-            wsMaximized : wp.showCmd := SW_SHOWMAXIMIZED
+            wsNormal: wp.ShowCmd := SW_SHOW;
+            wsMinimized: wp.showCmd := SW_SHOWMINIMIZED;
+            wsMaximized: wp.showCmd := SW_SHOWMAXIMIZED
           end
         else
           wp.ShowCmd := 0;
@@ -270,15 +270,15 @@ end;
 
 procedure TPersistentPosition.SavePosition;
 var
-  fm : TForm;
-  state : Integer;
-  wp : TWindowPlacement;
-  reg : TRegistry;
+  fm: TForm;
+  state: Integer;
+  wp: TWindowPlacement;
+  reg: TRegistry;
 begin
-  if fSaved then Exit;
-  fSaved := True;
+  if FSaved then Exit;
+  FSaved := True;
 
-  if fEnabled and (Owner is TForm) then
+  if FEnabled and (Owner is TForm) then
   begin
     fm := TForm (Owner);
     FillChar (wp, sizeof (wp), 0);
@@ -289,8 +289,8 @@ begin
       state := Ord (wsMinimized)
     else
       case wp.showCmd of
-        SW_SHOWMINIMIZED : state := Ord (wsMinimized);
-        SW_SHOWMAXIMIZED : state := Ord (wsMaximized);
+        SW_SHOWMINIMIZED: state := Ord (wsMinimized);
+        SW_SHOWMAXIMIZED: state := Ord (wsMaximized);
         else
           state := Ord (wsNormal)
       end;
@@ -317,7 +317,7 @@ end;
 procedure TPersistentPosition.SetValue(const valueName: string;
   value: Integer);
 var
-  reg : TRegistry;
+  reg: TRegistry;
 begin
   if CreateReg (true, reg) then
   try
@@ -334,7 +334,7 @@ end;
  *----------------------------------------------------------------------*}
 procedure TPersistentPosition.SetSzValue(const valueName, value: string);
 var
-  reg : TRegistry;
+  reg: TRegistry;
 begin
   if CreateReg (true, reg) then
   try
@@ -346,7 +346,7 @@ end;
 
 function TPersistentPosition.GetPosition: TRect;
 var
-  reg : TRegistry;
+  reg: TRegistry;
 begin
   if CreateReg (false, reg) then
   try
@@ -365,46 +365,48 @@ end;
 
 procedure TPersistentPosition.Subclass;
 var
-  ownerForm : TForm;
+  ownerForm: TForm;
 begin
-  if not fSubclassed then
+  if not FSubclassed then
   begin
     if Owner is TForm then
     begin
       ownerForm := TForm (Owner);
-      fOldOwnerWindowMethod := ownerForm.WindowProc;
+      FOldOwnerWindowMethod := ownerForm.WindowProc;
       ownerForm.WindowProc := OwnerWindowMethod
     end;
-    fSubclassed := True
+    FSubclassed := True
   end
 end;
 
 procedure TPersistentPosition.UnSubClass;
 var
-  ownerForm : TForm;
+  ownerForm: TForm;
 begin
-  if fSubclassed then
+  if FSubclassed then
   begin
     if Owner is TForm then
     begin
       ownerForm := TForm (Owner);
-      ownerForm.WindowProc := fOldOwnerWindowMethod
+      ownerForm.WindowProc := FOldOwnerWindowMethod
     end;
 
-    fSubclassed := False
+    FSubclassed := False
   end
 end;
 
 procedure TPersistentPosition.OwnerWindowMethod(var msg: TMessage);
 begin
   case Msg.Msg of
-    WM_MOVE    : if not fMoved then
-                   MoveToPosition;
-    WM_DESTROY : if csDestroying in ComponentState then
-                   SavePosition;
+    WM_MOVE:
+      if not FMoved then
+        MoveToPosition;
+    WM_DESTROY:
+      if csDestroying in ComponentState then
+        SavePosition;
   end;
 
-  fOldOwnerWindowMethod (msg)
+  FOldOwnerWindowMethod (msg)
 end;
 
 end.

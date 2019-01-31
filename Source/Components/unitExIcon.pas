@@ -46,172 +46,172 @@ uses Windows, Classes, SysUtils, Graphics, Controls;
 
 type
 
-//=============================================================================
-// TExIconImage class - Shared image structure for icons & cursors
-// nb. the memory image (and of course, the handle) are for one image only
+  //=============================================================================
+  // TExIconImage class - Shared image structure for icons & cursors
+  // nb. the memory image (and of course, the handle) are for one image only
 
 
-// TIconHeader is variously called NEWHEADER, ICONDIR and GRPICONDIR in the SDK
-TIconHeader = packed record
-  wReserved : word;    // Must be 0
-  wType  : word;       // 1 for icons, 2 for cursors
-  wCount : word;       // Number of components
-end;
-PIconHeader = ^TIconHeader;
-
-// TResourceDirectory is called RESDIR in the SDK.
-TResourceDirectory = packed record
-  details : packed record case boolean of
-    False : (cursorWidth, cursorHeight : word);
-    True : (iconWidth, iconHeight, iconColorCount, iconReserved : BYTE)
+  // TIconHeader is variously called NEWHEADER, ICONDIR and GRPICONDIR in the SDK
+  TIconHeader = packed record
+    wReserved : word;    // Must be 0
+    wType  : word;       // 1 for icons, 2 for cursors
+    wCount : word;       // Number of components
   end;
-  wPlanes, wBitCount : word;
-  lBytesInRes : DWORD;
-  wNameOrdinal : word
-end;
-PResourceDirectory = ^TResourceDirectory;
+  PIconHeader = ^TIconHeader;
 
-// TIconDirEntry is called ICONDIRENTRY in the SDK
-TIconDirEntry = packed record
-  bWidth      : BYTE;     // Width, in pixels, of the image
-  bHeight     : BYTE;     // Height, in pixels, of the image
-  bColorCount : BYTE;     // Number of colors in image (0 if >=8bpp)
-  bReserved   : BYTE;     // Reserved ( must be 0)
-  wPlanes     : WORD;     // Color Planes    (X Hotspot for cursors)
-  wBitCount   : WORD;     // Bits per pixel  (Y Hotspot for cursors - implies MAX 256 color cursors (!))
-  dwBytesInRes : DWORD;   // How many bytes in this resource?
-  dwImageOffset : DWORD;  // Where in the file is this image?
-end;
-PIconDirEntry = ^TIconDirEntry;
+  // TResourceDirectory is called RESDIR in the SDK.
+  TResourceDirectory = packed record
+    Details : packed record case Boolean of
+      False : (cursorWidth, cursorHeight : word);
+      True : (iconWidth, iconHeight, iconColorCount, iconReserved : BYTE)
+    end;
+    wPlanes, wBitCount : word;
+    lBytesInRes : DWORD;
+    wNameOrdinal : word
+  end;
+  PResourceDirectory = ^TResourceDirectory;
 
-//-----------------------------------------------------------------------------
-// TExIconImage
-//
-// Each ExIconCursor can have multiple TExIconImage classes - one per format in
-// the ICO file or Icon resource/
+  // TIconDirEntry is called ICONDIRENTRY in the SDK
+  TIconDirEntry = packed record
+    bWidth      : BYTE;     // Width, in pixels, of the image
+    bHeight     : BYTE;     // Height, in pixels, of the image
+    bColorCount : BYTE;     // Number of colors in image (0 if >=8bpp)
+    bReserved   : BYTE;     // Reserved ( must be 0)
+    wPlanes     : WORD;     // Color Planes    (X Hotspot for cursors)
+    wBitCount   : WORD;     // Bits per pixel  (Y Hotspot for cursors - implies MAX 256 color cursors (!))
+    dwBytesInRes : DWORD;   // How many bytes in this resource?
+    dwImageOffset : DWORD;  // Where in the file is this image?
+  end;
+  PIconDirEntry = ^TIconDirEntry;
 
-TExIconImage = class (TSharedImage)
-  FIsIcon : boolean;
-  FHandle: HICON;
-  FPalette : HPALETTE;
-  FMemoryImage: TCustomMemoryStream;
-  FGotPalette : boolean;  // Indicates that we've got a the palette from the image data
-                          // or that there is no palette (eg. it's not pf1bit ..pf8Bit)
+  //-----------------------------------------------------------------------------
+  // TExIconImage
+  //
+  // Each ExIconCursor can have multiple TExIconImage classes - one per format in
+  // the ICO file or Icon resource/
 
-  FWidth, FHeight : Integer;
-  FPixelFormat : TPixelFormat;
+  TExIconImage = class (TSharedImage)
+    FIsIcon : Boolean;
+    FHandle: HICON;
+    FPalette : HPALETTE;
+    FMemoryImage: TCustomMemoryStream;
+    FGotPalette : Boolean;  // Indicates that we've got a the palette from the image data
+                            // or that there is no palette (eg. it's not pf1bit ..pf8Bit)
 
-  procedure HandleNeeded;
-  procedure PaletteNeeded;
-  procedure ImageNeeded;
+    FWidth, FHeight : Integer;
+    FPixelFormat : TPixelFormat;
 
-  function GetBitmapInfo : PBitmapInfo;
-  function GetBitmapInfoHeader : PBitmapInfoHeader;
-private
-  function GetMemoryImage: TCustomMemoryStream;
+    procedure HandleNeeded;
+    procedure PaletteNeeded;
+    procedure ImageNeeded;
 
-protected
-  procedure FreeHandle; override;
-public
-  destructor Destroy; override;
+    function GetBitmapInfo : PBitmapInfo;
+    function GetBitmapInfoHeader : PBitmapInfoHeader;
+  private
+    function GetMemoryImage: TCustomMemoryStream;
 
-  property Handle : HICON read fHandle;                 // The Icon image handle
-  property PaletteHandle : HPALETTE read fPalette;      // The Icon image's palette
+  protected
+    procedure FreeHandle; override;
+  public
+    destructor Destroy; override;
 
-  property Width : Integer read FWidth;
-  property Height : Integer read FHeight;
-  property PixelFormat : TPixelFormat read FPixelFormat;
-  property MemoryImage : TCustomMemoryStream read GetMemoryImage;
-end;
+    property Handle : HICON read fHandle;                 // The Icon image handle
+    property PaletteHandle : HPALETTE read fPalette;      // The Icon image's palette
 
-//-----------------------------------------------------------------------------
-// TExIconCursor
+    property Width : Integer read FWidth;
+    property Height : Integer read FHeight;
+    property PixelFormat : TPixelFormat read FPixelFormat;
+    property MemoryImage : TCustomMemoryStream read GetMemoryImage;
+  end;
 
-TExIconCursor = class (TGraphic)
-private
-  FImages : array of TExIconImage;
-  FCurrentImage : Integer;
-  FTransparentColor: TColor;
+  //-----------------------------------------------------------------------------
+  // TExIconCursor
 
-  function GetHandle: HICON;
-  function GetPixelFormat: TPixelFormat;
-  procedure SetPixelFormat(const Value: TPixelFormat);
-  function GetImageCount: Integer;
+  TExIconCursor = class (TGraphic)
+  private
+    FImages : array of TExIconImage;
+    FCurrentImage : Integer;
+    FTransparentColor: TColor;
 
-  procedure ReleaseImages;
-  function GetImage(index: Integer): TExIconImage;
-  procedure SetHandle(const Value: HICON);
-  procedure AssignFromGraphic (source : TGraphic);
-  procedure SetCurrentImage(const Value: Integer);
+    function GetHandle: HICON;
+    function GetPixelFormat: TPixelFormat;
+    procedure SetPixelFormat(const Value: TPixelFormat);
+    function GetImageCount: Integer;
 
-  procedure HandleNeeded;
-  procedure PaletteNeeded;
-  procedure ImageNeeded;
-  procedure ReadIcon (instance : THandle; stream : TCustomMemoryStream; Size : Integer);
-protected
-  procedure Draw(ACanvas: TCanvas; const Rect: TRect); override;
-  function GetEmpty: Boolean; override;
-  function GetHeight: Integer; override;
-  function GetWidth: Integer; override;
-  procedure SetHeight(Value: Integer); override;
-  procedure SetWidth(Value: Integer); override;
-  procedure SetPalette(Value: HPALETTE); override;
-  function GetTransparent : boolean; override;
-  function GetPalette : HPALETTE; override;
+    procedure ReleaseImages;
+    function GetImage(index: Integer): TExIconImage;
+    procedure SetHandle(const Value: HICON);
+    procedure AssignFromGraphic (source : TGraphic);
+    procedure SetCurrentImage(const Value: Integer);
 
-public
-  constructor Create; override;
-  destructor Destroy; override;
-  procedure LoadFromStream(Stream: TStream); override;
-  procedure SaveToStream(Stream: TStream); override;
-  procedure LoadFromClipboardFormat(AFormat: Word; AData: THandle; APalette: HPALETTE); override;
-  procedure LoadFromResourceName (Instance : THandle; const resName : string);
-  procedure LoadFromResourceId (Instance : THandle; ResID : Integer);
-  procedure SaveToClipboardFormat(var AFormat: Word; var AData: THandle; var APalette: HPALETTE); override;
-  procedure Assign (source : TPersistent); override;
-  procedure AssignTo (dest : TPersistent); override;
-  function Releasehandle : HICON;
+    procedure HandleNeeded;
+    procedure PaletteNeeded;
+    procedure ImageNeeded;
+    procedure ReadIcon (instance : THandle; stream : TCustomMemoryStream; Size : Integer);
+  protected
+    procedure Draw(ACanvas: TCanvas; const Rect: TRect); override;
+    function GetEmpty: Boolean; override;
+    function GetHeight: Integer; override;
+    function GetWidth: Integer; override;
+    procedure SetHeight(Value: Integer); override;
+    procedure SetWidth(Value: Integer); override;
+    procedure SetPalette(Value: HPALETTE); override;
+    function GetTransparent : Boolean; override;
+    function GetPalette : HPALETTE; override;
 
-  procedure SaveImageToFile (const FileName : string);
+  public
+    constructor Create; override;
+    destructor Destroy; override;
+    procedure LoadFromStream(Stream: TStream); override;
+    procedure SaveToStream(Stream: TStream); override;
+    procedure LoadFromClipboardFormat(AFormat: Word; AData: THandle; APalette: HPALETTE); override;
+    procedure LoadFromResourceName (Instance : THandle; const resName : string);
+    procedure LoadFromResourceId (Instance : THandle; ResID : Integer);
+    procedure SaveToClipboardFormat(var AFormat: Word; var AData: THandle; var APalette: HPALETTE); override;
+    procedure Assign (source : TPersistent); override;
+    procedure AssignTo (dest : TPersistent); override;
+    function Releasehandle : HICON;
 
-  // Save just the current image - SaveToFile saves all the images.
+    procedure SaveImageToFile (const FileName : string);
+
+    // Save just the current image - SaveToFile saves all the images.
 
 
-  property Handle: HICON read GetHandle write SetHandle;
-  property PixelFormat : TPixelFormat read GetPixelFormat write SetPixelFormat;
-  property ImageCount : Integer read GetImageCount;
-  property Images [index : Integer] : TExIconImage read GetImage;
+    property Handle: HICON read GetHandle write SetHandle;
+    property PixelFormat : TPixelFormat read GetPixelFormat write SetPixelFormat;
+    property ImageCount : Integer read GetImageCount;
+    property Images [index : Integer] : TExIconImage read GetImage;
 
-  property CurrentImage : Integer read fCurrentImage write SetCurrentImage;
-  property TransparentColor : TColor read fTransparentColor write fTransparentColor;
-end;
+    property CurrentImage : Integer read fCurrentImage write SetCurrentImage;
+    property TransparentColor : TColor read fTransparentColor write fTransparentColor;
+  end;
 
-//-----------------------------------------------------------------------------
-// TExIcon
+  //-----------------------------------------------------------------------------
+  // TExIcon
 
-TExIcon = class (TExIconCursor)
-protected
-public
-  constructor Create; override;
-end;
+  TExIcon = class (TExIconCursor)
+  protected
+  public
+    constructor Create; override;
+  end;
 
-//-----------------------------------------------------------------------------
-// TExCursor
+  //-----------------------------------------------------------------------------
+  // TExCursor
 
-TExCursor = class (TExIconCursor)
-private
-  function GetHotspot: DWORD;
-  procedure SetHotspot(const Value: DWORD);
-protected
-public
-  constructor Create; override;
-  property Hotspot : DWORD read GetHotspot write SetHotspot;
+  TExCursor = class (TExIconCursor)
+  private
+    function GetHotspot: DWORD;
+    procedure SetHotspot(const Value: DWORD);
+  public
+    constructor Create; override;
 
-// nb.  .CUR file format is not the same as resource stream format !!!!
+    // nb.  .CUR file format is not the same as resource stream format !!!!
 
-  procedure LoadFromFile (const FileName : string); override;
-  procedure SaveToFile (const FileName : string); override;
-end;
+    procedure LoadFromFile (const FileName : string); override;
+    procedure SaveToFile (const FileName : string); override;
+
+    property Hotspot : DWORD read GetHotspot write SetHotspot;
+  end;
 
 function GetPixelFormatNumColors (pf : TPixelFormat) : Integer;
 function GetPixelFormatBitCount (pf : TPixelFormat) : Integer;
@@ -219,7 +219,7 @@ function GetPixelFormatBitCount (pf : TPixelFormat) : Integer;
 function CreateMappedBitmap (source : TGraphic; palette : HPALETTE; hiPixelFormat : TPixelFormat; Width, Height : Integer) : TBitmap;
 function GetBitmapInfoNumColors (const BI : TBitmapInfoHeader) : Integer;
 function GetBitmapInfoPixelFormat (const BI : TBitmapInfoHeader) : TPixelFormat;
-procedure GetBitmapInfoSizes (const BI : TBitmapInfoHeader; var InfoHeaderSize, ImageSize : DWORD; iconInfo : boolean);
+procedure GetBitmapInfoSizes (const BI : TBitmapInfoHeader; var InfoHeaderSize, ImageSize : DWORD; iconInfo : Boolean);
 function GetPixelFormat (graphic : TGraphic) : TPixelFormat;
 
 var
@@ -363,11 +363,11 @@ function GetBitmapInfoNumColors (const BI : TBitmapInfoHeader) : Integer;
 begin
   if BI.biBitCount <= 8 then
     if BI.biClrUsed > 0 then
-      result := BI.biClrUsed
+      Result := BI.biClrUsed
     else
-      result := 1 shl BI.biBitCount
+      Result := 1 shl BI.biBitCount
   else
-    result := 0;
+    Result := 0;
 end;
 
 
@@ -379,17 +379,17 @@ end;
 function GetBitmapInfoPixelFormat (const BI : TBitmapInfoHeader) : TPixelFormat;
 begin
   case BI.biBitCount of
-    1: result := pf1Bit;
-    4: result := pf4Bit;
-    8: result := pf8Bit;
+    1: Result := pf1Bit;
+    4: Result := pf4Bit;
+    8: Result := pf8Bit;
    16: case BI.biCompression of
-         BI_RGB : result := pf15Bit;
-         BI_BITFIELDS: result := pf16Bit;
+         BI_RGB : Result := pf15Bit;
+         BI_BITFIELDS: Result := pf16Bit;
          else
            raise EInvalidGraphic.Create (rstInvalidPixelFormat);
        end;
-   24: result := pf24Bit;
-   32: result := pf32Bit;
+   24: Result := pf24Bit;
+   32: Result := pf32Bit;
     else
       raise EInvalidGraphic.Create (rstInvalidPixelFormat);
   end
@@ -401,7 +401,7 @@ end;
  |                                                                            |
  | Get the size of the info (incl the colortable), and the bitmap bits        |
  *----------------------------------------------------------------------------*)
-procedure GetBitmapInfoSizes (const BI : TBitmapInfoHeader; var InfoHeaderSize, ImageSize : DWORD; iconInfo : boolean);
+procedure GetBitmapInfoSizes (const BI : TBitmapInfoHeader; var InfoHeaderSize, ImageSize : DWORD; iconInfo : Boolean);
 var
   numColors : Integer;
   height : Integer;
@@ -477,14 +477,14 @@ var
   numColors : Integer;
   r : RGBQUAD;
 begin
-  result := 0;
+  Result := 0;
 
   NumColors := GetBitmapInfoNumColors (bmi.bmiHeader);
 
   if NumColors > 0 then
   begin
     if NumColors = 1 then
-      result := CopyPalette (SystemPalette2)
+      Result := CopyPalette (SystemPalette2)
     else
     begin
       GetMem (lpPal, sizeof (TLogPalette) + sizeof (TPaletteEntry) * NumColors);
@@ -502,7 +502,7 @@ begin
           lpPal^.palPalEntry[i].peFlags := 0 // not bmi.bmiColors[i].rgbReserved !!
         end;
   {$R+}
-        result :=  CreatePalette (lpPal^)
+        Result :=  CreatePalette (lpPal^)
       finally
         FreeMem (lpPal)
       end
@@ -524,9 +524,9 @@ function CreateMappedBitmap (source : TGraphic; palette : HPALETTE; hiPixelForma
 var
   colorCount : Integer;
 begin
-  result := TBitmap.Create;
-  result.Width := source.Width;
-  result.Height := source.Height;
+  Result := TBitmap.Create;
+  Result.Width := source.Width;
+  Result.Height := source.Height;
 
   if palette <> 0 then
   begin
@@ -535,21 +535,21 @@ begin
       RaiseLastOSError;
 
     case colorCount of
-      1..2    : result.PixelFormat := pf1Bit;
-      3..16   : result.PixelFormat := pf4Bit;
-      17..256 : result.PixelFormat := pf8Bit;
+      1..2    : Result.PixelFormat := pf1Bit;
+      3..16   : Result.PixelFormat := pf4Bit;
+      17..256 : Result.PixelFormat := pf8Bit;
       else
-        result.PixelFormat := hiPixelFormat;
+        Result.PixelFormat := hiPixelFormat;
     end;
 
-    result.Palette := CopyPalette (palette);
+    Result.Palette := CopyPalette (palette);
 
-    result.Canvas.StretchDraw (rect (0, 0, Width, Height), source);
+    Result.Canvas.StretchDraw (rect (0, 0, Width, Height), source);
   end
   else
   begin
-    result.PixelFormat := hiPixelFormat;
-    result.Canvas.StretchDraw (rect (0, 0, Width, Height), source);
+    Result.PixelFormat := hiPixelFormat;
+    Result.Canvas.StretchDraw (rect (0, 0, Width, Height), source);
   end
 end;
 
@@ -567,7 +567,7 @@ var
   bitsPerPixel, i, j : Integer;
   maskbp, bitbp : byte;
   maskp, bitp : PChar;
-  maskPixel : boolean;
+  maskPixel : Boolean;
   maskByte: dword;
   maskU : UINT;
   maskColor : byte;
@@ -1024,7 +1024,7 @@ end;
 (*----------------------------------------------------------------------------*
  | function TExIconCursor.GetEmpty                                            |
  |                                                                            |
- | Returns true if the TExIconCursor's current image  has neither a handle or |
+ | Returns True if the TExIconCursor's current image  has neither a handle or |
  | an image                                                                   |
  *----------------------------------------------------------------------------*)
 function TExIconCursor.GetEmpty: Boolean;
@@ -1042,7 +1042,7 @@ end;
 function TExIconCursor.GetHandle: HICON;
 begin
   HandleNeeded;
-  result := Images [fCurrentImage].Handle
+  Result := Images [fCurrentImage].Handle
 end;
 
 (*----------------------------------------------------------------------------*
@@ -1052,7 +1052,7 @@ end;
  *----------------------------------------------------------------------------*)
 function TExIconCursor.GetHeight: Integer;
 begin
-  result := FImages [fCurrentImage].FHeight;
+  Result := FImages [fCurrentImage].FHeight;
 end;
 
 (*----------------------------------------------------------------------------*
@@ -1062,7 +1062,7 @@ end;
  *----------------------------------------------------------------------------*)
 function TExIconCursor.GetImage(index: Integer): TExIconImage;
 begin
-  result := fImages [index]
+  Result := fImages [index]
 end;
 
 (*----------------------------------------------------------------------------*
@@ -1072,7 +1072,7 @@ end;
  *----------------------------------------------------------------------------*)
 function TExIconCursor.GetImageCount: Integer;
 begin
-  result := Length (fImages);
+  Result := Length (fImages);
 end;
 
 (*----------------------------------------------------------------------------*
@@ -1083,7 +1083,7 @@ end;
 function TExIconCursor.GetPalette: HPALETTE;
 begin
   PaletteNeeded;
-  result := FImages [fCurrentImage].fPalette;
+  Result := FImages [fCurrentImage].fPalette;
 end;
 
 (*----------------------------------------------------------------------------*
@@ -1093,17 +1093,17 @@ end;
  *----------------------------------------------------------------------------*)
 function TExIconCursor.GetPixelFormat: TPixelFormat;
 begin
-  result := FImages [fCurrentImage].fPixelFormat
+  Result := FImages [fCurrentImage].fPixelFormat
 end;
 
 (*----------------------------------------------------------------------------*
- | function TExIconCursor.GetTransparent : boolean                            |
+ | function TExIconCursor.GetTransparent : Boolean                            |
  |                                                                            |
- | Overrides TGraphic method to always return TRUE                            |
+ | Overrides TGraphic method to always return True                            |
  *----------------------------------------------------------------------------*)
-function TExIconCursor.GetTransparent: boolean;
+function TExIconCursor.GetTransparent: Boolean;
 begin
-  result := True
+  Result := True
 end;
 
 (*----------------------------------------------------------------------------*
@@ -1113,7 +1113,7 @@ end;
  *----------------------------------------------------------------------------*)
 function TExIconCursor.GetWidth: Integer;
 begin
-  result := FImages [fCurrentImage].FWidth;
+  Result := FImages [fCurrentImage].FWidth;
 end;
 
 (*----------------------------------------------------------------------------*
@@ -1327,13 +1327,13 @@ begin
 
       if Self is TExIcon then
       begin
-        fImages [i].FWidth := resDir.details.iconWidth;
-        fImages [i].FHeight := resDir.details.iconHeight
+        fImages [i].FWidth := resDir.Details.iconWidth;
+        fImages [i].FHeight := resDir.Details.iconHeight
       end
       else
       begin
-        fImages [i].FWidth := resDir.details.cursorWidth;
-        fImages [i].FHeight := resDir.details.cursorHeight
+        fImages [i].FWidth := resDir.Details.cursorWidth;
+        fImages [i].FHeight := resDir.Details.cursorHeight
       end;
 
       fImages [i].FMemoryImage.CopyFrom (strm1, 0);
@@ -1695,22 +1695,22 @@ function TExIconImage.GetBitmapInfo: PBitmapInfo;
 begin
   if Assigned (FMemoryImage) then
     if FIsIcon then
-      result := PBitmapInfo (FMemoryImage.Memory)
+      Result := PBitmapInfo (FMemoryImage.Memory)
     else
-      result := PBitmapInfo (PChar (FMemoryImage.Memory) + sizeof (DWORD))
+      Result := PBitmapInfo (PChar (FMemoryImage.Memory) + sizeof (DWORD))
   else
-    result := Nil
+    Result := Nil
 end;
 
 function TExIconImage.GetBitmapInfoHeader: PBitmapInfoHeader;
 begin
-  result := PBitmapInfoHeader (GetBitmapInfo)
+  Result := PBitmapInfoHeader (GetBitmapInfo)
 end;
 
 function TExIconImage.GetMemoryImage: TCustomMemoryStream;
 begin
   ImageNeeded;
-  result := FMemoryImage
+  Result := FMemoryImage
 end;
 
 (*----------------------------------------------------------------------*
@@ -2128,7 +2128,7 @@ begin
         peBlue :=  c shr 16 and $ff
       end;
 {$R+}
-    result := CreatePalette (logPalette^);
+    Result := CreatePalette (logPalette^);
   finally
     FreeMem (logPalette)
   end

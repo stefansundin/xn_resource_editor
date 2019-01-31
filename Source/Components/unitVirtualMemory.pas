@@ -2,28 +2,31 @@ unit unitVirtualMemory;
 
 interface
 
-uses Windows, Classes, SysUtils;
+uses
+  Windows, Classes, SysUtils;
 
 type
   TVirtualMemoryStream = class (TCustomMemoryStream)
   private
-    FReserved : Integer;
-    FChunkSize : Integer;
+    FReserved: Integer;
+    FChunkSize: Integer;
   protected
-    procedure SetSize (NewSize : Integer); override;
+    procedure SetSize (NewSize: Integer); override;
   public
-    constructor Create (AReserved, AInitialSize : Integer);
+    constructor Create (AReserved, AInitialSize: Integer);
     destructor Destroy; override;
     function Write(const Buffer; Count: Longint): Longint; override;
-    property Reserved : Integer read FReserved;
-    property ChunkSize : Integer read FChunkSize write FChunkSize;
+    property Reserved: Integer read FReserved;
+    property ChunkSize: Integer read FChunkSize write FChunkSize;
   end;
 
   EVirtualMemory = class (Exception);
 
 implementation
 
-constructor TVirtualMemoryStream.Create (AReserved, AInitialSize : Integer);
+{ TVirtualMemoryStream }
+
+constructor TVirtualMemoryStream.Create (AReserved, AInitialSize: Integer);
 begin
   FReserved := AReserved;
   FChunkSize := 1024;
@@ -38,10 +41,10 @@ begin
   inherited;
 end;
 
-procedure TVirtualMemoryStream.SetSize (NewSize : Integer);
+procedure TVirtualMemoryStream.SetSize (NewSize: Integer);
 var
-  oldSize : Integer;
-  commitSize : Integer;
+  oldSize: Integer;
+  commitSize: Integer;
 begin
   oldSize := Size;
   if NewSize <> oldSize then
@@ -67,7 +70,7 @@ end;
 
 function TVirtualMemoryStream.Write(const Buffer; Count: Longint): Longint;
 var
-  Pos : Integer;
+  Pos: Integer;
 begin
   Pos := Seek (0, soFromCurrent);
   if Pos + count > Size then

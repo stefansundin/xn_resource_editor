@@ -21,21 +21,21 @@ type
 
   TFakeCombobox = class(TCustomControl)
   private
-    fButtonPressed: Boolean;
-    fOnKeyDown: TKeyEvent;
-    fSpecialButton: Boolean;
-    fOnSpecialButtonClick: TNotifyEvent;
+    FButtonPressed: Boolean;
+    FOnKeyDown: TKeyEvent;
+    FSpecialButton: Boolean;
+    FOnSpecialButtonClick: TNotifyEvent;
     function GetDropdownButtonWidth: Integer;
     function GetButtonRect: TRect;
     procedure SetButtonPressed(const Value: Boolean);
     function GetOnDblClick: TNotifyEvent;
-    procedure SetOnDblClick(const Value : TNotifyEvent);
-    procedure StringListOnChange (Sender : TObject);
+    procedure SetOnDblClick(const Value: TNotifyEvent);
+    procedure StringListOnChange (Sender: TObject);
     procedure SetSpecialButton(const Value: Boolean);
   private
-    fEdit : TEdit;
-    fItems : TStrings;
-    fListBox : TListBox;
+    FEdit: TEdit;
+    FItems: TStrings;
+    FListBox: TListBox;
 
     function GetAutoSelect: Boolean;
     procedure SetAutoSelect(const Value: Boolean);
@@ -46,9 +46,9 @@ type
     function GetHideSelection: Boolean;
     procedure SetHideSelection(const Value: Boolean);
     function GetMaxLength: Integer;
-    function GetOEMConvert: boolean;
+    function GetOEMConvert: Boolean;
     procedure SetMaxLength(const Value: Integer);
-    procedure SetOEMConvert(const Value: boolean);
+    procedure SetOEMConvert(const Value: Boolean);
     function GetPAsswordChar: char;
     procedure SetPasswordChar(const Value: char);
     function GetText: string;
@@ -58,19 +58,19 @@ type
     procedure SetItems(const Value: TStrings);
 
     procedure DoOnListboxMouseDown (Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure DoOnListboxKeyDown (Sender : TObject; var Key: Word; Shift: TShiftState);
+    procedure DoOnListboxKeyDown (Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure DoOnEditKeyDown (Sender: TObject; var Key: Word; Shift: TShiftState);
 
-    procedure DoOnListBoxExit (Sender : TObject);
+    procedure DoOnListBoxExit (Sender: TObject);
 
 
-    procedure ShowList (show, update : Boolean);
+    procedure ShowList (show, update: Boolean);
 
-    procedure WmHideList (var Msg : TMessage); message WM_HIDELIST;
+    procedure WmHideList (var Msg: TMessage); message WM_HIDELIST;
 
-    property DropdownButtonWidth : Integer read GetDropdownButtonWidth;
-    property ButtonRect : TRect read GetButtonRect;
-    property ButtonPressed : Boolean read fButtonPressed write SetButtonPressed;
+    property DropdownButtonWidth: Integer read GetDropdownButtonWidth;
+    property ButtonRect: TRect read GetButtonRect;
+    property ButtonPressed: Boolean read FButtonPressed write SetButtonPressed;
   protected
     procedure Paint; override;
     procedure Resize; override;
@@ -79,43 +79,43 @@ type
     procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
   public
-    constructor Create (AOwner : TComponent); override;
+    constructor Create (AOwner: TComponent); override;
     destructor Destroy; override;
     procedure SetFocus; override;
-    function Focused : Boolean; override;
+    function Focused: Boolean; override;
   published
     property Anchors;
-    property AutoSelect : Boolean read GetAutoSelect write SetAutoSelect;
+    property AutoSelect: Boolean read GetAutoSelect write SetAutoSelect;
     property BiDiMode;
-    property CharCase : TEditCharCase read GetCharCase write SetCharCase;
+    property CharCase: TEditCharCase read GetCharCase write SetCharCase;
     property Color default clWhite;
     property Constraints;
-    property Cursor : TCursor read GetCursor write SetCursor;
+    property Cursor: TCursor read GetCursor write SetCursor;
     property DragCursor;
     property DragKind;
     property DragMode;
     property Enabled;
     property Font;
     property HelpContext;
-    property HideSelection : Boolean read GetHideSelection write SetHideSelection;
-    property Items : TStrings read fItems write SetItems;
-    property MaxLength : Integer read GetMaxLength write SetMaxLength;
-    property OEMConvert : boolean read GetOEMConvert write SetOEMConvert;
-    property PasswordChar : char read GetPAsswordChar write SetPasswordChar;
+    property HideSelection: Boolean read GetHideSelection write SetHideSelection;
+    property Items: TStrings read FItems write SetItems;
+    property MaxLength: Integer read GetMaxLength write SetMaxLength;
+    property OEMConvert: Boolean read GetOEMConvert write SetOEMConvert;
+    property PasswordChar: char read GetPAsswordChar write SetPasswordChar;
     property PopupMenu;
-    property ReadOnly : Boolean read GetReadOnly write SetReadOnly;
+    property ReadOnly: Boolean read GetReadOnly write SetReadOnly;
     property ShowHint;
-    property SpecialButton : Boolean read fSpecialButton write SetSpecialButton;
+    property SpecialButton: Boolean read FSpecialButton write SetSpecialButton;
     property TabOrder;
     property TabStop default True;
-    property Text : string read GetText write SetText;
+    property Text: string read GetText write SetText;
     property Visible;
 
     property OnEnter;
     property OnExit;
-    property OnDblClick : TNotifyEvent read GetOnDblClick write SetOnDblClick;
-    property OnKeyDown : TKeyEvent read fOnKeyDown write fOnKeyDown;
-    property OnSpecialButtonClick : TNotifyEvent read fOnSpecialButtonClick write fOnSpecialButtonClick;
+    property OnDblClick: TNotifyEvent read GetOnDblClick write SetOnDblClick;
+    property OnKeyDown: TKeyEvent read FOnKeyDown write FOnKeyDown;
+    property OnSpecialButtonClick: TNotifyEvent read FOnSpecialButtonClick write FOnSpecialButtonClick;
   end;
 
 implementation
@@ -133,25 +133,25 @@ begin
   ControlStyle := [csFramed, csOpaque];
   TabStop := True;
 
-  fItems := TStringList.Create;
-  TStringList (fItems).OnChange := StringListOnChange;
+  FItems := TStringList.Create;
+  TStringList (FItems).OnChange := StringListOnChange;
 
-  fEdit := TEdit.Create (self);
-  fEdit.Parent := Self;
-  fEdit.Ctl3D := False;
-  fEdit.BorderStyle := bsNone;
-  fEdit.Left := 2;
-  fEdit.Top := 2;
-  fEdit.ParentBiDiMode := True;
-  fEdit.ParentColor := True;
-  fEdit.ParentFont := True;
-  fEdit.ParentShowHint := True;
-  fEdit.OnKeyDown := DoOnEditKeyDown;
+  FEdit := TEdit.Create (self);
+  FEdit.Parent := Self;
+  FEdit.Ctl3D := False;
+  FEdit.BorderStyle := bsNone;
+  FEdit.Left := 2;
+  FEdit.Top := 2;
+  FEdit.ParentBiDiMode := True;
+  FEdit.ParentColor := True;
+  FEdit.ParentFont := True;
+  FEdit.ParentShowHint := True;
+  FEdit.OnKeyDown := DoOnEditKeyDown;
 end;
 
 destructor TFakeCombobox.Destroy;
 begin
-  fItems.Free;
+  FItems.Free;
   inherited
 end;
 
@@ -179,31 +179,31 @@ end;
 
 function TFakeCombobox.Focused: Boolean;
 begin
-  Result := fEdit.Focused
+  Result := FEdit.Focused
 end;
 
 function TFakeCombobox.GetAutoSelect: Boolean;
 begin
-  Result := fEdit.AutoSelect;
+  Result := FEdit.AutoSelect;
 end;
 
 function TFakeCombobox.GetButtonRect: TRect;
 begin
-  result := ClientRect;
-  Dec (result.Right);
-  result.Top := result.Top + 1;
-  result.Bottom := result.Bottom - 1;
-  result.Left := result.Right - DropdownButtonWidth;
+  Result := ClientRect;
+  Dec (Result.Right);
+  Result.Top := Result.Top + 1;
+  Result.Bottom := Result.Bottom - 1;
+  Result.Left := Result.Right - DropdownButtonWidth;
 end;
 
 function TFakeCombobox.GetCharCase: TEditCharCase;
 begin
-  Result := fEdit.CharCase;
+  Result := FEdit.CharCase;
 end;
 
 function TFakeCombobox.GetCursor: TCursor;
 begin
-  Result := fEdit.Cursor
+  Result := FEdit.Cursor
 end;
 
 function TFakeCombobox.GetDropdownButtonWidth: Integer;
@@ -219,37 +219,37 @@ end;
 
 function TFakeCombobox.GetHideSelection: Boolean;
 begin
-  Result := fEdit.HideSelection
+  Result := FEdit.HideSelection
 end;
 
 function TFakeCombobox.GetMaxLength: Integer;
 begin
-  Result := fEdit.MaxLength
+  Result := FEdit.MaxLength
 end;
 
-function TFakeCombobox.GetOEMConvert: boolean;
+function TFakeCombobox.GetOEMConvert: Boolean;
 begin
-  Result := fEdit.OEMConvert
+  Result := FEdit.OEMConvert
 end;
 
 function TFakeCombobox.GetOnDblClick: TNotifyEvent;
 begin
-  Result := fEdit.OnDblClick
+  Result := FEdit.OnDblClick
 end;
 
 function TFakeCombobox.GetPasswordChar: char;
 begin
-  Result := fEdit.PasswordChar
+  Result := FEdit.PasswordChar
 end;
 
 function TFakeCombobox.GetReadOnly: Boolean;
 begin
-  Result := fEdit.ReadOnly
+  Result := FEdit.ReadOnly
 end;
 
 function TFakeCombobox.GetText: string;
 begin
-  Result := fEdit.Text
+  Result := FEdit.Text
 end;
 
 procedure TFakeCombobox.Loaded;
@@ -292,9 +292,9 @@ end;
 
 procedure TFakeCombobox.Paint;
 var
-  r : TRect;
-  Style : Integer;
-  oldMode : Integer;
+  r: TRect;
+  Style: Integer;
+  OldMode: Integer;
 begin
   inherited;
   r := ClientRect;
@@ -308,10 +308,10 @@ begin
     if ButtonPressed then
       Style := Style or DFCS_PUSHED;
     DrawFrameControl (Canvas.Handle, r, DFC_BUTTON, Style);
-    oldMode := SetBkMode (Canvas.Handle, TRANSPARENT);
+    OldMode := SetBkMode (Canvas.Handle, TRANSPARENT);
     OffsetRect (r, 0, -4);
     DrawText (Canvas.Handle, '...', 3, r, DT_CENTER or DT_VCENTER or DT_SINGLELINE);
-    SetBkMode (Canvas.Handle, oldMode);
+    SetBkMode (Canvas.Handle, OldMode);
   end
   else
     if Items.Count > 0 then
@@ -328,56 +328,56 @@ procedure TFakeCombobox.Resize;
 begin
   inherited;
 
-  fEdit.Height := ClientHeight - 4;
-  fEdit.Width := ClientWidth - 4 - DropdownButtonWidth
+  FEdit.Height := ClientHeight - 4;
+  FEdit.Width := ClientWidth - 4 - DropdownButtonWidth
 end;
 
 procedure TFakeCombobox.SetAutoSelect(const Value: Boolean);
 begin
-  fEdit.AutoSelect := Value
+  FEdit.AutoSelect := Value
 end;
 
 procedure TFakeCombobox.SetButtonPressed(const Value: Boolean);
 begin
-  if fButtonPressed <> Value then
+  if FButtonPressed <> Value then
   begin
     if Value then
       SetCapture (Handle)
     else
       ReleaseCapture;
 
-    fButtonPressed := Value;
+    FButtonPressed := Value;
     Invalidate
   end
 end;
 
 procedure TFakeCombobox.SetCharCase(const Value: TEditCharCase);
 begin
-  fEdit.CharCase := value
+  FEdit.CharCase := value
 end;
 
 procedure TFakeCombobox.SetCursor(const Value: TCursor);
 begin
-  fEdit.Cursor := Value
+  FEdit.Cursor := Value
 end;
 
 procedure TFakeCombobox.SetFocus;
 begin
-  fEdit.SetFocus
+  FEdit.SetFocus
 end;
 
 procedure TFakeCombobox.SetHideSelection(const Value: Boolean);
 begin
-  fEdit.HideSelection := Value
+  FEdit.HideSelection := Value
 end;
 
 procedure TFakeCombobox.SetItems(const Value: TStrings);
 var
-  oldCount : Integer;
+  OldCount: Integer;
 begin
-  oldCount := Items.Count;
-  fItems.Assign (Value);
-  if (oldCount = 0) <> (fItems.Count = 0) then
+  OldCount := Items.Count;
+  FItems.Assign (Value);
+  if (OldCount = 0) <> (FItems.Count = 0) then
   begin
     Resize;
     Invalidate
@@ -386,73 +386,73 @@ end;
 
 procedure TFakeCombobox.SetMaxLength(const Value: Integer);
 begin
-  fEdit.MaxLength := Value
+  FEdit.MaxLength := Value
 end;
 
-procedure TFakeCombobox.SetOEMConvert(const Value: boolean);
+procedure TFakeCombobox.SetOEMConvert(const Value: Boolean);
 begin
-  fEdit.OEMConvert := value
+  FEdit.OEMConvert := value
 end;
 
-procedure TFakeCombobox.SetOnDblClick(const Value : TNotifyEvent);
+procedure TFakeCombobox.SetOnDblClick(const Value: TNotifyEvent);
 begin
-  fEdit.OnDblClick := Value
+  FEdit.OnDblClick := Value
 end;
 
 procedure TFakeCombobox.SetPasswordChar(const Value: char);
 begin
-  fEdit.PasswordChar := Value
+  FEdit.PasswordChar := Value
 end;
 
 procedure TFakeCombobox.SetReadOnly(const Value: Boolean);
 begin
-  fEdit.ReadOnly := Value
+  FEdit.ReadOnly := Value
 end;
 
 procedure TFakeCombobox.SetText(const Value: string);
 begin
-  fEdit.Text := value
+  FEdit.Text := value
 end;
 
 procedure TFakeCombobox.ShowList(show, update: Boolean);
 var
-  i : Integer;
+  i: Integer;
 begin
   if Show then
   begin
-    if not Assigned (fListBox) then
+    if not Assigned (FListBox) then
     begin
-      fListBox := TListBox.Create (Self);
-      fListBox.Parent := Parent;
-      fListBox.Top := Top + ClientHeight - 2;
-      fListBox.Left := Left - 1;
-      fListBox.Width := ClientWidth + 1;
-      fListBox.OnExit := DoOnListboxExit;
-      fListBox.OnKeyDown := DoOnListBoxKeyDown;
-      fListBox.OnMouseDown := DoOnListboxMouseDown;
+      FListBox := TListBox.Create (Self);
+      FListBox.Parent := Parent;
+      FListBox.Top := Top + ClientHeight - 2;
+      FListBox.Left := Left - 1;
+      FListBox.Width := ClientWidth + 1;
+      FListBox.OnExit := DoOnListboxExit;
+      FListBox.OnKeyDown := DoOnListBoxKeyDown;
+      FListBox.OnMouseDown := DoOnListboxMouseDown;
     end
     else
-      fListBox.Clear;
+      FListBox.Clear;
 
-    if fItems.Count > 6 then
+    if FItems.Count > 6 then
       i := 6
     else
-      i := fItems.Count;
+      i := FItems.Count;
 
-    fListBox.ItemHeight := ClientHeight;
+    FListBox.ItemHeight := ClientHeight;
 
-    fListBox.Height := ClientHeight * i;
+    FListBox.Height := ClientHeight * i;
 
-    fListBox.Items.AddStrings (fItems);
-    fListBox.ItemIndex := fItems.IndexOf (fEdit.Text);
+    FListBox.Items.AddStrings (FItems);
+    FListBox.ItemIndex := FItems.IndexOf (FEdit.Text);
     Application.ProcessMessages;
-    fListBox.SetFocus
+    FListBox.SetFocus
   end
   else
   begin
-    if (fListBox.ItemIndex >= 0) and (fListBox.ItemIndex < fItems.Count) and Update then
-      fEdit.Text := fListBox.Items [fListBox.ItemIndex];
-    FreeAndNil (fListBox);
+    if (FListBox.ItemIndex >= 0) and (FListBox.ItemIndex < FItems.Count) and Update then
+      FEdit.Text := FListBox.Items [FListBox.ItemIndex];
+    FreeAndNil (FListBox);
 
     if Assigned (OnExit) and Update then
       OnExit (Self);
@@ -483,17 +483,17 @@ begin
         OnSpecialButtonClick (Self);
   end
   else
-    if Assigned (fOnKeyDown) then
-      fOnKeyDown (Self, key, shift);
+    if Assigned (FOnKeyDown) then
+      FOnKeyDown (Self, key, shift);
 end;
 
 procedure TFakeCombobox.SetSpecialButton(const Value: Boolean);
 begin
-  if Value <> fSpecialButton then
+  if Value <> FSpecialButton then
   begin
-    fSpecialButton := Value;
+    FSpecialButton := Value;
     Resize;
-    invalidate
+    Invalidate;
   end
 end;
 

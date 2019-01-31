@@ -17,7 +17,7 @@ uses
   CommCtrl, RichEdit, DialogConsts, DialogStrings, Menus;
 
 type
-  TOnDlgMessage = procedure(Sender: TObject; var Msg: TMessage; bcontinue: boolean) of object;
+  TOnDlgMessage = procedure(Sender: TObject; var Msg: TMessage; bcontinue: Boolean) of object;
   TOnGetControlImage = procedure(Sender: TObject; Tp: Integer; const Id: string; var Handle: HGDIOBJ) of object;
 
 //-----------------------------------------------------------------------
@@ -48,7 +48,7 @@ type
 
   protected
     FOrigX, FOrigY: Integer;
-    FInitializing: boolean;
+    FInitializing: Boolean;
     procedure HandleDlgMessage(var Msg: TMessage); virtual;
     procedure PaintWindow(DC: HDC); override;
     function CanAutoSize(var NewWidth, NewHeight: Integer): Boolean; override;
@@ -70,7 +70,6 @@ type
     function DialogRectToRect(r: TRect): TRect;
 
     property FontHandle: HFONT read FHFontDlg; // Must be read only!  Don't even think about it!
-    { Protected declarations }
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -306,7 +305,7 @@ end;
 procedure TDialogBox.HandleDlgMessage(var Msg: TMessage);
 var
   p: PWindowPos;
-  continueProcessing: boolean;
+  continueProcessing: Boolean;
   r: TRect;
 
   procedure GetFontBaseUnits(var baseX, baseY: Double);

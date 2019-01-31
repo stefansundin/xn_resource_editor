@@ -208,8 +208,7 @@ begin
   params.fReserved := False;
 
   HTMLHelp (Application.Handle, PChar (fn), HH_ALINK_LOOKUP, DWORD (@params));
-  result := 1;
-
+  Result := 1;
 end;
 
 function THTMLHelpViewer.UnderstandsTopic(const Topic: String): Boolean;

@@ -19,14 +19,14 @@ type
   TExSplitterArrow = (arLeft, arRight, arUp, arDown);
   TExSplitter = class(TSplitter)
   private
-    fShrinkButton: Boolean;
-    fShrunken: Boolean;
-    fOrigCursor : TCursor;
-    fOldControlSize : Integer;
-    fSaveSize : Integer;
+    FShrinkButton: Boolean;
+    FShrunken: Boolean;
+    FOrigCursor: TCursor;
+    FOldControlSize: Integer;
+    FSaveSize: Integer;
     procedure SetShrinkButton(const Value: Boolean);
-    function GetShrinkButtonRect : TRect;
-    function GetRequiredArrow : TExSplitterArrow;
+    function GetShrinkButtonRect: TRect;
+    function GetRequiredArrow: TExSplitterArrow;
     procedure SetShrunken(const Value: Boolean);
     function GetResizeControl: TControl;
     function GetResizeControlSize: Integer;
@@ -34,14 +34,14 @@ type
     procedure Paint; override;
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
-    property ResizeControl : TControl read GetResizeControl;
+    property ResizeControl: TControl read GetResizeControl;
     procedure StopSizing; override;
   public
-    constructor Create (AOwner : TComponent); override;
-    property Shrunken : Boolean read fShrunken write SetShrunken;
-    property ResizeControlSize : Integer read GetResizeControlSize;
+    constructor Create (AOwner: TComponent); override;
+    property Shrunken: Boolean read FShrunken write SetShrunken;
+    property ResizeControlSize: Integer read GetResizeControlSize;
   published
-    property ShrinkButton : Boolean read fShrinkButton write SetShrinkButton default True;
+    property ShrinkButton: Boolean read FShrinkButton write SetShrinkButton default True;
   end;
 
 
@@ -60,7 +60,7 @@ implementation
 constructor TExSplitter.Create(AOwner: TComponent);
 begin
   inherited;
-  fShrinkButton := True;
+  FShrinkButton := True;
 end;
 
 (*----------------------------------------------------------------------*
@@ -77,10 +77,10 @@ function TExSplitter.GetRequiredArrow: TExSplitterArrow;
 begin
   Result := arLeft;
   case Align of
-    alLeft   : if Shrunken then Result := arRight else Result := arLeft;
-    alRight  : if Shrunken then Result := arLeft  else Result := arRight;
-    alTop    : if Shrunken then Result := arDown  else Result := arUp;
-    alBottom : if Shrunken then Result := arUp    else Result := arDown
+    alLeft  : if Shrunken then Result := arRight else Result := arLeft;
+    alRight : if Shrunken then Result := arLeft  else Result := arRight;
+    alTop   : if Shrunken then Result := arDown  else Result := arUp;
+    alBottom: if Shrunken then Result := arUp    else Result := arDown
   end
 end;
 
@@ -96,7 +96,7 @@ end;
  *----------------------------------------------------------------------*)
 function TExSplitter.GetResizeControl: TControl;
 var
-  i : Integer;
+  i: Integer;
 begin
   Result := nil;
   for i := 0 to Parent.ControlCount - 1 do
@@ -118,10 +118,10 @@ end;
  *----------------------------------------------------------------------*)
 function TExSplitter.GetResizeControlSize: Integer;
 var
-  ctrl : TControl;
+  ctrl: TControl;
 begin
   if Shrunken then
-    Result := fOldControlSize
+    Result := FOldControlSize
   else
   begin
     ctrl := ResizeControl;
@@ -146,8 +146,8 @@ end;
  *----------------------------------------------------------------------*)
 function TExSplitter.GetShrinkButtonRect: TRect;
 var
-  tl : TPoint;
-  bs : Integer;
+  tl: TPoint;
+  bs: Integer;
 
 begin
   bs := 0;
@@ -155,7 +155,7 @@ begin
   begin
     bs := ClientWidth + 8;
     tl := Point (-4, (ClientHeight - bs) div 2);
-    if not fShrunken then
+    if not FShrunken then
       Inc (tl.X);
   end
   else
@@ -163,7 +163,7 @@ begin
      begin
        bs := ClientHeight + 8;
        tl := Point ((ClientWidth - bs) div 2, -4);
-       if not fShrunken then
+       if not FShrunken then
          Inc (tl.y);
      end;
 
@@ -180,9 +180,9 @@ begin
   begin
     if Assigned (ResizeControl) then
       if Align in [alLeft, alRight] then
-        fSaveSize := ResizeControl.Width
+        FSaveSize := ResizeControl.Width
       else
-        fSaveSize := ResizeControl.Height;
+        FSaveSize := ResizeControl.Height;
     inherited
   end
 end;
@@ -195,20 +195,20 @@ begin
   begin
     if Cursor <> crArrow then
     begin
-      fOrigCursor := Cursor;
+      FOrigCursor := Cursor;
       Cursor := crArrow
     end
   end
   else
-    if fOrigCursor <> crDefault then
-      Cursor := fOrigCursor
+    if FOrigCursor <> crDefault then
+      Cursor := FOrigCursor
 end;
 
 procedure TExSplitter.Paint;
 var
-  rect : TRect;
-  requiredArrow : TExSplitterArrow;
-  dfcs : DWORD;
+  rect: TRect;
+  requiredArrow: TExSplitterArrow;
+  dfcs: DWORD;
 begin
   inherited;
 
@@ -218,10 +218,10 @@ begin
   if ShrinkButton then
   begin
     case requiredArrow of
-      arLeft  : dfcs := DFCS_SCROLLLEFT;
-      arRight : dfcs := DFCS_SCROLLRIGHT;
-      arUp    : dfcs := DFCS_SCROLLUP;
-      arDown  : dfcs := DFCS_SCROLLDOWN;
+      arLeft : dfcs := DFCS_SCROLLLEFT;
+      arRight: dfcs := DFCS_SCROLLRIGHT;
+      arUp   : dfcs := DFCS_SCROLLUP;
+      arDown : dfcs := DFCS_SCROLLDOWN;
       else
         dfcs := 0;
     end;
@@ -232,16 +232,16 @@ end;
 
 procedure TExSplitter.SetShrinkButton(const Value: Boolean);
 begin
-  fShrinkButton := Value;
+  FShrinkButton := Value;
 end;
 
 procedure TExSplitter.SetShrunken(const Value: Boolean);
 var
-  ctrl : TControl;
+  ctrl: TControl;
 begin
-  if Value <> fShrunken then
+  if Value <> FShrunken then
   begin
-    fShrunken := Value;
+    FShrunken := Value;
     Invalidate;
 
     ctrl := ResizeControl;
@@ -251,20 +251,20 @@ begin
       if Value then
         if Align in [alLeft, alRight] then
         begin
-          fOldControlSize := ctrl.Width;
+          FOldControlSize := ctrl.Width;
           ctrl.Width := 1  // Set it to 1 - not 0.  There's a bug...
         end
         else
         begin
-          fOldControlSize := ctrl.Height;
+          FOldControlSize := ctrl.Height;
           ctrl.Height := 1
         end
       else
       begin
         if ctrl.Align in [alLeft, alRight] then
-          ctrl.Width := fOldControlSize
+          ctrl.Width := FOldControlSize
         else
-          ctrl.Height := fOldControlSize;
+          ctrl.Height := FOldControlSize;
       end
     end;
 
@@ -275,20 +275,20 @@ end;
 
 procedure TExSplitter.StopSizing;
 var
-  resized : boolean;
+  Resized: Boolean;
 begin
   inherited;
 
-  resized := False;
+  Resized := False;
   if Assigned (ResizeControl) then
     if Align in [alLeft, alRight] then
-      resized := ResizeControl.Width <> fSaveSize
+      Resized := ResizeControl.Width <> FSaveSize
     else
-      resized := ResizeControl.Height <> fSaveSize;
+      Resized := ResizeControl.Height <> FSaveSize;
 
-  if resized then
+  if Resized then
   begin
-    fShrunken := False;
+    FShrunken := False;
     Invalidate
   end
 end;

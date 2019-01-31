@@ -35,13 +35,13 @@ type
   private
     function GetID: Integer;
     procedure SetID(const Value: Integer);
-    function GetSelected: boolean;
-    procedure SetSelected(const Value: boolean);
+    function GetSelected: Boolean;
+    procedure SetSelected(const Value: Boolean);
   protected
     procedure MenuChanged(Rebuild: Boolean); override;
   public
     property ID: Integer read GetID write SetID;
-    property Selected: boolean read GetSelected write SetSelected;
+    property Selected: Boolean read GetSelected write SetSelected;
   end;
 
   TBaseMenuDesigner = class (TCustomControl)
@@ -49,7 +49,7 @@ type
     FItems: TMenuItem;
     FSelectedItem: TMenuItem;
     FOnSelectedItemChange: TNotifyEvent;
-    FDirty: boolean;
+    FDirty: Boolean;
     FPositionSnapshot: TList;
     procedure PaintItems (x, y: Integer; items: TMenuItem);
     procedure CalcItemsSize (items: TMenuItem; var stW, shortcutW, h: Integer);
@@ -63,7 +63,7 @@ type
     function GetSnapshotItem: TMenuItem;
     function GetSelectedItem: TMenuItem;
 
-    function DrawItem (item: TMenuITem; x, y, stw, shw, leftMargin, rightMargin, sth: Integer; vert: boolean): Integer;
+    function DrawItem (item: TMenuITem; x, y, stw, shw, leftMargin, rightMargin, sth: Integer; vert: Boolean): Integer;
   protected
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState;
       X, Y: Integer); override;
@@ -88,8 +88,8 @@ type
 
     procedure RestoreTags;
 
-    property Dirty: boolean read FDirty;
-    procedure SetItems(const Value: TMenuItem; keepPosition: boolean = False);
+    property Dirty: Boolean read FDirty;
+    procedure SetItems(const Value: TMenuItem; keepPosition: Boolean = False);
 
   published
     property OnSelectedItemChange: TNotifyEvent read FOnSelectedItemChange write FOnSelectedItemChange;
@@ -348,7 +348,7 @@ end;
 function TBaseMenuDesigner.CanAutoSize(var NewWidth,
   NewHeight: Integer): Boolean;
 var
-  calced: boolean;
+  calced: Boolean;
   w, h: Integer;
 begin
   Result := True;
@@ -466,7 +466,7 @@ end;
  |   leftMargin: Integer               Left margin                     |
  |   rightMargin: Integer              Right Margin                    |
  |   sth: Integer                      Item height                     |
- |   vert: boolean                     True if popup or drop down.     |
+ |   vert: Boolean                     True if popup or drop down.     |
  |                                      False if main menu.             |
  |                                                                      |
  | nb.  If 'Vert' is set, the bo0unding rectangle is shrunk to avoid    |
@@ -487,7 +487,7 @@ begin
   Invalidate
 end;
 
-function TBaseMenuDesigner.DrawItem(item: TMenuITem; x, y, stw, shw, leftMargin, rightMargin, sth: Integer; vert: boolean): Integer;
+function TBaseMenuDesigner.DrawItem(item: TMenuITem; x, y, stw, shw, leftMargin, rightMargin, sth: Integer; vert: Boolean): Integer;
 var
   st, s1: WideString;
   params: TDrawTextParams;
@@ -715,7 +715,7 @@ end;
 
 procedure TBaseMenuDesigner.KeyDown(var Key: Word; Shift: TShiftState);
 var
-  vertMenu, vertParent: boolean;
+  vertMenu, vertParent: Boolean;
   parent, grandparent: TMenuItem;
   gidx, idx: Integer;
 begin
@@ -847,7 +847,7 @@ begin
   RestoreItemTags (Items)
 end;
 
-procedure TBaseMenuDesigner.SetItems(const Value: TMenuItem; keepPosition: boolean);
+procedure TBaseMenuDesigner.SetItems(const Value: TMenuItem; keepPosition: Boolean);
 var
   selItem: TMenuItem;
 
@@ -1097,7 +1097,7 @@ begin
      Result := (-Result) - 3
 end;
 
-function TDesignerMenuItem.GetSelected: boolean;
+function TDesignerMenuItem.GetSelected: Boolean;
 begin
   Result := Tag < -1
 end;
@@ -1138,7 +1138,7 @@ begin
   MenuChanged (True)
 end;
 
-procedure TDesignerMenuItem.SetSelected(const Value: boolean);
+procedure TDesignerMenuItem.SetSelected(const Value: Boolean);
 begin
   if Value <> Selected then
     if Value then

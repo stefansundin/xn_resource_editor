@@ -10,44 +10,44 @@ uses
 type
   TOnDuplicates = (duCopy, duAsk, duAbort);
   TCopyMode = (cmCopy, cmMove, cmNothing);
-  TOnCopyFile = procedure (sender : TObject; const srcfileName, dstFileName : string; fileSize : Integer) of object;
-  TForEachProc = procedure (const Directory, dest : string; const sr : TSearchRec; var Continue : Boolean) of object;
-  TOnException = procedure (sender : TObject; e : Exception) of object;
+  TOnCopyFile = procedure (sender: TObject; const srcfileName, dstFileName: string; fileSize: Integer) of object;
+  TForEachProc = procedure (const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean) of object;
+  TOnException = procedure (sender: TObject; e: Exception) of object;
   TFileCopier = class (TComponent)
   private
-    FCopierThread : TThread;
-    FProgressThread : TThread;
+    FCopierThread: TThread;
+    FProgressThread: TThread;
     FRecursive: Boolean;
     FDestFiles: string;
-    FDestDir : string;
+    FDestDir: string;
     FSourceFiles: TStrings;
-    FSourceMask : string;
+    FSourceMask: string;
     FOnStartCopy: TNotifyEvent;
     FOnEndCopy: TNotifyEvent;
     FOnEndCopyFile: TOnCopyFile;
     FOnStartCopyFile: TOnCopyFile;
     FOnDuplicates: TOnDuplicates;
-    FExcep : Exception;
+    FExcep: Exception;
 
-    FAnalyzedFileCount : Integer;
-    FAnalyzedFileSize : int64;
+    FAnalyzedFileCount: Integer;
+    FAnalyzedFileSize: int64;
     FLeeway: Int64;
     FCopyMode: TCopyMode;
-    FCancelled : Boolean;
+    FCancelled: Boolean;
     FOnStartAnalysis: TNotifyEvent;
     FOnEndAnalysis: TNotifyEvent;
-    FCurrentFileName : string;
-    FDestFileName : string;
-    FCurrentFileSize : Integer;
-    FCheckedDrive : Boolean;
+    FCurrentFileName: string;
+    FDestFileName: string;
+    FCurrentFileSize: Integer;
+    FCheckedDrive: Boolean;
     FOnException: TOnException;
 
-    procedure AnalyzeFile (const Directory, dest : string; const sr : TSearchRec; var Continue : Boolean);
-    procedure CopyFile (const Directory, dest : string; const sr : TSearchRec; var Continue : Boolean);
-    procedure TidyDir (const Directory, dest : string; const sr : TSearchRec; var Continue : Boolean);
-    function ForEach (const Mask, destPath : string; proc, proc1 : TForEachProc) : Boolean;
-    procedure AnalyzeFiles (const sourceFiles : string);
-    procedure CopyFiles (const sourceFiles : string);
+    procedure AnalyzeFile (const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean);
+    procedure CopyFile (const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean);
+    procedure TidyDir (const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean);
+    function ForEach (const Mask, destPath: string; proc, proc1: TForEachProc): Boolean;
+    procedure AnalyzeFiles (const sourceFiles: string);
+    procedure CopyFiles (const sourceFiles: string);
     procedure DoOnException;
     procedure DoOnStartAnalysis;
     procedure DoOnEndAnalysis;
@@ -61,29 +61,29 @@ type
     procedure SetSourceFiles(const Value: TStrings);
 
   public
-    constructor Create (AOwner : TComponent); override;
+    constructor Create (AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Start;
     procedure Cancel;
 
-    property AnalyzedFileSize : Int64 read FAnalyzedFileSize;
-    property AnalyzedFileCount : Integer read FAnalyzedFileCount;
+    property AnalyzedFileSize: Int64 read FAnalyzedFileSize;
+    property AnalyzedFileCount: Integer read FAnalyzedFileCount;
 
   published
-    property SourceFiles : TStrings read FSourceFiles write SetSourceFiles;
-    property DestFiles : string read FDestFiles write FDestFiles;
-    property Recursive : Boolean read FRecursive write FRecursive default True;
-    property OnDuplicates : TOnDuplicates read FOnDuplicates write FOnDuplicates;
-    property Leeway : Int64 read FLeeway write FLeeway default 1024*1024;
-    property CopyMode : TCopyMode read FCopyMode write FCopyMode;
+    property SourceFiles: TStrings read FSourceFiles write SetSourceFiles;
+    property DestFiles: string read FDestFiles write FDestFiles;
+    property Recursive: Boolean read FRecursive write FRecursive default True;
+    property OnDuplicates: TOnDuplicates read FOnDuplicates write FOnDuplicates;
+    property Leeway: Int64 read FLeeway write FLeeway default 1024*1024;
+    property CopyMode: TCopyMode read FCopyMode write FCopyMode;
 
-    property OnStartAnalysis : TNotifyEvent read FOnStartAnalysis write FOnStartAnalysis;
-    property OnEndAnalysis : TNotifyEvent read FOnEndAnalysis write FOnEndAnalysis;
-    property OnStartCopy : TNotifyEvent read FOnStartCopy write FOnStartCopy;
-    property OnEndCopy : TNotifyEvent read FOnEndCopy write FOnEndCopy;
-    property OnStartCopyFile : TOnCopyFile read FOnStartCopyFile write FOnStartCopyFile;
-    property OnEndCopyFile : TOnCopyFile read FOnEndCopyFile write FOnEndCopyFile;
-    property OnException : TOnException read FOnException write FOnException;
+    property OnStartAnalysis: TNotifyEvent read FOnStartAnalysis write FOnStartAnalysis;
+    property OnEndAnalysis: TNotifyEvent read FOnEndAnalysis write FOnEndAnalysis;
+    property OnStartCopy: TNotifyEvent read FOnStartCopy write FOnStartCopy;
+    property OnEndCopy: TNotifyEvent read FOnEndCopy write FOnEndCopy;
+    property OnStartCopyFile: TOnCopyFile read FOnStartCopyFile write FOnStartCopyFile;
+    property OnEndCopyFile: TOnCopyFile read FOnEndCopyFile write FOnEndCopyFile;
+    property OnException: TOnException read FOnException write FOnException;
   end;
 
   EFileCopier = class (Exception)
@@ -100,24 +100,24 @@ resourcestring
 type
   TCopierThread = class (TThread)
   private
-    FOwner : TFileCopier;
+    FOwner: TFileCopier;
   protected
     procedure Execute; override;
   public
-    constructor Create (AOwner : TFileCopier);
+    constructor Create (AOwner: TFileCopier);
   end;
 
   TCopierProgressThread = class (TThread)
   public
-    constructor Create (AOwner : TFileCopier);
+    constructor Create (AOwner: TFileCopier);
   end;
 
 { TFileCopier }
 
-procedure TFileCopier.AnalyzeFile(const Directory, dest : string; const sr : TSearchRec; var Continue : Boolean);
+procedure TFileCopier.AnalyzeFile(const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean);
 var
-  destFileName : string;
-  fa : Integer;
+  destFileName: string;
+  fa: Integer;
 begin
   Inc (FAnalyzedFileCount);
   FAnalyzedFileSize := FAnalyzedFileSize + sr.Size;
@@ -158,14 +158,14 @@ begin
 
 end;
 
-procedure TFileCopier.AnalyzeFiles (const sourcefiles : string);
+procedure TFileCopier.AnalyzeFiles (const sourcefiles: string);
 var
-  st : string;
-  Continue : Boolean;
-  sr : TSearchRec;
-  err : Integer;
-  available, a1 : Int64;
-  a2 : TLargeInteger;
+  st: string;
+  Continue: Boolean;
+  sr: TSearchRec;
+  err: Integer;
+  available, a1: Int64;
+  a2: TLargeInteger;
 begin
   if Length (sourceFiles) = 0 then
     raise EFileCopier.Create(rstNoSource);
@@ -249,19 +249,19 @@ begin
 
   case CopyMode of
     cmNothing:;
-    cmMove : DoMoveFile;
-    cmCopy : DoCopyFile;
+    cmMove: DoMoveFile;
+    cmCopy: DoCopyFile;
   end;
   if Assigned(FOnEndCopyFile) then
     FCopierThread.Synchronize(FCopierThread, DoOnEndCopyFile);
 end;
 
-procedure TFileCopier.CopyFiles (const sourceFiles : string);
+procedure TFileCopier.CopyFiles (const sourceFiles: string);
 var
-  sr : TSearchRec;
-  Continue : Boolean;
-  st : string;
-  err : Integer;
+  sr: TSearchRec;
+  Continue: Boolean;
+  st: string;
+  err: Integer;
 begin
   FSourceMask := '';
   if (Pos ('?', sourceFiles) > 0) or (Pos ('*', sourceFiles) > 0) then
@@ -395,12 +395,12 @@ begin
     OnStartCopyFile (self, FCurrentFileName, FDestFileName, FCurrentFileSize);
 end;
 
-function TFileCopier.ForEach(const Mask, destPath : string; proc, proc1: TForEachProc) : Boolean;
+function TFileCopier.ForEach(const Mask, destPath: string; proc, proc1: TForEachProc): Boolean;
 var
-  sr : TSearchRec;
-  st : string;
+  sr: TSearchRec;
+  st: string;
 begin
-  result := True;
+  Result := True;
   begin
     if FindFirst (Mask, faAnyFile, sr) = 0 then
     try
@@ -411,18 +411,18 @@ begin
           begin
             st := destPath + sr.Name + '\';
 
-            result := ForEach (ExtractFilePath (Mask) + sr.Name + '\' + ExtractFileName (Mask), st, proc, proc1)
+            Result := ForEach (ExtractFilePath (Mask) + sr.Name + '\' + ExtractFileName (Mask), st, proc, proc1)
           end
         end
         else
-          proc (ExtractFilePath (Mask), destPath, sr, result);
+          proc (ExtractFilePath (Mask), destPath, sr, Result);
         if FCancelled then
-          result := False;
-      until not result or (FindNext (sr) <> 0)
+          Result := False;
+      until not Result or (FindNext (sr) <> 0)
     finally
       FindClose (sr);
       if Assigned(proc1) then
-        proc1 (ExtractFilePath (Mask), '', sr, result)
+        proc1 (ExtractFilePath (Mask), '', sr, Result)
     end
     else
       RaiseLastOSError
@@ -449,7 +449,7 @@ end;
 procedure TFileCopier.TidyDir(const Directory, dest: string;
   const sr: TSearchRec; var Continue: Boolean);
 var
-  st : string;
+  st: string;
 begin
   st := Directory;
   if Copy (st, Length (st), 1) = '\' then
@@ -472,7 +472,7 @@ end;
 
 procedure TCopierThread.Execute;
 var
-  i : Integer;
+  i: Integer;
 begin
   try
     try
@@ -486,7 +486,7 @@ begin
         FOwner.CopyFiles (FOwner.FSourceFiles [i]);
       Synchronize (FOwner.DoOnEndCopy)
     except
-      on E : Exception do
+      on E: Exception do
       begin
         FOwner.FExcep := E;
         Synchronize (FOwner.DoOnException)

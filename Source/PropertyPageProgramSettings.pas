@@ -66,7 +66,7 @@ end;
 
 class function TfmPropertyPageProgramSettings.GetDataClass: TPropertyPageDataClass;
 begin
-  result := TPropertyPageProgramSettingsData;
+  Result := TPropertyPageProgramSettingsData;
 end;
 
 procedure TfmPropertyPageProgramSettings.PopulateControls(AData: TPropertyPageData);

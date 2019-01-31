@@ -142,19 +142,19 @@ begin
   r.l := value;
   r.b := swap (r.b);
   t := r.a; r.a := r.c; r.c := t;
-  result := r.l;
+  Result := r.l;
 end;
 
 
 function AdjustForTimesig (n, beatDiv : Integer) : Integer;
 begin
   if BeatDiv > 2 then
-    result := n shr (BeatDiv - 2)
+    Result := n shr (BeatDiv - 2)
   else
     if BeatDiv < 2 then
-      result := n shl (2 - BeatDiv)
+      Result := n shl (2 - BeatDiv)
     else
-      result := n;
+      Result := n;
 end;
 
 
@@ -162,17 +162,17 @@ end;
 function UnAdjustForTimesig (n, beatDiv : Integer) : Integer;
 begin
   if BeatDiv > 2 then
-    result := n shl (BeatDiv - 2)
+    Result := n shl (BeatDiv - 2)
   else
     if BeatDiv < 2 then
-      result := n shr (2 - BeatDiv)
+      Result := n shr (2 - BeatDiv)
     else
-      result := n;
+      Result := n;
 end;
 
 function GetBPM (tempo, beatDiv : Integer) : Integer;
 begin
-  result := UnAdjustForTimesig (60000 div tempo, beatDiv);
+  Result := UnAdjustForTimesig (60000 div tempo, beatDiv);
 end;
 
 function GetNoteName (note : Integer) : string;
@@ -194,9 +194,9 @@ begin
   end;
 
   if note in [1, 3, 6, 8, 10] then
-    result := ch + '#' + IntToStr (Octave)
+    Result := ch + '#' + IntToStr (Octave)
   else
-    result := ch + IntToStr (Octave);
+    Result := ch + IntToStr (Octave);
 end;
 
 end.

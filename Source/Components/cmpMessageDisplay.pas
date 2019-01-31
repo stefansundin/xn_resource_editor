@@ -35,61 +35,61 @@ type
 // TDisplayObjectLink - base class for links to displayable objects
   TDisplayObjectLink = class
   private
-    fOwner : TMessageDisplay;
-    fColor: TColor;
-    fFont: TFont;
-    fMessagePart : TObject;
-    fCodePage: Integer;
-    fPercentDecoded: Integer;
-    fPageRect: TRect;
+    FOwner: TMessageDisplay;
+    FColor: TColor;
+    FFont: TFont;
+    FMessagePart: TObject;
+    FCodePage: Integer;
+    FPercentDecoded: Integer;
+    FPageRect: TRect;
     procedure SetColor(const Value: TColor);
     procedure SetFont(const Value: TFont);
   protected
-    fObj : TObject;
-    yPos : Integer;
-    class function DisplaysObject (obj : TObject) : Boolean; virtual; abstract;
+    FObj: TObject;
+    FYPos: Integer;
+    class function DisplaysObject (obj: TObject): Boolean; virtual; abstract;
 
-    procedure Display (const r : TRect; var y : Integer); virtual; abstract;
-    function GetCursor : TCursor; virtual;
-    function GetHeight : Integer; virtual; abstract;
+    procedure Display (const r: TRect; var y: Integer); virtual; abstract;
+    function GetCursor: TCursor; virtual;
+    function GetHeight: Integer; virtual; abstract;
     function GetWidth: Integer; virtual; abstract;
     function GetMargin: Integer; virtual;
     procedure SetCursor(const Value: TCursor); virtual;
     procedure SetHeight(const Value: Integer); virtual;
     procedure SetWidth(const Value: Integer); virtual;
     procedure Refresh; virtual;
-    function GetObj : TObject; virtual;
-    function GetBusy : Boolean ; virtual;
+    function GetObj: TObject; virtual;
+    function GetBusy: Boolean ; virtual;
     procedure SetObj(const Value: TObject); virtual;
-    function CursorAt (x, y : Integer) : TCursor; virtual;
-    procedure KeyPress (var ch : char); virtual;
-    function FindText (const SearchStr: string; NewSearch : Boolean; Options: TStringSearchOptions; y : Integer): Boolean; virtual;
-    procedure GetSelectedText (var txt : WideString); virtual;
-    procedure SetSelectedText (const txt : WideString); virtual;
-    function GetSelLength : Integer; virtual;
-    procedure GetText (var txt : WideString); virtual;
-    procedure GetHTML (var txt : string; rawFragment : boolean = false); virtual;
-    function GetHasText: boolean; virtual;
+    function CursorAt (x, y: Integer): TCursor; virtual;
+    procedure KeyPress (var ch: char); virtual;
+    function FindText (const SearchStr: string; NewSearch: Boolean; Options: TStringSearchOptions; y: Integer): Boolean; virtual;
+    procedure GetSelectedText (var txt: WideString); virtual;
+    procedure SetSelectedText (const txt: WideString); virtual;
+    function GetSelLength: Integer; virtual;
+    procedure GetText (var txt: WideString); virtual;
+    procedure GetHTML (var txt: string; rawFragment: Boolean = false); virtual;
+    function GetHasText: Boolean; virtual;
     procedure PageDown; virtual;
-    constructor Create (AOwner : TMessageDisplay; AObj : TObject; codePage : Integer); virtual;
+    constructor Create (AOwner: TMessageDisplay; AObj: TObject; codePage: Integer); virtual;
   public
     destructor Destroy; override;
     procedure Stop; virtual;
     procedure Print; virtual;
-    property PageRect : TRect read fPageRect write fPageRect;
-    property Owner : TMessageDisplay read fOwner;
-    property Height : Integer read GetHeight write SetHeight;
-    property Margin : Integer read GetMargin;
-    property Width : Integer read GetWidth write SetWidth;
-    property Obj : TObject read GetObj write SetObj;
-    property MessagePart : TObject read fMessagePart write fMessagePart;
-    property Busy : boolean read GetBusy;
-    property Cursor : TCursor read GetCursor write SetCursor;
-    property Font : TFont read fFont write SetFont;
-    property Color : TColor read fColor write SetColor;
-    property CodePage : Integer read fCodePage write fCodePage;
-    property HasText : boolean read GetHasText;
-    property PercentDecoded : Integer read fPercentDecoded write fPercentDecoded;
+    property PageRect: TRect read FPageRect write FPageRect;
+    property Owner: TMessageDisplay read FOwner;
+    property Height: Integer read GetHeight write SetHeight;
+    property Margin: Integer read GetMargin;
+    property Width: Integer read GetWidth write SetWidth;
+    property Obj: TObject read GetObj write SetObj;
+    property MessagePart: TObject read FMessagePart write FMessagePart;
+    property Busy: Boolean read GetBusy;
+    property Cursor: TCursor read GetCursor write SetCursor;
+    property Font: TFont read FFont write SetFont;
+    property Color: TColor read FColor write SetColor;
+    property CodePage: Integer read FCodePage write FCodePage;
+    property HasText: Boolean read GetHasText;
+    property PercentDecoded: Integer read FPercentDecoded write FPercentDecoded;
   end;
   TDisplayObjectLinkClass = class of TDisplayObjectLink;
 
@@ -107,18 +107,18 @@ type
   private
     function GetGraphic: TGraphic;
   private
-    fWidth : Integer;
-    fHeight : Integer;
+    fWidth: Integer;
+    fHeight: Integer;
   protected
-    class function DisplaysObject (obj : TObject) : Boolean; override;
-    procedure Display (const r : TRect; var y : Integer); override;
-    function GetHeight : Integer; override;
-    function GetWidth : Integer; override;
+    class function DisplaysObject (obj: TObject): Boolean; override;
+    procedure Display (const r: TRect; var y: Integer); override;
+    function GetHeight: Integer; override;
+    function GetWidth: Integer; override;
     procedure Refresh; override;
     procedure SetObj(const Value: TObject); override;
-    property Graphic : TGraphic read GetGraphic;
+    property Graphic: TGraphic read GetGraphic;
   public
-    constructor Create (AOwner : TMessageDisplay; AObj : TObject; codepage : Integer); override;
+    constructor Create (AOwner: TMessageDisplay; AObj: TObject; codepage: Integer); override;
     procedure Print; override;
   end;
 
@@ -133,42 +133,42 @@ type
   private
     function GetCtrl: TWinControl;
   protected
-    class function DisplaysObject (obj : TObject) : Boolean; override;
-    procedure Display (const r : TRect; var y : Integer); override;
-    function GetCursor : TCursor; override;
-    function GetHeight : Integer; override;
-    function GetWidth : Integer; override;
+    class function DisplaysObject (obj: TObject): Boolean; override;
+    procedure Display (const r: TRect; var y: Integer); override;
+    function GetCursor: TCursor; override;
+    function GetHeight: Integer; override;
+    function GetWidth: Integer; override;
     procedure SetCursor(const Value: TCursor); override;
     procedure SetHeight(const Value: Integer); override;
     procedure SetWidth(const Value: Integer); override;
-    property Ctrl : TWinControl read GetCtrl;
+    property Ctrl: TWinControl read GetCtrl;
     procedure PageDown; override;
   public
-    constructor Create (AOwner : TMessageDisplay; AObj : TObject; codepage : Integer); override;
+    constructor Create (AOwner: TMessageDisplay; AObj: TObject; codepage: Integer); override;
   end;
 
-  TURLNotifyEvent = procedure (Sender : TObject; Button: TMouseButton; Shift: TShiftState; const url : WideString) of object;
+  TURLNotifyEvent = procedure (Sender: TObject; Button: TMouseButton; Shift: TShiftState; const url: WideString) of object;
 
 //----------------------------------------------------------------------------
 // TMessageDisplay component
   TMessageDisplay = class(TCustomControl)
   private
     FBorder: TBorderStyle;
-    fLineHeight : Integer;
-    fObjects : TObjectList;
-    fFocusedObject: Integer;
-    fTextIndent: Integer;
-    fPictureIndent: Integer;
-    fNewsAttributes: Boolean;
-    fUpdateCount : Integer;
-    fOnURLClick: TURLNotifyEvent;
-    fOnURLDblClick: TURLNotifyEvent;
-    fReadOnly: boolean;
-    fRawMode: boolean;
-    fCreateWindowSizeW: Integer;
-    fCreateWindowSizeH: Integer;
-    fSearchY : Integer;
-    fSubject: string;
+    FLineHeight: Integer;
+    FObjects: TObjectList;
+    FFocusedObject: Integer;
+    FTextIndent: Integer;
+    FPictureIndent: Integer;
+    FNewsAttributes: Boolean;
+    FUpdateCount: Integer;
+    FOnURLClick: TURLNotifyEvent;
+    FOnURLDblClick: TURLNotifyEvent;
+    FReadOnly: Boolean;
+    FRawMode: Boolean;
+    FCreateWindowSizeW: Integer;
+    FCreateWindowSizeH: Integer;
+    FSearchY: Integer;
+    FSubject: string;
 
     procedure SetBorder(const Value: TBorderStyle);
     procedure CMCtl3DChanged(var Message: TMessage); message CM_CTL3DCHANGED;
@@ -176,18 +176,18 @@ type
     procedure CMFontChanged(var Message: TMessage); message CM_FONTCHANGED;
 
     procedure WMGetDlgCode(var Message: TWMGetDlgCode); message WM_GETDLGCODE;
-    procedure WMMouseWheel (var Message : TWMMouseWheel); message WM_MOUSEWHEEL;
+    procedure WMMouseWheel (var Message: TWMMouseWheel); message WM_MOUSEWHEEL;
 
     function GetMessageHeight: Integer;
     function GetMessageWidth: Integer;
-    function GetObjectCount : Integer;
-    function GetObjects (idx : Integer) : TDisplayObjectLink;
+    function GetObjectCount: Integer;
+    function GetObjects (idx: Integer): TDisplayObjectLink;
     procedure SetPictureIndent(const Value: Integer);
     procedure SetTextIndent(const Value: Integer);
     procedure SetFocusedObject(const Value: Integer);
-    function GetUpdating: boolean;
-    function GetHasSelection: boolean;
-    procedure SetRawMode(const Value: boolean);
+    function GetUpdating: Boolean;
+    function GetHasSelection: Boolean;
+    procedure SetRawMode(const Value: Boolean);
     function GetText: WideString;
     function GetSelLength: Integer;
     function GetFocusedTextObject: TDisplayObjectLink;
@@ -198,87 +198,88 @@ type
     procedure Paint; override;
     procedure MouseDown (Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
     procedure AdjustSize; override;
-    property FocusedTextObject : TDisplayObjectLink read GetFocusedTextObject;
+    property FocusedTextObject: TDisplayObjectLink read GetFocusedTextObject;
   public
-    constructor Create (AOwner : TComponent); override;
+    constructor Create (AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Clear;
-    procedure FocusObject (obj : TObject);
-    function AddObject (obj : TObject; codepage : Integer) : TDisplayObjectLink;
-    function FindText (const SearchStr: string; NewSearch : Boolean; Options: TStringSearchOptions): Boolean;
-    function GetObjectLinkClass (obj : TObject; XFace : boolean) : TDisplayObjectLinkClass;
-    function InsertObject (idx : Integer; obj : TObject;  codepage : Integer; tp : TDisplayObjectLinkClass = Nil) : TDisplayObjectLink;
-    function ObjectAt (x, y : Integer) : Integer;
+    procedure FocusObject (obj: TObject);
+    function AddObject (obj: TObject; codepage: Integer): TDisplayObjectLink;
+    function FindText (const SearchStr: string; NewSearch: Boolean; Options: TStringSearchOptions): Boolean;
+    function GetObjectLinkClass (obj: TObject; XFace: Boolean): TDisplayObjectLinkClass;
+    function InsertObject (idx: Integer; obj: TObject;  codepage: Integer; tp: TDisplayObjectLinkClass = Nil): TDisplayObjectLink;
+    function ObjectAt (x, y: Integer): Integer;
     procedure RecalcBounds;
-    procedure Refresh (objIdx : Integer = -1);
+    procedure Refresh (objIdx: Integer = -1);
     procedure SetBounds(ALeft, ATop, AWidth, AHeight: Integer); override;
     procedure BeginUpdate;
     procedure EndUpdate;
-    property IsUpdating : boolean read GetUpdating;
+    property IsUpdating: Boolean read GetUpdating;
     procedure CopyToClipboard;
     function ExecuteAction(Action: TBasicAction): Boolean; override;
-    function GetSelectedText(var txt: WideString): boolean;
-    procedure SetSelectedText (const st : WideString);
+    function GetSelectedText(var txt: WideString): Boolean;
+    procedure SetSelectedText (const st: WideString);
     procedure PageDown;
-    function GetHTML (rawFragment : boolean = false): string;
+    function GetHTML (rawFragment: Boolean = false): string;
 
     procedure Print;
-    function GetPageCount (dc : HDC) : Integer;
+    function GetPageCount (dc: HDC): Integer;
 
-    function TextWidth (const st : string) : Integer;
-    function UpdateAction (Action : TBasicAction) : Boolean; override;
+    function TextWidth (const st: string): Integer;
+    function UpdateAction (Action: TBasicAction): Boolean; override;
 
-    property HasSelection : boolean read GetHasSelection;
-    property FocusedObject : Integer read fFocusedObject write SetFocusedObject;
+    property HasSelection: Boolean read GetHasSelection;
+    property FocusedObject: Integer read FFocusedObject write SetFocusedObject;
 
-    property Objects [idx : Integer] : TDisplayObjectLink read GetObjects;
-    property ObjectCount : Integer read GetObjectCount;
+    property Objects [idx: Integer]: TDisplayObjectLink read GetObjects;
+    property ObjectCount: Integer read GetObjectCount;
 
-    property MessageHeight : Integer read GetMessageHeight;
-    property MessageWidth : Integer read GetMessageWidth;
-    property LineHeight : Integer read fLineHeight;
+    property MessageHeight: Integer read GetMessageHeight;
+    property MessageWidth: Integer read GetMessageWidth;
+    property LineHeight: Integer read FLineHeight;
     property Canvas;
 
-    property CreateWindowSizeW : Integer read fCreateWindowSizeW write fCreateWindowSizeW;
-    property CreateWindowSizeH : Integer read fCreateWindowSizeH write fCreateWindowSizeH;
-    property Text : WideString read GetText;
-    property SelLength : Integer read GetSelLength;
-    property Subject : string read fSubject write fSubject;
+    property CreateWindowSizeW: Integer read FCreateWindowSizeW write FCreateWindowSizeW;
+    property CreateWindowSizeH: Integer read FCreateWindowSizeH write FCreateWindowSizeH;
+    property Text: WideString read GetText;
+    property SelLength: Integer read GetSelLength;
+    property Subject: string read FSubject write FSubject;
   published
     property Align;
     property Border: TBorderStyle read FBorder write SetBorder;
     property Color default clWhite;
     property Ctl3D;
     property Font;
-    property NewsAttributes : Boolean read fNewsAttributes write fNewsAttributes;
-    property PictureIndent : Integer read fPictureIndent write SetPictureIndent;
-    property RawMode : boolean read fRawMode write SetRawMode;
-    property ReadOnly : boolean read fReadOnly write fReadOnly default True;
-    property TextIndent : Integer read fTextIndent write SetTextIndent;
+    property NewsAttributes: Boolean read FNewsAttributes write FNewsAttributes;
+    property PictureIndent: Integer read FPictureIndent write SetPictureIndent;
+    property RawMode: Boolean read FRawMode write SetRawMode;
+    property ReadOnly: Boolean read FReadOnly write FReadOnly default True;
+    property TextIndent: Integer read FTextIndent write SetTextIndent;
     property TabOrder;
     property TabStop;
 
-    property OnURLClick : TURLNotifyEvent read fOnURLClick write fOnURLClick;
-    property OnURLDblClick : TURLNotifyEvent read fOnURLDblClick write fOnURLDblClick;
+    property OnURLClick: TURLNotifyEvent read FOnURLClick write FOnURLClick;
+    property OnURLDblClick: TURLNotifyEvent read FOnURLDblClick write FOnURLDblClick;
     property OnDblClick;
   end;
 
 var
-  gNoHTML : boolean = False;
+  gNoHTML: Boolean = False;
 
-procedure RegisterDisplayObjectLink (dispObj : TDisplayObjectLinkClass; Position : Integer = -1);
+procedure RegisterDisplayObjectLink (dispObj: TDisplayObjectLinkClass; Position: Integer = -1);
 
 implementation
 
-uses ClipBrd, unitCharsetMap, Printers, unitHTMLStringsDisplayObject;
+uses
+  ClipBrd, unitCharsetMap, Printers, unitHTMLStringsDisplayObject;
 
 //----------------------------------------------------------------------------
 // Keep details of registered display objects
 
 var
-  fRegisteredLinks : array of TDisplayObjectLinkClass;
-  fRegisteredLinkCount : Integer = 0;
-  fRegisteredLinkSize : Integer = 0;
+  fRegisteredLinks: array of TDisplayObjectLinkClass;
+  fRegisteredLinkCount: Integer = 0;
+  fRegisteredLinkSize: Integer = 0;
 
 resourcestring
   rstCantSetCursor = 'Can''t set cursor for this object';
@@ -293,11 +294,11 @@ resourcestring
  | object                                                               |
  |                                                                      |
  | Parameters:                                                          |
- |   dispObj : TDisplayObjectLinkClass  The class to register           |
+ |   dispObj: TDisplayObjectLinkClass  The class to register           |
  *----------------------------------------------------------------------*)
-procedure RegisterDisplayObjectLink (dispObj : TDisplayObjectLinkClass; Position : Integer);
+procedure RegisterDisplayObjectLink (dispObj: TDisplayObjectLinkClass; Position: Integer);
 var
-  i : Integer;
+  i: Integer;
 begin
   i := 0;
   while i < fRegisteredLinkCount do
@@ -342,9 +343,9 @@ end;
  | Parameters:                                                          |
  |   obj: TObject               The object to add                       |
  *----------------------------------------------------------------------*)
-function TMessageDisplay.AddObject(obj: TObject;  codepage : Integer) : TDisplayObjectLink;
+function TMessageDisplay.AddObject(obj: TObject;  codepage: Integer): TDisplayObjectLink;
 var
-  i : Integer;
+  i: Integer;
 begin
   Result := nil;
   i := fRegisteredLinkCount - 1;
@@ -352,15 +353,15 @@ begin
     if fRegisteredLinks [i].DisplaysObject(obj) then
     begin
       Result := fRegisteredLinks [i].Create(Self, obj, codepage);
-      fObjects.Add(result);
+      FObjects.Add(result);
       RecalcBounds;
       break
     end
     else
       Dec (i);
 
-  if fFocusedObject = -1 then
-    fFocusedObject := 0;
+  if FFocusedObject = -1 then
+    FFocusedObject := 0;
 end;
 
 (*----------------------------------------------------------------------*
@@ -370,7 +371,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TMessageDisplay.AdjustSize;
 begin
-  if not (csLoading in ComponentState) and (fUpdateCount = 0) then
+  if not (csLoading in ComponentState) and (FUpdateCount = 0) then
   begin
     SetBounds(Left, Top, Width, Height);
     RequestAlign
@@ -379,7 +380,7 @@ end;
 
 procedure TMessageDisplay.BeginUpdate;
 begin
-  Inc (fUpdateCount);
+  Inc (FUpdateCount);
 end;
 
 (*----------------------------------------------------------------------*
@@ -410,19 +411,19 @@ end;
  *----------------------------------------------------------------------*)
 procedure TMessageDisplay.Clear;
 var
-  i : Integer;
-  busy : boolean;
-  n : Integer;
+  i: Integer;
+  busy: Boolean;
+  n: Integer;
 begin
   try
-    for i := 0 to fObjects.Count - 1 do
-      TDisplayObjectLink (fObjects [i]).Stop;
+    for i := 0 to FObjects.Count - 1 do
+      TDisplayObjectLink (FObjects [i]).Stop;
 
     n := 500;
     repeat
       busy := False;
-      for i := 0 to fObjects.Count - 1 do
-        if TDisplayObjectLink (fObjects [i]).Busy then
+      for i := 0 to FObjects.Count - 1 do
+        if TDisplayObjectLink (FObjects [i]).Busy then
         begin
           Sleep (10);
           busy := True;
@@ -436,8 +437,8 @@ begin
   except
   end;
 
-  fFocusedObject := -1;
-  fObjects.Clear;
+  FFocusedObject := -1;
+  FObjects.Clear;
   RecalcBounds;
   InvalidateRect (Handle, Nil, True);
 end;
@@ -473,7 +474,7 @@ procedure TMessageDisplay.CMFontChanged(var Message: TMessage);
 begin
   inherited;
   Canvas.Font := Self.Font;
-  fLineHeight := Canvas.TextHeight('M');
+  FLineHeight := Canvas.TextHeight('M');
   InvalidateRect (Handle, Nil, True);
 end;
 
@@ -484,8 +485,8 @@ end;
  *----------------------------------------------------------------------*)
 procedure TMessageDisplay.CopyToClipboard;
 var
-  t : TStrings;
-  s : WideString;
+  t: TStrings;
+  s: WideString;
 begin
   t := TStringList.Create;
   try
@@ -506,8 +507,8 @@ end;
  *----------------------------------------------------------------------*)
 constructor TMessageDisplay.Create(AOwner: TComponent);
 begin
-  fCreateWindowSizeW := 1024*1024*1024;
-  fCreateWindowSizeH := 1024*1024*1024;
+  FCreateWindowSizeW := 1024*1024*1024;
+  FCreateWindowSizeH := 1024*1024*1024;
   inherited;
 
 //  DoubleBuffered := True;      Don't double buffer if you can avoid it -
@@ -517,12 +518,12 @@ begin
   Width := 185;
   Height := 41;
 
-  fReadOnly := True;
+  FReadOnly := True;
   ControlStyle := [csFramed, csCaptureMouse, csClickEvents, csDoubleClicks, csReflector, csOpaque];
   TabStop := True;
 
-  fObjects := TObjectList.Create;
-  fFocusedObject := -1
+  FObjects := TObjectList.Create;
+  FFocusedObject := -1
 end;
 
 (*----------------------------------------------------------------------*
@@ -535,8 +536,8 @@ begin
   inherited CreateParams(Params);
   if not (csDesigning in ComponentState) then
   begin
-    params.Width := fCreateWindowSizeW;
-    params.Height := fCreateWindowSizeH;
+    params.Width := FCreateWindowSizeW;
+    params.Height := FCreateWindowSizeH;
   end;
 
   with Params do
@@ -556,7 +557,7 @@ begin
   inherited;
 
   if Handle = 0 then
-    ShowMessage (Format ('Could not create a %dx%d window.  Unable to display messages.', [fCreateWindowSizeW, fCreateWindowSizeH]));
+    ShowMessage (Format ('Could not create a %dx%d window.  Unable to display messages.', [FCreateWindowSizeW, FCreateWindowSizeH]));
 
   Canvas.Font := Self.Font;
   RecalcBounds;         // Will be required if RecreateWnd was called
@@ -569,7 +570,7 @@ end;
  *----------------------------------------------------------------------*)
 destructor TMessageDisplay.Destroy;
 begin
-  fObjects.Free;
+  FObjects.Free;
 
   inherited;
 end;
@@ -581,11 +582,11 @@ end;
  *----------------------------------------------------------------------*)
 procedure TMessageDisplay.EndUpdate;
 var
-  i, y, h : Integer;
-  obj : TDisplayObjectLink;
+  i, y, h: Integer;
+  obj: TDisplayObjectLink;
 
 begin
-  if fUpdateCount = 1 then
+  if FUpdateCount = 1 then
   begin
     y := 0;
 
@@ -603,10 +604,10 @@ begin
       Inc (y, h)
     end
   end;
-  Dec (fUpdateCount);
-  if fUpdateCount <= 0 then
+  Dec (FUpdateCount);
+  if FUpdateCount <= 0 then
   begin
-    fUpdateCount := 0;
+    FUpdateCount := 0;
     RecalcBounds
   end
 end;
@@ -662,20 +663,20 @@ end;
 function TMessageDisplay.FindText(const SearchStr: string;
   NewSearch: Boolean; Options: TStringSearchOptions): Boolean;
 var
-  obj : TDisplayObjectLink;
+  obj: TDisplayObjectLink;
 
-  y, c : Integer;
+  y, c: Integer;
 begin
   Result := False;
   if NewSearch then   // Nothing was found last time - start again at the beginning
   begin
-    fSearchY := 0;
+    FSearchY := 0;
     c := 0
   end
   else
     c := FocusedObject;
 
-  y := fSearchY;
+  y := FSearchY;
 
   while (c >= 0) and (c < ObjectCount) do
   begin
@@ -690,21 +691,21 @@ begin
     else
       Dec (c);
 
-    fSearchY := 0;
+    FSearchY := 0;
   end
 end;
 
 procedure TMessageDisplay.FocusObject(obj: TObject);
 begin
-  FocusedObject := fObjects.IndexOf(obj);
+  FocusedObject := FObjects.IndexOf(obj);
 end;
 
 function TMessageDisplay.GetFocusedTextObject: TDisplayObjectLink;
 var
-  n : Integer;
+  n: Integer;
 begin
   result := nil;
-  n := fFocusedObject;
+  n := FFocusedObject;
 
   if n >= 0 then
   begin
@@ -716,14 +717,14 @@ begin
   end
 end;
 
-function TMessageDisplay.GetHasSelection: boolean;
+function TMessageDisplay.GetHasSelection: Boolean;
 begin
   result := SelLength > 0
 end;
 
-function TMessageDisplay.GetHTML (rawFragment : boolean = false): string;
+function TMessageDisplay.GetHTML (rawFragment: Boolean = false): string;
 var
-  d : TDisplayObjectLink;
+  d: TDisplayObjectLink;
 begin
   d := GetFocusedTextObject;
   if Assigned (d) then
@@ -734,8 +735,8 @@ end;
 
 function TMessageDisplay.GetMessageHeight: Integer;
 var
-  i : Integer;
-  obj : TDisplayObjectLink;
+  i: Integer;
+  obj: TDisplayObjectLink;
 begin
   Result := 0;
   for i := 0 to ObjectCount - 1 do
@@ -753,8 +754,8 @@ end;
  *----------------------------------------------------------------------*)
 function TMessageDisplay.GetMessageWidth: Integer;
 var
-  i, w : Integer;
-  obj : TDisplayObjectLink;
+  i, w: Integer;
+  obj: TDisplayObjectLink;
 begin
   Result := 0;
   for i := 0 to ObjectCount - 1 do
@@ -773,8 +774,8 @@ end;
  *----------------------------------------------------------------------*)
 function TMessageDisplay.GetObjectCount: Integer;
 begin
-  if Assigned (fObjects) then
-    Result := fObjects.Count
+  if Assigned (FObjects) then
+    Result := FObjects.Count
   else
     result := 0
 end;
@@ -785,9 +786,9 @@ end;
  | 'Get' method for Objects property                                    |
  *----------------------------------------------------------------------*)
 function TMessageDisplay.GetObjectLinkClass(
-  obj: TObject; XFace : boolean): TDisplayObjectLinkClass;
+  obj: TObject; XFace: Boolean): TDisplayObjectLinkClass;
 var
-  i : Integer;
+  i: Integer;
 begin
   result := Nil;
   i := fRegisteredLinkCount - 1;
@@ -811,7 +812,7 @@ end;
 
 function TMessageDisplay.GetObjects(idx: Integer): TDisplayObjectLink;
 begin
-  Result := TDisplayObjectLink (fObjects [idx])
+  Result := TDisplayObjectLink (FObjects [idx])
 end;
 
 (*----------------------------------------------------------------------*
@@ -830,9 +831,9 @@ begin
   result := 1
 end;
 
-function TMessageDisplay.GetSelectedText(var txt : WideString): boolean;
+function TMessageDisplay.GetSelectedText(var txt: WideString): Boolean;
 var
-  d : TDisplayObjectLink;
+  d: TDisplayObjectLink;
 begin
   d := GetFocusedTextObject;
   if Assigned (d) then
@@ -854,7 +855,7 @@ end;
  *----------------------------------------------------------------------*)
 function TMessageDisplay.GetSelLength: Integer;
 var
-  d : TDisplayObjectLink;
+  d: TDisplayObjectLink;
 begin
   d := FocusedTextObject;
   if Assigned (d) then
@@ -865,7 +866,7 @@ end;
 
 function TMessageDisplay.GetText: WideString;
 var
-  d : TDisplayObjectLink;
+  d: TDisplayObjectLink;
 begin
   d := GetFocusedTextObject;
   if Assigned (d) then
@@ -874,9 +875,9 @@ begin
     result := ''
 end;
 
-function TMessageDisplay.GetUpdating: boolean;
+function TMessageDisplay.GetUpdating: Boolean;
 begin
-  result := fUpdateCount > 0
+  result := FUpdateCount > 0
 end;
 
 (*----------------------------------------------------------------------*
@@ -885,13 +886,13 @@ end;
  | Insert an object in the display                                      |
  |                                                                      |
  | Parameters:                                                          |
- |   idx : Integer;             Where to insert the object              |
+ |   idx: Integer;             Where to insert the object              |
  |   obj: TObject               The objetc to insert                    |
  |                                                                      |
  | The function returns the link to the inserted object                 |
  *----------------------------------------------------------------------*)
 
-function TMessageDisplay.InsertObject(idx : Integer; obj: TObject; codepage : Integer; tp : TDisplayObjectLinkClass): TDisplayObjectLink;
+function TMessageDisplay.InsertObject(idx: Integer; obj: TObject; codepage: Integer; tp: TDisplayObjectLinkClass): TDisplayObjectLink;
 begin
   Result := nil;
 
@@ -901,10 +902,10 @@ begin
   if Assigned (tp) then
   begin
     Result := tp.Create(Self, obj, codepage);
-    fObjects.Insert(idx, result);
+    FObjects.Insert(idx, result);
     RecalcBounds;
-    if fFocusedObject = -1 then
-      fFocusedObject := 0;
+    if FFocusedObject = -1 then
+      FFocusedObject := 0;
   end
 end;
 (*----------------------------------------------------------------------*
@@ -927,7 +928,7 @@ end;
 
 function TMessageDisplay.ObjectAt(x, y: Integer): Integer;
 var
-  i, h : Integer;
+  i, h: Integer;
 begin
   Result := -1;
 
@@ -951,7 +952,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TMessageDisplay.PageDown;
 var
-  obj : TDisplayObjectLink;
+  obj: TDisplayObjectLink;
 begin
   if FocusedObject <> -1 then
   begin
@@ -963,10 +964,10 @@ end;
 
 procedure TMessageDisplay.Paint;
 var
-  y, oc : Integer;
-  obj : TDisplayObjectLink;
-  objNo : Integer;
-  r : TRect;
+  y, oc: Integer;
+  obj: TDisplayObjectLink;
+  objNo: Integer;
+  r: TRect;
 
 begin
   if IsUpdating then Exit;
@@ -981,7 +982,7 @@ begin
   while objNo < oc do
   begin
     obj := Objects [objNo];
-    obj.yPos := y;
+    obj.FYPos := y;
 
     obj.Display (r, y);               // Display the object
     if y > r.Bottom then
@@ -1001,9 +1002,9 @@ end;
  *----------------------------------------------------------------------*)
 procedure TMessageDisplay.Print;
 var
-  i, LogX, LogY : Integer;
-  PageRect : TRect;
-  hadXFace : boolean;
+  i, LogX, LogY: Integer;
+  PageRect: TRect;
+  hadXFace: Boolean;
 
 begin
   LogX := GetDeviceCaps(Printer.Handle, LOGPIXELSX);
@@ -1039,9 +1040,9 @@ end;
 
 procedure TMessageDisplay.RecalcBounds;
 begin
-  if fUpdateCount > 0 then
+  if FUpdateCount > 0 then
     Exit;
-  fLineHeight := Canvas.TextHeight('M');
+  FLineHeight := Canvas.TextHeight('M');
   SetBounds(Left, Top, MessageWidth, MessageHeight);
 end;
 
@@ -1056,7 +1057,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TMessageDisplay.Refresh(objIdx: Integer);
 var
-  i : Integer;
+  i: Integer;
 begin
   BeginUpdate;
   try
@@ -1091,12 +1092,12 @@ end;
  | exact line).                                                         |
  |                                                                      |
  | Parameters:                                                          |
- |   selToo : boolean = False                                           |
- |   repaint : boolean = False                                          |
+ |   selToo: Boolean = False                                           |
+ |   repaint: Boolean = False                                          |
  *----------------------------------------------------------------------*)
 procedure TMessageDisplay.SetBounds(ALeft, ATop, AWidth, AHeight: Integer);
 var
-  sb : TScrollingWinControl;
+  sb: TScrollingWinControl;
 begin
   if (csDesigning in ComponentState) then
     inherited
@@ -1128,10 +1129,10 @@ end;
  *----------------------------------------------------------------------*)
 procedure TMessageDisplay.SetFocusedObject(const Value: Integer);
 begin
-  if Value <> fFocusedObject then
+  if Value <> FFocusedObject then
   begin
-    fFocusedObject := Value;
-    fSearchY := 0;
+    FFocusedObject := Value;
+    FSearchY := 0;
     Invalidate
   end
 end;
@@ -1143,9 +1144,9 @@ end;
  *----------------------------------------------------------------------*)
 procedure TMessageDisplay.SetPictureIndent(const Value: Integer);
 begin
-  if value <> fPictureIndent then
+  if value <> FPictureIndent then
   begin
-    fPictureIndent := Value;
+    FPictureIndent := Value;
     Invalidate
   end
 end;
@@ -1155,11 +1156,11 @@ end;
  |                                                                      |
  | Set the sel start position.  Make sure it's valid.                   |
  *----------------------------------------------------------------------*)
-procedure TMessageDisplay.SetRawMode(const Value: boolean);
+procedure TMessageDisplay.SetRawMode(const Value: Boolean);
 begin
-  if fRawMode <> value then
+  if FRawMode <> value then
   begin
-    fRawMode := Value;
+    FRawMode := Value;
     Refresh;
     Invalidate
   end
@@ -1172,7 +1173,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TMessageDisplay.SetSelectedText(const st: WideString);
 var
-  d : TDisplayObjectLink;
+  d: TDisplayObjectLink;
 begin
   d := GetFocusedTextObject;
   if Assigned (d) then
@@ -1181,9 +1182,9 @@ end;
 
 procedure TMessageDisplay.SetTextIndent(const Value: Integer);
 begin
-  if fTextIndent <> Value then
+  if FTextIndent <> Value then
   begin
-    fTextIndent := Value;
+    FTextIndent := Value;
     Invalidate
   end
 end;
@@ -1195,7 +1196,7 @@ end;
  *----------------------------------------------------------------------*)
 function TMessageDisplay.TextWidth(const st: string): Integer;
 var
-  r : TRect;
+  r: TRect;
 begin
   if st = '' then
     Result := 0
@@ -1252,16 +1253,16 @@ end;
  |                                                                      |
  | Constructor for TDisplayObjectLink base class                        |
  *----------------------------------------------------------------------*)
-constructor TDisplayObjectLink.Create(AOwner : TMessageDisplay; AObj: TObject; codePage : Integer);
+constructor TDisplayObjectLink.Create(AOwner: TMessageDisplay; AObj: TObject; codePage: Integer);
 begin
-  fOwner := AOwner;
-  yPos := Owner.MessageHeight;
-  fObj := AObj;
-  fFont := TFont.Create;
-  fFont.Assign(AOwner.Font);
-  fCodePage := codePage;
-  fFont.Charset := CodePageToCharset (codepage);
-  fColor := AOwner.Color;
+  FOwner := AOwner;
+  FYPos := Owner.MessageHeight;
+  FObj := AObj;
+  FFont := TFont.Create;
+  FFont.Assign(AOwner.Font);
+  FCodePage := codePage;
+  FFont.Charset := CodePageToCharset (codepage);
+  FColor := AOwner.Color;
 end;
 
 (*----------------------------------------------------------------------*
@@ -1281,13 +1282,13 @@ end;
  *----------------------------------------------------------------------*)
 destructor TDisplayObjectLink.Destroy;
 begin
-  fFont.Free;
+  FFont.Free;
 
   inherited;
 end;
 
 function TDisplayObjectLink.FindText(const SearchStr: string;
-  NewSearch: Boolean; Options: TStringSearchOptions; y : Integer): Boolean;
+  NewSearch: Boolean; Options: TStringSearchOptions; y: Integer): Boolean;
 begin
   result := False;
 end;
@@ -1313,12 +1314,12 @@ end;
  |                                                                      |
  | Stub 'Get' method for Margin property                                |
  *----------------------------------------------------------------------*)
-function TDisplayObjectLink.GetHasText: boolean;
+function TDisplayObjectLink.GetHasText: Boolean;
 begin
   result := False;
 end;
 
-procedure TDisplayObjectLink.GetHTML(var txt: string; rawFragment : boolean = false);
+procedure TDisplayObjectLink.GetHTML(var txt: string; rawFragment: Boolean = false);
 begin
   // stub
 end;
@@ -1333,9 +1334,9 @@ end;
  |                                                                      |
  | Stub 'Get' method for 'Obj' property                                 |
  *----------------------------------------------------------------------*)
-function TDisplayObjectLink.GetObj : TObject;
+function TDisplayObjectLink.GetObj: TObject;
 begin
-  Result := fObj
+  Result := FObj
 end;
 
 (*----------------------------------------------------------------------*
@@ -1385,9 +1386,9 @@ end;
 
 procedure TDisplayObjectLink.SetColor(const Value: TColor);
 begin
-  if fColor <> Value then
+  if FColor <> Value then
   begin
-    fColor := Value;
+    FColor := Value;
     Refresh
   end
 end;
@@ -1405,7 +1406,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TDisplayObjectLink.SetFont(const Value: TFont);
 begin
-  fFont.Assign (Value);
+  FFont.Assign (Value);
   Refresh
 end;
 
@@ -1458,7 +1459,7 @@ end;
  |                                                                      |
  | Constructor for TGraphicDisplayObjectLink                            |
  *----------------------------------------------------------------------*)
-constructor TGraphicDisplayObjectLink.Create(AOwner: TMessageDisplay; AObj: TObject; codepage : Integer);
+constructor TGraphicDisplayObjectLink.Create(AOwner: TMessageDisplay; AObj: TObject; codepage: Integer);
 begin
   inherited;
 
@@ -1472,17 +1473,17 @@ end;
  | Display the image if any of it is in the rectanbgle to be updated    |
  |                                                                      |
  | Parameters:                                                          |
- |   const r : TRect            The rectangle to be updated             |
+ |   const r: TRect            The rectangle to be updated             |
  |   var y: Integer             The y position to draw at relative to   |
  |                              the control.                            |
  *----------------------------------------------------------------------*)
-procedure TGraphicDisplayObjectLink.Display(const r : TRect; var y: Integer);
+procedure TGraphicDisplayObjectLink.Display(const r: TRect; var y: Integer);
 var
-  r1, r2 : TRect;
+  r1, r2: TRect;
 
   procedure DrawGraphic;
   var
-    rgn : HRGN;
+    rgn: HRGN;
   begin
     rgn := 0;
     try
@@ -1528,7 +1529,7 @@ end;
 
 function TGraphicDisplayObjectLink.GetGraphic: TGraphic;
 begin
-  Result := TGraphic (fObj);
+  Result := TGraphic (FObj);
 end;
 
 (*----------------------------------------------------------------------*
@@ -1568,8 +1569,8 @@ end;
  *----------------------------------------------------------------------*)
 procedure TGraphicDisplayObjectLink.Print;
 var
-  w, h, pw, ph : Integer;
-  r : TRect;
+  w, h, pw, ph: Integer;
+  r: TRect;
 begin
   w := Graphic.Width;
   h := Graphic.Height;
@@ -1612,8 +1613,8 @@ end;
 
 procedure TGraphicDisplayObjectLink.Refresh;
 var
-  ow, oh : Integer;
-  r : TRect;
+  ow, oh: Integer;
+  r: TRect;
 begin
   inherited;
 
@@ -1624,17 +1625,17 @@ begin
     Owner.RecalcBounds
   else
   begin
-    r := Rect (Margin, yPos, Margin + fWidth, yPos + fHeight);
+    r := Rect (Margin, FYPos, Margin + fWidth, FYPos + fHeight);
     InvalidateRect (Owner.Handle, @r, false)
   end
 end;
 
 procedure TGraphicDisplayObjectLink.SetObj(const Value: TObject);
 var
-  gr : TGraphic;
+  gr: TGraphic;
 begin
   gr := Value as TGraphic;
-  fObj := gr;
+  FObj := gr;
   Refresh
 end;
 
@@ -1645,7 +1646,7 @@ end;
  |                                                                      |
  | Constructor for TWinControlObjectLink                                |
  *----------------------------------------------------------------------*)
-constructor TWinControlObjectLink.Create(AOwner: TMessageDisplay; AObj: TObject; codepage : Integer);
+constructor TWinControlObjectLink.Create(AOwner: TMessageDisplay; AObj: TObject; codepage: Integer);
 begin
   inherited;
 
@@ -1661,7 +1662,7 @@ end;
  | WinControls are drawn.  Simply update 'y' to take into account the   |
  | control's height                                                     |
  *----------------------------------------------------------------------*)
-procedure TWinControlObjectLink.Display(const r : TRect; var y: Integer);
+procedure TWinControlObjectLink.Display(const r: TRect; var y: Integer);
 begin
   y := y + Height
 end;
@@ -1679,7 +1680,7 @@ end;
 
 function TWinControlObjectLink.GetCtrl: TWinControl;
 begin
-  Result := TWinControl (fObj);
+  Result := TWinControl (FObj);
 end;
 
 function TWinControlObjectLink.GetCursor: TCursor;
@@ -1745,8 +1746,8 @@ end;
 
 procedure TXFaceDisplayObjectLink.Print;
 var
-  w : Integer;
-  r : TRect;
+  w: Integer;
+  r: TRect;
 begin
   r.Left := PageRect.Left;
   r.Top  := PageRect.Top div 6;

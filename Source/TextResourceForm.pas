@@ -216,7 +216,7 @@ end;
  *----------------------------------------------------------------------*)
 function TfmTextResource.GetMenuItem: TMenuItem;
 begin
-  result := mnuStrings
+  Result := mnuStrings
 end;
 
 (*----------------------------------------------------------------------*
@@ -262,23 +262,23 @@ function TfmTextResource.NodeN(n: Integer): PVirtualNode;
 begin
   if n >= 0 then
   begin
-    result := vstStrings.GetFirst;
-    while (result <> Nil) and (n > 0) do
+    Result := vstStrings.GetFirst;
+    while (Result <> Nil) and (n > 0) do
     begin
-      result := vstStrings.GetNextSibling(result);
+      Result := vstStrings.GetNextSibling(Result);
       Dec (n)
     end
   end
   else
-    result := Nil
+    Result := Nil
 end;
 
 function TfmTextResource.NodeString(node : PVirtualNode) : TStringInfo;
 begin
   if Assigned(node) and (Integer (node^.Index) < fWorkStrings.Count) then
-    result := TStringInfo (fWorkStrings [node^.Index])
+    Result := TStringInfo (fWorkStrings [node^.Index])
   else
-    result := Nil
+    Result := Nil
 end;
 
 (*----------------------------------------------------------------------*
@@ -312,7 +312,7 @@ end;
 
 function TfmTextResource.SelectedString: TStringInfo;
 begin
-  result := NodeString (vstStrings.FocusedNode);
+  Result := NodeString (vstStrings.FocusedNode);
 end;
 
 (*----------------------------------------------------------------------*

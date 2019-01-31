@@ -12,13 +12,13 @@ type
     Memo1: TMemo;
     procedure Memo1Exit(Sender: TObject);
   private
-    fDetails : TXPManifestResourceDetails;
+    FDetails : TXPManifestResourceDetails;
   protected
 
     function GetCanCopy: Boolean; override;
     function GetCanCut: Boolean; override;
     function GetCanPaste: Boolean; override;
-    function GetCanSelectAll : boolean; override;
+    function GetCanSelectAll : Boolean; override;
     function GetCanDelete: Boolean; override;
 
   public
@@ -58,27 +58,27 @@ end;
 
 function TfmXPManifestResource.GetCanCopy: Boolean;
 begin
-  result := Memo1.SelLength > 0
+  Result := Memo1.SelLength > 0
 end;
 
 function TfmXPManifestResource.GetCanCut: Boolean;
 begin
-  result := Memo1.SelLength > 0
+  Result := Memo1.SelLength > 0
 end;
 
 function TfmXPManifestResource.GetCanDelete: Boolean;
 begin
-  result := Memo1.SelLength > 0
+  Result := Memo1.SelLength > 0
 end;
 
 function TfmXPManifestResource.GetCanPaste: Boolean;
 begin
-  result := Memo1.SelLength > 0
+  Result := Memo1.SelLength > 0
 end;
 
-function TfmXPManifestResource.GetCanSelectAll: boolean;
+function TfmXPManifestResource.GetCanSelectAll: Boolean;
 begin
-  result := Memo1.SelLength > 0
+  Result := Memo1.SelLength > 0
 end;
 
 procedure TfmXPManifestResource.Paste;
@@ -95,8 +95,8 @@ procedure TfmXPManifestResource.SetObject(const Value: TObject);
 begin
   inherited;
 
-  fDetails := obj as TXPManifestResourceDetails;
-  Memo1.Lines.Text := fDetails.Text;
+  FDetails := obj as TXPManifestResourceDetails;
+  Memo1.Lines.Text := FDetails.Text;
 end;
 
 procedure TfmXPManifestResource.Memo1Exit(Sender: TObject);
@@ -104,7 +104,7 @@ begin
   if Memo1.CanUndo then
   begin
     AddUndoEntry (rstChangeManifest);
-    fDetails.Text := Memo1.Lines.Text
+    FDetails.Text := Memo1.Lines.Text
   end
 end;
 

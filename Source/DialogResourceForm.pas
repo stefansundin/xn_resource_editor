@@ -11,10 +11,10 @@ unit DialogResourceForm;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, menus,
-  ResourceForm, ImgList, ComCtrls, ToolWin, cmpSizingPageControl,
-  cmpDialogBox, cmpRuler, cmpPropertyListBox, cmpDialogEditor, StdCtrls, ExtCtrls,
-  unitResourceDialogs;
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  Menus, ImgList, ComCtrls, ToolWin, StdCtrls, ExtCtrls, ResourceForm,
+  cmpSizingPageControl, cmpDialogBox, cmpRuler, cmpPropertyListBox,
+  cmpDialogEditor, unitResourceDialogs, System.ImageList;
 
 type
   TfmDialogResource = class(TfmResource)
@@ -88,11 +88,11 @@ type
 
     procedure DoSpecialButtonClick (Sender : TObject);
   private
-    fDetails : TDialogResourceDetails;
-    fPCWidth : Integer;
+    FDetails : TDialogResourceDetails;
+    FPCWidth : Integer;
 
-    procedure FillPropertyBox (info : TControlInfo; reset : boolean);
-    procedure SaveResource (const undoDetails : string);
+    procedure FillPropertyBox (info : TControlInfo; reset : Boolean);
+    procedure SaveResource (const UndoDetails : string);
 
   protected
     procedure SetObject(const Value: TObject); override;
@@ -107,7 +107,9 @@ var
 
 implementation
 
-uses Variants, unitResourceDetails, unitResourceGraphics, unitExIcon, unitResourceMenus;
+uses
+  Variants, unitResourceDetails, unitResourceGraphics, unitExIcon,
+  unitResourceMenus;
 
 resourcestring
   rstChangeProperty = 'change %s';
@@ -128,9 +130,9 @@ resourcestring
 procedure TfmDialogResource.SetObject(const Value: TObject);
 begin
   inherited;
-  fDetails := obj as TDialogResourceDetails;
+  FDetails := obj as TDialogResourceDetails;
 
-  DialogEditor1.ResourceTemplate := fDetails.Data.Memory;
+  DialogEditor1.ResourceTemplate := FDetails.Data.Memory;
   tcPropertyKind.TabIndex := 0
 end;
 
@@ -291,7 +293,7 @@ end;
  | Fill the property list box with properties and their values for the  |
  | control.                                                             |
  *----------------------------------------------------------------------*)
-procedure TfmDialogResource.FillPropertyBox(info: TControlInfo; reset : boolean);
+procedure TfmDialogResource.FillPropertyBox(info: TControlInfo; reset : Boolean);
 var
   kind : TPropertyKind;
   i, j : Integer;
@@ -382,12 +384,12 @@ end;
  |                                                                      |
  | Get and save a new resource template from the editor.                |
  *----------------------------------------------------------------------*)
-procedure TfmDialogResource.SaveResource(const undoDetails: string);
+procedure TfmDialogResource.SaveResource(const UndoDetails: string);
 begin
-  AddUndoEntry (undoDetails);
+  AddUndoEntry (UndoDetails);
 
-  fDetails.Data.Clear;
-  DialogEditor1.SaveToStream (fDetails.Data);
+  FDetails.Data.Clear;
+  DialogEditor1.SaveToStream (FDetails.Data);
 end;
 
 (*----------------------------------------------------------------------*
@@ -425,7 +427,7 @@ begin
   Ruler2.Top := DialogEditor1.Top + DialogEditor1.Margin - Panel3.Height;
   Ruler1.Width := DialogEditor1.Width - 2 * DialogEditor1.Margin;
   Ruler2.Height := DialogEditor1.Height - 2 * DialogEditor1.Margin;
-  fPCWidth := pnlPalette.Width;
+  FPCWidth := pnlPalette.Width;
   pnlPalette.ManualDock (SizingPageControl1, Nil, alNone);
 
   for i := 0 to ToolBar1.ButtonCount - 1 do
@@ -462,7 +464,7 @@ begin
     for i := 0 to PageCount - 1 do
       Pages [i].Caption := TPanel (Pages [i].Controls [0]).Caption;
 
-    Width := fPCWidth + 8;      // Restore the width to it's original setting
+    Width := FPCWidth + 8;      // Restore the width to it's original setting
                                 // - we've got at least one tab.
   end
 end;
@@ -534,7 +536,7 @@ begin
     else
       resType := 0;
 
-  details := fDetails.Parent.FindResource (IntToStr (resType), id, fDetails.ResourceLanguage);
+  details := FDetails.Parent.FindResource (IntToStr (resType), id, FDetails.ResourceLanguage);
   if Assigned (details) then
   begin
     picture := TPicture.Create;
@@ -572,7 +574,7 @@ begin
     begin
       DialogEditor1.SetTemplateFont (FontDialog1.Font);
       SaveResource (rstSetFont);
-      DialogEditor1.ResourceTemplate := fDetails.Data.Memory;
+      DialogEditor1.ResourceTemplate := FDetails.Data.Memory;
     end
   end
 end;

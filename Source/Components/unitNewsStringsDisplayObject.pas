@@ -32,49 +32,49 @@ uses
 type
   TNewsRichEditX = class (TNewsRichEdit)
   private
-    FAutoSize: boolean;
-    FTimerScrollDelta : Integer;
+    FAutoSize: Boolean;
+    FTimerScrollDelta: Integer;
     FRightMargin: Integer;
-    FObjectLink : TDisplayObjectLink;
-    FScrollingParent : TScrollingWinControl;
+    FObjectLink: TDisplayObjectLink;
+    FScrollingParent: TScrollingWinControl;
     procedure SetRightMargin(const Value: Integer);
     procedure ScrollIntoView;
   protected
     procedure SetAutoSize(Value: Boolean); override;
     procedure RequestSize(const Rect: TRect); override;
-    procedure CreateParams (var params : TCreateParams); override;
+    procedure CreateParams (var params: TCreateParams); override;
 
-    function FindScrollingParent : TScrollingWinControl;
+    function FindScrollingParent: TScrollingWinControl;
 
-    function LinesOnPage : Integer;
-    function MoveCursor (lines : Integer; moveUp : boolean; shiftState : TShiftState) : boolean;
+    function LinesOnPage: Integer;
+    function MoveCursor (lines: Integer; moveUp: Boolean; shiftState: TShiftState): Boolean;
 
-    procedure WMLButtonDown (var msg : TwmLButtonDown); message WM_LBUTTONDOWN;
-    procedure WMRButtonDown (var msg : TwmRButtonDown); message WM_RBUTTONDOWN;
-    procedure WMKeyDown (var msg : TwmKeyDown); message WM_KEYDOWN;
-    procedure WMMouseMove (var msg : TwmMouseMove); message WM_MOUSEMOVE;
-    procedure WMTimer (var msg : TwmTimer); message WM_TIMER;
-    procedure WMMouseWheel (var msg : TwmMouseWheel); message WM_MOUSEWHEEL;
+    procedure WMLButtonDown (var msg: TwmLButtonDown); message WM_LBUTTONDOWN;
+    procedure WMRButtonDown (var msg: TwmRButtonDown); message WM_RBUTTONDOWN;
+    procedure WMKeyDown (var msg: TwmKeyDown); message WM_KEYDOWN;
+    procedure WMMouseMove (var msg: TwmMouseMove); message WM_MOUSEMOVE;
+    procedure WMTimer (var msg: TwmTimer); message WM_TIMER;
+    procedure WMMouseWheel (var msg: TwmMouseWheel); message WM_MOUSEWHEEL;
   published
-    constructor Create (AOwner : TComponent); override;
+    constructor Create (AOwner: TComponent); override;
     destructor Destroy; override;
-    property AutoSize : boolean read FAutoSize write SetAutoSize default True;
-    property RightMargin : Integer read FRightMargin write SetRightMargin default 76;
+    property AutoSize: Boolean read FAutoSize write SetAutoSize default True;
+    property RightMargin: Integer read FRightMargin write SetRightMargin default 76;
   end;
 
   TNewsStringsDisplayObjectLink = class (TWinControlObjectLink)
   private
-    FTextObjects : TList;
-    FUpdating : boolean;
+    FTextObjects: TList;
+    FUpdating: Boolean;
     FLevel1QuotesFontColor: TColor;
     FFooterFontColor: TColor;
     FHeaderFontColor: TColor;
     FLevel2QuotesFontColor: TColor;
     FLevel3QuotesFontColor: TColor;
-    FLastNoChunks : Integer;
-    FLastChunkLen : Integer;
-    FOwner : TMessageDisplay;
-    function GetRichEdit : TNewsRichEditX;
+    FLastNoChunks: Integer;
+    FLastChunkLen: Integer;
+    FOwner: TMessageDisplay;
+    function GetRichEdit: TNewsRichEditX;
     procedure LoadFromTextObjects;
     function GetTextObjectCount: Integer;
     function GetRightMargin: Integer;
@@ -82,43 +82,43 @@ type
     procedure SetTruncateFrom(const Value: WideString);
     function GetTruncateFrom: WideString;
     procedure DoOnURLMouseDown (Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    function GetStrictSigSeparator: boolean;
-    procedure SetStrictSigSeparator(const Value: boolean);
+    function GetStrictSigSeparator: Boolean;
+    procedure SetStrictSigSeparator(const Value: Boolean);
 
   protected
-    class function DisplaysObject (obj : TObject) : Boolean; override;
-    procedure GetSelectedText (var txt : WideString); override;
-    procedure SetSelectedText (const txt : WideString); override;
-    function GetSelLength : Integer; override;
-    procedure GetText (var txt : WideString); override;
-    procedure GetHTML (var txt : string; rawFragment : boolean = false); override;
+    class function DisplaysObject (obj: TObject): Boolean; override;
+    procedure GetSelectedText (var txt: WideString); override;
+    procedure SetSelectedText (const txt: WideString); override;
+    function GetSelLength: Integer; override;
+    procedure GetText (var txt: WideString); override;
+    procedure GetHTML (var txt: string; rawFragment: Boolean = false); override;
     procedure Refresh; override;
-    function GetHeight : Integer; override;
-    function GetWidth : Integer; override;
-    function GetHasText : boolean; override;
-    function FindText (const SearchStr: string; NewSearch : Boolean; Options: TStringSearchOptions; y : Integer): Boolean; override;
+    function GetHeight: Integer; override;
+    function GetWidth: Integer; override;
+    function GetHasText: Boolean; override;
+    function FindText (const SearchStr: string; NewSearch: Boolean; Options: TStringSearchOptions; y: Integer): Boolean; override;
   public
-    constructor Create (AOwner : TMessageDisplay; AObj : TObject; codepage : Integer); override;
+    constructor Create (AOwner: TMessageDisplay; AObj: TObject; codepage: Integer); override;
     destructor Destroy; override;
-    procedure SetTextObject (objNo : Integer; obj : TObject);
-    procedure AddTextObject (obj : TObject);
+    procedure SetTextObject (objNo: Integer; obj: TObject);
+    procedure AddTextObject (obj: TObject);
     procedure Print; override;
 
     procedure BeginUpdate;
     procedure EndUpdate;
 
-    property HeaderFontColor : TColor read FHeaderFontColor write FHeaderFontColor;
-    property FooterFontColor : TColor read FFooterFontColor write FFooterFontColor;
-    property Level1QuotesFontColor : TColor read FLevel1QuotesFontColor write FLevel1QuotesFontColor;
-    property Level2QuotesFontColor : TColor read FLevel2QuotesFontColor write FLevel2QuotesFontColor;
-    property Level3QuotesFontColor : TColor read FLevel3QuotesFontColor write FLevel3QuotesFontColor;
+    property HeaderFontColor: TColor read FHeaderFontColor write FHeaderFontColor;
+    property FooterFontColor: TColor read FFooterFontColor write FFooterFontColor;
+    property Level1QuotesFontColor: TColor read FLevel1QuotesFontColor write FLevel1QuotesFontColor;
+    property Level2QuotesFontColor: TColor read FLevel2QuotesFontColor write FLevel2QuotesFontColor;
+    property Level3QuotesFontColor: TColor read FLevel3QuotesFontColor write FLevel3QuotesFontColor;
 
-    property TextObjectCount : Integer read GetTextObjectCount;
-    property RichEdit : TNewsRichEditX read GetRichEdit;
+    property TextObjectCount: Integer read GetTextObjectCount;
+    property RichEdit: TNewsRichEditX read GetRichEdit;
 
-    property RightMargin : Integer read GetRightMargin write SetRightMargin;
-    property TruncateFrom : WideString read GetTruncateFrom write SetTruncateFrom;
-    property StrictSigSeparator : boolean read GetStrictSigSeparator write SetStrictSigSeparator;
+    property RightMargin: Integer read GetRightMargin write SetRightMargin;
+    property TruncateFrom: WideString read GetTruncateFrom write SetTruncateFrom;
+    property StrictSigSeparator: Boolean read GetStrictSigSeparator write SetStrictSigSeparator;
   end;
 
 implementation
@@ -140,11 +140,11 @@ begin
 end;
 
 constructor TNewsStringsDisplayObjectLink.Create(AOwner: TMessageDisplay;
-  AObj: TObject;  codepage : Integer);
+  AObj: TObject;  codepage: Integer);
 var
-  ctrl : TNewsRichEditX;
-  w, w1 : Integer;
-  tm : TTextMetric;
+  ctrl: TNewsRichEditX;
+  w, w1: Integer;
+  tm: TTextMetric;
 begin
   FOwner := AOwner;
   FTextObjects := TList.Create;
@@ -194,7 +194,7 @@ end;
 class function TNewsStringsDisplayObjectLink.DisplaysObject(
   obj: TObject): Boolean;
 begin
-  result := obj is TStrings;
+  Result := obj is TStrings;
 end;
 
 procedure TNewsStringsDisplayObjectLink.DoOnURLMouseDown(Sender: TObject;
@@ -215,8 +215,8 @@ end;
 function TNewsStringsDisplayObjectLink.FindText(const SearchStr: string;
   NewSearch: Boolean; Options: TStringSearchOptions; y: Integer): Boolean;
 var
-  ops : TSearchTypes;
-  StartPos : Integer;
+  ops: TSearchTypes;
+  StartPos: Integer;
 begin
   RichEdit.SetFocus;
   ops := [];
@@ -238,30 +238,30 @@ begin
   begin
     RichEdit.SelStart := StartPos;
     RichEdit.SelLength := Length (SearchStr);
-    result := True;
+    Result := True;
   end
   else
-    result := False
+    Result := False
 end;
 
-function TNewsStringsDisplayObjectLink.GetHasText: boolean;
+function TNewsStringsDisplayObjectLink.GetHasText: Boolean;
 begin
-  result := True;
+  Result := True;
 end;
 
 function TNewsStringsDisplayObjectLink.GetHeight: Integer;
 begin
   try
-    result := inherited GetHeight;
+    Result := inherited GetHeight;
   except
-    result := 0
+    Result := 0
   end
 end;
 
-procedure TNewsStringsDisplayObjectLink.GetHTML(var txt: string; rawFragment :boolean = false);
+procedure TNewsStringsDisplayObjectLink.GetHTML(var txt: string; rawFragment :Boolean = false);
 var
-  re : TNewsRichEditX;
-  st : string;
+  re: TNewsRichEditX;
+  st: string;
 begin
   re := GetRichEdit;
   re.StreamRTF := True;
@@ -275,12 +275,12 @@ end;
 
 function TNewsStringsDisplayObjectLink.GetRichEdit: TNewsRichEditX;
 begin
-  result := TNewsRichEditX (Obj);
+  Result := TNewsRichEditX (Obj);
 end;
 
 function TNewsStringsDisplayObjectLink.GetRightMargin: Integer;
 begin
-  result := RichEdit.RightMargin
+  Result := RichEdit.RightMargin
 end;
 
 procedure TNewsStringsDisplayObjectLink.GetSelectedText(var txt: WideString);
@@ -290,12 +290,12 @@ end;
 
 function TNewsStringsDisplayObjectLink.GetSelLength: Integer;
 begin
-  result := GetRichEdit.SelLength
+  Result := GetRichEdit.SelLength
 end;
 
-function TNewsStringsDisplayObjectLink.GetStrictSigSeparator: boolean;
+function TNewsStringsDisplayObjectLink.GetStrictSigSeparator: Boolean;
 begin
-  result := GetRichEdit.StrictSigSeparator
+  Result := GetRichEdit.StrictSigSeparator
 end;
 
 procedure TNewsStringsDisplayObjectLink.GetText(var txt: WideString);
@@ -305,26 +305,26 @@ end;
 
 function TNewsStringsDisplayObjectLink.GetTextObjectCount: Integer;
 begin
-  result := FTextObjects.Count
+  Result := FTextObjects.Count
 end;
 
 function TNewsStringsDisplayObjectLink.GetTruncateFrom: WideString;
 begin
-  result := GetRichEdit.TruncateFrom;
+  Result := GetRichEdit.TruncateFrom;
 end;
 
 function TNewsStringsDisplayObjectLink.GetWidth: Integer;
 begin
   try
-    result := inherited GetWidth
+    Result := inherited GetWidth
   except
-    result := 0
+    Result := 0
   end
 end;
 
 (*
 function StringReplaceEx(const S, OldPattern, NewPattern: string;
-  Flags: TReplaceFlags; Offset : Integer = 0): string;
+  Flags: TReplaceFlags; Offset: Integer = 0): string;
 var
   SearchStr, NewStr: string;
 begin
@@ -354,18 +354,18 @@ end;
 (*
 procedure TNewsStringsDisplayObjectLink.LoadFromTextObjects;
 var
-  i, j, offset, count, p, quoteLevel : Integer;
-  s : TStrings;
-  line, st : string;
-  ctrl : TNewsRichEditX;
-  rtf : boolean;
-  inHeader : boolean;
-  inQuote : boolean;
-  rtfCount : Integer;
+  i, j, offset, count, p, quoteLevel: Integer;
+  s: TStrings;
+  line, st: string;
+  ctrl: TNewsRichEditX;
+  rtf: Boolean;
+  inHeader: Boolean;
+  inQuote: Boolean;
+  rtfCount: Integer;
 
-  procedure AddColorTableEntry (var st : string; color : TColor);
+  procedure AddColorTableEntry (var st: string; color: TColor);
   var
-    rgb  : DWORD;
+    rgb : DWORD;
   begin
     rgb := ColorTORGB (color);
     st := st + '\red' + IntToStr (GetRValue (rgb));
@@ -374,15 +374,15 @@ var
     st := st + ';'
   end;
 
-  function FormatWordsInLine (const st : string) : string;
+  function FormatWordsInLine (const st: string): string;
   var
-    i, len, p, p1, l : Integer;
-    ch, ch1, ch2 : char;
-    styles, styles1 : TFontStyles;
+    i, len, p, p1, l: Integer;
+    ch, ch1, ch2: char;
+    styles, styles1: TFontStyles;
   begin
     i := 1;
     styles := [];
-    result := '';
+    Result := '';
 
     len := Length (st);
     while i <= len do
@@ -403,9 +403,9 @@ var
         ch1 := ch;
         repeat
           case ch1 of
-            '*' : styles := styles + [fsBold];
-            '_' : styles := styles + [fsUnderline];
-            '\' : styles := styles + [fsItalic];
+            '*': styles := styles + [fsBold];
+            '_': styles := styles + [fsUnderline];
+            '\': styles := styles + [fsItalic];
           end;
 
           Inc (p);
@@ -421,28 +421,28 @@ var
         while st [p] in ['*', '\', '_'] do
         begin
           case st [p] of
-            '*' : styles := styles - [fsBold];
-            '_' : styles := styles - [fsUnderline];
-            '\' : styles := styles - [fsItalic]
+            '*': styles := styles - [fsBold];
+            '_': styles := styles - [fsUnderline];
+            '\': styles := styles - [fsItalic]
           end;
           Inc (p)
         end;
 
         if styles = [] then
         begin
-          result := result + #2;
+          Result := Result + #2;
           if fsBold in styles1 then
-            result := result + #3'b';
+            Result := Result + #3'b';
           if fsUnderline in styles1 then
-            result := result + #3'ul';
+            Result := Result + #3'ul';
           if fsItalic in styles1 then
-            result := result + #3'i';
+            Result := Result + #3'i';
 
-          result := result + ' ' + Copy (st, p1, l) + #4 + FormatWordsInLine (Copy (st, p, MaxInt));
+          Result := Result + ' ' + Copy (st, p1, l) + #4 + FormatWordsInLine (Copy (st, p, MaxInt));
           exit
         end
       end;
-      result := result + ch;
+      Result := Result + ch;
       styles := [];
       Inc (i)
     end
@@ -570,17 +570,17 @@ end;
 
 (*
 var
-  urlIndicators : array [0..1] of string =('://', 'www.');
+  urlIndicators: array [0..1] of string =('://', 'www.');
 
-procedure UnwrapURLS (var st : string);
+procedure UnwrapURLS (var st: string);
 var
-  i, len : Integer;
+  i, len: Integer;
 
-  procedure Unwrap (const indicator : string);
+  procedure Unwrap (const indicator: string);
 
   var
-    i, p, l : Integer;
-    ch : char;
+    i, p, l: Integer;
+    ch: char;
   begin
     l := Length (indicator);
     i := 1;
@@ -596,14 +596,14 @@ var
       begin
         ch := st [i];
         case ch of
-          #$0d : if (i + 2 < len) and (st [i + 1] = #$0a) and not (st [i + 2] in [' ', #9, ',']) then
+          #$0d: if (i + 2 < len) and (st [i + 1] = #$0a) and not (st [i + 2] in [' ', #9, ',']) then
                  begin
                    Delete (st, i, 2);
                    Dec (len, 2)
                  end
                  else
                    Inc (i, 3);
-          ' ', #9, ',', #0 : break;
+          ' ', #9, ',', #0: break;
           else
             Inc (i)
         end
@@ -620,11 +620,11 @@ end;
 
 procedure TNewsStringsDisplayObjectLink.LoadFromTextObjects;
 var
-  ctrl : TNewsRichEditX;
-  i : Integer;
-  st : string;
-  ws, ws1 : WideString;
-  cp, n, lastLen : Integer;
+  ctrl: TNewsRichEditX;
+  i: Integer;
+  st: string;
+  ws, ws1: WideString;
+  cp, n, lastLen: Integer;
 
 begin
   if FUpdating then Exit;
@@ -683,7 +683,7 @@ begin
 end;
 
 procedure TNewsStringsDisplayObjectLink.SetStrictSigSeparator(
-  const Value: boolean);
+  const Value: Boolean);
 begin
   GetRichEdit.StrictSigSeparator := Value
 end;
@@ -724,35 +724,35 @@ end;
 
 function TNewsRichEditX.FindScrollingParent: TScrollingWinControl;
 var
-  p : TWinControl;
+  p: TWinControl;
 begin
   p := Parent;
   while Assigned(p) and not (p is TScrollingWinControl) do
     p := p.Parent;
 
-  result := TScrollingWinControl (p)
+  Result := TScrollingWinControl (p)
 end;
 
 
 function TNewsRichEditX.LinesOnPage: Integer;
 var
-  sp : TScrollingWinControl;
-  lineHeight : Integer;
+  sp: TScrollingWinControl;
+  lineHeight: Integer;
 begin
-  result := 0;
+  Result := 0;
   sp := FindScrollingParent;
   if not Assigned(sp) then exit;
   lineHeight := Abs (font.Height);
 
-  result := (sp.ClientHeight div lineHeight) ;
+  Result := (sp.ClientHeight div lineHeight) ;
   if sp.ClientHeight mod lineHeight > 0 then
-    Inc (result)
+    Inc (Result)
 end;
 
-function TNewsRichEditX.MoveCursor(lines: Integer; moveUp: boolean; shiftState : TShiftState) : boolean;
+function TNewsRichEditX.MoveCursor(lines: Integer; moveUp: Boolean; shiftState: TShiftState): Boolean;
 var
-  line, pos, spos, l : Integer;
-  sp : TScrollingWinControl;
+  line, pos, spos, l: Integer;
+  sp: TScrollingWinControl;
 begin
   sp := FindScrollingParent;
 
@@ -781,13 +781,13 @@ begin
     spos := l;
   Inc (pos, spos);
 
-  result := True;
+  Result := True;
   if ssShift in shiftState then
     SelLength := pos - SelStart
   else
   begin
     SelStart := pos;
-    result := pos <> SelStart
+    Result := pos <> SelStart
   end
 end;
 
@@ -801,9 +801,9 @@ end;
 
 procedure TNewsRichEditX.ScrollIntoView;
 var
-  sp : TScrollingWinControl;
-  pt : TPoint;
-  deltaY, lineHeight : Integer;
+  sp: TScrollingWinControl;
+  pt: TPoint;
+  deltaY, lineHeight: Integer;
 begin
   sp := FindScrollingParent;
   if not Assigned(sp) then exit;
@@ -844,8 +844,8 @@ end;
 
 procedure TNewsRichEditX.SetRightMargin(const Value: Integer);
 var
-  tm : TTextMetric;
-  canvas : TControlCanvas;
+  tm: TTextMetric;
+  canvas: TControlCanvas;
 begin
   if value <> FRightMargin then
   begin
@@ -875,7 +875,7 @@ end;
 
 procedure TNewsRichEditX.WMKeyDown(var msg: TwmKeyDown);
 var
-  ShiftState : TShiftState;
+  ShiftState: TShiftState;
 begin
   ShiftState := KeyDataToShiftState(msg.KeyData);
   if (msg.CharCode = VK_NEXT) or ((msg.CharCode = VK_SPACE) and not (ssCtrl in ShiftState)) or (msg.CharCode = VK_PRIOR) then
@@ -892,8 +892,8 @@ end;
 
 procedure TNewsRichEditX.WMLButtonDown(var msg: TwmLButtonDown);
 var
-  sp : TScrollingWinControl;
-  xPos, yPos : Integer;
+  sp: TScrollingWinControl;
+  xPos, yPos: Integer;
 begin
   if Assigned(FObjectLink) then
     FObjectLink.Owner.FocusObject(FObjectLink);
@@ -917,8 +917,8 @@ end;
 
 procedure TNewsRichEditX.WMMouseMove(var msg: TwmMouseMove);
 var
-  p : TPoint;
-  sp : TScrollingWinControl;
+  p: TPoint;
+  sp: TScrollingWinControl;
 begin
   FTimerScrollDelta := 0;
   if (msg.Keys and MK_LBUTTON) <> 0 then
@@ -945,8 +945,8 @@ end;
 
 procedure TNewsRichEditX.WMRButtonDown(var msg: TwmRButtonDown);
 var
-  sp : TScrollingWinControl;
-  xPos, yPos : Integer;
+  sp: TScrollingWinControl;
+  xPos, yPos: Integer;
 begin
   if Assigned(FObjectLink) then
     FObjectLink.Owner.FocusObject(FObjectLink);
@@ -971,8 +971,8 @@ end;
 
 procedure TNewsRichEditX.WMTimer(var msg: TwmTimer);
 var
-  delta, ad : Integer;
-  sp : TScrollingWinControl;
+  delta, ad: Integer;
+  sp: TScrollingWinControl;
 begin
   if FTimerScrollDelta <> 0 then
   begin

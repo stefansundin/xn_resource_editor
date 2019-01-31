@@ -26,7 +26,7 @@ implementation
 
 class function THTMLResourceDetails.GetBaseType: WideString;
 begin
-  result := IntToStr (Integer (RT_HTML))
+  Result := IntToStr (Integer (RT_HTML))
 end;
 
 procedure THTMLResourceDetails.InitNew;

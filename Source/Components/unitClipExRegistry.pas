@@ -2,51 +2,53 @@ unit unitClipExRegistry;
 
 interface
 
-uses Windows, Classes, Sysutils, unitExRegistry;
+uses
+  Windows, Classes, Sysutils, unitExRegistry;
 
 type
-TCopyFormat = (cfRegEdt, cfText);
-TCopyFormats = set of TCopyFormat;
+  TCopyFormat = (cfRegEdt, cfText);
+  TCopyFormats = set of TCopyFormat;
 
-TClipExRegistry = class (TExRegistry)
-public
-  procedure CopyKeyToClipboard (const keyName : string);
-  procedure CopyValuesToClipboard (Values : TStrings; fmt : TCopyFormats = [cfRegEdt]);
-  function PasteKeyFromClipboard : string;
-  procedure PasteValuesFromClipboard (Values : TStrings = nil);
-end;
+  TClipExRegistry = class (TExRegistry)
+  public
+    procedure CopyKeyToClipboard (const keyName: string);
+    procedure CopyValuesToClipboard (Values: TStrings; fmt: TCopyFormats = [cfRegEdt]);
+    function PasteKeyFromClipboard: string;
+    procedure PasteValuesFromClipboard (Values: TStrings = nil);
+  end;
 
-function ClipboardHasRegEdtValue : boolean;
-function ClipboardHasRegEdtKey : boolean;
+function ClipboardHasRegEdtValue: Boolean;
+function ClipboardHasRegEdtKey: Boolean;
 
 var
-  CF_HIVE, CF_VALUES : UINT;
+  CF_HIVE, CF_VALUES: UINT;
 
 implementation
 
-uses ClipBrd;
+uses
+  ClipBrd;
 
 type
 TKeyData = record
-  noValues : DWORD;
-  valuesOffset : DWORD;
-  noSubkeys : DWORD;
-  subKeysOffset : DWORD;
+  noValues: DWORD;
+  valuesOffset: DWORD;
+  noSubkeys: DWORD;
+  subKeysOffset: DWORD;
 end;
 PKeyData = ^TKeyData;
 
 TValueData = record
-  dataLen : DWORD;
-  valueType : DWORD;
+  dataLen: DWORD;
+  valueType: DWORD;
 end;
 PValueData = ^TValueData;
 
-function ClipboardHasRegEdtValue : boolean;
+function ClipboardHasRegEdtValue: Boolean;
 begin
   result := Clipboard.HasFormat (CF_VALUES)
 end;
 
-function ClipboardHasRegEdtKey : boolean;
+function ClipboardHasRegEdtKey: Boolean;
 begin
   result := Clipboard.HasFormat (CF_HIVE)
 end;
@@ -55,19 +57,19 @@ end;
 
 procedure TClipExRegistry.CopyKeyToClipboard(const keyName: string);
 var
-  buf : array [0..511] of char;
-  ddeBuf : PChar;
-  ddeBufPos : DWORD;
-  ddeSize : DWORD;
-  ddeHandle : THandle;
+  buf: array [0..511] of char;
+  ddeBuf: PChar;
+  ddeBufPos: DWORD;
+  ddeSize: DWORD;
+  ddeHandle: THandle;
 
-  function GetRequiredSize (const name : string; key : HKEY) : DWORD;
+  function GetRequiredSize (const name: string; key: HKEY): DWORD;
   var
-    cbClass, cbValueName, cbData : DWORD;
-    cSubkeys : DWORD;
-    i, cValues : DWORD;
-    err : DWORD;
-    k : HKEY;
+    cbClass, cbValueName, cbData: DWORD;
+    cSubkeys: DWORD;
+    i, cValues: DWORD;
+    err: DWORD;
+    k: HKEY;
   begin
     err := RegOpenKeyEx (key, PChar (name), 0, KEY_READ, k);
     if err = ERROR_SUCCESS then
@@ -104,17 +106,17 @@ var
       raise EExRegistryException.Create (err, 'Unable to open key')
   end;
 
-  procedure CopyData (const name : string; key : HKEY);
+  procedure CopyData (const name: string; key: HKEY);
   var
-    cbClass, cbValueName, cbData : DWORD;
-    cSubkeys, cValues : DWORD;
-    i : DWORD;
-    pData : PKeyData;
-    pValue : PValueData;
-    err : DWORD;
-    k : HKEY;
-    ddeRootPos : DWORD;
-    pkName, pkClass : PChar;
+    cbClass, cbValueName, cbData: DWORD;
+    cSubkeys, cValues: DWORD;
+    i: DWORD;
+    pData: PKeyData;
+    pValue: PValueData;
+    err: DWORD;
+    k: HKEY;
+    ddeRootPos: DWORD;
+    pkName, pkClass: PChar;
   begin
     err := RegOpenKeyEx (key, PChar (name), 0, KEY_READ, k);
     if err = ERROR_SUCCESS then
@@ -202,16 +204,16 @@ begin  // CopyKeyToClipboard
   end
 end;
 
-procedure TClipExRegistry.CopyValuesToClipboard(Values: TStrings; fmt : TCopyFormats = [cfRegEdt]);
+procedure TClipExRegistry.CopyValuesToClipboard(Values: TStrings; fmt: TCopyFormats = [cfRegEdt]);
 var
-  ddeSize : DWORD;
-  i, err : Integer;
-  ddeHandle : THandle;
-  ddeBuf : PChar;
-  ddeBufPos, cbData : DWORD;
-  pValue : PValueData;
-  txt : string;
-  pName, pData : PChar;
+  ddeSize: DWORD;
+  i, err: Integer;
+  ddeHandle: THandle;
+  ddeBuf: PChar;
+  ddeBufPos, cbData: DWORD;
+  pValue: PValueData;
+  txt: string;
+  pName, pData: PChar;
 begin
   ddeSize := sizeof (DWORD) + Values.count * sizeof (TValueData);
   for i := 0 to Values.count - 1 do
@@ -288,18 +290,18 @@ end;
 
 function TClipExRegistry.PasteKeyFromClipboard: string;
 var
-  ddeHandle : THandle;
-  ddeBuf : PChar;
+  ddeHandle: THandle;
+  ddeBuf: PChar;
 
-  function PasteKey (keyData : PKeyData; destKey : HKEY) : DWORD;
+  function PasteKey (keyData: PKeyData; destKey: HKEY): DWORD;
   var
-    err, disposition : DWORD;
-    k : HKEY;
-    i : Integer;
-    valueData : PValueData;
-    subKeyData : PKeyData;
-    len : DWORD;
-    pName, pData, pkName, pkClass : PChar;
+    err, disposition: DWORD;
+    k: HKEY;
+    i: Integer;
+    valueData: PValueData;
+    subKeyData: PKeyData;
+    len: DWORD;
+    pName, pData, pkName, pkClass: PChar;
   begin
     result := sizeof (TKeyData);
     pkName := PChar (keyData) + result;
@@ -354,12 +356,12 @@ end;
 
 procedure TClipExRegistry.PasteValuesFromClipboard(Values: TStrings = nil);
 var
-  ddeHandle : THandle;
-  ddeBuf, p : PChar;
-  count, ddeBufPos, i : DWORD;
-  value : PValueData;
-  err : Integer;
-  pName, pData : PChar;
+  ddeHandle: THandle;
+  ddeBuf, p: PChar;
+  count, ddeBufPos, i: DWORD;
+  value: PValueData;
+  err: Integer;
+  pName, pData: PChar;
 begin
   if Assigned(Values) then
     Values.Clear;

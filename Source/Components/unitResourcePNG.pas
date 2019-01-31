@@ -48,7 +48,7 @@ end;
 
 function TPngResourceDetails.GetWidth: Integer;
 begin
-  result := PWORD (PChar (data) + 6)^;
+  Result := PWORD (PChar (data) + 6)^;
 end;
 
 class function TPngResourceDetails.SupportsData(Size: Integer;

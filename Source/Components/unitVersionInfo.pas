@@ -105,47 +105,47 @@ function TVersionInfo.GetInfo: Boolean;
 var
   p: PChar;
   t, wLength, wValueLength, wType: word;
-  key: string;
+  Key: string;
 
   varwLength, varwValueLength, varwType: word;
   varKey: string;
 
-  function GetVersionHeader (var p: PChar; var wLength, wValueLength, wType: word; var key: string): Integer;
+  function GetVersionHeader (var p: PChar; var wLength, wValueLength, wType: word; var Key: string): Integer;
   var
-    szKey: PWideChar;
-    baseP: PChar;
+    SzKey: PWideChar;
+    BaseP: PChar;
   begin
-    baseP := p;
+    BaseP := p;
     wLength := PWord (p)^;
     Inc (p, sizeof (word));
     wValueLength := PWord (p)^;
     Inc (p, sizeof (word));
     wType := PWord (p)^;
     Inc (p, sizeof (word));
-    szKey := PWideChar (p);
-    Inc (p, (lstrlenw (szKey) + 1) * sizeof (WideChar));
+    SzKey := PWideChar (p);
+    Inc (p, (lstrlenw (SzKey) + 1) * sizeof (WideChar));
     while Integer (p) mod 4 <> 0 do
       Inc (p);
-    result := p - baseP;
-    key := szKey;
+    Result := p - BaseP;
+    Key := SzKey;
   end;
 
   procedure GetStringChildren (var base: PChar; len: word);
   var
     p, strBase: PChar;
     t, wLength, wValueLength, wType, wStrLength, wStrValueLength, wStrType: word;
-    key, value: string;
+    Key, value: string;
     i, langID, codePage: Integer;
 
   begin
     p := base;
     while (p - base) < len do
     begin
-      t := GetVersionHeader (p, wLength, wValueLength, wType, key);
+      t := GetVersionHeader (p, wLength, wValueLength, wType, Key);
       Dec (wLength, t);
 
-      langID := StrToInt ('$' + Copy (key, 1, 4));
-      codePage := StrToInt ('$' + Copy (key, 5, 4));
+      langID := StrToInt ('$' + Copy (Key, 1, 4));
+      codePage := StrToInt ('$' + Copy (Key, 5, 4));
 
       strBase := p;
       for i := 0 to FChildStrings.Count - 1 do
@@ -154,7 +154,7 @@ var
 
       while (p - strBase) < wLength do
       begin
-        t := GetVersionHeader (p, wStrLength, wStrValueLength, wStrType, key);
+        t := GetVersionHeader (p, wStrLength, wStrValueLength, wStrType, Key);
         Dec (wStrLength, t);
 
         if wStrValueLength = 0 then
@@ -165,7 +165,7 @@ var
         while Integer (p) mod 4 <> 0 do
           Inc (p);
 
-        FChildStrings.AddObject (key, TVersionStringValue.Create (value, langID, codePage))
+        FChildStrings.AddObject (Key, TVersionStringValue.Create (value, langID, codePage))
       end
     end;
     base := p
@@ -175,14 +175,14 @@ var
   var
     p, strBase: PChar;
     t, wLength, wValueLength, wType: word;
-    key: string;
+    Key: string;
     v: DWORD;
 
   begin
     p := base;
     while (p - base) < len do
     begin
-      t := GetVersionHeader (p, wLength, wValueLength, wType, key);
+      t := GetVersionHeader (p, wLength, wValueLength, wType, Key);
       Dec (wLength, t);
 
       strBase := p;
@@ -199,11 +199,11 @@ var
   end;
 
 begin
-  result := False;
+  Result := False;
   if not Assigned(FFixedInfo) then
   try
     p := FVersionInfo;
-    GetVersionHeader (p, wLength, wValueLength, wType, key);
+    GetVersionHeader (p, wLength, wValueLength, wType, Key);
 
     if wValueLength <> 0 then
     begin
@@ -232,19 +232,19 @@ begin
           break;
     end;
 
-    result := True;
+    Result := True;
   except
   end
   else
-    result := True
+    Result := True
 end;
 
 function TVersionInfo.GetKeyCount: Integer;
 begin
   if GetInfo then
-    result := FChildStrings.Count
+    Result := FChildStrings.Count
   else
-    result := 0;
+    Result := 0;
 end;
 
 function TVersionInfo.GetKeyName(idx: Integer): string;
@@ -252,7 +252,7 @@ begin
   if idx >= KeyCount then
     raise ERangeError.Create ('Index out of range')
   else
-    result := FChildStrings [idx];
+    Result := FChildStrings [idx];
 end;
 
 function TVersionInfo.GetKeyValue(const idx: string): string;
@@ -263,7 +263,7 @@ begin
   begin
     i := FChildStrings.IndexOf (idx);
     if i <> -1 then
-      result := TVersionStringValue (FChildStrings.Objects [i]).FValue
+      Result := TVersionStringValue (FChildStrings.Objects [i]).FValue
     else
       raise Exception.Create ('Key not found')
   end
@@ -286,13 +286,13 @@ var
       strm.Write (zeros, 4 - (strm.Position mod 4))
   end;
 
-  procedure SaveVersionHeader (strm: TStream; wLength, wValueLength, wType: word; const key: string; const value);
+  procedure SaveVersionHeader (strm: TStream; wLength, wValueLength, wType: word; const Key: string; const value);
   var
     wKey: WideString;
     valueLen: word;
     keyLen: word;
   begin
-    wKey := key;
+    wKey := Key;
     strm.Write (wLength, sizeof (wLength));
 
     strm.Write (wValueLength, sizeof (wValueLength));

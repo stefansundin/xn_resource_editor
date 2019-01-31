@@ -56,7 +56,7 @@ end;
 
 class function TToolbarResourceDetails.GetBaseType: WideString;
 begin
-  result := IntToStr (Integer (RT_TOOLBAR));
+  Result := IntToStr (Integer (RT_TOOLBAR));
 end;
 
 procedure TToolbarResourceDetails.InitNew;

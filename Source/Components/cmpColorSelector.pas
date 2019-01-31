@@ -10,21 +10,21 @@ type
   TColorSelector = class(TCustomControl)
   private
     FPalette: HPalette;
-    FPaletteEntries : TPaletteEntries;
-    FColWidth, FRowHeight, FColCount, FRowCount : Integer;
+    FPaletteEntries: TPaletteEntries;
+    FColWidth, FRowHeight, FColCount, FRowCount: Integer;
     FBackgroundColor: TColor;
     FForegroundColor: TColor;
     FOnColorSelect: TNotifyEvent;
-    FSelectedIdx : Integer;
-    FSelectedColor : TColor;   // For >256 colors only
-    FColorCount : Integer;
+    FSelectedIdx: Integer;
+    FSelectedColor: TColor;   // For >256 colors only
+    FColorCount: Integer;
     FLum: Integer;
     procedure SetPalette(const Value: HPalette);
     procedure SetColorCount(const Value: Integer);
     procedure SetBackgroundColor(const Value: TColor);
     procedure SetForegroundColor(const Value: TColor);
     procedure SetColumnCount(const Value: Integer);
-    procedure PaintHSL (canvas : TCanvas);
+    procedure PaintHSL (canvas: TCanvas);
     procedure SetLum(const Value: Integer);
     procedure CalcSettings;
     procedure WMSize(var Message: TWMSize); message WM_SIZE;
@@ -33,23 +33,23 @@ type
     procedure Paint; override;
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
   public
-    constructor Create (AOwner : TComponent); override;
+    constructor Create (AOwner: TComponent); override;
     destructor Destroy; override;
-    property Palette : HPalette read FPalette write SetPalette;
-    procedure SetSelectedPaletteColor (color : TColor);
-    function GetSelectedPaletteColor : TColor;
-    property Color [idx : Integer] : TCOlor read GetColor;
+    property Palette: HPalette read FPalette write SetPalette;
+    procedure SetSelectedPaletteColor (color: TColor);
+    function GetSelectedPaletteColor: TColor;
+    property Color [idx: Integer]: TCOlor read GetColor;
   published
     property Align;
     property Anchors;
     property Constraints;
-    property ColorCount : Integer read FColorCount write SetColorCount default 16;
-    property ForegroundColor : TColor read FForegroundColor write SetForegroundColor;
-    property BackgroundColor : TColor read FBackgroundColor write SetBackgroundColor;
-    property OnColorSelect : TNotifyEvent read FOnColorSelect write FOnColorSelect;
-    property ColumnCount : Integer read FColCount write SetColumnCount default 8;
+    property ColorCount: Integer read FColorCount write SetColorCount default 16;
+    property ForegroundColor: TColor read FForegroundColor write SetForegroundColor;
+    property BackgroundColor: TColor read FBackgroundColor write SetBackgroundColor;
+    property OnColorSelect: TNotifyEvent read FOnColorSelect write FOnColorSelect;
+    property ColumnCount: Integer read FColCount write SetColumnCount default 8;
     property OnDblClick;
-    property Luminescence : Integer read FLum write SetLum default HLSMAX div 2;
+    property Luminescence: Integer read FLum write SetLum default HLSMAX div 2;
   end;
 
   EColorError = class (Exception)
@@ -111,11 +111,11 @@ end;
 procedure TColorSelector.MouseDown(Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 var
-  p : TPoint;
-  selectedColor : TColor;
-  changed : boolean;
-  selectedIdx : Integer;
-  b : TBitmap;
+  p: TPoint;
+  selectedColor: TColor;
+  changed: Boolean;
+  selectedIdx: Integer;
+  b: TBitmap;
 begin
   SetFocus;
   p.x := x;
@@ -173,7 +173,7 @@ end;
 
 procedure TColorSelector.Paint;
 var
-  i, x, y : Integer;
+  i, x, y: Integer;
 begin
   if ColorCount = -1 then
     PaintHSL (canvas)
@@ -197,13 +197,13 @@ begin
   end
 end;
 
-procedure TColorSelector.PaintHSL (canvas : TCanvas);
+procedure TColorSelector.PaintHSL (canvas: TCanvas);
 var
-  hue, sat, bpss, w, h : Integer;
-  r, g, b : Integer;
-  rt : TRGBTriple;
-  bmp : TBitmap;
-  ps, ps1 : PRGBTriple;
+  hue, sat, bpss, w, h: Integer;
+  r, g, b: Integer;
+  rt: TRGBTriple;
+  bmp: TBitmap;
+  ps, ps1: PRGBTriple;
 begin
   bmp := TBitmap.Create;
   try
@@ -250,10 +250,10 @@ begin
   if Value <> ColorCount then
   begin
     case value of
-      2 : Palette := SystemPalette2;
-      16 : Palette := SystemPalette16;
-      256 : Palette := SystemPalette256;
-      -1 : Palette := 0;
+      2: Palette := SystemPalette2;
+      16: Palette := SystemPalette16;
+      256: Palette := SystemPalette256;
+      -1: Palette := 0;
     end
   end;
 end;
@@ -293,7 +293,7 @@ end;
 
 procedure TColorSelector.SetPalette(const Value: HPalette);
 var
-  colorCount : word;
+  colorCount: word;
 begin
   if Value <> FPalette then
   begin
@@ -325,10 +325,10 @@ end;
 
 procedure TColorSelector.SetSelectedPaletteColor(color: TColor);
 var
-  colorCount : word;
-  rgb, i : LongInt;
-  NewPal : HPALETTE;
-  logPal : PLogPalette;
+  colorCount: word;
+  rgb, i: LongInt;
+  NewPal: HPALETTE;
+  logPal: PLogPalette;
 begin
   if FPalette = 0 then
     Exit;

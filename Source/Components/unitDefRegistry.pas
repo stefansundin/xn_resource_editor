@@ -2,25 +2,25 @@ unit unitDefRegistry;
 
 interface
 
-uses Windows, Classes, SysUtils, Registry;
+uses
+  Windows, Classes, SysUtils, Registry;
 
 type
+  EDefRegistry = class (Exception)
+  end;
 
-EDefRegistry = class (Exception)
-end;
+  TDefRegistry = class (TRegistry)
+  public
+    function GetValue (const Name, Default: string): string; overload;
+    function GetValue (const Name: string; Default: Integer): Integer; overload;
+    function GetValue (const Name: string; Default: Boolean): Boolean; overload;
+    procedure GetValue (const Name: string; Strings: TStringList); overload;
 
-TDefRegistry = class (TRegistry)
-public
-  function GetValue (const name, default : string) : string; overload;
-  function GetValue (const name : string; default : integer) : Integer; overload;
-  function GetValue (const name : string; default : boolean) : boolean; overload;
-  procedure GetValue (const name : string; strings : TStringList); overload;
-
-  procedure SetValue (const name, value, default : string); overload;
-  procedure SetValue (const name : string; value, default : Integer); overload;
-  procedure SetValue (const name : string; value, default : boolean); overload;
-  procedure SetValue (const name : string; strings : TStringList); overload;
-end;
+    procedure SetValue (const Name, value, Default: string); overload;
+    procedure SetValue (const Name: string; value, Default: Integer); overload;
+    procedure SetValue (const Name: string; value, Default: Boolean); overload;
+    procedure SetValue (const Name: string; Strings: TStringList); overload;
+  end;
 
 implementation
 
@@ -29,31 +29,31 @@ implementation
 (*----------------------------------------------------------------------*
  | function TDefRegistry.GetValue                                       |
  |                                                                      |
- | Get an integer value from the registry.  Return 'default' if the     |
+ | Get an Integer value from the registry.  Return 'default' if the     |
  | value does not exist.                                                |
  *----------------------------------------------------------------------*)
-function TDefRegistry.GetValue(const name: string;
-  default: integer): Integer;
+function TDefRegistry.GetValue(const Name: string;
+  Default: Integer): Integer;
 begin
-  if ValueExists (name) then
-    result := ReadInteger (name)
+  if ValueExists (Name) then
+    Result := ReadInteger (Name)
   else
-    result := default
+    Result := Default
 end;
 
 (*----------------------------------------------------------------------*
  | function TDefRegistry.GetValue                                       |
  |                                                                      |
- | Get a boolean value from the registry.  Return 'default' if the      |
+ | Get a Boolean value from the registry.  Return 'default' if the      |
  | value does not exist.                                                |
  *----------------------------------------------------------------------*)
-function TDefRegistry.GetValue(const name: string;
-  default: boolean): boolean;
+function TDefRegistry.GetValue(const Name: string;
+  Default: Boolean): Boolean;
 begin
-  if ValueExists (name) then
-    result := ReadBool (name)
+  if ValueExists (Name) then
+    Result := ReadBool (Name)
   else
-    result := default
+    Result := Default
 end;
 
 (*----------------------------------------------------------------------*
@@ -62,33 +62,33 @@ end;
  | Get a string value from the registry.  Return 'default' if the       |
  | value does not exist.                                                |
  *----------------------------------------------------------------------*)
-function TDefRegistry.GetValue(const name, default: string): string;
+function TDefRegistry.GetValue(const Name, Default: string): string;
 begin
-  if ValueExists (name) then
-    result := ReadString (name)
+  if ValueExists (Name) then
+    Result := ReadString (Name)
   else
-    result := default
+    Result := Default
 end;
 
-procedure TDefRegistry.GetValue(const name: string; strings: TStringList);
+procedure TDefRegistry.GetValue(const Name: string; Strings: TStringList);
 var
-  valueType : DWORD;
-  valueLen : DWORD;
-  p, buffer : PChar;
+  valueType: DWORD;
+  valueLen: DWORD;
+  p, buffer: PChar;
 begin
-  strings.Clear;
-  if not ValueExists (name) then Exit;
-  SetLastError (RegQueryValueEx (CurrentKey, PChar (name), Nil, @valueType, Nil, @valueLen));
+  Strings.Clear;
+  if not ValueExists (Name) then Exit;
+  SetLastError (RegQueryValueEx (CurrentKey, PChar (Name), Nil, @valueType, Nil, @valueLen));
   if GetLastError = ERROR_SUCCESS then
     if valueType = REG_MULTI_SZ then
     begin
       GetMem (buffer, valueLen);
       try
-        RegQueryValueEx (CurrentKey, PChar (name), Nil, Nil, PBYTE (buffer), @valueLen);
+        RegQueryValueEx (CurrentKey, PChar (Name), Nil, Nil, PBYTE (buffer), @valueLen);
         p := buffer;
         while p^ <> #0 do
         begin
-          strings.Add (p);
+          Strings.Add (p);
           Inc (p, lstrlen (p) + 1)
         end
       finally
@@ -107,70 +107,70 @@ end;
  | Set a string value in the registry - or delete the value if it       |
  | matches 'default'                                                    |
  *----------------------------------------------------------------------*)
-procedure TDefRegistry.SetValue(const name, value, default: string);
+procedure TDefRegistry.SetValue(const Name, value, Default: string);
 begin
-  if value = default then
-    DeleteValue (name)
+  if value = Default then
+    DeleteValue (Name)
   else
-    WriteString (name, value)
+    WriteString (Name, value)
 end;
 
 (*----------------------------------------------------------------------*
  | function TDefRegistry.SetValue                                       |
  |                                                                      |
- | Set a boolean value in the registry - or delete the value if it      |
+ | Set a Boolean value in the registry - or delete the value if it      |
  | matches 'default'                                                    |
  *----------------------------------------------------------------------*)
-procedure TDefRegistry.SetValue(const name: string; value,
-  default: boolean);
+procedure TDefRegistry.SetValue(const Name: string; value,
+  Default: Boolean);
 begin
-  if value = default then
-    DeleteValue (name)
+  if value = Default then
+    DeleteValue (Name)
   else
-    WriteBool (name, value)
+    WriteBool (Name, value)
 end;
 
 (*----------------------------------------------------------------------*
  | function TDefRegistry.SetValue                                       |
  |                                                                      |
- | Set an integer value in the registry - or delete the value if it     |
+ | Set an Integer value in the registry - or delete the value if it     |
  | matches 'default'                                                    |
  *----------------------------------------------------------------------*)
-procedure TDefRegistry.SetValue(const name: string; value,
-  default: Integer);
+procedure TDefRegistry.SetValue(const Name: string; value,
+  Default: Integer);
 begin
-  if value = default then
-    DeleteValue (name)
+  if value = Default then
+    DeleteValue (Name)
   else
-    WriteInteger (name, value)
+    WriteInteger (Name, value)
 end;
 
 
-procedure TDefRegistry.SetValue(const name: string; strings: TStringList);
+procedure TDefRegistry.SetValue(const Name: string; Strings: TStringList);
 var
-  p, buffer : PChar;
-  i : Integer;
-  size : DWORD;
+  p, buffer: PChar;
+  i: Integer;
+  size: DWORD;
 begin
-  if strings.Count = 0 then
+  if Strings.Count = 0 then
   begin
-    DeleteValue (name);
+    DeleteValue (Name);
     exit
   end;
   size := 0;
-  for i := 0 to strings.Count - 1 do
-    Inc (size, Length (strings [i]) + 1);
+  for i := 0 to Strings.Count - 1 do
+    Inc (size, Length (Strings [i]) + 1);
   Inc (size);
   GetMem (buffer, size);
   try
     p := buffer;
-    for i := 0 to strings.count - 1 do
+    for i := 0 to Strings.count - 1 do
     begin
-      lstrcpy (p, PChar (strings [i]));
+      lstrcpy (p, PChar (Strings [i]));
       Inc (p, lstrlen (p) + 1)
     end;
     p^ := #0;
-    SetLastError (RegSetValueEx (CurrentKey, PChar (name), 0, REG_MULTI_SZ, buffer, size));
+    SetLastError (RegSetValueEx (CurrentKey, PChar (Name), 0, REG_MULTI_SZ, buffer, size));
     if GetLastError <> ERROR_SUCCESS then
       raise ERegistryException.Create ('Unable to write MULTI_SZ value');
   finally

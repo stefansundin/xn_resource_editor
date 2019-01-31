@@ -129,9 +129,9 @@ type
     procedure actImageAddImageExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
-    fPCWidth : Integer;
+    FPCWidth : Integer;
     FPropertyListBox: TPropertyListBox;
-    details : TGraphicsResourceDetails;
+    FDetails : TGraphicsResourceDetails;
 
     procedure SetPaletteForPixelFormat (reset : Boolean);
   protected
@@ -162,7 +162,8 @@ var
 
 implementation
 
-uses ClipBrd, Jpeg, FormTextInput;
+uses
+  ClipBrd, Jpeg, FormTextInput;
 
 {$R *.DFM}
 
@@ -248,10 +249,10 @@ end;
  *----------------------------------------------------------------------*)
 procedure TfmGraphicsResource.SetObject(const Value: TObject);
 var
-  newImage : Boolean;
-  transp : boolean;
+  NewImage : Boolean;
+  Transp : Boolean;
 begin
-  newImage := Value <> Obj;                     // If 'obj' hasn't changed, it must
+  NewImage := Value <> Obj;                     // If 'obj' hasn't changed, it must
                                                 // be after an 'Undo'  Try to preserve
                                                 // the selected palette colours, etc.
 
@@ -259,18 +260,18 @@ begin
                                                 // up underlying stuff.
 
   PropertyListBox1.Reset;
-  details := obj as TGraphicsResourceDetails;
+  FDetails := obj as TGraphicsResourceDetails;
 
-  details.GetImage (Image1.Picture);            // Set the thumbnail picture
+  FDetails.GetImage (Image1.Picture);            // Set the thumbnail picture
   if Image1.Picture.Graphic is TGifImage then
   begin
-//    transp := TGIFImage (Image1.Picture.Graphic).IsTransparent;
-    transp := False;                            // Can't get transparent GIFs
+//    Transp := TGIFImage (Image1.Picture.Graphic).IsTransparent;
+    Transp := False;                            // Can't get transparent GIFs
                                                 // to work in initial D2006 release
-    Image1.Transparent := transp
+    Image1.Transparent := Transp
   end
   else
-    transp := Image1.Picture.Graphic.Transparent;
+    Transp := Image1.Picture.Graphic.Transparent;
 
   BitmapEditor1.Picture := Image1.Picture;      // Set the editor picture
 
@@ -279,7 +280,7 @@ begin
 
   sbThumbnail.Cursor := crDefault;
 
-  if transp then     // Set the 'Transparent' Color panel
+  if Transp then     // Set the 'Transparent' Color panel
   begin
     pnlTransparent.Color := BitmapEditor1.TransparentColor;
     pnlTransparent.Visible := True
@@ -318,7 +319,7 @@ begin
     end
   end;
 
-  SetPaletteForPixelFormat (newImage)
+  SetPaletteForPixelFormat (NewImage)
 end;
 
 (*----------------------------------------------------------------------*
@@ -391,9 +392,9 @@ begin
   BitmapEditor1.DrawingTool := dtPencil;
                                                 // Save the palette panel Width,
                                                 // so we can restore it if we dock.
-  fPCWidth := pnlGraphics.Width;
-  if pnlColours.Width > fPCWidth then
-    fPCWidth := pnlColours.Width;
+  FPCWidth := pnlGraphics.Width;
+  if pnlColours.Width > FPCWidth then
+    FPCWidth := pnlColours.Width;
 
 
                                                 // Manually dock the panels
@@ -417,7 +418,7 @@ begin
     for i := 0 to PageCount - 1 do
       Pages [i].Caption := TPanel (Pages [i].Controls [0]).Caption;
 
-    Width := fPCWidth + 8;      // Restore the width to it's original setting
+    Width := FPCWidth + 8;      // Restore the width to it's original setting
                                 // - we've got at least one tab.
   end
 end;
@@ -499,7 +500,7 @@ end;
 procedure TfmGraphicsResource.ColorSelector1DblClick(Sender: TObject);
 begin
   ColorDialog1.Color := BitmapEditor1.DrawPen.Color;
-  If ColorDialog1.Execute then
+  if ColorDialog1.Execute then
   begin
                         // Adjust the palette in the colour selector
 
@@ -527,12 +528,12 @@ end;
  *----------------------------------------------------------------------*)
 procedure TfmGraphicsResource.SaveResource(const undoDetails: string);
 var
-  details : TGraphicsResourceDetails;
+  FDetails : TGraphicsResourceDetails;
 begin
   AddUndoEntry (undoDetails);           // Call inherited to take undo snapshot
-  details := obj as TGraphicsResourceDetails;
-  details.SetImage (BitmapEditor1.Picture);
-  details.GetImage (Image1.Picture);    // Make sure the thumnail *really*
+  FDetails := obj as TGraphicsResourceDetails;
+  FDetails.SetImage (BitmapEditor1.Picture);
+  FDetails.GetImage (Image1.Picture);    // Make sure the thumnail *really*
                                         // relflects what we've got..
 end;
 
@@ -613,7 +614,7 @@ procedure TfmGraphicsResource.pnlTransparentDblClick(Sender: TObject);
 begin
   inherited;
   ColorDialog1.Color := BitmapEditor1.TransparentColor;
-  If ColorDialog1.Execute then
+  if ColorDialog1.Execute then
   begin
     BitmapEditor1.TransparentColor := ColorDialog1.Color;
     pnlTransparent.Color := ColorDialog1.Color
@@ -996,7 +997,7 @@ end;
 
 procedure TfmGraphicsResource.UpdateActions;
 var
-  dt : boolean;
+  dt : Boolean;
 begin
   actImageAddImage.Enabled := ResourceDetails is TIconCursorResourceDetails;
 

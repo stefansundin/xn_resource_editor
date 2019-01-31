@@ -73,7 +73,7 @@ begin
     for i := 0 to Languages.Count -1 do
       if Languages.Name [i] = cbLanguage.Text then
       begin
-        result := Languages.LocaleID [i];
+        Result := Languages.LocaleID [i];
         break
       end
 end;

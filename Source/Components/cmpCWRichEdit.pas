@@ -610,24 +610,24 @@ end;
 function TCustomExRichEdit.CreateAppropriateProvider: TRichEditProvider;
 begin
   if Win32MajorVersion >= 5 then  // W2K, XP
-    result := TRichEdit3Provider.Create (self)
+    Result := TRichEdit3Provider.Create (self)
   else
     if Win32MajorVersion = 4 then // 95, 98, ME, NT4
     begin
       if Win32MinorVersion >= 90 then // ME
-        result := TRichEdit3Provider.Create (self)
+        Result := TRichEdit3Provider.Create (self)
       else
         if Win32MinorVersion >= 10 then // 98
-          result := TRichEdit2Provider.Create (self)
+          Result := TRichEdit2Provider.Create (self)
         else
           if Win32Platform = VER_PLATFORM_WIN32_NT then // NT 4
-            result := TRichEdit2Provider.Create (self)
+            Result := TRichEdit2Provider.Create (self)
           else
-            result := TRichEdit1Provider.Create (self)
+            Result := TRichEdit1Provider.Create (self)
     end
     else
       if Win32MajorVersion = 3 then
-        result := TRichEdit1Provider.Create (self)
+        Result := TRichEdit1Provider.Create (self)
       else
         raise EcwRichEdit.Create(rstInvalidOSVersion) // Impossible!
 end;
@@ -914,7 +914,7 @@ function TCustomExRichEdit.GetCharFormatter: TCharFormatter;
 begin
   if fCharFormatter = Nil then
     fCharFormatter := TCharFormatter.Create;
-  result := fCharFormatter
+  Result := fCharFormatter
 end;
 
 (*----------------------------------------------------------------------*
@@ -927,7 +927,7 @@ var
   range: TCharRange;
 begin
   SendMessage (Handle, EM_EXGETSEL, 0, LongInt (@range));
-  result := range.cpMax - range.cpMin
+  Result := range.cpMax - range.cpMin
 end;
 
 (*----------------------------------------------------------------------*
@@ -940,7 +940,7 @@ var
   range: TCharRange;
 begin
   SendMessage (Handle, EM_EXGETSEL, 0, LongInt (@range));
-  result := range.cpMin
+  Result := range.cpMin
 end;
 
 (*----------------------------------------------------------------------*
@@ -950,7 +950,7 @@ end;
  *----------------------------------------------------------------------*)
 function TCustomExRichEdit.GetSelText: WideString;
 begin
-  result := FRichEditProvider.GetSelText;
+  Result := FRichEditProvider.GetSelText;
 end;
 
 (*----------------------------------------------------------------------*
@@ -960,7 +960,7 @@ end;
  *----------------------------------------------------------------------*)
 function TCustomExRichEdit.GetText: WideString;
 begin
-  result := FRichEditProvider.GetText
+  Result := FRichEditProvider.GetText
 end;
 
 (*----------------------------------------------------------------------*
@@ -970,7 +970,7 @@ end;
  *----------------------------------------------------------------------*)
 function TCustomExRichEdit.GetTextLen: Integer;
 begin
-  result := FRichEditProvider.GetTextLen
+  Result := FRichEditProvider.GetTextLen
 end;
 
 (*----------------------------------------------------------------------*
@@ -980,7 +980,7 @@ end;
  *----------------------------------------------------------------------*)
 function TCustomExRichEdit.GetUpdating: Boolean;
 begin
-  result := FUpdateCount > 0
+  Result := FUpdateCount > 0
 end;
 
 (*----------------------------------------------------------------------*
@@ -1498,7 +1498,7 @@ end;
  *----------------------------------------------------------------------*)
 function TRichEdit1Provider.GetCRLFTextLen: Integer;
 begin
-  result := GetTextLen;
+  Result := GetTextLen;
 end;
 
 function TRichEdit1Provider.GetSelText: WideString;
@@ -1509,7 +1509,7 @@ begin
   SetLength(st, Owner.SelLength + 1);
   Length := SendMessage(Owner.Handle, EM_GETSELTEXT, 0, Longint(PChar(st)));
   SetLength(st, Length);
-  result := StringToWideString (st, Owner.CodePage);
+  Result := StringToWideString (st, Owner.CodePage);
 end;
 
 (*----------------------------------------------------------------------*
@@ -1525,7 +1525,7 @@ begin
   len := GetWindowTextLength (Owner.Handle);
   SetLength (s, len);
   GetWindowText (Owner.Handle, PChar (s), len);
-  result := StringToWideString (s, Owner.CodePage);
+  Result := StringToWideString (s, Owner.CodePage);
 end;
 
 (*----------------------------------------------------------------------*
@@ -1535,7 +1535,7 @@ end;
  *----------------------------------------------------------------------*)
 function TRichEdit1Provider.GetTextLen: Integer;
 begin
-  result := GetWindowTextLength (Owner.Handle)
+  Result := GetWindowTextLength (Owner.Handle)
 end;
 
 (*----------------------------------------------------------------------*
@@ -1630,7 +1630,7 @@ begin
 
   Move ((stream.FBuffer + stream.FChunkStart + stream.FPos)^, pbBuff^, ret);
   Inc (stream.FPos, ret div sizeof (WideChar));
-  result := 0
+  Result := 0
 end;
 
 (*----------------------------------------------------------------------*
@@ -1672,7 +1672,7 @@ begin
     end
   end;
 
-  result := 0
+  Result := 0
 end;
 
 (*----------------------------------------------------------------------*
@@ -1707,7 +1707,7 @@ begin
 
   stream.FChunkEnd := stream.FPos;
 
-  result := 0
+  Result := 0
 end;
 
 function EditStreamOchCallback (dwCookie: DWORD; pbBuff: pointer; cb: DWORD; var ret: DWORD): DWORD; stdcall;
@@ -1728,7 +1728,7 @@ begin
 
   stream.FChunkEnd := stream.FPos;
 
-  result := 0
+  Result := 0
 end;
 
 { TRichEdit2_3Provider }
@@ -1765,7 +1765,7 @@ var
 begin
   ltx.flags := GTL_NUMCHARS or GTL_PRECISE or GTL_USECRLF;
   ltx.codepage := 1200; // Unicode
-  result := SendMessage (Owner.Handle, EM_GETTEXTLENGTHEX, LongInt (@ltx), 0);
+  Result := SendMessage (Owner.Handle, EM_GETTEXTLENGTHEX, LongInt (@ltx), 0);
 end;
 
 function TRichEdit2_3Provider.GetIRichEditOLE: IRichEditOLE;
@@ -1775,12 +1775,12 @@ begin
     SendMessage (Owner.Handle, EM_GETOLEINTERFACE, 0, Integer (@FIRichEditOLE));
     FGotIRichEditOLE := True
   end;
-   result := FIRichEditOLE
+   Result := FIRichEditOLE
 end;
 
 function TRichEdit2_3Provider.GetSelText: WideString;
 begin
-  result := RawGetText (True)
+  Result := RawGetText (True)
 end;
 
 (*----------------------------------------------------------------------*
@@ -1790,7 +1790,7 @@ end;
  *----------------------------------------------------------------------*)
 function TRichEdit2_3Provider.GetText: WideString;
 begin
-  result := RawGetText (False)
+  Result := RawGetText (False)
 end;
 
 (*----------------------------------------------------------------------*
@@ -1804,7 +1804,7 @@ var
 begin
   ltx.flags := GTL_NUMCHARS or GTL_PRECISE;
   ltx.codepage := 1200; // Unicode
-  result := SendMessage (Owner.Handle, EM_GETTEXTLENGTHEX, LongInt (@ltx), 0);
+  Result := SendMessage (Owner.Handle, EM_GETTEXTLENGTHEX, LongInt (@ltx), 0);
 end;
 
 (*----------------------------------------------------------------------*
@@ -1839,11 +1839,11 @@ begin
       editStream.pfnCallback := @EditStreamOchCallback;
     SendMessage (Owner.Handle, EM_STREAMOUT, flags, LongInt (@editStream));
     if (flags and SF_UNICODE) <> 0 then
-      stream.GetWideString(result)
+      stream.GetWideString(Result)
     else
     begin
       stream.GetString (st);
-      result := st
+      Result := st
     end
   finally
     stream.Free
@@ -2089,9 +2089,9 @@ end;
 function TCustomExRichEdit.GetCodePage: Integer;
 begin
   if FCodePage = -1 then
-    result := CharsetToCodePage (Font.Charset)
+    Result := CharsetToCodePage (Font.Charset)
   else
-    result := FCodePage;
+    Result := FCodePage;
 end;
 
 procedure TCustomExRichEdit.CMRecreateWnd(var Message: TMessage);
@@ -2124,7 +2124,7 @@ end;
 
 function TCustomExRichEdit.GetCRLFTextLen: Integer;
 begin
-  result := FRichEditProvider.GetCRLFTextLen
+  Result := FRichEditProvider.GetCRLFTextLen
 end;
 
 procedure TCustomExRichEdit.Print;
@@ -2184,27 +2184,27 @@ end;
 
 function TCustomExRichEdit.GetUsesCRLF: Boolean;
 begin
-  result := FRichEditProvider.UsesCRLF
+  Result := FRichEditProvider.UsesCRLF
 end;
 
 function TRichEdit1Provider.UsesCRLF: Boolean;
 begin
-  result := True
+  Result := True
 end;
 
 function TRichEdit2_3Provider.UsesCRLF: Boolean;
 begin
-  result := False
+  Result := False
 end;
 
 function AdjustForCRLF (ss: Integer; const txt: WideString): Integer;
 var
   i: Integer;
 begin
-  result := ss;
+  Result := ss;
   for i := 0 to ss - 1 do
    if txt [i+1] = #10 then
-     Dec (result)
+     Dec (Result)
 end;
 
 function UnAdjustForCRLF (ss: Integer; const txt: WideString): Integer;
@@ -2219,7 +2219,7 @@ begin
 
     Inc (i)
   end;
-  result := ss
+  Result := ss
 end;
 
 procedure TCustomExRichEdit.SetRawSelection(ss, se: Integer);
@@ -2257,17 +2257,17 @@ end;
 
 function TRichEditProvider.GetIRichEditOLE: IRichEditOLE;
 begin
-  result := Nil
+  Result := Nil
 end;
 
 function TCustomExRichEdit.GetIRichEditOLE: IRichEditOLE;
 begin
-  result := FRichEditProvider.GetIRichEditOLE
+  Result := FRichEditProvider.GetIRichEditOLE
 end;
 
 function TCustomExRichEdit.GetLineCount: Integer;
 begin
-  result := SendMessage (Handle, EM_GETLINECOUNT, 0, 0);
+  Result := SendMessage (Handle, EM_GETLINECOUNT, 0, 0);
 end;
 
 procedure TCustomExRichEdit.PasteTextFromClipboard;

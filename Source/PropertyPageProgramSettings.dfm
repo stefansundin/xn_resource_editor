@@ -61,7 +61,6 @@ inherited fmPropertyPageProgramSettings: TfmPropertyPageProgramSettings
     Width = 258
     Height = 21
     Style = csDropDownList
-    ItemHeight = 13
     ItemIndex = 0
     TabOrder = 3
     Text = 'Windows API resource parser'
