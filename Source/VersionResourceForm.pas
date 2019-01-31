@@ -64,16 +64,12 @@ type
     procedure SetObject(const Value: TObject); override;
     function GetMenuItem : TMenuItem; override;
     procedure UpdateActions; override;
-  public
-    { Public declarations }
   end;
-
-var
-  fmVersionResource: TfmVersionResource;
 
 implementation
 
-uses DialogStrings;
+uses
+  DialogStrings;
 
 {$R *.DFM}
 
@@ -299,7 +295,7 @@ procedure TfmVersionResource.actStringDeleteStringExecute(Sender: TObject);
 var
   n : Integer;
 begin
-  if Assigned (lvVersionStrings.Selected) then
+  if Assigned(lvVersionStrings.Selected) then
   begin
     AddUndoEntry (rstDeleteString);
     n := lvVersionStrings.Selected.Index;
@@ -329,7 +325,7 @@ procedure TfmVersionResource.actStringModifyStringExecute(Sender: TObject);
 var
   idx : Integer;
 begin
-  if Assigned (lvVersionStrings.Selected) then
+  if Assigned(lvVersionStrings.Selected) then
   begin
     fSelectedItem := lvVersionStrings.Selected;
     idx := fDetails.IndexOf(fSelectedItem.Caption);
@@ -395,7 +391,7 @@ end;
 procedure TfmVersionResource.actStringModifyStringNameExecute(
   Sender: TObject);
 begin
-  if Assigned (lvVersionStrings.Selected) then
+  if Assigned(lvVersionStrings.Selected) then
     lvVersionStrings.Selected.EditCaption
 end;
 
@@ -416,7 +412,7 @@ procedure TfmVersionResource.lvVersionStringsDblClick(Sender: TObject);
 var
   p : TPoint;
 begin
-  if Assigned (lvVersionStrings.Selected) then
+  if Assigned(lvVersionStrings.Selected) then
   begin
     p := Mouse.CursorPos;
     MapWindowPoints (HWND_DESKTOP, lvVersionStrings.Handle, p, 1);
@@ -439,7 +435,7 @@ procedure TfmVersionResource.UpdateActions;
 var
   sel : Boolean;
 begin
-  sel := Assigned (lvVersionStrings.Selected) and lvVersionStrings.Focused;
+  sel := Assigned(lvVersionStrings.Selected) and lvVersionStrings.Focused;
   actStringDeleteString.Enabled := sel;
   actStringModifyString.Enabled := sel;
   actStringModifyStringName.Enabled := sel

@@ -1296,7 +1296,7 @@ begin
     if not fInFontChange then
     try
       fInFontChange := True;
-      if Assigned (OnFontChange) and not (csDestroying in ComponentState) then
+      if Assigned(OnFontChange) and not (csDestroying in ComponentState) then
         OnFontChange (self);
     finally
       fInFontChange := False
@@ -1358,8 +1358,8 @@ end;
 procedure TCustomExRichEdit.URLMouseDown(Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
-  if Assigned (OnURLMouseDown) then
-    OnURLMouseDown (Self, Button, Shift, X, Y)
+  if Assigned(OnURLMouseDown) then
+    OnURLMouseDown(Self, Button, Shift, X, Y)
 end;
 
 (*----------------------------------------------------------------------*
@@ -1381,8 +1381,8 @@ end;
 procedure TCustomExRichEdit.URLMouseUp(Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
-  if Assigned (OnURLMouseUp) then
-    OnURLMouseUp (Self, Button, Shift, X, Y)
+  if Assigned(OnURLMouseUp) then
+    OnURLMouseUp(Self, Button, Shift, X, Y)
 end;
 
 (*----------------------------------------------------------------------*

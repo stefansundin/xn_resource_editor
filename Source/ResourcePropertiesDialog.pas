@@ -25,9 +25,6 @@ type
     property Language : LCID read GetLanguage;
   end;
 
-var
-  dlgResourceProperties: TdlgResourceProperties;
-
 implementation
 
 {$R *.DFM}
@@ -43,7 +40,7 @@ var
   def : string;
 begin
   UseInternationalFont (ntedName.Font);
-  if Assigned (ResourceDetails) then
+  if Assigned(ResourceDetails) then
   begin
     if resourceDetails is TStringResourceDetails then
       ntedName.Text := ResIdToStringsId (ResourceDetails.ResourceName)
@@ -57,7 +54,7 @@ begin
   for i := 0 to Languages.Count - 1 do
   begin
     cbLanguage.Items.Add (Languages.Name [i]);
-    if Assigned (ResourceDetails) and (ResourceDetails.ResourceLanguage <> 0) and (DWORD (ResourceDetails.ResourceLanguage) = Languages.LocaleID [i]) then
+    if Assigned(ResourceDetails) and (ResourceDetails.ResourceLanguage <> 0) and (DWORD (ResourceDetails.ResourceLanguage) = Languages.LocaleID [i]) then
       def := Languages.Name [i];
   end;
 

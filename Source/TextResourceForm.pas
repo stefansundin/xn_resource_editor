@@ -80,9 +80,6 @@ type
     procedure UpdateFonts; override;
   end;
 
-var
-  fmTextResource: TfmTextResource;
-
 implementation
 
 uses
@@ -132,7 +129,7 @@ end;
 
 procedure TfmTextResource.actStringsChangeIDExecute(Sender: TObject);
 begin
-  if Assigned (vstStrings.FocusedNode) then
+  if Assigned(vstStrings.FocusedNode) then
     if not fIsStrings then
       vstStrings.EditNode(vstStrings.FocusedNode, 0)
 end;
@@ -147,7 +144,7 @@ var
   idx : Integer;
   p : PVirtualNode;
 begin
-  if Assigned (vstStrings.FocusedNode) then
+  if Assigned(vstStrings.FocusedNode) then
   begin
     idx := vstStrings.FocusedNode^.Index;
     fWorkStrings.Delete(idx);
@@ -157,7 +154,7 @@ begin
       Dec (idx);
 
     p := NodeN (idx);
-    if Assigned (p) then
+    if Assigned(p) then
       vstStrings.Selected [p] := True;
 
     if fDetails is TMessageResourceDetails then
@@ -177,7 +174,7 @@ procedure TfmTextResource.actStringsModifyExecute(Sender: TObject);
 var
   r : TRect;
 begin
-  if Assigned (vstStrings.FocusedNode) then
+  if Assigned(vstStrings.FocusedNode) then
   begin
     mmoMessage.Width := vstStrings.Width - 2;
     r := vstStrings.GetDisplayRect(vstStrings.FocusedNode, 1, False);
@@ -278,7 +275,7 @@ end;
 
 function TfmTextResource.NodeString(node : PVirtualNode) : TStringInfo;
 begin
-  if Assigned (node) and (Integer (node^.Index) < fWorkStrings.Count) then
+  if Assigned(node) and (Integer (node^.Index) < fWorkStrings.Count) then
     result := TStringInfo (fWorkStrings [node^.Index])
   else
     result := Nil
@@ -350,7 +347,7 @@ procedure TfmTextResource.UpdateActions;
 var
   sel : Boolean;
 begin
-  sel := Assigned (vstStrings.FocusedNode);
+  sel := Assigned(vstStrings.FocusedNode);
 
   actStringsAdd.Enabled := fDetails is TMessageResourceDetails;
   actStringsModify.Enabled := sel;
@@ -380,7 +377,7 @@ begin
   end;
 
   vstStrings.ClearSelection;
-  if Assigned (selectedString) then
+  if Assigned(selectedString) then
   begin
     i := fWorkStrings.IndexOf (selectedString);
     p := NodeN (i);
@@ -407,7 +404,7 @@ procedure TfmTextResource.vstStringsDblClick(Sender: TObject);
 var
   p : TPoint;
 begin
-  if Assigned (vstStrings.FocusedNode) then
+  if Assigned(vstStrings.FocusedNode) then
   begin
     p := Mouse.CursorPos;
     MapWindowPoints (0, vstStrings.Handle, p, 1);
@@ -442,7 +439,7 @@ begin
     Exit;
 
   st := NodeString (node);
-  if not Assigned (st) then
+  if not Assigned(st) then
     Exit;
 
   try

@@ -24,9 +24,9 @@ type
     stMemAvail: TLabel;
     icoProduct1: TImage;
     OKBtn: TButton;
-    hlbSupport: THyperlinkButton;
     stThankYou: TLabel;
     lbDonations: TListBox;
+    hlbSupport: THyperlinkButton;
     procedure FormShow(Sender: TObject);
   private
     fThanksTo : string;
@@ -169,7 +169,7 @@ begin
   Caption := 'About ' + Application.Title;
 
   if not LoadGifResource (Application.Title, icoProduct) then
-    if Assigned (Application.Icon) then
+    if Assigned(Application.Icon) then
       icoProduct.Picture.Icon := Application.Icon;
 
   st := Application.Title;

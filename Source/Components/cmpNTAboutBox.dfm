@@ -26,10 +26,6 @@ object fmNTAboutBox: TfmNTAboutBox
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'TabSheet1'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object icoProduct: TImage
         Left = 8
         Top = 8
@@ -123,6 +119,18 @@ object fmNTAboutBox: TfmNTAboutBox
         Center = True
         Transparent = True
       end
+      object hlbSupport: THyperlinkButton
+        Left = 112
+        Top = 200
+        Width = 64
+        Height = 16
+        Caption = 'hlbSupport'
+        ImageIndex = 0
+        SelectedFontColor = clBlack
+        SelectedFontStyles = []
+        AutoLink = False
+        InPlace = False
+      end
       object OKBtn: TButton
         Left = 279
         Top = 220
@@ -136,10 +144,6 @@ object fmNTAboutBox: TfmNTAboutBox
     object TabSheet2: TTabSheet
       Caption = 'Thank You!'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object stThankYou: TLabel
         Left = 16
         Top = 16

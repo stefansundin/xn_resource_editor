@@ -4,7 +4,7 @@ object fmSpellChecker: TfmSpellChecker
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Check Spelling'
-  ClientHeight = 297
+  ClientHeight = 290
   ClientWidth = 440
   Color = clBtnFace
   Constraints.MinHeight = 257
@@ -18,14 +18,13 @@ object fmSpellChecker: TfmSpellChecker
   OldCreateOrder = True
   Position = poMainFormCenter
   OnClose = FormClose
-  OnDestroy = FormDestroy
   OnShow = FormShow
   DesignSize = (
     440
-    297)
+    290)
   PixelsPerInch = 96
   TextHeight = 13
-  object Label1: TLabel
+  object LabelUnknownWord: TLabel
     Left = 16
     Top = 16
     Width = 75
@@ -35,7 +34,7 @@ object fmSpellChecker: TfmSpellChecker
     Margins.Right = 2
     Caption = 'Unknown Word'
   end
-  object lblSuggestions: TLabel
+  object LabelSuggestions: TLabel
     Left = 16
     Top = 96
     Width = 58
@@ -45,7 +44,7 @@ object fmSpellChecker: TfmSpellChecker
     Margins.Right = 2
     Caption = 'Suggestions'
   end
-  object btnChange: TButton
+  object ButtonChange: TButton
     Left = 350
     Top = 112
     Width = 75
@@ -57,9 +56,9 @@ object fmSpellChecker: TfmSpellChecker
     Anchors = [akTop, akRight]
     Caption = '&Change'
     TabOrder = 0
-    OnClick = btnChangeClick
+    OnClick = ButtonChangeClick
   end
-  object btnChangeAll: TButton
+  object ButtonChangeAll: TButton
     Left = 350
     Top = 136
     Width = 75
@@ -71,9 +70,9 @@ object fmSpellChecker: TfmSpellChecker
     Anchors = [akTop, akRight]
     Caption = 'Change A&ll'
     TabOrder = 1
-    OnClick = btnChangeAllClick
+    OnClick = ButtonChangeAllClick
   end
-  object btnSkipAll: TButton
+  object ButtonSkipAll: TButton
     Left = 350
     Top = 184
     Width = 75
@@ -85,9 +84,9 @@ object fmSpellChecker: TfmSpellChecker
     Anchors = [akTop, akRight]
     Caption = 'Skip &All'
     TabOrder = 2
-    OnClick = btnSkipAllClick
+    OnClick = ButtonSkipAllClick
   end
-  object btnSkip: TButton
+  object ButtonSkip: TButton
     Left = 350
     Top = 160
     Width = 75
@@ -99,9 +98,9 @@ object fmSpellChecker: TfmSpellChecker
     Anchors = [akTop, akRight]
     Caption = '&Skip'
     TabOrder = 3
-    OnClick = btnSkipClick
+    OnClick = ButtonSkipClick
   end
-  object btnAdd: TButton
+  object ButtonAdd: TButton
     Left = 350
     Top = 208
     Width = 75
@@ -113,11 +112,11 @@ object fmSpellChecker: TfmSpellChecker
     Anchors = [akTop, akRight]
     Caption = '&Add'
     TabOrder = 4
-    OnClick = btnAddClick
+    OnClick = ButtonAddClick
   end
-  object btnCancel: TButton
+  object ButtonCancel: TButton
     Left = 271
-    Top = 251
+    Top = 244
     Width = 74
     Height = 25
     Margins.Left = 2
@@ -129,10 +128,11 @@ object fmSpellChecker: TfmSpellChecker
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 5
+    ExplicitTop = 251
   end
-  object btnFinish: TButton
+  object ButtonFinish: TButton
     Left = 350
-    Top = 251
+    Top = 244
     Width = 75
     Height = 25
     Margins.Left = 2
@@ -144,12 +144,13 @@ object fmSpellChecker: TfmSpellChecker
     Default = True
     ModalResult = 1
     TabOrder = 7
+    ExplicitTop = 251
   end
-  object lvSuggestions: TListView
+  object ListViewSuggestions: TListView
     Left = 16
     Top = 112
     Width = 320
-    Height = 122
+    Height = 115
     Margins.Left = 2
     Margins.Top = 2
     Margins.Right = 2
@@ -165,6 +166,29 @@ object fmSpellChecker: TfmSpellChecker
     ShowColumnHeaders = False
     TabOrder = 6
     ViewStyle = vsReport
-    OnDblClick = lvSuggestionsDblClick
+    OnDblClick = ListViewSuggestionsDblClick
+    ExplicitHeight = 122
+  end
+  object reText: TExRichEdit
+    Left = 16
+    Top = 35
+    Width = 409
+    Height = 56
+    Text = ''
+    RightMargin = 0
+    AutoURLDetect = False
+    AutoURLExecute = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 8
+  end
+  object PersistentPosition: TPersistentPosition
+    Manufacturer = 'Woozle'
+    Left = 56
+    Top = 240
   end
 end

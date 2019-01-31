@@ -776,7 +776,7 @@ var
   p1, p2 : PMidiEventData;
 begin
   p1 := Event [eventNo];
-  if Assigned (p1) then
+  if Assigned(p1) then
   begin
     if p1^.sysexSize > 0 then
       FreeMem (p1^.data.sysex);
@@ -955,7 +955,7 @@ begin
     sts := pSrc^.data.status and midiStatusMask;
     if (sts = midiNoteOn) and (pSrc^.OnOffEvent^.pos > endPos) then
     begin                                  // Add orphaned note-off to orphan list
-      if not Assigned (OrphanList) then
+      if not Assigned(OrphanList) then
       begin
         OrphanList := TList.Create;
         OrphanList.Capacity := 64
@@ -975,7 +975,7 @@ begin
     Inc (pSrc);
   end;
 
-  if Assigned (OrphanList) then             // Copy orphans to buffer
+  if Assigned(OrphanList) then             // Copy orphans to buffer
   try
                                             // Add orphans count to header event count
     with PMidiEventClipboardHeader (buf)^ do
@@ -1048,7 +1048,7 @@ begin
       sts := p^.data.status and midiStatusMask;
       if (sts = midiNoteOn) and (p^.OnOffEvent^.pos > endPos) then
       begin                                         // Add orphan to list.
-        if not Assigned (OrphanList) then
+        if not Assigned(OrphanList) then
         begin
           OrphanList := TList.Create;
           OrphanList.Capacity := 64
@@ -1071,7 +1071,7 @@ begin
     end;
 
     // Delete orphans - they're off the end of the range, and may not be consecutive
-    if Assigned (OrphanList) then
+    if Assigned(OrphanList) then
     try
       if OrphanList.Count > 1 then
         OrphanList.Sort (CompareEvents);

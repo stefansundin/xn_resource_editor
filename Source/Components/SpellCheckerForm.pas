@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ComCtrls, cmpCWSpellChecker, cmpCWRichEdit,
+  Dialogs, StdCtrls, ComCtrls, cmpCWRichEdit, cmpCWSpellChecker,
   cmpPersistentPosition;
 
 const
@@ -12,46 +12,45 @@ const
 
 type
   TfmSpellChecker = class(TForm)
-    Label1: TLabel;
-    lblSuggestions: TLabel;
-    btnChange: TButton;
-    btnChangeAll: TButton;
-    btnSkipAll: TButton;
-    btnSkip: TButton;
-    btnAdd: TButton;
-    btnCancel: TButton;
-    btnFinish: TButton;
+    LabelUnknownWord: TLabel;
+    LabelSuggestions: TLabel;
+    ButtonChange: TButton;
+    ButtonChangeAll: TButton;
+    ButtonSkipAll: TButton;
+    ButtonSkip: TButton;
+    ButtonAdd: TButton;
+    ButtonCancel: TButton;
+    ButtonFinish: TButton;
     reText: TExRichEdit;
-    lvSuggestions: TListView;
-    PersistentPosition1: TPersistentPosition;
+    ListViewSuggestions: TListView;
+    PersistentPosition: TPersistentPosition;
     procedure FormShow(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure btnSkipClick(Sender: TObject);
-    procedure btnChangeClick(Sender: TObject);
-    procedure btnChangeAllClick(Sender: TObject);
-    procedure lvSuggestionsDblClick(Sender: TObject);
-    procedure btnAddClick(Sender: TObject);
-    procedure btnSkipAllClick(Sender: TObject);
+    procedure ButtonSkipClick(Sender: TObject);
+    procedure ButtonChangeClick(Sender: TObject);
+    procedure ButtonChangeAllClick(Sender: TObject);
+    procedure ListViewSuggestionsDblClick(Sender: TObject);
+    procedure ButtonAddClick(Sender: TObject);
+    procedure ButtonSkipAllClick(Sender: TObject);
   private
-    fChecker : TCWSpellChecker;
-    fText : WideString;
-    fBadWord : WideString;
-    fBadSS : Integer;
-    fIgnoreWords : TStringList;
-    fSS, fSE : Integer;
-    fQuoteChars: string;
-    procedure ErrorFoundAt (ss, se : Integer; suggestions : TStrings);
+    FChecker: TCWSpellChecker;
+    FText: WideString;
+    FBadWord: WideString;
+    FBadSS: Integer;
+    FIgnoreWords: TStringList;
+    FSS, FSE: Integer;
+    FQuoteChars: string;
+    procedure ErrorFoundAt (ss, se: Integer; suggestions: TStrings);
     procedure NextWord;
-    function GetChangedWord : WideString;
-    procedure WmSetup (var message : TMessage); message WM_SETUP;
+    function GetChangedWord: WideString;
+    procedure WmSetup (var message: TMessage); message WM_SETUP;
   protected
     procedure UpdateActions; override;
     procedure Loaded; override;
   public
     destructor Destroy; override;
-    procedure Initialize (checker : TCWSpellChecker; ss, se : Integer; suggestions : TStrings);
-    property QuoteChars : string read fQuoteChars write fQuoteChars;
+    procedure Initialize (checker: TCWSpellChecker; ss, se: Integer; suggestions: TStrings);
+    property QuoteChars: string read FQuoteChars write FQuoteChars;
   end;
 
 var
@@ -59,32 +58,36 @@ var
 
 implementation
 
-uses unitCharsetMap;
+uses
+  unitCharsetMap;
 
 {$R *.dfm}
 
 { TfmSpellChecker }
 
-procedure TfmSpellChecker.Initialize(checker : TCWSpellChecker; ss, se : Integer; suggestions : TStrings);
+destructor TfmSpellChecker.Destroy;
 begin
-  fChecker := checker;
-  fText := fChecker.ExRichEdit.Text;
-  reText.CodePage := fChecker.ExRichEdit.CodePage;
-  reText.Text := fText;
-  fChecker.ExRichEdit.SetRawSelection(ss, se);
-  fSS := ss;
-  fSE := se;
+  fmSpellChecker := nil;
+  FIgnoreWords.Free;
+
+  inherited;
+end;
+
+procedure TfmSpellChecker.Initialize(checker: TCWSpellChecker; ss, se: Integer; suggestions: TStrings);
+begin
+  FChecker := checker;
+  FText := FChecker.ExRichEdit.Text;
+  reText.CodePage := FChecker.ExRichEdit.CodePage;
+  reText.Text := FText;
+  FChecker.ExRichEdit.SetRawSelection(ss, se);
+  FSS := ss;
+  FSE := se;
   reText.SetRawSelection (ss, se);
-  fBadWord := fChecker.ExRichEdit.SelText;
+  FBadWord := FChecker.ExRichEdit.SelText;
 
   ErrorFoundAt (ss, se, suggestions);
 end;
 
-
-procedure TfmSpellChecker.FormDestroy(Sender: TObject);
-begin
-  fmSpellChecker := Nil
-end;
 
 procedure TfmSpellChecker.FormClose(Sender: TObject;
   var Action: TCloseAction);
@@ -93,70 +96,70 @@ begin
 end;
 
 procedure TfmSpellChecker.ErrorFoundAt(ss, se: Integer;
-  suggestions: TStrings);
+  Suggestions: TStrings);
 var
-  i : Integer;
+  i: Integer;
 begin
-  fBadSS := ss;
+  FBadSS := ss;
 
-  lvSuggestions.Items.BeginUpdate;
+  ListViewSuggestions.Items.BeginUpdate;
   try
-    lvSuggestions.Items.Clear;
-    for i := 0 to suggestions.Count - 1 do
-      with lvSuggestions.Items.Add do
+    ListViewSuggestions.Items.Clear;
+    for i := 0 to Suggestions.Count - 1 do
+      with ListViewSuggestions.Items.Add do
         Caption := suggestions [i];
   finally
-    lvSuggestions.Items.EndUpdate
+    ListViewSuggestions.Items.EndUpdate;
   end
 end;
 
 procedure TfmSpellChecker.UpdateActions;
 var
-  errorFound : boolean;
-  canChange : boolean;
+  ErrorFound: Boolean;
+  CanChange: Boolean;
 begin
-  errorFound := fBadWord <> '';
+  ErrorFound := FBadWord <> '';
 
-  if errorFound then
+  if ErrorFound then
   begin
-    btnSkip.Enabled := True;
-    btnSkipAll.Enabled := True;
-    canChange := (lvSuggestions.ItemIndex <> -1) or (reText.Text <> fText);
-    btnChange.Enabled := canChange;
-    btnChangeAll.Enabled := canChange;
+    ButtonSkip.Enabled := True;
+    ButtonSkipAll.Enabled := True;
+    CanChange := (ListViewSuggestions.ItemIndex <> -1) or (reText.Text <> FText);
+    ButtonChange.Enabled := CanChange;
+    ButtonChangeAll.Enabled := CanChange;
   end
   else
   begin
-    btnSkip.Enabled := False;
-    btnSkipAll.Enabled := False;
-    btnChange.Enabled := False;
-    btnChangeAll.Enabled := False;
+    ButtonSkip.Enabled := False;
+    ButtonSkipAll.Enabled := False;
+    ButtonChange.Enabled := False;
+    ButtonChangeAll.Enabled := False;
   end
 end;
 
-procedure TfmSpellChecker.btnSkipClick(Sender: TObject);
+procedure TfmSpellChecker.ButtonSkipClick(Sender: TObject);
 begin
-  NextWord
+  NextWord;
 end;
 
 procedure TfmSpellChecker.NextWord;
 var
-  ss, se : Integer;
-  suggestions : TStrings;
-  ok : boolean;
+  ss, se: Integer;
+  suggestions: TStrings;
+  ok: Boolean;
 begin
   repeat
     reText.GetRawSelection(ss, se);
 
     suggestions := TStringList.Create;
     try
-      ok := fChecker.Check(fText, se + 1, ss, se, suggestions);
+      ok := FChecker.Check(FText, se + 1, ss, se, suggestions);
       if not ok then
       begin
-        fChecker.ExRichEdit.SetRawSelection(ss, se);
+        FChecker.ExRichEdit.SetRawSelection(ss, se);
         reText.SetRawSelection (ss, se);
-        fBadWord := fChecker.ExRichEdit.SelText;
-        if not Assigned (fIgnoreWords) or (fIgnoreWords.IndexOf(fBadWord) = -1) then
+        FBadWord := FChecker.ExRichEdit.SelText;
+        if not Assigned(FIgnoreWords) or (FIgnoreWords.IndexOf(FBadWord) = -1) then
         begin
           ErrorFoundAt (ss, se, suggestions);
           break
@@ -173,57 +176,57 @@ begin
   until False
 end;
 
-procedure TfmSpellChecker.btnChangeClick(Sender: TObject);
+procedure TfmSpellChecker.ButtonChangeClick(Sender: TObject);
 begin
-  if reText.Text <> fText then
+  if reText.Text <> FText then
   begin
-    fText := reText.Text;
-    fChecker.ExRichEdit.Text := fText
+    FText := reText.Text;
+    FChecker.ExRichEdit.Text := FText
   end
   else
   begin
-    fChecker.ExRichEdit.SelText := lvSuggestions.Selected.Caption;
-    fText := fChecker.ExRichEdit.Text;
-    reText.SelText := lvSuggestions.Selected.Caption
+    FChecker.ExRichEdit.SelText := ListViewSuggestions.Selected.Caption;
+    FText := FChecker.ExRichEdit.Text;
+    reText.SelText := ListViewSuggestions.Selected.Caption
   end;
   NextWord
 end;
 
-procedure TfmSpellChecker.btnChangeAllClick(Sender: TObject);
+procedure TfmSpellChecker.ButtonChangeAllClick(Sender: TObject);
 var
-  ss : Integer;
-  newWord : string;
+  ss: Integer;
+  newWord: string;
 begin
-  if reText.Text <> fText then
+  if reText.Text <> FText then
     newWord := GetChangedWord
   else
-    newWord := lvSuggestions.Selected.Caption;
+    newWord := ListViewSuggestions.Selected.Caption;
 
-  ss := fBadSS - 1;
+  ss := FBadSS - 1;
 
-  fText := Copy (fText, 1, ss) + StringReplace (Copy (fText, ss + 1, MaxInt), fBadWord, newWord, [rfReplaceAll, rfIgnoreCase]);
-  fChecker.ExRichEdit.Text := fText;
-  reText.Text := fText;
+  FText := Copy (FText, 1, ss) + StringReplace (Copy (FText, ss + 1, MaxInt), FBadWord, newWord, [rfReplaceAll, rfIgnoreCase]);
+  FChecker.ExRichEdit.Text := FText;
+  reText.Text := FText;
 
   reText.SetRawSelection(ss + 1, ss + 1 + Length (newWord));
 
   NextWord;
 end;
 
-procedure TfmSpellChecker.lvSuggestionsDblClick(Sender: TObject);
+procedure TfmSpellChecker.ListViewSuggestionsDblClick(Sender: TObject);
 begin
-  btnChangeClick (nil)
+  ButtonChangeClick (nil)
 end;
 
 function TfmSpellChecker.GetChangedWord: WideString;
 var
-  changedText : WideString;
-  p, l, ew : Integer;
-  ch : WideChar;
+  changedText: WideString;
+  p, l, ew: Integer;
+  ch: WideChar;
 begin
   changedText := reText.Text;
   l := Length (changedText);
-  p := fBadSS;
+  p := FBadSS;
 
   ew := -1;
 
@@ -242,36 +245,29 @@ begin
   if ew = -1 then
     result := ''
   else
-    result := Copy (changedText, fBadSS, ew - fBadSS + 1);
+    result := Copy (changedText, FBadSS, ew - FBadSS + 1);
 end;
 
-procedure TfmSpellChecker.btnAddClick(Sender: TObject);
+procedure TfmSpellChecker.ButtonAddClick(Sender: TObject);
 begin
-  fChecker.Add (fBadWord);
+  FChecker.Add (FBadWord);
   NextWord
 end;
 
-destructor TfmSpellChecker.Destroy;
+procedure TfmSpellChecker.ButtonSkipAllClick(Sender: TObject);
 begin
-  fIgnoreWords.Free;
-
-  inherited;
-end;
-
-procedure TfmSpellChecker.btnSkipAllClick(Sender: TObject);
-begin
-  if not Assigned (fIgnoreWords) then
+  if not Assigned(FIgnoreWords) then
   begin
-    fIgnoreWords := TStringList.Create;
-    fIgnoreWords.CaseSensitive := False
+    FIgnoreWords := TStringList.Create;
+    FIgnoreWords.CaseSensitive := False
   end;
-  fIgnoreWords.Add(fBadWord);
+  FIgnoreWords.Add(FBadWord);
   NextWord
 end;
 
 procedure TfmSpellChecker.FormShow(Sender: TObject);
 begin
-  reText.SetRawSelection (fSS, fSE);
+  reText.SetRawSelection (FSS, FSE);
   PostMessage (handle, WM_SETUP, 0, 0);
 end;
 
