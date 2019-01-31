@@ -44,14 +44,14 @@ const
   REO_INVERTEDSELECT	= $00000004;	// Object drawn all inverted if sel
   REO_BELOWBASELINE	= $00000002;	// Object sits below the baseline
   REO_RESIZABLE		= $00000001;	// Object may be resized
-  REO_LINK		= $80000000;	// Object is a link (RO)
+  REO_LINK		= $80000000;	// Object is a link(RO)
   REO_STATIC		= $40000000;	// Object is static (RO)
   REO_SELECTED		= $08000000;	// Object selected (RO)
   REO_OPEN		= $04000000;	// Object open in its server (RO)
-  REO_INPLACEACTIVE	= $02000000;	// Object in place active (RO)
+  REO_INPLACEACTIVE	= $02000000;	// Object in place active(RO)
   REO_HILITED		= $01000000;	// Object is to be hilited (RO)
-  REO_LINKAVAILABLE	= $00800000;	// Link believed available (RO)
-  REO_GETMETAFILE	= $00400000;	// Object requires metafile (RO)
+  REO_LINKAVAILABLE	= $00800000;	// Link believed available(RO)
+  REO_GETMETAFILE	= $00400000;	// Object requires metafile(RO)
 
 // flags for IRichEditOle.GetClipboardData,
 // IRichEditOleCallback.GetClipboardData and
@@ -74,7 +74,7 @@ const
  *)
 
 type
-  IRichEditOle = interface (IUnknown)
+  IRichEditOle = interface(IUnknown)
     ['{00020d00-0000-0000-00c0-000000000046}']
     function GetClientSite(out clientSite: IOleClientSite): HResult; stdcall;
     function GetObjectCount : Longint; stdcall;
@@ -84,29 +84,29 @@ type
     function ConvertObject (iob : Longint; const rclsidNew : TCLSID; lpstrUserTypeNew : PChar) : HRESULT; stdcall;
     function ActivateAs (const clsid : TCLSID; const clsidAs : TCLSID) : HRESULT; stdcall;
     function SetHostNames (lpstrContainerApp : PChar; lpstrContainerObj : PChar) : HRESULT; stdcall;
-    function SetLinkAvailable (iob : Longint; fAvailable : BOOL) : HRESULT; stdcall;
+    function SetLinkAvailable(iob : Longint; fAvailable : BOOL) : HRESULT; stdcall;
     function SetDvaspect (iob : Longint; dvAspect : DWORD) : HRESULT; stdcall;
-    function HandsOffStorage (iob : Longint) : HRESULT; stdcall;
-    function SaveComplete (iob : Longint; lpstg : IStorage) : HRESULT; stdcall;
+    function HandsOffStorage(iob : Longint) : HRESULT; stdcall;
+    function SaveComplete(iob : Longint; lpstg : IStorage) : HRESULT; stdcall;
     function InPlaceDeactivate : HRESULT; stdcall;
     function ContextSensitiveHelp (fEnterMode : BOOL) : HRESULT; stdcall;
-    function GetClipboardData (const lpchrg : TCharRange; reco : DWORD; out lplpDataObj : IDataObject) : HRESULT; stdcall;
+    function GetClipboardData(const lpchrg : TCharRange; reco : DWORD; out lplpDataObj : IDataObject) : HRESULT; stdcall;
     function ImportDataObject (lpDataObj : IDataObject; cf : TClipFormat; hMetaPict : HGLOBAL) : HRESULT; stdcall;
   end;
 
-  IRichEditOleCallback = interface (IUnknown)
+  IRichEditOleCallback = interface(IUnknown)
     ['{00020d03-0000-0000-00c0-000000000046}']
 
-    function GetNewStorage (out lplpstg : IStorage) : HRESULT; stdcall;
+    function GetNewStorage(out lplpstg : IStorage) : HRESULT; stdcall;
     function GetInPlaceContext (out lplpFrame : IOleInplaceFrame; out lplpDoc : IOleInplaceUIWindow; const lpFrameInfo : TOleInplaceFrameInfo) : HRESULT; stdcall;
     function ShowContainerUI (fShow : BOOL) : HRESULT; stdcall;
     function QueryInsertObject (const lpclsid : TCLSID; lpstg : IStorage; cp : Longint) : HRESULT; stdcall;
     function DeleteObject (lpOleObj : IOleObject) : HRESULT; stdcall;
-    function QueryAcceptData (lpDataObj : IDataObject; var lpcfFormat : TClipFormat; reco : DWORD; fReallity : BOOL; hMetaPict : HGLOBAL) : HRESULT; stdcall;
+    function QueryAcceptData(lpDataObj : IDataObject; var lpcfFormat : TClipFormat; reco : DWORD; fReallity : BOOL; hMetaPict : HGLOBAL) : HRESULT; stdcall;
     function ContextSensitiveHelp (fEnterMode : BOOL) : HRESULT; stdcall;
-    function GetClipboardData (var lpchrg : TCharRange; reco : DWORD; out lplpDataObj : IDataObject) : HRESULT; stdcall;
+    function GetClipboardData(var lpchrg : TCharRange; reco : DWORD; out lplpDataObj : IDataObject) : HRESULT; stdcall;
     function GetDragDropEffect (fDrag : BOOL; grfKeyState : DWORD; var pdwEffect : DWORD) : HRESULT; stdcall;
-    function GetContextMenu (selType : Word; lpOleObj : IOleObject; var lpchrg : TCharRange; var lphMenu : HMENU) : HRESULT; stdcall;
+    function GetContextMenu(selType : Word; lpOleObj : IOleObject; var lpchrg : TCharRange; var lphMenu : HMENU) : HRESULT; stdcall;
   end;
 implementation
 

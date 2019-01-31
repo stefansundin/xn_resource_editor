@@ -68,7 +68,7 @@ type
     property ValueAsStr : string read GetValueAsStr;
     property ActualValueAsStr : string read GetActualValueAsStr;
   public
-    constructor Create (collection : TCollection); override;
+    constructor Create(collection : TCollection); override;
     destructor Destroy; override;
     property PropertyValue: Variant read FPropertyValue write SetPropertyValue;
     property ActualValue: Variant read FActualValue write SetActualValue;
@@ -95,14 +95,14 @@ type
     procedure SetItem(index: Integer; const Value: TPropertyListProperty);
   public
     property Parent : TPropertyListBox read FParent;
-    property Items [index : Integer] : TPropertyListProperty read GetItem write SetItem; default;
+    property Items[index : Integer] : TPropertyListProperty read GetItem write SetItem; default;
     procedure EndUpdate; override;
   end;
 
   //--------------------------------------------------------------------
   // TPropertyListBox class
 
-  TPropertyEditEvent = procedure (Sender : TObject; prop : TPropertyListProperty) of object;
+  TPropertyEditEvent = procedure(Sender : TObject; prop : TPropertyListProperty) of object;
 
   TPropertyListBox = class(TScrollingWinControl)
   private
@@ -132,8 +132,8 @@ type
 
     procedure DoOnPropertyEditExit (Sender : TObject);
     procedure DoOnPropertyEditKeyDown (Sender : TObject; var Key: Word; Shift: TShiftState);
-    procedure DoOnPropertyEditDblClick (Sender : TObject);
-    procedure DoOnPropertyEditSpecialButtonClick (Sender : TObject);
+    procedure DoOnPropertyEditDblClick(Sender : TObject);
+    procedure DoOnPropertyEditSpecialButtonClick(Sender : TObject);
     procedure PropertyChanged;
     procedure WmInit (var Msg : TMessage); message WM_INIT;
 
@@ -158,9 +158,9 @@ type
     procedure CreateParams (var Params : TCreateParams); override;
     procedure CreateWnd; override;
   public
-    constructor Create (AOwner : TComponent); override;
+    constructor Create(AOwner : TComponent); override;
     destructor Destroy; override;
-    function FindProperty (const propName : string) : TPropertyListProperty;
+    function FindProperty(const propName : string) : TPropertyListProperty;
     property SelectedPropertyNo : Integer read FSelectedPropertyNo write SetSelectedPropertyNo;
     procedure Reset;
     property PropertyValue [const propName : string] : Variant read GetPropertyValue write SetPropertyValue;
@@ -241,7 +241,7 @@ begin
   Height := 120;
   FCanvas := TControlCanvas.Create;
   TControlCanvas (FCanvas).Control := Self;
-  FProperties := TPropertyListProperties.Create (Self, TPropertyListProperty);
+  FProperties := TPropertyListProperties.Create(Self, TPropertyListProperty);
   FProperties.FParent := self;
   DoubleBuffered := True;  // Get rid of ghastly flicker!
 end;
@@ -281,7 +281,7 @@ begin
     FSelectedPropertyNo := -1;
 
     if GetParentForm (Self).ActiveControl = Self then
-      PostMessage (Handle, WM_INIT, p, 0);
+      PostMessage(Handle, WM_INIT, p, 0);
   end
 end;
 
@@ -325,7 +325,7 @@ var
   i : Integer;
 begin
   if FSelectedPropertyNo >= FProperties.Count then Exit;
-  prop := FProperties [FSelectedPropertyNo];
+  prop := FProperties[FSelectedPropertyNo];
   if prop.ReadOnly then Exit;
 
   case prop.FPropertyType of
@@ -366,7 +366,7 @@ begin
   begin
     if FSelectedPropertyNo >= FProperties.Count then Exit;
 
-    prop := FProperties [FSelectedPropertyNo];
+    prop := FProperties[FSelectedPropertyNo];
     st := GetPropertyEditText;
 
     if Assigned (OnEndPropertyEdit) then
@@ -374,7 +374,7 @@ begin
 
     if prop.ValueAsStr <> st then
     begin
-      prop.SetPropertyValue (st);
+      prop.SetPropertyValue(st);
       PropertyChanged
     end
   end
@@ -426,11 +426,11 @@ var
   prop : TPropertyListProperty;
 begin
   if FSelectedPropertyNo >= FProperties.Count then Exit;
-  prop := FProperties [FSelectedPropertyNo];
+  prop := FProperties[FSelectedPropertyNo];
   if prop.ReadOnly then Exit;
 
   if Assigned (prop.OnSpecialButtonClick) then
-    prop.OnSpecialButtonClick (prop)
+    prop.OnSpecialButtonClick(prop)
 end;
 
 (*----------------------------------------------------------------------*
@@ -448,11 +448,11 @@ function TPropertyListBox.FindProperty(
 var
   i : Integer;
 begin
-  result := nil;
+  Result := nil;
   for i := 0 to FProperties.Count - 1 do
-    if CompareText (FProperties [i].PropertyName, propName) = 0 then
+    if CompareText (FProperties[i].PropertyName, propName) = 0 then
     begin
-      result := FProperties [i];
+      Result := FProperties[i];
       break
     end
 end;
@@ -482,11 +482,11 @@ function TPropertyListBox.GetPropertyValue(
 var
   prop : TPropertyListProperty;
 begin
-  prop := FindProperty (propName);
+  prop := FindProperty(propName);
   if Assigned (prop) then
-    result := prop.PropertyValue
+    Result := prop.PropertyValue
   else
-    raise Exception.Create ('Property ' + propName + ' not found');
+    raise Exception.Create('Property ' + propName + ' not found');
 end;
 
 procedure TPropertyListBox.MouseDown(Button: TMouseButton;
@@ -502,7 +502,7 @@ begin
   inherited;
 
   ctrl := GetParentForm (Self).ActiveControl;
-  while (ctrl <> Self) and (ctrl <> nil) do
+  while(ctrl <> Self) and (ctrl <> nil) do
     ctrl := ctrl.Parent;
 
   if not Assigned (ctrl) then           // We're not active - and neither are our children
@@ -520,7 +520,7 @@ begin
   if PtInRect (r, pt) then      // Clicked on divider
   begin
     FChangingWidth := True;
-    SetCapture (Handle);
+    SetCapture(Handle);
     FChangeWidthX := x;
     FChangingColWidth := NameColWidth;
     exit
@@ -535,7 +535,7 @@ begin
     if PtInRect (r, pt) then
     begin
       FChangingActualValueWidth := True;
-      SetCapture (Handle);
+      SetCapture(Handle);
       FChangeWidthX := x;
       FChangingColWidth := ActualValueColWidth;
       exit
@@ -545,7 +545,7 @@ begin
                         // Clicked on the name or value.
   offset := VertScrollBar.Position;
 
-  Inc (y, Offset);
+  Inc(y, Offset);
 
   sel := y div FLineHeight;   // Select the correct property
 
@@ -651,7 +651,7 @@ begin
     begin
       if i < Properties.Count then
       begin
-        prop := FProperties [i];
+        prop := FProperties[i];
 
         r.left := 0;
         r.right := ClientWidth - 1;
@@ -665,7 +665,7 @@ begin
           oldFontColor := prop.Color;
 
         try
-          if VarIsEmpty (prop.PropertyValue) or ((ActualValueColWidth > 0) and VarIsEmpty (prop.ActualValue)) then
+          if VarIsEmpty(prop.PropertyValue) or ((ActualValueColWidth > 0) and VarIsEmpty(prop.ActualValue)) then
             Canvas.Font.Color := clGrayText
           else
             Canvas.Font.Color := oldFontColor;
@@ -687,29 +687,29 @@ begin
         if i = SelectedPropertyNo then
           Frame3d (Canvas, r, clBtnShadow, clBtnHighlight, 1);
 
-        Inc (i)
+        Inc(i)
       end;
       Canvas.Pen.Color := clBtnShadow;
       Canvas.MoveTo (0, y - offset);
       Canvas.LineTo (ClientWidth, y - offset);
     end
     else
-      Inc (i);
+      Inc(i);
 
-    Inc (y, FLineHeight);
+    Inc(y, FLineHeight);
   end;
 
   r := ClientRect;
   r.Left := NameColWidth;
   r.Right := r.Left;
-  DrawEdge (Canvas.Handle, r, EDGE_ETCHED, BF_LEFT);
+  DrawEdge(Canvas.Handle, r, EDGE_ETCHED, BF_LEFT);
 
   if ActualValueColWidth > 0 then
   begin
     r := ClientRect;
     r.Left := NameColWidth + ActualValueColWidth;
     r.Right := r.Left;
-    DrawEdge (Canvas.Handle, r, EDGE_ETCHED, BF_LEFT)
+    DrawEdge(Canvas.Handle, r, EDGE_ETCHED, BF_LEFT)
   end;
 end;
 
@@ -744,7 +744,7 @@ var
   prop : TPropertyListProperty;
 begin
   if FSelectedPropertyNo >= FProperties.Count then exit;
-  prop := FProperties [FSelectedPropertyNo];
+  prop := FProperties[FSelectedPropertyNo];
   if Assigned (FPropertyEdit) then
     PropertyEditText := prop.ValueAsStr;
 
@@ -869,10 +869,10 @@ begin
     if (SelectedPropertyNo < 0) or (FSelectedPropertyNo >= FProperties.Count) then
       Exit;
 
-    prop := FProperties [FSelectedPropertyNo];
+    prop := FProperties[FSelectedPropertyNo];
     if prop.ReadOnly then Exit;
 
-    FPropertyEdit := TFakeCombobox.Create (Self);
+    FPropertyEdit := TFakeCombobox.Create(Self);
     FPropertyEdit.OnExit := DoOnPropertyEditExit;
     FPropertyEdit.OnKeyDown := DoOnPropertyEditKeyDown;
     FPropertyEdit.OnDblClick := DoOnPropertyEditDblClick;
@@ -895,7 +895,7 @@ begin
     case prop.PropertyType of
       ptEnum :
         for n := 0 to prop.FEnumValues.Count - 1 do
-          FPropertyEdit.Items.Add (prop.FEnumValues [n]);
+          FPropertyEdit.Items.Add (prop.FEnumValues[n]);
       ptBoolean :
         begin
           FPropertyEdit.Items.Add (rstFalse);
@@ -936,11 +936,11 @@ procedure TPropertyListBox.SetPropertyValue(const propName: string;
 var
   prop : TPropertyListProperty;
 begin
-  prop := FindProperty (propName);
+  prop := FindProperty(propName);
   if Assigned (prop) then
     prop.PropertyValue := Value
   else
-    raise Exception.Create ('Property ' + propName + ' not found');
+    raise Exception.Create('Property ' + propName + ' not found');
 end;
 
 procedure TPropertyListBox.SetSelectedPropertyNo(Value: Integer);
@@ -949,14 +949,14 @@ begin
   begin
     if Value > FSelectedPropertyNo then         // Skip disabled properties
     begin
-      while (Value < Properties.Count) and not Properties [Value].Enabled do
-        Inc (Value);
+      while(Value < Properties.Count) and not Properties[Value].Enabled do
+        Inc(Value);
 
       if Value = Properties.Count then Value := -1
     end
     else
-      while (Value >= 0) and not Properties [Value].Enabled do
-        Dec (Value)
+      while(Value >= 0) and not Properties[Value].Enabled do
+        Dec(Value)
   end;
 
   if value <> FSelectedPropertyNo then
@@ -1048,7 +1048,7 @@ end;
 function TPropertyListProperties.GetItem(
   index: Integer): TPropertyListProperty;
 begin
-  result := inherited Items [index] as TPropertyListProperty;
+  Result := inherited Items[index] as TPropertyListProperty;
 end;
 
 (*----------------------------------------------------------------------*
@@ -1062,7 +1062,7 @@ end;
 procedure TPropertyListProperties.SetItem(index: Integer;
   const Value: TPropertyListProperty);
 begin
-  inherited Items [index] := Value
+  inherited Items[index] := Value
 end;
 
 { TPropertyListProperty }
@@ -1119,8 +1119,8 @@ end;
  *----------------------------------------------------------------------*)
 function TPropertyListProperty.GetActualValueAsStr: string;
 begin
-  if VarIsEmpty (FActualValue) then
-    result := ''
+  if VarIsEmpty(FActualValue) then
+    Result := ''
   else
   try
     case propertyType of
@@ -1131,14 +1131,14 @@ begin
 
       ptEnum :
         if FActualValue < FEnumValues.Count then
-          Result := FEnumValues [FActualValue]
+          Result := FEnumValues[FActualValue]
         else
           Result := rstError;
       else
-        result := FActualValue
+        Result := FActualValue
     end
   except
-    result := rstError
+    Result := rstError
   end
 end;
 
@@ -1154,8 +1154,8 @@ end;
  *----------------------------------------------------------------------*)
 function TPropertyListProperty.GetValueAsStr: string;
 begin
-  if VarIsEmpty (FPropertyValue) then
-    result := ''
+  if VarIsEmpty(FPropertyValue) then
+    Result := ''
   else
   try
     case propertyType of
@@ -1166,14 +1166,14 @@ begin
 
       ptEnum :
         if FPropertyValue < FEnumValues.Count then
-          Result := FEnumValues [FPropertyValue]
+          Result := FEnumValues[FPropertyValue]
         else
           Result := rstError;
       else
-        result := FPropertyValue
+        Result := FPropertyValue
     end
   except
-    result := rstError
+    Result := rstError
   end
 end;
 
@@ -1200,20 +1200,20 @@ procedure TPropertyListProperty.SetActualValue(Value: variant);
 var
   i : Integer;
 begin
-  if (PropertyType = ptEnum) and (VarType (Value) = varString) then
+  if (PropertyType = ptEnum) and (VarType(Value) = varString) then
   begin
     for i := 0 to EnumValues.Count - 1 do
-      if CompareText (EnumValues [i], Value) = 0 then
+      if CompareText (EnumValues[i], Value) = 0 then
       begin
         Value := i;
         break
       end;
 
-    if VarType (Value) <> varInteger then
-      raise Exception.Create ('Invalid enumerated value');
+    if VarType(Value) <> varInteger then
+      raise Exception.Create('Invalid enumerated value');
   end;
 
-  if VarIsEmpty (FActualValue) or VarIsEmpty (Value) or (FActualValue <> Value) then
+  if VarIsEmpty(FActualValue) or VarIsEmpty(Value) or (FActualValue <> Value) then
   begin
     FActualValue := value;
     TPropertyListProperties (collection).Parent.Invalidate
@@ -1308,20 +1308,20 @@ var
   i : Integer;
   p : TPropertyListBox;
 begin
-  if (PropertyType = ptEnum) and (VarType (Value) = varString) then
+  if (PropertyType = ptEnum) and (VarType(Value) = varString) then
   begin
     for i := 0 to EnumValues.Count - 1 do
-      if CompareText (EnumValues [i], Value) = 0 then
+      if CompareText (EnumValues[i], Value) = 0 then
       begin
         Value := i;
         break
       end;
 
-    if VarType (Value) <> varInteger then
-      raise Exception.Create ('Invalid enumerated value');
+    if VarType(Value) <> varInteger then
+      raise Exception.Create('Invalid enumerated value');
   end;
 
-  if VarIsEmpty (FPropertyValue) or VarIsEmpty (Value) or (FPropertyValue <> Value) then
+  if VarIsEmpty(FPropertyValue) or VarIsEmpty(Value) or (FPropertyValue <> Value) then
   begin
     FPropertyValue := value;
 

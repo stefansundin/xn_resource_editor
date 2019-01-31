@@ -241,7 +241,7 @@ type
 	dwStyles : DWORD;           // IN/OUT: Window styles
 	dwExStyles : DWORD;         // IN/OUT: Extended Window styles
 	rcWindowPos : TRect;        // IN: Starting position, OUT: current position
-	nShowState : Integer;       // IN: show state (e.g., SW_SHOW)
+	nShowState : Integer;       // IN: show state(e.g., SW_SHOW)
 
 	hwndHelp : HWND;            // OUT: window handle
 	hwndCaller : HWND;          // OUT: who called this window

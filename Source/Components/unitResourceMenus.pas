@@ -9,13 +9,13 @@ TMenuResourceDetails = class (TResourceDetails)
   private
     fHelpID: Integer;                    // Extended menu's help ID
   protected
-    constructor Create (AParent: TResourceModule; ALanguage: Integer; const AName, AType: WideString; ASize: Integer; AData: pointer); override;
+    constructor Create(AParent: TResourceModule; ALanguage: Integer; const AName, AType: WideString; ASize: Integer; AData: pointer); override;
 
   public
     destructor Destroy; override;
 
     class function GetBaseType: WideString; override;
-    procedure ChangeData (newData: TMemoryStream); override;
+    procedure ChangeData(newData: TMemoryStream); override;
 
     procedure InitNew; override;
     procedure GetItems (items: TMenuItem);
@@ -56,7 +56,7 @@ constructor TMenuResourceDetails.Create(AParent: TResourceModule;
   ALanguage: Integer; const AName, AType: WideString; ASize: Integer;
   AData: pointer);
 begin
-  inherited Create (AParent, ALanguage, AName, AType, ASize, AData);
+  inherited Create(AParent, ALanguage, AName, AType, ASize, AData);
 end;
 
 destructor TMenuResourceDetails.Destroy;
@@ -82,30 +82,30 @@ var
   begin
     repeat
       flags := PWord (p)^;
-      Inc (p, sizeof (word));
+      Inc(p, sizeof (word));
       if (flags and MF_POPUP) <> 0 then
       begin
         caption := PWideChar (p);
-        Inc (p, (lstrlenW (PWideChar (p)) + 1) * sizeof (WideChar));
-        item := TMenuItem.Create (owner);
+        Inc(p, (lstrlenW (PWideChar (p)) + 1) * sizeof (WideChar));
+        item := TMenuItem.Create(owner);
         GetNormalItems (item)
       end
       else
       begin
         id := PWord (p)^;
-        Inc (p, sizeof (word));
+        Inc(p, sizeof (word));
         caption := PWideChar (p);
         if caption = '' then
           caption := '-';
-        Inc (p, (lstrlenW (PWideChar (p)) + 1) * sizeof (WideChar));
-        item := TMenuItem.Create (owner);
+        Inc(p, (lstrlenW (PWideChar (p)) + 1) * sizeof (WideChar));
+        item := TMenuItem.Create(owner);
         if caption = '-' then
           item.Tag := -1
         else
           item.Tag := id
       end;
 
-      item.Caption := Utf8Encode (caption);
+      item.Caption := Utf8Encode(caption);
 
       if (flags and MF_GRAYED) <> 0 then
         item.Enabled := False;
@@ -131,36 +131,36 @@ var
   begin
     repeat
       tp := PDWORD (p)^;
-      Inc (p, sizeof (DWORD));
+      Inc(p, sizeof (DWORD));
       state := PDWORD (p)^;
-      Inc (p, sizeof (DWORD));
+      Inc(p, sizeof (DWORD));
       uID := PUINT (p)^;
-      Inc (p, sizeof (UINT));
+      Inc(p, sizeof (UINT));
       bResInfo := PWORD (p)^;
-      Inc (p, sizeof (word));
+      Inc(p, sizeof (word));
 
       if (tp and MFT_SEPARATOR) = 0 then
       begin
         caption := PWideChar (p);
-        Inc (p, (lstrlenW (PWideChar (p)) + 1) * sizeof (WideChar));
+        Inc(p, (lstrlenW (PWideChar (p)) + 1) * sizeof (WideChar));
       end
       else
         caption := '-';
 
-      while (Integer (p) mod 4) <> 0 do
-        Inc (p);
+      while(Integer (p) mod 4) <> 0 do
+        Inc(p);
 
       if (bResInfo and $01) <> 0 then
       begin
         helpID := PDWORD (p)^;
-        Inc (p, sizeof (PDWORD))
+        Inc(p, sizeof (PDWORD))
       end
       else
         helpID := 0;
 
-      item := TMenuItem.Create (owner);
+      item := TMenuItem.Create(owner);
       item.Tag := uID;
-      item.Caption := UTF8Encode (caption);
+      item.Caption := UTF8Encode(caption);
       item.HelpContext := helpID;
 
       if (state and MFS_DISABLED) <> 0 then
@@ -182,7 +182,7 @@ begin
   case PMenuHeader (p)^.wVersion of
     0 :
       begin
-        Inc (p, Sizeof (TMenuHeader));
+        Inc(p, Sizeof (TMenuHeader));
         GetNormalItems (items);
       end;
 
@@ -190,9 +190,9 @@ begin
       begin
         if PMenuHeader (p)^.cbHeaderSize = 4 then
         begin
-          Inc (p, SizeOf (TMenuHeader));
+          Inc(p, SizeOf (TMenuHeader));
           fHelpID := PDWORD (p)^;
-          Inc (p, Sizeof (DWORD));
+          Inc(p, Sizeof (DWORD));
           GetExtendedItems (items);
         end
       end
@@ -203,8 +203,8 @@ procedure TMenuResourceDetails.InitNew;
 var
   p: PChar;
 begin
-  Data.SetSize (sizeof (TMenuExTemplateHeader) + 20);
-  ZeroMemory (data.Memory, data.Size);
+  Data.SetSize(sizeof (TMenuExTemplateHeader) + 20);
+  ZeroMemory(data.Memory, data.Size);
 
   PMenuExTemplateHeader (data.Memory)^.wVersion := 1;
   PMenuExTemplateHeader (data.Memory)^.wOffset := 4;  // 4?  Don't ask!  But look up MENUEXTEMPLATEHEADER in MSDN!
@@ -214,19 +214,19 @@ begin
 //  Menus must have at least one item.  Set up first item.
 
   PDWORD (p)^ := MFT_STRING;    // dwType
-  Inc (p, sizeof (DWORD));
+  Inc(p, sizeof (DWORD));
 
   PDWORD (p)^ := MFS_ENABLED;   // dwState
-  Inc (p, sizeof (DWORD));
+  Inc(p, sizeof (DWORD));
 
   PUINT (p)^ := 0;              // uId;
-  Inc (p, sizeof (UINT));
+  Inc(p, sizeof (UINT));
 
   PWORD (p)^ := $80;            // bResInfo (word for 32-bit OS)
-  Inc (p, sizeof (WORD));
+  Inc(p, sizeof (WORD));
 
   PWideChar (p)^ := #0;         // szText
-  Inc (p, sizeof (WideChar));
+  Inc(p, sizeof (WideChar));
 
   PDWORD (p)^ := 0;             // dwHelpID
 end;
@@ -237,7 +237,7 @@ var
   offset: Integer;
   i: Integer;
 
-  procedure SaveOldStyleMenu (rootItem: TMenuItem; lastItem: Boolean);
+  procedure SaveOldStyleMenu(rootItem: TMenuItem; lastItem: Boolean);
   var
     flags: word;
     id: word;
@@ -259,34 +259,34 @@ var
     if lastItem then
       flags := flags or MF_END;
 
-    st.Write (flags, sizeof (flags));
+    st.Write(flags, sizeof (flags));
     if rootItem.Count = 0 then
     begin
       if rootItem.Caption = '-' then
         id := 0
       else
         id := rootItem.Tag;
-      st.Write (id, sizeof (id))
+      st.Write(id, sizeof (id))
     end;
 
     if rootItem.Caption = '-' then
       wCaption := ''
     else
-      wCaption := Utf8Decode (rootItem.caption);
+      wCaption := Utf8Decode(rootItem.caption);
 
     if wCaption = '' then
     begin
-      st.Write (c, 1);
-      st.Write (c, 1)
+      st.Write(c, 1);
+      st.Write(c, 1)
     end
     else
-      st.Write (PWideChar (wCaption)^, (Length (rootItem.Caption) + 1) * sizeof (WideChar));
+      st.Write(PWideChar (wCaption)^, (Length (rootItem.Caption) + 1) * sizeof (WideChar));
 
     for i := 0 to rootItem.Count - 1 do
-      SaveOldStyleMenu (rootItem.Items [i], i = rootItem.Count - 1)
+      SaveOldStyleMenu(rootItem.Items[i], i = rootItem.Count - 1)
   end;
 
-  procedure SaveNewStyleMenu (rootItem: TMenuItem; lastItem: Boolean);
+  procedure SaveNewStyleMenu(rootItem: TMenuItem; lastItem: Boolean);
   var
     tp: DWORD;
     state: DWORD;
@@ -320,57 +320,57 @@ var
     if lastItem then
       bResInfo := bResInfo or $80;
 
-    st.Write (tp, sizeof (tp));
-    st.Write (state, sizeof (state));
-    st.Write (uID, sizeof (uID));
-    st.Write (bresInfo, sizeof (bResInfo));
+    st.Write(tp, sizeof (tp));
+    st.Write(state, sizeof (state));
+    st.Write(uID, sizeof (uID));
+    st.Write(bresInfo, sizeof (bResInfo));
 
     if (tp and MFT_SEPARATOR) = 0 then
     begin
-      wCaption := Utf8Decode (rootItem.caption);
+      wCaption := Utf8Decode(rootItem.caption);
 
       if wCaption = '' then
       begin
-        st.Write (c, 1);
-        st.Write (c, 1)
+        st.Write(c, 1);
+        st.Write(c, 1)
       end
       else
-        st.Write (wCaption [1], (Length (wCaption) + 1) * sizeof (WideChar));
+        st.Write(wCaption [1], (Length (wCaption) + 1) * sizeof (WideChar));
     end;
 
-    while (st.Size mod 4) <> 0 do
-      st.Write (c, 1);
+    while(st.Size mod 4) <> 0 do
+      st.Write(c, 1);
 
     if (bResInfo and $01) <> 0 then
     begin
       helpID := rootItem.HelpContext;
-      st.Write (helpID, sizeof (helpID))
+      st.Write(helpID, sizeof (helpID))
     end;
 
     for i := 0 to rootItem.Count - 1 do
-      SaveNewStyleMenu (rootItem.Items [i], i = rootItem.Count - 1)
+      SaveNewStyleMenu(rootItem.Items[i], i = rootItem.Count - 1)
   end;
 
 begin
   offset := 0;
   st := TMemoryStream.Create;
   try
-    data.Seek (0, soFromBeginning);
+    data.Seek(0, soFromBeginning);
     st.CopyFrom (data, sizeof (TMenuHeader));
 
     case PMenuHeader (st.Memory)^.wVersion of
       0: for i:= 0 to items.Count - 1 do
-            SaveOldStyleMenu (items.Items [i], i = items.Count - 1);
+            SaveOldStyleMenu(items.Items[i], i = items.Count - 1);
       1 :
         begin
-          st.Write (fHelpId, sizeof (fHelpID));
+          st.Write(fHelpId, sizeof (fHelpID));
           for i := 0 to items.Count - 1 do
-            SaveNewStyleMenu (items.Items [i], i = items.Count - 1);
+            SaveNewStyleMenu(items.Items[i], i = items.Count - 1);
         end
     end;
 
-    st.Seek (offset, soFromBeginning);
-    data.Seek (0, soFromBeginning);
+    st.Seek(offset, soFromBeginning);
+    data.Seek(0, soFromBeginning);
     data.size := 0;
     data.CopyFrom (st, st.Size - offset);
   finally

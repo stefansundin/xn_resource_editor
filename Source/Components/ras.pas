@@ -12,7 +12,7 @@ const
   PWLEN = 256;                 // Maximum password length
   CNLEN = 15;                  // Computer name length
   DNLEN = CNLEN;               // Maximum domain name length
-  NETBIOS_NAME_LEN = 16;       // NetBIOS net name (bytes)
+  NETBIOS_NAME_LEN = 16;       // NetBIOS net name(bytes)
 
   PENDING                              = RASBASE+0;
   ERROR_INVALID_PORT_HANDLE            = RASBASE+1;
@@ -628,8 +628,8 @@ type
 ** subentries can be cancelled by returning FALSE.
 *)
                  
-TRasDialFunc = procedure (unMsg : UINT; RASConnState : TRASConnState; dwError : DWORD); stdcall;
-TRasDialFunc1 = procedure (HRASConn : HRASCON; unMsg : UINT; rascs : TRASConnState; dwError, dwExtendedError : DWORD); stdcall;
+TRasDialFunc = procedure(unMsg : UINT; RASConnState : TRASConnState; dwError : DWORD); stdcall;
+TRasDialFunc1 = procedure(HRASConn : HRASCON; unMsg : UINT; rascs : TRASConnState; dwError, dwExtendedError : DWORD); stdcall;
 TRasDialFunc2 = function (dwCallbackID, dwSubEntry : DWORD; HRASConn : HRASCON; unMsg : UINT; rascs : TRASConnState; dwError, dwExtendedError : DWORD) : DWORD; stdcall;
 
 (* Information describing a RAS-capable device.

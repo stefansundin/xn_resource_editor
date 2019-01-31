@@ -28,7 +28,7 @@ uses
   Windows, Classes, SysUtils, Registry;
 
 type
-  TWalkProc = procedure (const keyName, valueName: string; dataType: DWORD; data: pointer; DataLen: Integer) of object;
+  TWalkProc = procedure(const keyName, valueName: string; dataType: DWORD; data: pointer; DataLen: Integer) of object;
 
   TSearchParam = (rsKeys, rsValues, rsData);
   TSearchParams = set of TSearchParam;
@@ -40,7 +40,7 @@ type
     FPath: string;
     FValueIDX, FKeyIDX: Integer;
     FRegRoot: HKEY;
-    constructor Create (ARegRoot: HKEY; const APath: string);
+    constructor Create(ARegRoot: HKEY; const APath: string);
     destructor Destroy; override;
 
     procedure LoadKeyNames;
@@ -72,19 +72,19 @@ type
     procedure SetRoot (root: HKey; const server: string);
     procedure CopyValueFromReg (const valueName: string; otherReg: TExRegistry; deleteSource: Boolean);
     procedure CopyKeyFromReg (const keyName: string; otherReg: TExRegistry; deleteSource: Boolean);
-    function GetValueType (const valueName: string): DWORD;
+    function GetValueType(const valueName: string): DWORD;
     procedure ReadStrings (const valueName: string; strings: TStrings);
     procedure WriteStrings (const valueName: string; strings: TStrings);
-    procedure ExportKey (const fileName: string);
+    procedure ExportKey(const fileName: string);
     procedure ExportToStream (strm: TStream; ExcludeKeys: TStrings = Nil);
-    procedure ImportRegFile (const fileName: string);
+    procedure ImportRegFile(const fileName: string);
     procedure ImportFromStream (stream: TStream);
-    procedure WriteTypedBinaryData (const valueName: string; tp: Integer; var data; size: Integer);
-    procedure Walk (walkProc: TWalkProc; valuesRequired: Boolean);
+    procedure WriteTypedBinaryData(const valueName: string; tp: Integer; var data; size: Integer);
+    procedure Walk(walkProc: TWalkProc; valuesRequired: Boolean);
     function FindFirst (const data: string; params: TSearchParams; MatchWholeString: Boolean; var retPath, retValue: string): Boolean;
     function FindNext (var retPath, retValue: string): Boolean;
     procedure CancelSearch;
-    procedure GetValuesSize (var size: Integer);
+    procedure GetValuesSize(var size: Integer);
 
     property LocalRoot: HKEY read FLocalRoot;
     property SearchString: string read FSearchString;
@@ -97,7 +97,7 @@ type
     function GetError: string;
   public
     constructor CreateLastError (const st: string);
-    constructor Create (code: DWORD; const st: string);
+    constructor Create(code: DWORD; const st: string);
     property Code: Integer read FCode;
   end;
 
@@ -112,9 +112,9 @@ begin
     len := Length (s);
   for i := 1 to len do
   begin
-    if s [i] in ['\', '"'] then
+    if s[i] in ['\', '"'] then
       Result := Result + '\';
-    Result := Result + s [i]
+    Result := Result + s[i]
   end;
   Result := PChar (Result)
 end;
@@ -142,15 +142,15 @@ const
     (key: HKEY_DYN_DATA;         name: 'HKEY_DYN_DATA'));
 
 
-function RootKeyName (key: HKEY): string;
+function RootKeyName(key: HKEY): string;
 var
   i: Integer;
 begin
   Result := '';
   for i := 0 to NO_ROOT_KEYS - 1 do
-    if RootKeys [i].key = key then
+    if RootKeys[i].key = key then
     begin
-      Result := RootKeys [i].name;
+      Result := RootKeys[i].name;
       break;
     end
 end;
@@ -161,9 +161,9 @@ var
 begin
   Result := $FFFFFFFF;
   for i := 0 to NO_ROOT_KEYS - 1 do
-    if RootKeys [i].name = st then
+    if RootKeys[i].name = st then
     begin
-      Result := RootKeys [i].key;
+      Result := RootKeys[i].key;
       break;
     end
 end;
@@ -181,7 +181,7 @@ begin
   if Assigned (FSearchStack) then
   begin
     for i := 0 to FSearchStack.Count - 1 do
-      TSearchNode (FSearchStack [i]).Free;
+      TSearchNode(FSearchStack [i]).Free;
     FSearchStack.Free;
     FSearchStack := nil;
   end
@@ -201,27 +201,27 @@ begin
   try
     sourceReg.RootKey := otherReg.CurrentKey;
     if deleteSource then
-      sourceReg.OpenKey (keyName, False)
+      sourceReg.OpenKey(keyName, False)
     else
-      sourceReg.OpenKeyReadOnly (keyName);
+      sourceReg.OpenKeyReadOnly(keyName);
     sourceReg.GetValueNames (values);
 
     destReg.RootKey := CurrentKey;
-    if destReg.OpenKey (keyName, True) then
+    if destReg.OpenKey(keyName, True) then
     begin
       for i := 0 to values.Count - 1 do
-        destReg.CopyValueFromReg (values [i], sourceReg, deleteSource);
+        destReg.CopyValueFromReg (values[i], sourceReg, deleteSource);
 
       sourceReg.GetKeyNames (values);
       for i := 0 to values.Count - 1 do
-        destReg.CopyKeyFromReg (values [i], sourceReg, deleteSource);
+        destReg.CopyKeyFromReg (values[i], sourceReg, deleteSource);
 
       if DeleteSource then
-        if not otherReg.DeleteKey (keyName) then
-          Raise ERegistryException.Create ('Unable to delete moved key')
+        if not otherReg.DeleteKey(keyName) then
+          Raise ERegistryException.Create('Unable to delete moved key')
     end
     else
-      raise ERegistryException.Create ('Unable to open destination');
+      raise ERegistryException.Create('Unable to open destination');
   finally
     values.Free;
     destReg.Free;
@@ -252,8 +252,8 @@ begin
       raise EExRegistryException.CreateLastError ('Unable to copy value');
 
     if deleteSource then
-      if not otherReg.DeleteValue (valueName) then
-        raise ERegistryException.Create ('Unable to delete moved value')
+      if not otherReg.DeleteValue(valueName) then
+        raise ERegistryException.Create('Unable to delete moved value')
   finally
     FreeMem (buffer)
   end
@@ -283,10 +283,10 @@ begin
   FExportStrings.Add ('REGEDIT4');
   try
     FLastExportKey := '';
-    Walk (ExportProc, True);
+    Walk(ExportProc, True);
     FExportStrings.Add ('');
   finally
-    FExportStrings.SaveToFile (fileName);
+    FExportStrings.SaveToFile(fileName);
     FExportStrings.Free;
   end
 end;
@@ -323,7 +323,7 @@ begin
     case dataType of
       REG_DWORD :
       begin
-        st1 := LowerCase (Format ('%8.8x', [PDWORD (data)^]));
+        st1 := LowerCase(Format ('%8.8x', [PDWORD (data)^]));
         st := st + format ('dword:%s', [st1])
       end;
 
@@ -338,7 +338,7 @@ begin
           st := st + format ('hex(%d):', [dataType]);
         for j := 0 to dataLen - 1 do
         begin
-          st1 := LowerCase (format ('%02.2x', [Byte (PChar (data) [j])]));
+          st1 := LowerCase(format ('%02.2x', [Byte(PChar (data) [j])]));
           if j < dataLen - 1 then
             st1 := st1 + ',';
 
@@ -363,7 +363,7 @@ begin
   FExportStrings.Add ('REGEDIT4');
   try
     FLastExportKey := '';
-    Walk (ExportProc, True);
+    Walk(ExportProc, True);
     FExportStrings.Add ('');
   finally
     FExportStrings.SaveToStream (strm);
@@ -390,13 +390,13 @@ begin
     p := Pos ('\', path);
     if p > 0 then
     begin
-      nPath := nPath + '\' + Copy (path, 1, p - 1);
-      path := Copy (path, p + 1, MaxInt);
-      n := TSearchNode.Create (RootKey, nPath);
+      nPath := nPath + '\' + Copy(path, 1, p - 1);
+      path := Copy(path, p + 1, MaxInt);
+      n := TSearchNode.Create(RootKey, nPath);
       n.LoadKeyNames;
       p := Pos ('\', path);
       if p > 0 then
-        keyName := Copy (path, 1, p - 1)
+        keyName := Copy(path, 1, p - 1)
       else
         keyName := path;
 
@@ -406,10 +406,10 @@ begin
     end
   until p = 0;
 
-  n := TSearchNode.Create (RootKey, nPath + '\' + path);
+  n := TSearchNode.Create(RootKey, nPath + '\' + path);
   FSearchStack.Add (n);
 
-  FSearchString := UpperCase (data);
+  FSearchString := UpperCase(data);
   FSearchParams := params;
   FMatchWholeString := MatchWholeString;
   Result := FindNext (retPath, retValue);
@@ -424,28 +424,28 @@ var
 begin
   found := False;
   FCancelSearch := False;
-  while (not found) and (not FCancelSearch) and (FSearchStack.Count > 0) do
+  while(not found) and (not FCancelSearch) and (FSearchStack.Count > 0) do
   begin
-    while PeekMessage (msg, 0, 0, 0, PM_REMOVE) do
+    while PeekMessage(msg, 0, 0, 0, PM_REMOVE) do
     begin
-      TranslateMessage (msg);
-      DispatchMessage (msg)
+      TranslateMessage(msg);
+      DispatchMessage(msg)
     end;
 
-    n := TSearchNode (FSearchStack [FSearchStack.Count - 1]);
+    n := TSearchNode(FSearchStack [FSearchStack.Count - 1]);
     if rsValues in FSearchParams then
     begin
       n.LoadValueNames;
       with n do
         if FValueIDX < FValueNames.Count then
         repeat
-          Inc (FValueIDX);
+          Inc(FValueIDX);
           if FValueIDX < FValueNames.Count then
           begin
             if FMatchWholeString then
-              found := FSearchString = FValueNames [FValueIDX]
+              found := FSearchString = FValueNames[FValueIDX]
             else
-              found := Pos (FSearchString, FValueNames [FValueIDX]) > 0
+              found := Pos (FSearchString, FValueNames[FValueIDX]) > 0
           end
         until FCancelSearch or found or (FValueIDX = FValueNames.Count)
     end;
@@ -456,24 +456,24 @@ begin
       with n do
         if FKeyIDX < FKeyNames.Count then
         begin
-          Inc (FKeyIDX);
+          Inc(FKeyIDX);
           if FKeyIDX < FKeyNames.Count then
           begin
 
             if rsKeys in FSearchParams then
               if FMatchWholeString then
-                found := FSearchString = FKeyNames [FKeyIDX]
+                found := FSearchString = FKeyNames[FKeyIDX]
               else
-                found := Pos (FSearchString, FKeyNames [FKeyIDX]) > 0;
+                found := Pos (FSearchString, FKeyNames[FKeyIDX]) > 0;
 
             if not found then
             begin
               if n.FPath = '\' then
-                k := '\' + FKeyNames [FKeyIDX]
+                k := '\' + FKeyNames[FKeyIDX]
               else
-                k := n.FPath + '\' + FKeyNames [FKeyIDX];
+                k := n.FPath + '\' + FKeyNames[FKeyIDX];
 
-              FSearchStack.Add (TSearchNode.Create (RootKey, k));
+              FSearchStack.Add (TSearchNode.Create(RootKey, k));
 
               continue
             end
@@ -487,17 +487,17 @@ begin
     if not found then
     begin
       n.Free;
-      FSearchStack.Delete (FSearchStack.Count - 1)
+      FSearchStack.Delete(FSearchStack.Count - 1)
     end
     else
     begin
       retPath := n.FPath;
       if n.FKeyIDX > -1 then
-        retPath := retPath + '\' + n.FKeyNames [n.FKeyIDX];
+        retPath := retPath + '\' + n.FKeyNames[n.FKeyIDX];
 
       if rsValues in FSearchParams then
         if (n.FValueIDX > -1) and (n.FValueIDX < n.FValueNames.Count) then
-          retValue := n.FValueNames [n.FValueIDX]
+          retValue := n.FValueNames[n.FValueIDX]
         else
           retValue := '';
     end
@@ -508,7 +508,7 @@ end;
 procedure TExRegistry.GetValuesSize(var size: Integer);
 begin
   FValuesSize := 0;
-  Walk (ValuesSizeProc, False);
+  Walk(ValuesSizeProc, False);
   if FValuesSize = 0 then
     FValuesSize := -1;
   size := FValuesSize
@@ -542,17 +542,17 @@ var
     p: Integer;
     r: HKEY;
   begin
-    Delete (st, 1, 1);
+    Delete(st, 1, 1);
     if st [Length (st)] <> ']' then
       SyntaxError;
 
-    Delete (st, Length (st), 1);
+    Delete(st, Length (st), 1);
 
     p := pos ('\', st);
     if p = 0 then
       SyntaxError;
-    s := Copy (st, 1, p - 1);
-    st := Copy (st, p + 1, MaxInt);
+    s := Copy(st, 1, p - 1);
+    st := Copy(st, p + 1, MaxInt);
 
     if st = '' then
       SyntaxError;
@@ -562,7 +562,7 @@ var
       SyntaxError;
 
     SetRoot (r, FSaveServer);
-    OpenKey ('\' + st, True)
+    OpenKey('\' + st, True)
   end;
 
   function GetCString (st: string; var n: Integer): string;
@@ -583,19 +583,19 @@ var
         end;
 
         if st [i] = '\' then
-          Inc (i);
+          Inc(i);
 
         if i <= Length (st) then
           Result := Result + st [i];
 
-        Inc (i)
+        Inc(i)
       end;
 
       if not eos then
       begin
         Result := Result + #13#10;
-        Inc (n);
-        st := strings [n];
+        Inc(n);
+        st := strings[n];
         i := 1
       end
     until eos
@@ -621,11 +621,11 @@ var
         end
       end;
 
-      Inc (i)
+      Inc(i)
     end
   end;
 
-  procedure CreateNewValue (var i: Integer);
+  procedure CreateNewValue(var i: Integer);
   var
     s: string;
     fn: string;
@@ -635,17 +635,17 @@ var
   begin
     if st [1] = '"' then
     begin
-      Delete (st, 1, 1);
+      Delete(st, 1, 1);
       p := Pos ('"', st);
       if p = 0 then
         SyntaxError;
 
-      s := Copy (st, 1, p - 1);
-      st := Copy (st, p + 1, MaxInt)
+      s := Copy(st, 1, p - 1);
+      st := Copy(st, p + 1, MaxInt)
     end
     else
     begin
-      Delete (st, 1, 1);
+      Delete(st, 1, 1);
       s := ''
     end;
 
@@ -657,7 +657,7 @@ var
     if st [1] <> '=' then
       SyntaxError;
 
-    Delete (st, 1, 1);
+    Delete(st, 1, 1);
 
     st := TrimLeft (st);
 
@@ -666,39 +666,39 @@ var
     else
     begin
       p := 1;
-      while (p <= Length (st)) and not (st [p] in [':', '(', ' ']) do
-        Inc (p);
+      while(p <= Length (st)) and not (st [p] in [':', '(', ' ']) do
+        Inc(p);
 
-      fn := Copy (st, 1, p - 1);
+      fn := Copy(st, 1, p - 1);
 
-      st := TrimLeft (Copy (st, p, MaxInt));
+      st := TrimLeft (Copy(st, p, MaxInt));
 
       if CompareText (fn, 'hex') = 0 then
       begin
         tp := 3;
         if st [1] = '(' then
         begin
-          Delete (st, 1, 1);
+          Delete(st, 1, 1);
           fn := '';
           p := 1;
-          while (p <= Length (st)) and (st [p] <> ')') do
+          while(p <= Length (st)) and (st [p] <> ')') do
           begin
             fn := fn + st [p];
-            Inc (p)
+            Inc(p)
           end;
 
           tp := StrToInt (fn);
-          st := Trim (Copy (st, p + 1, MaxInt));
+          st := Trim (Copy(st, p + 1, MaxInt));
         end;
 
         if st [1] <> ':' then
           SyntaxError;
 
-        Delete (st, 1, 1);
+        Delete(st, 1, 1);
 
         buf := GetBinaryBuffer (st);
 
-        WriteTypedBinaryData (s, tp, PChar (buf)^, Length (buf));
+        WriteTypedBinaryData(s, tp, PChar (buf)^, Length (buf));
       end
       else
         if CompareText (fn, 'dword') = 0 then
@@ -706,7 +706,7 @@ var
           if st [1] <> ':' then
             SyntaxError;
 
-          Delete (st, 1, 1);
+          Delete(st, 1, 1);
           WriteInteger (s, StrToInt ('$' + TrimLeft (st)))
         end
         else
@@ -719,30 +719,30 @@ begin
   try
     strings.LoadFromStream(stream);
 
-    while (strings.Count > 0) do
+    while(strings.Count > 0) do
     begin
-      st := Trim (strings [0]);
+      st := Trim (strings[0]);
       if (st = '') or (st [1] = ';') then
-        strings.Delete (0)
+        strings.Delete(0)
       else
         break
     end;
 
-    if strings [0] <> 'REGEDIT4' then
-      raise Exception.Create ('Bad file format.  Missing REGEDIT4 in first line.');
+    if strings[0] <> 'REGEDIT4' then
+      raise Exception.Create('Bad file format.  Missing REGEDIT4 in first line.');
 
     i := 1;
     while i < strings.Count do
     begin
-      st := Trim (strings [i]);
+      st := Trim (strings[i]);
 
       if st <> '' then
         while st [Length (st)] = '\' do
         begin
-          Inc (i);
-          Delete (st, Length (st), 1);
+          Inc(i);
+          Delete(st, Length (st), 1);
           if i < strings.Count then
-            st := st + strings [i]
+            st := st + strings[i]
           else
             break
         end;
@@ -751,14 +751,14 @@ begin
       begin
         case st [1] of
           '[': CreateNewKey;
-          '"': CreateNewValue (i);
-          '@': CreateNewValue (i);
+          '"': CreateNewValue(i);
+          '@': CreateNewValue(i);
           else
             SyntaxError
         end
       end;
 
-      Inc (i)
+      Inc(i)
     end
   finally
     strings.Free
@@ -769,7 +769,7 @@ procedure TExRegistry.ImportRegFile(const fileName: string);
 var
   f: TFileStream;
 begin
-  f := TFileStream.Create (fileName, fmOpenRead or fmShareDenyNone);
+  f := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
   try
     ImportFromStream (f)
   finally
@@ -796,14 +796,14 @@ begin
         while p^ <> #0 do
         begin
           strings.Add (p);
-          Inc (p, lstrlen (p) + 1)
+          Inc(p, lstrlen (p) + 1)
         end
       finally
         FreeMem (buffer)
       end
     end
     else
-      raise ERegistryException.Create ('String list expected')
+      raise ERegistryException.Create('String list expected')
   else
     raise EExRegistryException.CreateLastError ('Unable read MULTI_SZ value')
 end;
@@ -827,7 +827,7 @@ end;
 procedure TExRegistry.ValuesSizeProc(const keyName, valueName: string;
   dataType: DWORD; data: pointer; DataLen: Integer);
 begin
-  Inc (FValuesSize, DataLen);
+  Inc(FValuesSize, DataLen);
 end;
 
 procedure TExRegistry.Walk(walkProc: TWalkProc; valuesRequired: Boolean);
@@ -851,7 +851,7 @@ var
   keyLen: DWORD;
   level: DWORD;
 
-  procedure DoWalk (const pathName: string);
+  procedure DoWalk(const pathName: string);
   var
     k: HKEY;
     err: Integer;
@@ -861,12 +861,12 @@ var
     err := RegOpenKeyEx (RootKey, PChar (pathName), 0, KEY_READ, k);
     if err = ERROR_SUCCESS then
     try
-      Inc (level);
+      Inc(level);
       defaultValueLen := sizeof (defaultValue);
 
-      err := RegQueryInfoKey (k, defaultValue, @defaultValueLen, Nil, @cSubkeys, Nil, Nil, @cValues, nil, @maxValueLen, nil, nil);
+      err := RegQueryInfoKey(k, defaultValue, @defaultValueLen, Nil, @cSubkeys, Nil, Nil, @cValues, nil, @maxValueLen, nil, nil);
       if (err <> ERROR_SUCCESS) and (err <> ERROR_ACCESS_DENIED) then
-        raise EExRegistryException.Create (err, 'Unable to query key info');
+        raise EExRegistryException.Create(err, 'Unable to query key info');
 
       if err = ERROR_SUCCESS then
       begin
@@ -883,11 +883,11 @@ var
             valueNameLen := sizeof (valueName);
             valueLen := maxValueLen;
             if valuesRequired then
-              err := RegEnumValue (k, i, valueName, valueNameLen, Nil, @tp, PByte (buffer), @valueLen)
+              err := RegEnumValue(k, i, valueName, valueNameLen, Nil, @tp, PByte(buffer), @valueLen)
             else
-              err := RegEnumValue (k, i, valueName, valueNameLen, Nil, @tp, Nil, @valueLen);
+              err := RegEnumValue(k, i, valueName, valueNameLen, Nil, @tp, Nil, @valueLen);
             if err <> ERROR_SUCCESS then
-              raise EExRegistryException.Create (err, 'Unable to get value info');
+              raise EExRegistryException.Create(err, 'Unable to get value info');
 
             walkProc (pathName, valueName, tp, buffer, valueLen);
           end
@@ -898,18 +898,18 @@ var
         for i := 0 to cSubkeys - 1 do
         begin
           keyLen := sizeof (keyName);
-          RegEnumKey (k, i, keyName, keyLen);
+          RegEnumKey(k, i, keyName, keyLen);
 
           if not ((level = 1) and Assigned (FExportExcludeKeys) and (FExportExcludeKeys.IndexOf(keyName) >= 0)) then
             if pathName = '' then
-              DoWalk (keyName)
+              DoWalk(keyName)
             else
-              DoWalk (pathName + '\' + keyName)
+              DoWalk(pathName + '\' + keyName)
         end
       end
     finally
-      RegCloseKey (k);
-      Dec (level);
+      RegCloseKey(k);
+      Dec(level);
     end
   end;
 
@@ -920,7 +920,7 @@ begin
 
   try
     if Assigned (walkProc) then
-      DoWalk (CurrentPath);
+      DoWalk(CurrentPath);
   finally
     FreeMem (buffer)
   end
@@ -935,15 +935,15 @@ var
 begin
   size := 0;
   for i := 0 to strings.Count - 1 do
-    Inc (size, Length (strings [i]) + 1);
-  Inc (size);
+    Inc(size, Length (strings[i]) + 1);
+  Inc(size);
   GetMem (buffer, size);
   try
     p := buffer;
     for i := 0 to strings.count - 1 do
     begin
-      lstrcpy (p, PChar (strings [i]));
-      Inc (p, lstrlen (p) + 1)
+      lstrcpy(p, PChar (strings[i]));
+      Inc(p, lstrlen (p) + 1)
     end;
     p^ := #0;
     SetLastError (RegSetValueEx (CurrentKey, PChar (valueName), 0, REG_MULTI_SZ, buffer, size));
@@ -966,20 +966,20 @@ end;
 constructor EExRegistryException.Create(code: DWORD; const st: string);
 begin
   FCode := code;
-  inherited Create (GetError + ':' + st);
+  inherited Create(GetError + ':' + st);
 end;
 
 constructor EExRegistryException.CreateLastError(const st: string);
 begin
   FCode := GetLastError;
-  inherited Create (GetError + ':' + st);
+  inherited Create(GetError + ':' + st);
 end;
 
 function EExRegistryException.GetError: string;
 var
   msg: string;
 
-  function GetErrorMessage (code: Integer): string;
+  function GetErrorMessage(code: Integer): string;
   var
     hErrLib: THandle;
     msg: PChar;
@@ -1002,24 +1002,24 @@ var
       if hErrLib <> 0 then
         flags := flags or FORMAT_MESSAGE_FROM_HMODULE;
 
-      if FormatMessage (flags, pointer (hErrLib), code,
+      if FormatMessage(flags, pointer (hErrLib), code,
                         MAKELANGID (LANG_NEUTRAL, SUBLANG_DEFAULT),
                         PChar (@msg), 0, Nil) <> 0 then
         try
           Result := msg;
 
         finally
-          LocalFree (Integer (msg));
+          LocalFree(Integer (msg));
         end
 
     finally
       if hErrLib <> 0 then
-        FreeLibrary (hErrLib)
+        FreeLibrary(hErrLib)
     end
   end;
 
 begin
-  msg := GetErrorMessage (FCode);
+  msg := GetErrorMessage(FCode);
   if msg = '' then
     Result := Format ('Error %d', [FCode])
   else
@@ -1028,7 +1028,7 @@ end;
 
 { TSearchNode }
 
-constructor TSearchNode.Create (ARegRoot: HKEY; const APath: string);
+constructor TSearchNode.Create(ARegRoot: HKEY; const APath: string);
 begin
   FRegRoot := ARegRoot;
   FValueIDX := -1;
@@ -1054,14 +1054,14 @@ begin
     r := TExRegistry.Create;
     try
       r.RootKey := FRegRoot;
-      r.OpenKey (FPath, False);
+      r.OpenKey(FPath, False);
       r.GetKeyNames (FKeyNames);
     finally
       r.Free
     end;
     
     for i := 0 to FKeyNames.Count - 1 do
-      FKeyNames [i] := UpperCase (FKeyNames [i]);
+      FKeyNames[i] := UpperCase(FKeyNames[i]);
   end
 end;
 
@@ -1076,14 +1076,14 @@ begin
     r := TExRegistry.Create;
     try
       r.RootKey := FRegRoot;
-      r.OpenKey (FPath, False);
+      r.OpenKey(FPath, False);
       r.GetValueNames (FValueNames);
     finally
       r.Free
     end;
 
     for i := 0 to FValueNames.Count - 1 do
-      FValueNames [i] := UpperCase (FValueNames [i]);
+      FValueNames[i] := UpperCase(FValueNames[i]);
   end
 end;
 

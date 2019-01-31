@@ -157,7 +157,7 @@ begin
     Result := inherited GetPropertyEnumCount (kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := 0;
     case kind of
       pkStyle :
@@ -173,10 +173,10 @@ function TButtonControlInfo.GetPropertyEnumName(kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumName (kind, idx, enum)
+    Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
 
     case kind of
@@ -205,10 +205,10 @@ function TButtonControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyName (kind, idx)
+    Result := inherited GetPropertyName(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
     case kind of
       pkGeneral : Result := ButtonControlPropertyGeneralName [idx];
@@ -222,10 +222,10 @@ function TButtonControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyType (kind, idx)
+    Result := inherited GetPropertyType(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := ptInteger;
     case kind of
       pkGeneral : Result := ButtonControlPropertyGeneralType [idx];
@@ -239,10 +239,10 @@ function TButtonControlInfo.GetPropertyValue(kind: TPropertyKind;
   idx: Integer): Variant;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyValue (kind, idx)
+    Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     case kind of
       pkGeneral :
@@ -268,10 +268,10 @@ begin
   recreateRequired := False;
   frameChanged := False;
   if idx < inherited GetPropertyCount (kind) then
-    inherited SetPropertyValue (kind, idx, Value)
+    inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     case kind of
       pkGeneral :
@@ -281,10 +281,10 @@ begin
 
       pkStyle :
         case idx of
-          0 : begin SetMaskedStyle (Value shl 6, $c0); recreateRequired := True end;
+          0 : begin SetMaskedStyle(Value shl 6, $c0); recreateRequired := True end;
           1 : begin HasStyle [BS_FLAT] := Value; frameChanged := True end;
           2 : HasStyle [BS_NOTIFY] := Value;
-          3 : begin SetMaskedStyle (Value shl 8, $300); recreateRequired := True end;
+          3 : begin SetMaskedStyle(Value shl 8, $300); recreateRequired := True end;
         end;
     end
   end;
@@ -322,7 +322,7 @@ begin
     Result := inherited GetPropertyEnumCount (kind, idx)
   else
   begin
-//    Dec (idx, inherited GetPropertyCount (kind));
+//    Dec(idx, inherited GetPropertyCount (kind));
     Result := 0
   end
 end;
@@ -331,10 +331,10 @@ function TPushbuttonControlInfo.GetPropertyEnumName(kind: TPropertyKind;
   idx, enum: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumName (kind, idx, enum)
+    Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-//    Dec (idx, inherited GetPropertyCount (kind));
+//    Dec(idx, inherited GetPropertyCount (kind));
     Result := ''
   end
 end;
@@ -343,10 +343,10 @@ function TPushbuttonControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyName (kind, idx)
+    Result := inherited GetPropertyName(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
     case kind of
 //      pkGeneral : Result := PushButtonControlPropertyGeneralName [idx];
@@ -360,10 +360,10 @@ function TPushbuttonControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyType (kind, idx)
+    Result := inherited GetPropertyType(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := ptInteger;
     case kind of
 //      pkGeneral : Result := PushButtonControlPropertyGeneralType [idx];
@@ -377,10 +377,10 @@ function TPushbuttonControlInfo.GetPropertyValue(kind: TPropertyKind;
   idx: Integer): Variant;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyValue (kind, idx)
+    Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     case kind of
       pkStyle :
@@ -398,10 +398,10 @@ var
 begin
   frameChanged := False;
   if idx < inherited GetPropertyCount (kind) then
-    inherited SetPropertyValue (kind, idx, Value)
+    inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     case kind of
       pkStyle :
@@ -455,7 +455,7 @@ begin
     Result := inherited GetPropertyEnumCount (kind, idx)
   else
   begin
-//    Dec (idx, inherited GetPropertyCount (kind));
+//    Dec(idx, inherited GetPropertyCount (kind));
     Result := 0
   end
 end;
@@ -464,10 +464,10 @@ function TCheckboxControlInfo.GetPropertyEnumName(kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumName (kind, idx, enum)
+    Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-//    Dec (idx, inherited GetPropertyCount (kind));
+//    Dec(idx, inherited GetPropertyCount (kind));
     Result := ''
   end
 end;
@@ -476,10 +476,10 @@ function TCheckboxControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyName (kind, idx)
+    Result := inherited GetPropertyName(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
     case kind of
 //      pkGeneral : Result := CheckBoxControlPropertyGeneralName [idx];
@@ -493,10 +493,10 @@ function TCheckboxControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyType (kind, idx)
+    Result := inherited GetPropertyType(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := ptInteger;
     case kind of
 //      pkGeneral : Result := CheckBoxControlPropertyGeneralType [idx];
@@ -512,10 +512,10 @@ var
   tp : Integer;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyValue (kind, idx)
+    Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     tp := Style and $f;
 
@@ -539,10 +539,10 @@ var
 begin
   recreateRequired := False;
   if idx < inherited GetPropertyCount (kind) then
-    inherited SetPropertyValue (kind, idx, Value)
+    inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     tp := Style and $f;
     case kind of
@@ -551,29 +551,29 @@ begin
           0 :
             case Boolean (Value) of
               False : if (tp = BS_AUTOCHECKBOX) then
-                        SetMaskedStyle (BS_CHECKBOX, $f)
+                        SetMaskedStyle(BS_CHECKBOX, $f)
                       else
                         if (tp = BS_AUTO3STATE) then
-                          SetMaskedStyle (BS_3STATE, $f);
+                          SetMaskedStyle(BS_3STATE, $f);
               True :  if (tp = BS_CHECKBOX) then
-                        SetMaskedStyle (BS_AUTOCHECKBOX, $f)
+                        SetMaskedStyle(BS_AUTOCHECKBOX, $f)
                       else
                         if tp = BS_3STATE then
-                          SetMaskedStyle (BS_AUTO3STATE, $f)
+                          SetMaskedStyle(BS_AUTO3STATE, $f)
             end;
 
           1 : begin HasStyle [BS_LEFTTEXT] := Value; recreateRequired := True end;
           2 : case Boolean (Value) of
                 False : if tp = BS_3STATE then
-                          SetMaskedStyle (BS_CHECKBOX, $f)
+                          SetMaskedStyle(BS_CHECKBOX, $f)
                         else
                           if tp = BS_AUTO3STATE then
-                            SetMaskedStyle (BS_AUTOCHECKBOX, $f);
+                            SetMaskedStyle(BS_AUTOCHECKBOX, $f);
                 True :  if tp = BS_CHECKBOX then
-                          SetMaskedStyle (BS_3STATE, $f)
+                          SetMaskedStyle(BS_3STATE, $f)
                         else
                           if tp = BS_AUTOCHECKBOX then
-                            SetMaskedStyle (BS_AUTO3STATE, $f)
+                            SetMaskedStyle(BS_AUTO3STATE, $f)
               end;
           3 : begin HasStyle [BS_PUSHLIKE] := Value; recreateRequired := True end;
 
@@ -611,7 +611,7 @@ begin
     Result := inherited GetPropertyEnumCount (kind, idx)
   else
   begin
-//    Dec (idx, inherited GetPropertyCount (kind));
+//    Dec(idx, inherited GetPropertyCount (kind));
     Result := 0
   end
 end;
@@ -620,10 +620,10 @@ function TRadioButtonControlInfo.GetPropertyEnumName(kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumName (kind, idx, enum)
+    Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-//    Dec (idx, inherited GetPropertyCount (kind));
+//    Dec(idx, inherited GetPropertyCount (kind));
     Result := ''
   end
 end;
@@ -632,10 +632,10 @@ function TRadioButtonControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyName (kind, idx)
+    Result := inherited GetPropertyName(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
     case kind of
 //      pkGeneral : Result := RadioButtonControlPropertyGeneralName [idx];
@@ -649,10 +649,10 @@ function TRadioButtonControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyType (kind, idx)
+    Result := inherited GetPropertyType(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := ptInteger;
     case kind of
 //      pkGeneral : Result := RadioButtonControlPropertyGeneralType [idx];
@@ -668,10 +668,10 @@ var
   tp : Integer;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyValue (kind, idx)
+    Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     tp := Style and $f;
 
@@ -694,10 +694,10 @@ var
 begin
   recreateRequired := False;
   if idx < inherited GetPropertyCount (kind) then
-    inherited SetPropertyValue (kind, idx, Value)
+    inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     tp := Style and $f;
     case kind of
@@ -706,9 +706,9 @@ begin
           0 :
             case Boolean (Value) of
               False : if (tp = BS_AUTORADIOBUTTON) then
-                        SetMaskedStyle (BS_RADIOBUTTON, $f);
+                        SetMaskedStyle(BS_RADIOBUTTON, $f);
               True :  if (tp = BS_RADIOBUTTON) then
-                        SetMaskedStyle (BS_AUTORADIOBUTTON, $f)
+                        SetMaskedStyle(BS_AUTORADIOBUTTON, $f)
             end;
 
           1 : begin HasStyle [BS_LEFTTEXT] := Value; recreateRequired := True end;
@@ -736,7 +736,7 @@ begin
     Result := inherited GetPropertyEnumCount (kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := 0;
     case kind of
       pkStyle :
@@ -751,10 +751,10 @@ function TBasicButtonControlInfo.GetPropertyEnumName(kind: TPropertyKind;
   idx, enum: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumName (kind, idx, enum)
+    Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
 
     case kind of
@@ -776,10 +776,10 @@ function TBasicButtonControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyName (kind, idx)
+    Result := inherited GetPropertyName(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
     case kind of
 //      pkGeneral : Result := BasicButtonControlPropertyGeneralName [idx];
@@ -793,10 +793,10 @@ function TBasicButtonControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyType (kind, idx)
+    Result := inherited GetPropertyType(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := ptInteger;
     case kind of
 //      pkGeneral : Result := BasicButtonControlPropertyGeneralType [idx];
@@ -810,10 +810,10 @@ function TBasicButtonControlInfo.GetPropertyValue(kind: TPropertyKind;
   idx: Integer): Variant;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyValue (kind, idx)
+    Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     case kind of
       pkStyle :
@@ -830,15 +830,15 @@ procedure TBasicButtonControlInfo.SetPropertyValue(kind: TPropertyKind;
   idx: Integer; const Value: Variant);
 begin
   if idx < inherited GetPropertyCount (kind) then
-    inherited SetPropertyValue (kind, idx, Value)
+    inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     case kind of
       pkStyle :
         case idx of
-          0 : SetMaskedStyle (Value shl 10, $c00);
+          0 : SetMaskedStyle(Value shl 10, $c00);
           1 : HasStyle [BS_MULTILINE] := Value;
           2 : HasStyle [BS_OWNERDRAW] := Value;
         end;

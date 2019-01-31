@@ -46,10 +46,10 @@ const
 function HueToRGB(n1,n2,hue : Integer) : word;
 begin
   while hue > hlsmax do
-    Dec (hue, HLSMAX);
+    Dec(hue, HLSMAX);
 
   while hue < 0 do
-    Inc (hue, HLSMAX);
+    Inc(hue, HLSMAX);
 
   if hue < HLSMAX div 6 then
     Result := ( n1 + (((n2-n1)*hue+(HLSMAX div 12)) div (HLSMAX div 6)) )
@@ -74,7 +74,7 @@ begin
     g := r;
     b := r;
 //    if hue <> UNDEFINED then
-//      raise EColorError.Create ('Bad hue value')
+//      raise EColorError.Create('Bad hue value')
   end
   else
   begin
@@ -114,9 +114,9 @@ var
   cMax, cMin : Integer;
   rDelta, gDelta, bDelta : Integer;
 begin
-  R := GetRValue (lRGBColor);
-  G := GetGValue (lRGBColor);
-  B := GetBValue (lRGBColor);
+  R := GetRValue(lRGBColor);
+  G := GetGValue(lRGBColor);
+  B := GetBValue(lRGBColor);
 
   cMax := max (max (R, G), B);
   cMin := min (min (R, G), B);
@@ -148,9 +148,9 @@ begin
         H := ((2*HLSMAX) div 3) + Gdelta - Rdelta;
 
       if (H < 0) then
-        Inc (H, HLSMAX);
+        Inc(H, HLSMAX);
       if (H > HLSMAX) then
-        Dec (H, HLSMAX)
+        Dec(H, HLSMAX)
   end
 end;
 
@@ -177,11 +177,11 @@ begin
     g := 10;
     for r := 0 to 23 do
     begin
-      MonoEntries [r].peRed := g;
-      MonoEntries [r].peGreen := g;
-      MonoEntries [r].peBlue := g;
-      MonoEntries [r].peFlags := 0;
-      Inc (g, 10)
+      MonoEntries[r].peRed := g;
+      MonoEntries[r].peGreen := g;
+      MonoEntries[r].peBlue := g;
+      MonoEntries[r].peFlags := 0;
+      Inc(g, 10)
     end;
 
     for r:=0 to 5 do
@@ -229,7 +229,7 @@ begin
         peBlue :=  c shr 16 and $ff
       end;
 {$R+}
-    Result := CreatePalette (logPalette^);
+    Result := CreatePalette(logPalette^);
   finally
     FreeMem (logPalette)
   end

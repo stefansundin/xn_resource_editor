@@ -45,11 +45,11 @@ type
 
     property OnSelect : TNotifyEvent read FOnSelect write FOnSelect;
   public
-    constructor Create (AOwner : TComponent); override;
+    constructor Create(AOwner : TComponent); override;
     procedure BeginUpdate;
     procedure Clear;
     procedure EndUpdate;
-    procedure SelectSquare (x, y : Integer);
+    procedure SelectSquare(x, y : Integer);
     procedure UnselectAll;
     property SelX : Integer read FSelX;
     property SelY : Integer read FSelY;
@@ -107,7 +107,7 @@ implementation
 
 procedure TCustomSuDoku.BeginUpdate;
 begin
-  Inc (FUpdateCount);
+  Inc(FUpdateCount);
 end;
 
 procedure TCustomSuDoku.CalcGridCoords (const r : TRect);
@@ -117,7 +117,7 @@ begin
   FGotGridCoords := True;
   w := r.Right - r.Left;
   h := r.Bottom - r.Top;
-  FGridXCoords [0] := 0;
+  FGridXCoords[0] := 0;
 
   for i := 1 to 8 do
   begin
@@ -133,7 +133,7 @@ begin
   Canvas.Pen.Color := clBtnHighlight;
 
   if FAutoFontSize then
-    Canvas.Font.Height := FGridYCoords [1]
+    Canvas.Font.Height := FGridYCoords[1]
   else
     Canvas.Font.Height := FOrigFontSize;
 end;
@@ -200,7 +200,7 @@ begin
 
   for y := 0 to 8 do
     for x := 0 to 8 do
-      FCellColors [x, y] := -1;
+      FCellColors[x, y] := -1;
 end;
 
 procedure TCustomSuDoku.DoOnSelect;
@@ -245,15 +245,15 @@ begin
   sy := -1;
   for i := 0 to 8 do
   begin
-    if (sx = -1) and (x < FGridXCoords [i+1]) then
+    if (sx = -1) and (x < FGridXCoords[i+1]) then
       sx := i;
-    if (sy = -1) and (y < FGridYCoords [i+1]) then
+    if (sy = -1) and (y < FGridYCoords[i+1]) then
       sy := i;
   end;
 
   if (sx <> -1) and (sy <> -1) then
   begin
-    SelectSquare (sx, sy);
+    SelectSquare(sx, sy);
     DoOnSelect
   end
 end;
@@ -275,10 +275,10 @@ begin
   begin
     if not ((i = 3) or (i = 6)) then
     begin
-      Canvas.MoveTo(FGridXCoords [i], r.Top - 2);
-      Canvas.LineTo(FGridXCoords [i], r.Bottom + 2);
-      Canvas.MoveTo(r.Left - 2, FGridYCoords [i]);
-      Canvas.LineTo(r.Right + 2, FGridYCoords [i]);
+      Canvas.MoveTo(FGridXCoords[i], r.Top - 2);
+      Canvas.LineTo(FGridXCoords[i], r.Bottom + 2);
+      Canvas.MoveTo(r.Left - 2, FGridYCoords[i]);
+      Canvas.LineTo(r.Right + 2, FGridYCoords[i]);
     end
   end;
 
@@ -286,10 +286,10 @@ begin
   begin
     if (i = 3) or (i = 6) then
     begin
-      r1 := Rect (FGridXCoords [i] - 2, r.Top - 1, FGridXCoords [i] + 2, r.Bottom + 2);
-      DrawEdge (Canvas.Handle, r1, EDGE_SUNKEN, BF_RECT);
-      r1 := Rect (r.Left - 2, FGridYCoords [i] - 1, r.Right + 2, FGridYCoords [i] + 2);
-      DrawEdge (Canvas.Handle, r1, EDGE_SUNKEN, BF_RECT)
+      r1 := Rect (FGridXCoords[i] - 2, r.Top - 1, FGridXCoords[i] + 2, r.Bottom + 2);
+      DrawEdge(Canvas.Handle, r1, EDGE_SUNKEN, BF_RECT);
+      r1 := Rect (r.Left - 2, FGridYCoords[i] - 1, r.Right + 2, FGridYCoords[i] + 2);
+      DrawEdge(Canvas.Handle, r1, EDGE_SUNKEN, BF_RECT)
     end
   end;
 
@@ -299,12 +299,12 @@ begin
       i := FData [x, y];
       if i > 0 then
       begin
-        r.Left := FGridXCoords [x];
-        r.Top := FGridYCoords [y];
-        r.Right := r.Left + FGridXCoords [1];
-        r.Bottom := r.Top + FGridYCoords [1];
-        SetBkMode (Canvas.Handle, TRANSPARENT);
-        clr := FCellColors [x, y];
+        r.Left := FGridXCoords[x];
+        r.Top := FGridYCoords[y];
+        r.Right := r.Left + FGridXCoords[1];
+        r.Bottom := r.Top + FGridYCoords[1];
+        SetBkMode(Canvas.Handle, TRANSPARENT);
+        clr := FCellColors[x, y];
         if clr <> -1 then
           Canvas.Font.Color := clr;
         DrawText (canvas.Handle, PChar (IntToStr (i)), 1, r, DT_CENTER or DT_VCENTER or DT_SINGLELINE);
@@ -314,14 +314,14 @@ begin
 
       if (x = FSelX) and (y = FSelY) then
       begin
-        r.Left := FGridXCoords [x];
-        r.Top := FGridYCoords [y];
-        r.Right := r.Left + FGridXCoords [1];
-        r.Bottom := r.Top + FGridYCoords [1];
+        r.Left := FGridXCoords[x];
+        r.Top := FGridYCoords[y];
+        r.Right := r.Left + FGridXCoords[1];
+        r.Bottom := r.Top + FGridYCoords[1];
         InflateRect (r, -1, -1);
-        Inc (r.Bottom);
-        Inc (r.Right);
-        DrawEdge (Canvas.Handle, r, EDGE_ETCHED, BF_RECT);
+        Inc(r.Bottom);
+        Inc(r.Right);
+        DrawEdge(Canvas.Handle, r, EDGE_ETCHED, BF_RECT);
       end
     end
 end;
@@ -357,7 +357,7 @@ end;
 
 procedure TCustomSuDoku.SetSquareColor(x, y : Integer; const Value: Integer);
 begin
-  FCellColors [x, y] := Value;
+  FCellColors[x, y] := Value;
   ReDisplay
 end;
 

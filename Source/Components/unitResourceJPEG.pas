@@ -25,11 +25,11 @@ type
     function GetPixelFormat: TPixelFormat; override;
     function GetWidth: Integer; override;
     procedure InitNew; override;
-    class function SupportsData (Size : Integer; data : Pointer) : Boolean; override;
+    class function SupportsData(Size : Integer; data : Pointer) : Boolean; override;
   public
     class function GetBaseType : WideString; override;
-    procedure GetImage (picture : TPicture); override;
-    procedure SetImage (image : TPicture); override;
+    procedure GetImage(picture : TPicture); override;
+    procedure SetImage(image : TPicture); override;
   end;
 
 implementation
@@ -47,15 +47,15 @@ begin
 
   repeat
     if p^ <> #$ff then
-      raise Exception.Create ('Invalid JPEG Image');
+      raise Exception.Create('Invalid JPEG Image');
 
-    Inc (p);
+    Inc(p);
 
-    seg := Byte (p^);
+    seg := Byte(p^);
 
     if seg <> $ff then
     begin
-      Inc (p);
+      Inc(p);
 
       if seg = segment then
       begin
@@ -69,28 +69,28 @@ begin
 
       if Pos (char (seg), ParameterlessSegments) = 0 then
       begin
-        len := 256 * Byte (p^) + Byte ((p + 1)^);
-        Inc (p, len)
+        len := 256 * Byte(p^) + Byte((p + 1)^);
+        Inc(p, len)
       end
     end
   until False
 end;
 
-procedure GetJPegSize (data : PChar; var Width, Height : Integer);
+procedure GetJPegSize(data : PChar; var Width, Height : Integer);
 var
   len : Integer;
 begin
   if FindJPegSegment (data, $c0) then
   begin
-    len := 256 * Byte (data^) + Byte ((data + 1)^);
+    len := 256 * Byte(data^) + Byte((data + 1)^);
 
     if len > 5 then
     begin
-      Inc (data, 3);  // Skip len word & precision byte
-      Height := 256 * Byte (data^) + Byte ((data + 1)^);
+      Inc(data, 3);  // Skip len word & precision byte
+      Height := 256 * Byte(data^) + Byte((data + 1)^);
 
-      Inc (data, 2);
-      Width := 256 * Byte (data^) + Byte ((data + 1)^);
+      Inc(data, 2);
+      Width := 256 * Byte(data^) + Byte((data + 1)^);
     end
   end
 end;
@@ -105,7 +105,7 @@ end;
 function TJPegResourceDetails.GetHeight: Integer;
 begin
   if fHeight = 0 then
-    GetJPegSize (data.Memory, FWidth, FHeight);
+    GetJPegSize(data.Memory, FWidth, FHeight);
 
   Result := fHeight;
 end;
@@ -113,8 +113,8 @@ end;
 procedure TJPegResourceDetails.GetImage(picture: TPicture);
 begin
   picture.graphic := TJPegImage.Create;
-  data.Seek (0, soFromBeginning);
-  TJpegImage (picture.graphic).LoadFromStream (data);
+  data.Seek(0, soFromBeginning);
+  TJpegImage(picture.graphic).LoadFromStream (data);
   fWidth := picture.graphic.Width;
   fHeight := picture.graphic.Height;
 end;
@@ -127,7 +127,7 @@ end;
 function TJPegResourceDetails.GetWidth: Integer;
 begin
   if fWidth = 0 then
-    GetJPegSize (data.Memory, FWidth, FHeight);
+    GetJPegSize(data.Memory, FWidth, FHeight);
   Result := fWidth;
 end;
 
@@ -166,11 +166,11 @@ begin
   if PWORD (data)^ = $d8ff then
     if FindJPegSegment (PChar (data), $e0) then
     begin
-      len := 256 * Byte (PChar (data)^) + Byte ((PChar (data) + 1)^);
+      len := 256 * Byte(PChar (data)^) + Byte((PChar (data) + 1)^);
 
       if len >= 16 then
       begin
-        Inc (PChar (data), 2);
+        Inc(PChar (data), 2);
 
         if StrLIComp (data, 'JFIF', 4) = 0 then
           Result := True

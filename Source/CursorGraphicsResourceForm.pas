@@ -22,8 +22,8 @@ type
   protected
     procedure SetObject (const Value : TObject); override;
   public
-    procedure PreviewKey (var key : Word; shift : TShiftState); override;
-    procedure SaveResource (const undoDetails : string); override;
+    procedure PreviewKey(var key : Word; shift : TShiftState); override;
+    procedure SaveResource(const undoDetails : string); override;
 
     property Cursor : TExCursor read GetCursor;
   end;
@@ -61,7 +61,7 @@ begin
   BitmapEditor1.HotSpotX := LoWord (self.Cursor.Hotspot);
   BitmapEditor1.HotSpotY := HiWord (self.Cursor.Hotspot);
   BitmapEditor1.Picture := Image1.Picture;      // Set the editor picture
-  SaveResource (change);
+  SaveResource(change);
 end;
 
 procedure TfmCursorGraphicsResource.actImageHotSpotExecute(Sender: TObject);
@@ -114,7 +114,7 @@ var
   prop : TPropertyListProperty;
 begin
   with PropertyListBox1 do
-    prop := Properties [SelectedPropertyNo];
+    prop := Properties[SelectedPropertyNo];
 
   change := '';
 
@@ -136,7 +136,7 @@ begin
   if change <> '' then
   begin
     BitmapEditor1.Picture := Image1.Picture;      // Set the editor picture
-    SaveResource (change);
+    SaveResource(change);
   end
   else
     inherited;
@@ -145,7 +145,7 @@ end;
 procedure TfmCursorGraphicsResource.SaveResource(const undoDetails: string);
 begin
   inherited;
-  Screen.Cursors [crCurrentCursor] := Cursor.Handle;
+  Screen.Cursors[crCurrentCursor] := Cursor.Handle;
 end;
 
 type
@@ -161,7 +161,7 @@ begin
   SetHotspot (pt);
   pt.x := -1;
   pt.y := -1;
-  TCrackPopupMenu (PopupMenu1).SetPopupPoint(pt);
+  TCrackPopupMenu(PopupMenu1).SetPopupPoint(pt);
 end;
 
 procedure TfmCursorGraphicsResource.SetObject(const Value: TObject);
@@ -170,20 +170,20 @@ begin
 
   with PropertyListBox1 do                      // Set the properties
   begin
-    with FindProperty (rstHotX) do
+    with FindProperty(rstHotX) do
     begin
       Tag := taHotX;
       PropertyValue := LoWord (self.Cursor.Hotspot);
     end;
 
-    with FindProperty (rstHotY) do
+    with FindProperty(rstHotY) do
     begin
       Tag := taHotY;
       PropertyValue := HiWord (self.Cursor.Hotspot);
     end
   end;
 
-  Screen.Cursors [crCurrentCursor] := Cursor.Handle;
+  Screen.Cursors[crCurrentCursor] := Cursor.Handle;
   sbThumbnail.Cursor := crCurrentCursor;
   BitmapEditor1.HotSpotX := LoWord (self.Cursor.Hotspot);
   BitmapEditor1.HotSpotY := HiWord (self.Cursor.Hotspot);

@@ -28,13 +28,13 @@ unit GIFImage;
 // Known problems:
 //
 // * The combination of buffered, tiled and transparent draw will display the
-//   background incorrectly (scaled).
+//   background incorrectly(scaled).
 //   If this is a problem for you, use non-buffered (goDirectDraw) drawing
 //   instead.
 //
 // * The combination of non-buffered, transparent and stretched draw is
 //   sometimes distorted with a pattern effect when the image is displayed
-//   smaller than the real size (shrinked).
+//   smaller than the real size(shrinked).
 //
 // * Buffered display flickers when TGIFImage is used by a transparent TImage
 //   component.
@@ -336,7 +336,7 @@ var
           // * GIFDelayExp:
             // The following delay values should all
                                         // be multiplied by this value to
-                                        // calculate the effective time (in mS).
+                                        // calculate the effective time(in mS).
                                         // According to the GIF specs, this
                                         // value should be 10.
                                         // Since our paint routines are much
@@ -355,7 +355,7 @@ var
                                         // (10 = 100 mS)
 
 {$IFDEF FAST_AS_HELL}
-  GIFMinimumDelay: Integer = 1;    // Minimum delay (from Mozilla source).
+  GIFMinimumDelay: Integer = 1;    // Minimum delay(from Mozilla source).
             // (1 = 10 mS)
 {$ELSE}
   GIFMinimumDelay: Integer = 3;    // Minimum delay - Tweaked.
@@ -430,7 +430,7 @@ type
 
   // From Delphi 3 graphics.pas. Used by the D3 TGraphic class.
   TProgressStage = (psStarting, psRunning, psEnding);
-  TProgressEvent = procedure (Sender: TObject; Stage: TProgressStage;
+  TProgressEvent = procedure(Sender: TObject; Stage: TProgressStage;
     PercentDone: Byte; RedrawNow: Boolean; const R: TRect; const Msg: string) of object;
 
   // From Delphi 3 windows.pas
@@ -996,7 +996,7 @@ type
   TColorReduction =
     (rmNone,      // Do not perform color reduction
      rmWindows20,    // Reduce to the Windows 20 color system palette
-     rmWindows256,    // Reduce to the Windows 256 color halftone palette (Only works in 256 color display mode)
+     rmWindows256,    // Reduce to the Windows 256 color halftone palette(Only works in 256 color display mode)
      rmWindowsGray,    // Reduce to the Windows 4 grayscale colors
      rmMonochrome,    // Reduce to a black/white monochrome palette
      rmGrayScale,    // Reduce to a uniform 256 shade grayscale palette
@@ -1496,7 +1496,7 @@ const
 //: Dummy component registration to add design-time support of GIFs to TImage.
 // Since TGIFImage isn't a component there's nothing to register here, but
 // since Register is only called at design time we can set the design time
-// GIF paint options here (modify as you please):
+// GIF paint options here(modify as you please):
 procedure Register;
 begin
   // Don't loop animations at design-time. Animated GIFs will animate once and
@@ -1562,7 +1562,7 @@ var
   function ReturnAddr: Pointer;
   // From classes.pas
   asm
-    MOV    EAX,[EBP+4] // sysutils.pas says [EBP-4], but this works !
+    MOV    EAX,[EBP+4] // sysutils.pas says[EBP-4], but this works !
   end;
 
 begin
@@ -1589,7 +1589,7 @@ procedure Error(msg: string);
   function ReturnAddr: Pointer;
   // From classes.pas
   asm
-    MOV    EAX,[EBP+4] // sysutils.pas says [EBP-4] !
+    MOV    EAX,[EBP+4] // sysutils.pas says[EBP-4] !
   end;
 begin
   raise GIFException.Create(msg) at ReturnAddr;
@@ -1639,7 +1639,7 @@ begin
   begin
     Result := 1;
     MaxColor := 2;
-    while (Colors > MaxColor) do
+    while(Colors > MaxColor) do
     begin
       inc(Result);
       MaxColor := MaxColor SHL 1;
@@ -1694,7 +1694,7 @@ begin
       b := 255
     else
       b := size;
-    while (size > 0) do
+    while(size > 0) do
     begin
       dec(size, b);
       WriteByte(Stream, b);
@@ -1722,7 +1722,7 @@ begin
   Text.Clear;
   if (Stream.Read(size, 1) <> 1) then
     exit;
-  while (size > 0) do
+  while(size > 0) do
   begin
     ReadCheck(Stream, buf, size);
     buf[size] := #0;
@@ -1947,7 +1947,7 @@ begin
   with BitmapFileHeader^ do
   begin
     bfType := $4D42; // 'BM' = Windows BMP signature
-    bfSize := FileSize; // File size (not needed)
+    bfSize := FileSize; // File size(not needed)
     bfOffBits := sizeof(TBitmapFileHeader) + HeaderSize; // Offset of pixel data
   end;
   // Get pixel data in new pixel format
@@ -1993,12 +1993,12 @@ begin
       if (Bytes < (SizeOf(dsbm) + SizeOf(dsbmih))) or (dsbmih.biSize < SizeOf(dsbmih)) then
         DIBSection.dsBmih.biBitCount := dsbm.bmBitsPixel * dsbm.bmPlanes;
 
-      case (dsBmih.biBitCount) of
+      case(dsBmih.biBitCount) of
         0: Result := pfDevice;
         1: Result := pf1bit;
         4: Result := pf4bit;
         8: Result := pf8bit;
-        16: case (dsBmih.biCompression) of
+        16: case(dsBmih.biCompression) of
               BI_RGB:
                 Result := pf15Bit;
               BI_BITFIELDS:
@@ -2109,7 +2109,7 @@ begin
 
   // Work around a bug in TBitmap:
   // When converting to pf8bit format, the palette assigned to TBitmap.Palette
-  // will be a half tone palette (which only contains the 20 system colors).
+  // will be a half tone palette(which only contains the 20 system colors).
   // Unfortunately this is not the palette used to render the bitmap and it
   // is also not the palette saved with the bitmap.
   if (PixelFormat = pf8bit) then
@@ -2677,7 +2677,7 @@ begin
       with BitmapFileHeader do
       begin
         bfType := $4D42; // 'BM' = Windows BMP signature
-        bfSize := FileSize; // File size (not needed)
+        bfSize := FileSize; // File size(not needed)
         bfOffBits := sizeof(TBitmapFileHeader) + FDIBInfoSize; // Offset of pixel data
       end;
       // Save file header
@@ -3172,7 +3172,7 @@ begin
 
   // The Error arrays has (columns + 2) entries; the extra entry at
   // each end saves us from special-casing the first and last pixels.
-  // We can get away with a single array (holding one row's worth of errors)
+  // We can get away with a single array(holding one row's worth of errors)
   // by using it to store the current row's errors at pixel columns not yet
   // processed, but the next row's errors at columns already processed.  We
   // need only a few extra variables to hold the errors immediately around the
@@ -4345,7 +4345,7 @@ var
 begin
   // Find the deepest level containing at least one reducible node
   i := Colorbits - 1;
-  while (i > 0) and (ReducibleNodes[i] = nil) do
+  while(i > 0) and (ReducibleNodes[i] = nil) do
     dec(i);
 
   // Reduce the node most recently added to the list at level i.
@@ -4636,7 +4636,7 @@ begin
       DIBSource := TDIBReader.Create(Bitmap, pf24bit);
 
       // Create a palette based on current options
-      case (ColorReduction) of
+      case(ColorReduction) of
         rmQuantize:
           Palette := doCreateOptimizedPaletteFromSingleBitmap(DIBSource, 1 SHL ReductionBits, 8, False);
         rmQuantizeWindows:
@@ -4662,7 +4662,7 @@ begin
       { TODO -oanme -cImprovement: Gray scale conversion should be done prior to dithering/mapping. Otherwise corrected values will be converted multiple times. }
 
       // Create a color mapper based on current options
-      case (ColorReduction) of
+      case(ColorReduction) of
         // For some strange reason my fast and dirty color lookup
         // is more precise that Windows GetNearestPaletteIndex...
         // rmWindows20:
@@ -4686,7 +4686,7 @@ begin
         exit;
 
       // Create a ditherer based on current options
-      case (DitherMode) of
+      case(DitherMode) of
         dmNearest:
           Ditherer := TDitherEngine.Create(Bitmap.Width, ColorLookup);
         dmFloydSteinberg:
@@ -4711,14 +4711,14 @@ begin
 
       // Process the image
       Row := 0;
-      while (Row < Bitmap.Height) do
+      while(Row < Bitmap.Height) do
       begin
         SrcScanline := DIBSource.ScanLine[Row];
         DstScanline := DIBResult.ScanLine[Row];
         Src := Pointer(longInt(SrcScanLine) + Ditherer.Column*sizeof(TRGBTriple));
         Dst := Pointer(longInt(DstScanLine) + Ditherer.Column);
 
-        while (Ditherer.Column < Ditherer.Width) and (Ditherer.Column >= 0) do
+        while(Ditherer.Column < Ditherer.Width) and (Ditherer.Column >= 0) do
         begin
           BGR := Src^;
           // Dither and map a single pixel
@@ -4829,7 +4829,7 @@ begin
   Dummy.Red := 0;
   Dummy.Green := 0;
   Dummy.Blue := 0;
-  while (Dummies > 0) do
+  while(Dummies > 0) do
   begin
     Stream.WriteBuffer(Dummy, sizeof(TGIFColor));
     dec(Dummies);
@@ -4856,7 +4856,7 @@ begin
     // Optimized palette has most frequently occuring entries first
     Result := 0;
     // Reverse search to (hopefully) check latest colors first
-    while (Result < FCount) do
+    while(Result < FCount) do
       with (FColorMap^[Result]) do
       begin
         if (RGB.Red = Red) and (RGB.Green = Green) and (RGB.Blue = Blue) then
@@ -4868,7 +4868,7 @@ begin
   begin
     Result := FCount-1;
     // Reverse search to (hopefully) check latest colors first
-    while (Result >= 0) do
+    while(Result >= 0) do
       with (FColorMap^[Result]) do
       begin
         if (RGB.Red = Red) and (RGB.Green = Green) and (RGB.Blue = Blue) then
@@ -5076,8 +5076,8 @@ var
       Hi := iHi;
       Pivot := Usage[(iLo + iHi) SHR 1].Count;
       repeat
-        while (Usage[Lo].Count - Pivot > 0) do inc(Lo);
-        while (Usage[Hi].Count - Pivot < 0) do dec(Hi);
+        while(Usage[Lo].Count - Pivot > 0) do inc(Lo);
+        while(Usage[Hi].Count - Pivot < 0) do dec(Hi);
         if (Lo <= Hi) then
         begin
           T := Usage[Lo];
@@ -5258,7 +5258,7 @@ end;
 
 procedure TGIFList.Clear;
 begin
-  while (FItems.Count > 0) do
+  while(FItems.Count > 0) do
     Delete(0);
 end;
 
@@ -5375,7 +5375,7 @@ begin
       (*
       ** Sum up usage count for each color
       *)
-      while (Pixel < LastPixel) do
+      while(Pixel < LastPixel) do
       begin
         inc(Histogram[ord(Pixel^)].Count);
         inc(Pixel);
@@ -5398,7 +5398,7 @@ begin
       (*
       **  Reorder all pixel to new map
       *)
-      while (Pixel < LastPixel) do
+      while(Pixel < LastPixel) do
       begin
         Pixel^ := chr(Map[ord(Pixel^)]);
         inc(Pixel);
@@ -5641,7 +5641,7 @@ begin
   (*
   ** Sum up usage count for each color
   *)
-  while (Pixel < LastPixel) do
+  while(Pixel < LastPixel) do
   begin
     inc(Histogram[ord(Pixel^)].Count);
     inc(Pixel);
@@ -5659,7 +5659,7 @@ begin
   (*
   **  Reorder all pixel to new map
   *)
-  while (Pixel < LastPixel) do
+  while(Pixel < LastPixel) do
   begin
     Pixel^ := chr(Map[ord(Pixel^)]);
     inc(Pixel);
@@ -5820,7 +5820,7 @@ var
     b: Byte;
   begin
     code := nextCode(BitsPerCode);
-    while (code >= 0) do
+    while(code >= 0) do
     begin
       if (code = ClearCode) then
       begin
@@ -5855,7 +5855,7 @@ var
         // Eat rest of data blocks
         if (Stream.Read(b, 1) <> 1) then
           exit;
-        while (b <> 0) do
+        while(b <> 0) do
         begin
           Stream.Seek(b, soFromCurrent);
           if (Stream.Read(b, 1) <> 1) then
@@ -5874,7 +5874,7 @@ var
       end;
 
       ASSERT(Code < TableSize, 'Code too large');
-      while (code >= ClearCode) do
+      while(code >= ClearCode) do
       begin
         Source^ := table1[code];
         Inc(Source);
@@ -6045,7 +6045,7 @@ const
 type
   // A Hash Key is 20 bits wide.
   // - The lower 8 bits are the postfix character (the new pixel).
-  // - The upper 12 bits are the prefix code (the GIF token).
+  // - The upper 12 bits are the prefix code(the GIF token).
   // A KeyInt must be able to represent the Integer values -1..(2^20)-1
   KeyInt = longInt;  // 32 bits
   CodeInt = SmallInt;  // 16 bits
@@ -6150,8 +6150,8 @@ begin
   HKey := HashKey(Key);
 
   // Scan for empty slot
-  // while (HashTable[HKey] SHR GIFCodeBits <> HashEmpty) do { Unoptimized }
-  while (HashTable[HKey] AND (HashEmpty SHL GIFCodeBits) <> (HashEmpty SHL GIFCodeBits)) do { Optimized }
+  // while(HashTable[HKey] SHR GIFCodeBits <> HashEmpty) do { Unoptimized }
+  while(HashTable[HKey] AND (HashEmpty SHL GIFCodeBits) <> (HashEmpty SHL GIFCodeBits)) do { Optimized }
     HKey := NextHashKey(HKey);
   // Fill slot with key/value pair
   HashTable[HKey] := (Key SHL GIFCodeBits) OR (Code AND GIFCodeMask);
@@ -6177,8 +6177,8 @@ begin
   // HTKey := HashTable[HKey] SHR GIFCodeBits; { Unoptimized }
   Key := Key SHL GIFCodeBits; { Optimized }
   HTKey := HashTable[HKey] AND (HashEmpty SHL GIFCodeBits); { Optimized }
-  // while (HTKey <> HashEmpty) do { Unoptimized }
-  while (HTKey <> HashEmpty SHL GIFCodeBits) do { Optimized }
+  // while(HTKey <> HashEmpty) do { Unoptimized }
+  while(HTKey <> HashEmpty SHL GIFCodeBits) do { Optimized }
   begin
     if (Key = HTKey) then
     begin
@@ -6211,8 +6211,8 @@ end;
 //
 // Descendants from TGIFStream either reads or writes data in blocks
 // of up to 255 bytes. These blocks are organized as a leading Byte
-// containing the number of bytes in the block (exclusing the count
-// Byte itself), followed by the data (up to 254 bytes of data).
+// containing the number of bytes in the block(exclusing the count
+// Byte itself), followed by the data(up to 254 bytes of data).
 ////////////////////////////////////////////////////////////////////////////////
 type
   TGIFStream = class(TStream)
@@ -6290,10 +6290,10 @@ begin
   Dst := @Buffer;
   Result := 0;
 
-  while (Count > 0) do
+  while(Count > 0) do
   begin
     // Get data from buffer
-    while (FBufferCount > 0) and (Count > 0) do
+    while(FBufferCount > 0) and (Count > 0) do
     begin
       if (FBufferCount > Count) then
         n := Count
@@ -6380,10 +6380,10 @@ begin
   Result := Count;
   FOutputDirty := True;
   Src := @Buffer;
-  while (Count > 0) do
+  while(Count > 0) do
   begin
     // Move data to the internal buffer in 255 Byte chunks
-    while (FBufferCount < sizeof(FBuffer)) and (Count > 0) do
+    while(FBufferCount < sizeof(FBuffer)) and (Count > 0) do
     begin
       n := sizeof(FBuffer) - FBufferCount;
       if (n > Count) then
@@ -6476,7 +6476,7 @@ begin
 
   inc(OutputBits, BitsPerCode);
 
-  while (OutputBits >= 8) do
+  while(OutputBits >= 8) do
   begin
     GIFStream.WriteByte(OutputBucket AND $FF);
     OutputBucket := OutputBucket SHR 8;
@@ -6486,7 +6486,7 @@ begin
   if (Value = EOFCode) then
   begin
     // At EOF, write the rest of the buffer.
-    while (OutputBits > 0) do
+    while(OutputBits > 0) do
     begin
       GIFStream.WriteByte(OutputBucket AND $FF);
       OutputBucket := OutputBucket SHR 8;
@@ -6522,7 +6522,7 @@ begin
     end;
 
     cX := Width;
-    case (Pass) of
+    case(Pass) of
       0:
         begin
           inc(Y, 8);
@@ -6632,7 +6632,7 @@ begin
       // Output the final code.
       Output(EOFCode);
     end else
-      // Output the final code (and nothing else).
+      // Output the final code(and nothing else).
       TGIFEncoder(self).Output(EOFCode);
   finally
     GIFStream.Free;
@@ -6715,14 +6715,14 @@ var
     begin
       v := x;
       r := 1;
-      while (v > 0) do
+      while(v > 0) do
       begin
         v := v DIV 4;
         r := r * 2;
       end;
     end;
 
-    while (True) do
+    while(True) do
     begin
       v := ((x DIV r) + r) DIV 2;
       if ((v = r) or (v = r+1)) then
@@ -6738,7 +6738,7 @@ begin
   Result := 0;
   PerRepeat := (nrepcodes * (nrepcodes+1)) DIV 2;
 
-  while (Count >= PerRepeat) do
+  while(Count >= PerRepeat) do
   begin
     inc(Result, nrepcodes);
     dec(Count, PerRepeat);
@@ -6747,9 +6747,9 @@ begin
   if (Count > 0) then
   begin
     n := iSqrt(Count);
-    while ((n * (n+1)) >= 2*Count) do
+    while((n * (n+1)) >= 2*Count) do
       dec(n);
-    while ((n * (n+1)) < 2*Count) do
+    while((n * (n+1)) < 2*Count) do
       inc(n);
     inc(Result, n);
   end;
@@ -6774,7 +6774,7 @@ begin
   MaxOutClear;
   RunLengthTablePixel := Prefix;
   n := 1;
-  while (Count > 0) do
+  while(Count > 0) do
   begin
     if (n = 1) then
     begin
@@ -6819,7 +6819,7 @@ begin
     Clear;
     FlushFromClear(Count);
   end else
-    while (Count > 0) do
+    while(Count > 0) do
     begin
       OutputPlain(Prefix);
       dec(Count);
@@ -6854,7 +6854,7 @@ begin
   end;
   MaxOutClear;
 
-  while (RepeatMax > 0) do
+  while(RepeatMax > 0) do
   begin
     OutputPlain(BaseCode + RunLengthTableMax-2);
     dec(RepeatMax);
@@ -7015,7 +7015,7 @@ begin
     inc(Pixel);
     if (Prefix >= MaxColor) then
       Error(sInvalidColor);
-    while (BumpPixel) do
+    while(BumpPixel) do
     begin
       // Fetch the next pixel
       Color := Pixel^;
@@ -7328,7 +7328,7 @@ end;
 
 function TGIFSubImage.GetBounds(Index: Integer): Word;
 begin
-  case (Index) of
+  case(Index) of
     1: Result := FImageDescriptor.Left;
     2: Result := FImageDescriptor.Top;
     3: Result := FImageDescriptor.Width;
@@ -7340,7 +7340,7 @@ end;
 
 procedure TGIFSubImage.SetBounds(Index: Integer; Value: Word);
 begin
-  case (Index) of
+  case(Index) of
     1: DoSetBounds(Value, FImageDescriptor.Top, FImageDescriptor.Width, FImageDescriptor.Height);
     2: DoSetBounds(FImageDescriptor.Left, Value, FImageDescriptor.Width, FImageDescriptor.Height);
     3: DoSetBounds(FImageDescriptor.Left, FImageDescriptor.Top, Value, FImageDescriptor.Height);
@@ -7447,7 +7447,7 @@ begin
         Row := 0;
         MaskRow := MaskBits;
         Src := FData;
-        while (Row < Height) do
+        while(Row < Height) do
         begin
           if ((Row AND $1F) = 0) then
             Image.Progress(Self, psRunning, MulDiv(Row, 100, Height),
@@ -7470,7 +7470,7 @@ begin
           end;
           inc(Dst, Ditherer.Column);
 
-          while (Ditherer.Column < Ditherer.Width) and (Ditherer.Column >= 0) do
+          while(Ditherer.Column < Ditherer.Width) and (Ditherer.Column >= 0) do
           begin
             Index := ord(Src^);
             Color := ColMap[ord(Index)];
@@ -7613,7 +7613,7 @@ begin
         ScanLineRow := 0;
         Src := FData;
         MaskRow := MaskBits;
-        while (ScanLineRow < Height) do
+        while(ScanLineRow < Height) do
         begin
           DestScanline := DIBResult.ScanLine[ScanLineRow];
 
@@ -7690,7 +7690,7 @@ begin
 {$ifdef DEBUG_RENDERPERFORMANCE}
   if (GetAsyncKeyState(VK_CONTROL) <> 0) then
   begin
-    ShowMessage(format('Render %d images in %d mS, Rate %d mS/image (%d images/S)',
+    ShowMessage(format('Render %d images in %d mS, Rate %d mS/image(%d images/S)',
       [ImageCount, RenderTime,
        RenderTime DIV (ImageCount+1),
        MulDiv(ImageCount, 1000, RenderTime+1)]));
@@ -7774,7 +7774,7 @@ begin
   else
     Result := inherited GetVersion;
   i := 0;
-  while (Result < high(TGIFVersion)) and (i < FExtensions.Count) do
+  while(Result < high(TGIFVersion)) and (i < FExtensions.Count) do
   begin
     v := FExtensions[i].Version;
     if (v > Result) then
@@ -8036,7 +8036,7 @@ var
       x := Width;
       Bit := 0;
       Byte := 0; // To avoid compiler warning
-      while (x > 0) do
+      while(x > 0) do
       begin
         if (Bit = 0) then
         begin
@@ -8126,7 +8126,7 @@ var
     // Convert colors in colormap from BGR to RGB
     ColorMap := FColorMap.Data;
     i := FColorMap.Count;
-    while (i > 0) do
+    while(i > 0) do
     begin
       t := ColorMap^[0].Red;
       ColorMap^[0].Red := ColorMap^[0].Blue;
@@ -8374,7 +8374,7 @@ begin
       DIBSource := TDIBReader.Create(FBitmap, PixelFormat);
       try
         // Copy pixels
-        case (PixelFormat) of
+        case(PixelFormat) of
           pf8bit: Import8Bit(Fdata);
           pf4bit: Import4Bit(Fdata);
           pf1bit: Import1Bit(Fdata);
@@ -8515,7 +8515,7 @@ begin
               // OrMask := NOT Mask
               BitBlt(OrMaskDC, SrcX, SrcY, SrcW, SrcH, MaskDC, SrcX, SrcY, NotSrcCopy);
 
-              // Retrieve source palette (with dummy select)
+              // Retrieve source palette(with dummy select)
               SavePal := SelectPalette(SrcDC, SystemPalette16, False);
               // Restore source palette
               SelectPalette(SrcDC, SavePal, False);
@@ -8619,11 +8619,11 @@ begin
       begin
         Tile.Left := Rect.Left+Left;
         Tile.Right := Tile.Left + Width;
-        while (Tile.Left < Rect.Right) do
+        while(Tile.Left < Rect.Right) do
         begin
           Tile.Top := Rect.Top+Top;
           Tile.Bottom := Tile.Top + Height;
-          while (Tile.Top < Rect.Bottom) do
+          while(Tile.Top < Rect.Bottom) do
           begin
             TransparentStretchBlt(ACanvas.Handle, Tile.Left, Tile.Top, Width, Height,
               Bitmap.Canvas.Handle, 0, 0, Width, Height, MaskDC, 0, 0);
@@ -8657,11 +8657,11 @@ begin
     begin
       Tile.Left := Rect.Left+Left;
       Tile.Right := Tile.Left + Width;
-      while (Tile.Left < Rect.Right) do
+      while(Tile.Left < Rect.Right) do
       begin
         Tile.Top := Rect.Top+Top;
         Tile.Bottom := Tile.Top + Height;
-        while (Tile.Top < Rect.Bottom) do
+        while(Tile.Top < Rect.Bottom) do
         begin
           ACanvas.StretchDraw(Tile, Bitmap);
           Tile.Top := Tile.Top + Image.Height;
@@ -8733,7 +8733,7 @@ begin
   CropBottom := Height - 1;
   // Find left edge
   WasTransparent := True;
-  while (CropLeft <= CropRight) and (WasTransparent) do
+  while(CropLeft <= CropRight) and (WasTransparent) do
   begin
     for i := CropTop to CropBottom do
       if (Pixels[CropLeft, i] <> TransparentColorIndex) then
@@ -8746,7 +8746,7 @@ begin
   end;
   // Find right edge
   WasTransparent := True;
-  while (CropLeft <= CropRight) and (WasTransparent) do
+  while(CropLeft <= CropRight) and (WasTransparent) do
   begin
     for i := CropTop to CropBottom do
       if (pixels[CropRight, i] <> TransparentColorIndex) then
@@ -8761,7 +8761,7 @@ begin
   begin
     // Find top edge
     WasTransparent := True;
-    while (CropTop <= CropBottom) and (WasTransparent) do
+    while(CropTop <= CropBottom) and (WasTransparent) do
     begin
       for i := CropLeft to CropRight do
         if (pixels[i, CropTop] <> TransparentColorIndex) then
@@ -8774,7 +8774,7 @@ begin
     end;
     // Find bottom edge
     WasTransparent := True;
-    while (CropTop <= CropBottom) and (WasTransparent) do
+    while(CropTop <= CropBottom) and (WasTransparent) do
     begin
       for i := CropLeft to CropRight do
         if (pixels[i, CropBottom] <> TransparentColorIndex) then
@@ -9110,7 +9110,7 @@ begin
     exit;
   end;
   Result := GetExtensionList.FindExt(eLabel);
-  while (Result <> nil) do
+  while(Result <> nil) do
   begin
     SubClass := Result.FindSubExtension(Stream);
     if (SubClass = Result) then
@@ -9352,7 +9352,7 @@ end;
 
 function TGIFTextExtension.GetBounds(Index: Integer): Word;
 begin
-  case (Index) of
+  case(Index) of
     1: Result := FPlainTextExtension.Left;
     2: Result := FPlainTextExtension.Top;
     3: Result := FPlainTextExtension.Width;
@@ -9364,7 +9364,7 @@ end;
 
 procedure TGIFTextExtension.SetBounds(Index: Integer; Value: Word);
 begin
-  case (Index) of
+  case(Index) of
     1: FPlainTextExtension.Left := Value;
     2: FPlainTextExtension.Top := Value;
     3: FPlainTextExtension.Width := Value;
@@ -9374,7 +9374,7 @@ end;
 
 function TGIFTextExtension.GetCharWidthHeight(Index: Integer): Byte;
 begin
-  case (Index) of
+  case(Index) of
     1: Result := FPlainTextExtension.CellWidth;
     2: Result := FPlainTextExtension.CellHeight;
   else
@@ -9384,7 +9384,7 @@ end;
 
 procedure TGIFTextExtension.SetCharWidthHeight(Index: Integer; Value: Byte);
 begin
-  case (Index) of
+  case(Index) of
     1: FPlainTextExtension.CellWidth := Value;
     2: FPlainTextExtension.CellHeight := Value;
   end;
@@ -9392,7 +9392,7 @@ end;
 
 function TGIFTextExtension.GetColorIndex(Index: Integer): Byte;
 begin
-  case (Index) of
+  case(Index) of
     1: Result := FPlainTextExtension.TextFGColorIndex;
     2: Result := FPlainTextExtension.TextBGColorIndex;
   else
@@ -9402,7 +9402,7 @@ end;
 
 procedure TGIFTextExtension.SetColorIndex(Index: Integer; Value: Byte);
 begin
-  case (Index) of
+  case(Index) of
     1: FPlainTextExtension.TextFGColorIndex := Value;
     2: FPlainTextExtension.TextBGColorIndex := Value;
   end;
@@ -9736,7 +9736,7 @@ begin
   // Read blocks
   if (Stream.Read(b, 1) <> 1) then
     exit;
-  while (b <> 0) do
+  while(b <> 0) do
   begin
     Block := TGIFBlock.Create(b);
     try
@@ -9794,12 +9794,12 @@ var
 begin
   // Read size of first block or terminating zero
   BlockSize := ReadByte(Stream);
-  while (BlockSize <> 0) do
+  while(BlockSize <> 0) do
   begin
     BlockType := ReadByte(Stream);
     dec(BlockSize);
 
-    case (BlockType AND $07) of
+    case(BlockType AND $07) of
       nbLoopExtension:
         begin
           if (BlockSize < sizeof(FLoops)) then
@@ -9854,7 +9854,7 @@ begin
       exit;
   until (b <> 0); // Ignore 0 padding (non-compliant)
 
-  while (b <> bsTrailer) do
+  while(b <> bsTrailer) do
   begin
     Stream.Seek(-1, soFromCurrent);
     if (b in [bsExtensionIntroducer, bsImageDescriptor]) then
@@ -10128,11 +10128,11 @@ var
 
         Tile.Left := FRect.Left + FImage.Images[ActiveImage].Left;
         Tile.Right := Tile.Left + FImage.Images[ActiveImage].Width;
-        while (Tile.Left < FRect.Right) do
+        while(Tile.Left < FRect.Right) do
         begin
           Tile.Top := FRect.Top + FrameTop;
           Tile.Bottom := Tile.Top + FrameHeight;
-          while (Tile.Top < FRect.Bottom) do
+          while(Tile.Top < FRect.Bottom) do
           begin
             BackupBuffer.Canvas.CopyRect(Tile, Background.Canvas, Tile);
             Tile.Top := Tile.Top + ImageHeight;
@@ -10164,11 +10164,11 @@ var
 
         Tile.Left := FRect.Left + FImage.Images[ActiveImage].Left;
         Tile.Right := Tile.Left + FImage.Images[ActiveImage].Width;
-        while (Tile.Left < FRect.Right) do
+        while(Tile.Left < FRect.Right) do
         begin
           Tile.Top := FRect.Top + FrameTop;
           Tile.Bottom := Tile.Top + FrameHeight;
-          while (Tile.Top < FRect.Bottom) do
+          while(Tile.Top < FRect.Bottom) do
           begin
             BackupBuffer.Canvas.FillRect(Tile);
 
@@ -10202,7 +10202,7 @@ Disposal mode algorithm:
 Step 1: Copy destination to backup buffer
         Always executed before first frame and only once.
         Done in constructor.
-Step 2: Clear previous frame (implementation is same as step 6)
+Step 2: Clear previous frame(implementation is same as step 6)
         Done implicitly by implementation.
         Only done explicitly on first frame if goClearOnLoop option is set.
 Step 3: Copy backup buffer to frame buffer
@@ -10227,7 +10227,7 @@ Step 6: Clear frame from backup buffer
 |            |                  |5. Copy buf to dest  |5. Copy buf to dest     |
 +------------+------------------+---------------------+------------------------+
 }
-  case (Disposal) of
+  case(Disposal) of
     dmNone, dmNoDisposal:
       begin
         DrawDestination := BackupBuffer.Canvas;
@@ -10242,7 +10242,7 @@ Step 6: Clear frame from backup buffer
         DoStep6 := True;
       end;
     dmPrevious:
-      case (OldDisposal) of
+      case(OldDisposal) of
         dmNone, dmNoDisposal:
         begin
           DrawDestination := FCanvas;
@@ -10353,7 +10353,7 @@ begin
       DoRestart := True;
 
       // Loop to restart paint
-      while (DoRestart) and not(Terminated) do
+      while(DoRestart) and not(Terminated) do
       begin
         FActiveImage := 0;
         // Fire OnStartPaint event
@@ -10375,7 +10375,7 @@ begin
         OldDelay := 0;
 
         // Loop to loop - duh!
-        while ((LoopCount <> 0) or (goLoopContinously in DrawOptions)) and
+        while((LoopCount <> 0) or (goLoopContinously in DrawOptions)) and
           not(Terminated or DoRestart) do
         begin
           FActiveImage := LoopPoint;
@@ -10386,7 +10386,7 @@ begin
             FireEvent(FOnLoop);
 
           // Loop to animate
-          while (ActiveImage < FImage.Images.Count) and not(Terminated or DoRestart) do
+          while(ActiveImage < FImage.Images.Count) and not(Terminated or DoRestart) do
           begin
             // Ignore empty images
             if (FImage.Images[ActiveImage].Empty) then
@@ -10452,7 +10452,7 @@ begin
                 NewDelayStart := timeGetTime;
                 // If we are not running in a thread we Sleep in small chunks
                 // and give the user a chance to abort
-                while (Delay > 0) and not(Terminated or DoRestart) do
+                while(Delay > 0) and not(Terminated or DoRestart) do
                 begin
                   if (Delay < 100) then
                     Sleep(Delay)
@@ -10464,7 +10464,7 @@ begin
                   // Reset start time for chunk
                   NewDelaySTart := timeGetTime;
                   // Application.ProcessMessages wannabe
-                  while (not(Terminated or DoRestart)) and
+                  while(not(Terminated or DoRestart)) and
                     (PeekMessage(Msg, 0, 0, 0, PM_REMOVE)) do
                   begin
                     if (Msg.Message <> WM_QUIT) then
@@ -10763,7 +10763,7 @@ begin
   (*
   ** Sum up usage count for each color
   *)
-  while (Size > 0) do
+  while(Size > 0) do
   begin
     // Ignore transparent pixels
     if (not IsTransparent) or (ord(Pixel^) <> OldTransparentColorIndex) then
@@ -10866,7 +10866,7 @@ begin
         OldTransparentColorIndex := 0; // To avoid compiler warning
 
       // Map all pixels to new color map
-      while (Size > 0) do
+      while(Size > 0) do
       begin
         // Map transparent pixels to the new transparent color index and...
         if (IsTransparent) and (ord(Pixel^) = OldTransparentColorIndex) then
@@ -11439,7 +11439,7 @@ begin
           j := i-1;
           // If the "previous" frames uses dmPrevious disposal mode, we must
           // instead merge with the frame before the previous
-          while (j > 0) and
+          while(j > 0) and
             ((Images[j].GraphicControlExtension <> nil) and
              (Images[j].GraphicControlExtension.Disposal = dmPrevious)) do
             dec(j);
@@ -12123,11 +12123,11 @@ var
       // Note: This design does not handle transparency correctly!
       Tile.Left := Rect.Left;
       Tile.Right := Tile.Left + Width;
-      while (Tile.Left < Rect.Right) do
+      while(Tile.Left < Rect.Right) do
       begin
         Tile.Top := Rect.Top;
         Tile.Bottom := Tile.Top + Height;
-        while (Tile.Top < Rect.Bottom) do
+        while(Tile.Top < Rect.Bottom) do
         begin
           ACanvas.StretchDraw(Tile, Bitmap);
           Tile.Top := Tile.Top + Height;
@@ -12203,7 +12203,7 @@ begin
 {$IFNDEF VER14_PLUS}  // 2001.07.23
           ThreadWindow := FindWindow('TThreadWindow', nil);
           // Wait for thread to render first frame
-          while (FDrawPainter <> nil) and (not FDrawPainter.Terminated) and
+          while(FDrawPainter <> nil) and (not FDrawPainter.Terminated) and
             (not FDrawPainter.Started) do
             // Process Messages to make Synchronize work
             // (Instead of Application.ProcessMessages)

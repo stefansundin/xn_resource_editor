@@ -69,7 +69,7 @@ begin
     Result := inherited GetPropertyEnumCount (kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     Result := 0;
     if kind = pkStyle then
@@ -84,10 +84,10 @@ function TEditControlInfo.GetPropertyEnumName(kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumName (kind, idx, enum)
+    Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
 
     if kind = pkStyle then
@@ -113,10 +113,10 @@ function TEditControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyName (kind, idx)
+    Result := inherited GetPropertyName(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
     case kind of
 //      pkGeneral : Result := EditControlPropertyGeneralName [idx];
@@ -130,10 +130,10 @@ function TEditControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyType (kind, idx)
+    Result := inherited GetPropertyType(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := ptInteger;
     case kind of
 //      pkGeneral : Result := EditControlPropertyGeneralType [idx];
@@ -149,10 +149,10 @@ var
   s : Integer;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyValue (kind, idx)
+    Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     case kind of
       pkStyle :
@@ -193,15 +193,15 @@ var
 begin
   recreateRequired := False;
   if idx < inherited GetPropertyCount (kind) then
-    inherited SetPropertyValue (kind, idx, Value)
+    inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     case kind of
       pkStyle :
         case idx of
-          0 : begin SetMaskedStyle (Value, 3); recreateRequired := True end;
+          0 : begin SetMaskedStyle(Value, 3); recreateRequired := True end;
           1 : HasStyle [ES_MULTILINE] := Value;
           2 : begin HasStyle [WS_HSCROLL] := Value; recreateRequired := True end;
           3 : HasStyle [ES_AUTOHSCROLL] := Value;
@@ -209,14 +209,14 @@ begin
           5 : HasStyle [ES_AUTOVSCROLL] := Value;
           6 : HasStyle [ES_WANTRETURN] := Value;
           7 : HasStyle [ES_OEMCONVERT] := Value;
-          8 : begin HasStyle [ES_READONLY] := Value; SendMessage (ControlHandle, EM_SETREADONLY, Integer (Boolean (Value)), 0); end;
+          8 : begin HasStyle [ES_READONLY] := Value; SendMessage(ControlHandle, EM_SETREADONLY, Integer (Boolean (Value)), 0); end;
           9 : begin
                 recreateRequired := True;
                 case Value of
-                  0 : SetMaskedStyle (0, ES_UPPERCASE or ES_LOWERCASE or ES_NUMBER);
-                  1 : SetMaskedStyle (ES_UPPERCASE, ES_UPPERCASE or ES_LOWERCASE or ES_NUMBER);
-                  2 : SetMaskedStyle (ES_LOWERCASE, ES_UPPERCASE or ES_LOWERCASE or ES_NUMBER);
-                  3 : SetMaskedStyle (ES_NUMBER, ES_UPPERCASE or ES_LOWERCASE or ES_NUMBER)
+                  0 : SetMaskedStyle(0, ES_UPPERCASE or ES_LOWERCASE or ES_NUMBER);
+                  1 : SetMaskedStyle(ES_UPPERCASE, ES_UPPERCASE or ES_LOWERCASE or ES_NUMBER);
+                  2 : SetMaskedStyle(ES_LOWERCASE, ES_UPPERCASE or ES_LOWERCASE or ES_NUMBER);
+                  3 : SetMaskedStyle(ES_NUMBER, ES_UPPERCASE or ES_LOWERCASE or ES_NUMBER)
                 end;
 
                 if value = 3 then

@@ -12,7 +12,7 @@ public
 end;
 
 const
-  RT_XPMANIFEST = MakeIntResource (24);
+  RT_XPMANIFEST = MakeIntResource(24);
 
 implementation
 

@@ -63,7 +63,7 @@ begin
     Result := inherited GetPropertyEnumCount (kind, idx)
   else
   begin
-//    Dec (idx, inherited GetPropertyCount (kind));
+//    Dec(idx, inherited GetPropertyCount (kind));
     Result := 0;
   end
 end;
@@ -72,10 +72,10 @@ function TProgressBarControlInfo.GetPropertyEnumName(kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumName (kind, idx, enum)
+    Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-//    Dec (idx, inherited GetPropertyCount (kind));
+//    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
   end
 end;
@@ -84,10 +84,10 @@ function TProgressBarControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyName (kind, idx)
+    Result := inherited GetPropertyName(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
      case kind of
 //      pkGeneral : Result := StaticControlPropertyGeneralName [idx];
@@ -101,10 +101,10 @@ function TProgressBarControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyType (kind, idx)
+    Result := inherited GetPropertyType(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := ptInteger;
     case kind of
 //      pkGeneral : Result := StaticControlPropertyGeneralType [idx];
@@ -118,10 +118,10 @@ function TProgressBarControlInfo.GetPropertyValue(kind: TPropertyKind;
   idx: Integer): Variant;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyValue (kind, idx)
+    Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     case kind of
       pkStyle :
@@ -138,7 +138,7 @@ procedure TProgressBarControlInfo.Init;
 begin
   inherited;
 
-  SendMessage (ControlHandle, PBM_SETPOS, 66, 0);
+  SendMessage(ControlHandle, PBM_SETPOS, 66, 0);
 
 end;
 
@@ -148,10 +148,10 @@ var
   recreateRequired : Boolean;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    inherited SetPropertyValue (kind, idx, Value)
+    inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     recreateRequired := True;
 
     case kind of

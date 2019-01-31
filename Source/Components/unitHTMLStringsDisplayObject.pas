@@ -11,7 +11,7 @@ type
     FRendering: Boolean;
     FNavigating: Boolean;
     FXanaLink: string;
-    procedure DoOnDocumentComplete (Sender: TObject; const pDisp: IDispatch;
+    procedure DoOnDocumentComplete(Sender: TObject; const pDisp: IDispatch;
       const URL: OleVariant);
     procedure DoOnBeforeNavigate2 (Sender: TObject;
       const pDisp: IDispatch; const URL, Flags, TargetFrameName, PostData,
@@ -26,7 +26,7 @@ type
     procedure SetObj (const Value: TObject); override;
     function GetBusy: Boolean; override;
   public
-    constructor Create (AOwner: TMessageDisplay; AObj: TObject;
+    constructor Create(AOwner: TMessageDisplay; AObj: TObject;
       codepage: Integer); override;
     destructor Destroy; override;
     procedure Stop; override;
@@ -51,17 +51,17 @@ var
 begin
   FOrigObj := AObj as TStrings;
   ctrl := TEXWebBrowser.Create(AOwner.Owner);
-  inherited Create (AOwner, ctrl, codepage);
+  inherited Create(AOwner, ctrl, codepage);
   ctrl.OnDocumentComplete := DoOnDocumentComplete;
   ctrl.UIProperties.EnableContextMenu := True;
   ctrl.Width := AOwner.Parent.Width - Margin * 2 - GetSystemMetrics (SM_CXVSCROLL);
   ctrl.Height := AOwner.Parent.Height;
-  if (FOrigObj.Count > 0) and (Copy (FOrigObj [0], 1, 16) = '<HTML><XanaLink>') then
+  if (FOrigObj.Count > 0) and (Copy(FOrigObj [0], 1, 16) = '<HTML><XanaLink>') then
   begin
-    xanaLink := Copy (FOrigObj [0], 17, MaxInt);
+    xanaLink := Copy(FOrigObj [0], 17, MaxInt);
     p := Pos ('</XanaLink>', xanaLink);
     if p > 0 then
-      xanaLink := Copy (xanaLink, 1, p - 1);
+      xanaLink := Copy(xanaLink, 1, p - 1);
     FXanaLink := xanaLink;
     ctrl.OnNewWindow2 := DoOnNewWindow2;
     ctrl.Navigate(xanaLink)
@@ -95,15 +95,15 @@ begin
     s := TStrings (obj);
     for i := 0 to s.Count - 1 do        // Is it HTML ??
     begin
-      st := Trim (s [i]);
+      st := Trim (s[i]);
 
       if st = '' then                   // Ignore blank lines
         Continue;
 
-      if Copy (st, 1, 2) = '<!' then    // Ignore HTML Comments (eg. <!DOCTYPE
+      if Copy(st, 1, 2) = '<!' then    // Ignore HTML Comments (eg. <!DOCTYPE
         Continue;
 
-      st1 := Uppercase (Copy (st, 1, 5));
+      st1 := Uppercase(Copy(st, 1, 5));
       if st1 = '<HTML' then
         Result := True;
 
@@ -129,7 +129,7 @@ begin
   if urlStr <> 'about:blank' then
   begin
     cancel := True;
-    ShellExecute (HWND_DESKTOP, 'open', PChar (urlStr), nil, Nil, SW_NORMAL);
+    ShellExecute(HWND_DESKTOP, 'open', PChar (urlStr), nil, Nil, SW_NORMAL);
     ctrl.Invalidate
   end
 end;
@@ -261,7 +261,7 @@ begin
         begin
           Sleep (100);
           if b.ReadyState = READYSTATE_INTERACTIVE then
-            Inc (n);
+            Inc(n);
 //          Application.ProcessMessages;
           if n > 2 then
             break;
@@ -275,5 +275,5 @@ begin
 end;
 
 initialization
-  RegisterDisplayObjectLink (THTMLStringsDisplayObjectLink)
+  RegisterDisplayObjectLink(THTMLStringsDisplayObjectLink)
 end.

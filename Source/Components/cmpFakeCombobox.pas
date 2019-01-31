@@ -30,7 +30,7 @@ type
     procedure SetButtonPressed(const Value: Boolean);
     function GetOnDblClick: TNotifyEvent;
     procedure SetOnDblClick(const Value: TNotifyEvent);
-    procedure StringListOnChange (Sender: TObject);
+    procedure StringListOnChange(Sender: TObject);
     procedure SetSpecialButton(const Value: Boolean);
   private
     FEdit: TEdit;
@@ -79,7 +79,7 @@ type
     procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
   public
-    constructor Create (AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure SetFocus; override;
     function Focused: Boolean; override;
@@ -136,7 +136,7 @@ begin
   FItems := TStringList.Create;
   TStringList (FItems).OnChange := StringListOnChange;
 
-  FEdit := TEdit.Create (self);
+  FEdit := TEdit.Create(self);
   FEdit.Parent := Self;
   FEdit.Ctl3D := False;
   FEdit.BorderStyle := bsNone;
@@ -163,7 +163,7 @@ end;
 procedure TFakeCombobox.DoOnListboxMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  PostMessage (Handle, WM_HIDELIST, 1, 0);
+  PostMessage(Handle, WM_HIDELIST, 1, 0);
 end;
 
 procedure TFakeCombobox.DoOnListBoxKeyDown(Sender: TObject; var Key: Word;
@@ -171,10 +171,10 @@ procedure TFakeCombobox.DoOnListBoxKeyDown(Sender: TObject; var Key: Word;
 begin
   inherited;
   if Key = VK_RETURN then
-    PostMessage (Handle, WM_HIDELIST, 1, 0)
+    PostMessage(Handle, WM_HIDELIST, 1, 0)
   else
     if (Key = VK_ESCAPE) or (Key = VK_PRIOR) then
-      PostMessage (Handle, WM_HIDELIST, 0, 0)
+      PostMessage(Handle, WM_HIDELIST, 0, 0)
 end;
 
 function TFakeCombobox.Focused: Boolean;
@@ -190,7 +190,7 @@ end;
 function TFakeCombobox.GetButtonRect: TRect;
 begin
   Result := ClientRect;
-  Dec (Result.Right);
+  Dec(Result.Right);
   Result.Top := Result.Top + 1;
   Result.Bottom := Result.Bottom - 1;
   Result.Left := Result.Right - DropdownButtonWidth;
@@ -271,7 +271,7 @@ begin
         ShowList (True, False)
       else
         if Assigned (OnSpecialButtonClick) then
-          OnSpecialButtonClick (Self);
+          OnSpecialButtonClick(Self);
     end
 end;
 
@@ -308,10 +308,10 @@ begin
     if ButtonPressed then
       Style := Style or DFCS_PUSHED;
     DrawFrameControl (Canvas.Handle, r, DFC_BUTTON, Style);
-    OldMode := SetBkMode (Canvas.Handle, TRANSPARENT);
+    OldMode := SetBkMode(Canvas.Handle, TRANSPARENT);
     OffsetRect (r, 0, -4);
     DrawText (Canvas.Handle, '...', 3, r, DT_CENTER or DT_VCENTER or DT_SINGLELINE);
-    SetBkMode (Canvas.Handle, OldMode);
+    SetBkMode(Canvas.Handle, OldMode);
   end
   else
     if Items.Count > 0 then
@@ -342,7 +342,7 @@ begin
   if FButtonPressed <> Value then
   begin
     if Value then
-      SetCapture (Handle)
+      SetCapture(Handle)
     else
       ReleaseCapture;
 
@@ -422,7 +422,7 @@ begin
   begin
     if not Assigned (FListBox) then
     begin
-      FListBox := TListBox.Create (Self);
+      FListBox := TListBox.Create(Self);
       FListBox.Parent := Parent;
       FListBox.Top := Top + ClientHeight - 2;
       FListBox.Left := Left - 1;
@@ -451,7 +451,7 @@ begin
   else
   begin
     if (FListBox.ItemIndex >= 0) and (FListBox.ItemIndex < FItems.Count) and Update then
-      FEdit.Text := FListBox.Items [FListBox.ItemIndex];
+      FEdit.Text := FListBox.Items[FListBox.ItemIndex];
     FreeAndNil (FListBox);
 
     if Assigned (OnExit) and Update then
@@ -480,7 +480,7 @@ begin
       ShowList (True, False)
     else
       if SpecialButton and Assigned (OnSpecialButtonClick) then
-        OnSpecialButtonClick (Self);
+        OnSpecialButtonClick(Self);
   end
   else
     if Assigned (FOnKeyDown) then

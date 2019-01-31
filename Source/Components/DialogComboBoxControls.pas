@@ -5,7 +5,7 @@
  |                                                                      |
  | If the dialog template specifies WS_VSCROLL, it isn't given to the   |
  | combobox control.  Instead it's given to the listbox bit - and only  |
- | if 'Disable No Scroll' is true (!)                                   |
+ | if 'Disable No Scroll' is true(!)                                   |
  |                                                                      |
  | The contents of this file are subject to the Mozilla Public License  |
  | Version 1.1 (the "License"); you may not use this file except in     |
@@ -46,7 +46,7 @@ type
     procedure Init; override;
 
   public
-    constructor Create (AOwner: TDialogEditor; AItemID: Integer; AControlHWND: HWND; ADropControl: TDropControl); override;
+    constructor Create(AOwner: TDialogEditor; AItemID: Integer; AControlHWND: HWND; ADropControl: TDropControl); override;
     class procedure CreateControlParams (var Params: TCreateControlParams); override;
     class function GetDescription: string; override;
 
@@ -190,7 +190,7 @@ begin
     Result := inherited GetPropertyEnumCount (kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     Result := 0;
     case kind of
@@ -217,10 +217,10 @@ function TComboBoxControlInfo.GetPropertyEnumName(kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumName (kind, idx, enum)
+    Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
     case kind of
       pkStyle :
@@ -251,10 +251,10 @@ function TComboBoxControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyName (kind, idx)
+    Result := inherited GetPropertyName(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
     case kind of
 //      pkGeneral: Result := StaticControlPropertyGeneralName [idx];
@@ -273,10 +273,10 @@ function TComboBoxControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyType (kind, idx)
+    Result := inherited GetPropertyType(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := ptInteger;
     case kind of
 //      pkGeneral: Result := StaticControlPropertyGeneralType [idx];
@@ -298,10 +298,10 @@ function TComboBoxControlInfo.GetPropertyValue(kind: TPropertyKind;
   idx: Integer): Variant;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyValue (kind, idx)
+    Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     case kind of
       pkStyle :
@@ -346,14 +346,14 @@ begin
         Result := Result or WS_VSCROLL
   end
   else
-    result := inherited GetStyle;
+    Result := inherited GetStyle;
 end;
 
 procedure TComboBoxControlInfo.Init;
 begin
   GetCBHandles;
   if (FListBoxWnd <> 0) and ((fOrigStyle and WS_VSCROLL) <> 0) then
-    SetStyle (WS_VSCROLL, True)
+    SetStyle(WS_VSCROLL, True)
 end;
 
 procedure TComboBoxControlInfo.SetPropertyValue(kind: TPropertyKind;
@@ -362,10 +362,10 @@ var
   recreateRequired: Boolean;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    inherited SetPropertyValue (kind, idx, Value)
+    inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     recreateRequired := False;
 
     case kind of
@@ -374,9 +374,9 @@ begin
           0 :
             begin
               case Value of
-                0: SetMaskedStyle (CBS_SIMPLE, 3);
-                1: SetMaskedStyle (CBS_DROPDOWN, 3);
-                2: SetMaskedStyle (CBS_DROPDOWNLIST, 3)
+                0: SetMaskedStyle(CBS_SIMPLE, 3);
+                1: SetMaskedStyle(CBS_DROPDOWN, 3);
+                2: SetMaskedStyle(CBS_DROPDOWNLIST, 3)
               end;
 
               recreateRequired := True
@@ -385,9 +385,9 @@ begin
           1 :
             begin
               case Value of
-                0: SetMaskedStyle (0, CBS_OWNERDRAWFIXED or CBS_OWNERDRAWVARIABLE);
-                1: SetMaskedStyle (CBS_OWNERDRAWFIXED, CBS_OWNERDRAWFIXED or CBS_OWNERDRAWVARIABLE);
-                2: SetMaskedStyle (CBS_OWNERDRAWVARIABLE, CBS_OWNERDRAWFIXED or CBS_OWNERDRAWVARIABLE)
+                0: SetMaskedStyle(0, CBS_OWNERDRAWFIXED or CBS_OWNERDRAWVARIABLE);
+                1: SetMaskedStyle(CBS_OWNERDRAWFIXED, CBS_OWNERDRAWFIXED or CBS_OWNERDRAWVARIABLE);
+                2: SetMaskedStyle(CBS_OWNERDRAWVARIABLE, CBS_OWNERDRAWFIXED or CBS_OWNERDRAWVARIABLE)
               end;
 
               recreateRequired := True
@@ -431,7 +431,7 @@ begin
 end;
 
 begin
-  hUser32 := LoadLibrary ('user32.dll');
+  hUser32 := LoadLibrary('user32.dll');
   if hUser32 <> 0 then
     fnGetComboBoxInfo := GetProcAddress (hUser32, 'GetComboBoxInfo');
 end.

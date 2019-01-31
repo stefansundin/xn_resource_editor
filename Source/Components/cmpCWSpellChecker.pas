@@ -37,11 +37,11 @@ begin
   Txt := ExRichEdit.Text;
   Suggestions := TStringList.Create;
   try
-    if not Check (Txt, 1, ss, se, Suggestions, SkipFirstLine) then
+    if not Check(Txt, 1, ss, se, Suggestions, SkipFirstLine) then
     begin
       fmSpellChecker := TfmSpellChecker.Create(Owner);
       fmSpellChecker.QuoteChars := QuoteChars;
-      fmSpellChecker.Initialize (self, ss, se, Suggestions);
+      fmSpellChecker.Initialize(self, ss, se, Suggestions);
       Result := fmSpellChecker.ShowModal
     end
   finally

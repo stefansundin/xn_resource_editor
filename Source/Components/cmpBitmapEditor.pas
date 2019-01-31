@@ -19,7 +19,7 @@ type
     dtSelectArea, dtDropper, dtText, dtEraser, dtAirbrush, dtGradRectLR,
     dtGradRectTB, dtGradRectTLBR, dtGradRectBLTR);
 
-  TOnGetText = procedure (Sender: TObject; Font: TFont; var txt: WideString) of object;
+  TOnGetText = procedure(Sender: TObject; Font: TFont; var txt: WideString) of object;
 
   TBitmapEditor = class(TCustomControl)
   private
@@ -227,12 +227,12 @@ begin
   FScratchBmp := TBitmap.Create;
   FSelectionBmp := TBitmap.Create;
   FTransparentColor := clTeal;
-  Screen.Cursors [crPencil] := LoadCursor(HInstance, 'CR_PENCIL');
-  Screen.Cursors [crPotOPaint] := LoadCursor(HInstance, 'CR_POTOPAINT');
-  Screen.Cursors [crMagnifier] := LoadCursor(HInstance, 'CR_MAGNIFIER');
-  Screen.Cursors [crDotCross] := LoadCursor(HInstance, 'CR_DOTCROSS');
-  Screen.Cursors [crDropper] := LoadCursor(HInstance, 'CR_DROPPER');
-  Screen.Cursors [crAirbrush] := LoadCursor(HInstance, 'CR_SPRAYGUN');
+  Screen.Cursors[crPencil] := LoadCursor(HInstance, 'CR_PENCIL');
+  Screen.Cursors[crPotOPaint] := LoadCursor(HInstance, 'CR_POTOPAINT');
+  Screen.Cursors[crMagnifier] := LoadCursor(HInstance, 'CR_MAGNIFIER');
+  Screen.Cursors[crDotCross] := LoadCursor(HInstance, 'CR_DOTCROSS');
+  Screen.Cursors[crDropper] := LoadCursor(HInstance, 'CR_DROPPER');
+  Screen.Cursors[crAirbrush] := LoadCursor(HInstance, 'CR_SPRAYGUN');
   Width := 32 * 4;
   Height := 32 * 4;
   Cursor := crArrow
@@ -423,7 +423,7 @@ begin
     case DrawingTool of
       dtPencil, dtLine :
         begin
-          FDrawBmp.Canvas.Pixels [p.x, p.y] := FDrawPen.Color;
+          FDrawBmp.Canvas.Pixels[p.x, p.y] := FDrawPen.Color;
           RedrawBitmap
         end;
       dtFloodFill :
@@ -431,7 +431,7 @@ begin
           with FDrawBmp.Canvas do
           begin
             Brush := FDrawBrush;
-            FloodFill(p.x, p.y, Pixels [p.x, p.y], fsSurface);
+            FloodFill(p.x, p.y, Pixels[p.x, p.y], fsSurface);
           end;
           RedrawBitmap
         end;
@@ -440,7 +440,7 @@ begin
 
       dtDropper :
         begin
-          FDrawPen.Color := FDrawBmp.Canvas.Pixels [p.x, p.y];
+          FDrawPen.Color := FDrawBmp.Canvas.Pixels[p.x, p.y];
           DrawingTool := FLastDrawingTool;
           ReleaseCapture;
           if Assigned(FOnDrawToolChange) and not(csDestroying in ComponentState) then
@@ -453,7 +453,7 @@ begin
       dtEraser :
         begin
           FEraser.Color := TransparentColor;
-          FDrawBmp.Canvas.Pixels [p.x, p.y] := FEraser.Color;
+          FDrawBmp.Canvas.Pixels[p.x, p.y] := FEraser.Color;
           RedrawBitmap
         end;
       dtText :
@@ -483,7 +483,7 @@ begin
         dtMagnifier: ZoomOut;
         dtDropper :
           begin
-            FDrawBrush.Color := FDrawBmp.Canvas.Pixels [p.x, p.y];
+            FDrawBrush.Color := FDrawBmp.Canvas.Pixels[p.x, p.y];
             DrawingTool := FLastDrawingTool;
             ReleaseCapture;
             if Assigned(FOnDrawToolChange) and not(csDestroying in ComponentState) then
@@ -542,7 +542,7 @@ begin
                   Pen := FDrawPen;
                   MoveTo(FPos.x, FPos.y);
                   LineTo(p.x, p.y);
-                  Pixels [p.x, p.y] := FDrawPen.Color;
+                  Pixels[p.x, p.y] := FDrawPen.Color;
                   FPos := p;
                 end;
 
@@ -554,7 +554,7 @@ begin
                   Pen := FDrawPen;
                   MoveTo(FPos.x, FPos.y);
                   LineTo(p.x, p.y);
-                  Pixels [p.x, p.y] := FDrawPen.Color;
+                  Pixels[p.x, p.y] := FDrawPen.Color;
                 end
               end;
             dtFrameRect, dtFillRect, dtRect,
@@ -624,7 +624,7 @@ begin
                 Pen := FEraser;
                 MoveTo(FPos.x, FPos.y);
                 LineTo(p.x, p.y);
-                Pixels [p.x, p.y] := FEraser.Color;
+                Pixels[p.x, p.y] := FEraser.Color;
                 FPos := p;
               end;
           end;
@@ -683,7 +683,7 @@ begin
     hsx := FHotSpotX * Magnification;
     hsy := FHotSpotY * Magnification;
     if Magnification = 1 then
-      Canvas.Pixels [hsx, hsy] := clLime
+      Canvas.Pixels[hsx, hsy] := clLime
     else
     begin
       Canvas.Brush.Color := clLime;
@@ -730,13 +730,13 @@ begin
       r.right := right * Magnification + Magnification div 2;
       r.bottom := bottom * Magnification + Magnification div 2;
 
-      pts [0] := r.TopLeft;
-      pts [1].x := r.Right;
-      pts [1].y := r.Top;
-      pts [2] := r.BottomRight;
-      pts [3].x := r.Left;
-      pts [3].y := r.Bottom;
-      pts [4] := pts [0];
+      pts[0] := r.TopLeft;
+      pts[1].x := r.Right;
+      pts[1].y := r.Top;
+      pts[2] := r.BottomRight;
+      pts[3].x := r.Left;
+      pts[3].y := r.Bottom;
+      pts[4] := pts[0];
 
       Canvas.Pen.Width := Magnification;
       Canvas.Pen.Mode := pmNotXOR;
@@ -902,7 +902,7 @@ begin
   begin
     FLastDrawingTool := FDrawingTool;
     FDrawingTool := Value;
-    Cursor := drawingCursors [FDrawingTool];
+    Cursor := drawingCursors[FDrawingTool];
     if SelectionValid then
       ChangeSelectionRect(Rect(-1, -1, -1, -1));
   end

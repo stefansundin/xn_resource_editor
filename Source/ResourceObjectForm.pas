@@ -32,7 +32,7 @@ type
     procedure SetObject(const Value: TObject); virtual;
     function GetMenuItem: TMenuItem; virtual;
   public
-    procedure PreviewKey (var key: Word; shift: TShiftState); virtual;
+    procedure PreviewKey(var key: Word; shift: TShiftState); virtual;
     procedure TidyUp; virtual;
     procedure UpdateFonts; virtual;
 

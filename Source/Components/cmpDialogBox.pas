@@ -126,7 +126,7 @@ var
   Msg: TMessage;
 
 begin
-  result := False;
+  Result := False;
   if uMsg = WM_INITDIALOG then
   begin
     dlgInstance := TDialogBox(lParam);                 // Get the TDialogBox instance from lparam
@@ -151,14 +151,14 @@ begin
     Msg.Result := 0;
 
     dlgInstance.HandleDlgMessage(Msg);
-    result := Bool(Msg.Result);
+    Result := Bool(Msg.Result);
 
     if uMsg = WM_DESTROY then                           // WM_DESTROY - remove the prop, otherwise
     begin                                               // the window won't be destroyed!
       SetParent(dlgInstance.FHwndDlg, 0);
       dlgInstance.FHwndDlg := 0;
       RemoveProp(hwndDlg, PChar(gWndAtom));
-      result := True;
+      Result := True;
     end
   end
   else                       // No TDialogBox - implies we haven't yet received WM_INITDIALOG
@@ -254,11 +254,11 @@ end;
 function TDialogBox.DialogPointToPoint(pt: TPoint): TPoint;
 begin
   if fBaseUnitX = 0 then
-    result := pt
+    Result := pt
   else
   begin
-    result.x := Round(pt.x * fBaseUnitX / 4);
-    result.y := Round(pt.y * fBaseUnitY / 8)
+    Result.x := Round(pt.x * fBaseUnitX / 4);
+    Result.y := Round(pt.y * fBaseUnitY / 8)
   end
 end;
 
@@ -270,7 +270,7 @@ end;
 function TDialogBox.DialogRectToRect(r: TRect): TRect;
 begin
   MapDialogRect(DialogHandle, r);
-  result := r;
+  Result := r;
 end;
 
 
@@ -322,13 +322,13 @@ begin
   ContinueProcessing := True;
   if Assigned(FOnDlgMessage) and not(csDestroying in ComponentState) then
   begin
-    Msg.result := Ord(False);
+    Msg.Result := Ord(False);
     OnDlgMessage(self, Msg, ContinueProcessing)
   end;
 
   if continueProcessing then
   begin
-    Msg.result := Ord(True);
+    Msg.Result := Ord(True);
     case Msg.Msg of
       WM_INITDIALOG :
         begin           // Set the control bounds to the size of the dialog box
@@ -361,7 +361,7 @@ begin
         begin
           BringWindowToTop(Handle);
           SetActiveWindow(Handle);
-          Msg.result := Ord(False)
+          Msg.Result := Ord(False)
         end;
 
                         // Don't allow moving the dialog
@@ -375,7 +375,7 @@ begin
       end;
 
       else
-        Msg.result := Ord(FALSE);
+        Msg.Result := Ord(FALSE);
     end
   end
 end;
@@ -556,11 +556,11 @@ end;
 function TDialogBox.PointToDialogPoint(pt: TPoint): TPoint;
 begin
   if fBaseUnitX = 0 then
-    result := pt
+    Result := pt
   else
   begin
-    result.x := Round(pt.x * 4 / fBaseUnitX);
-    result.y := Round(pt.y * 8 / fBaseUnitY)
+    Result.x := Round(pt.x * 4 / fBaseUnitX);
+    Result.y := Round(pt.y * 8 / fBaseUnitY)
   end
 end;
 
@@ -572,13 +572,13 @@ end;
 function TDialogBox.RectToDialogRect(r: TRect): TRect;
 begin
   if fBaseUnitX = 0 then
-    result := r
+    Result := r
   else
   begin
-    result.Left := Round(r.Left * 4 / fBaseUnitX);
-    result.Top := Round(r.Top * 8 / fBaseUnitY);
-    result.Right := Round(r.Right * 4 / fBaseUnitX);
-    result.Bottom := Round(r.Bottom * 8 / fBaseUnitY)
+    Result.Left := Round(r.Left * 4 / fBaseUnitX);
+    Result.Top := Round(r.Top * 8 / fBaseUnitY);
+    Result.Right := Round(r.Right * 4 / fBaseUnitX);
+    Result.Bottom := Round(r.Bottom * 8 / fBaseUnitY)
   end
 end;
 
@@ -808,7 +808,7 @@ var
         end
       end
     except
-      result.Free;
+      Result.Free;
       raise
     end
   end;

@@ -33,7 +33,7 @@ type
     procedure Paint; override;
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
   public
-    constructor Create (AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     property Palette: HPalette read FPalette write SetPalette;
     procedure SetSelectedPaletteColor (color: TColor);
@@ -76,7 +76,7 @@ end;
 
 constructor TColorSelector.Create(AOwner: TComponent);
 begin
-  inherited Create (AOwner);
+  inherited Create(AOwner);
   FLum := HLSMAX div 2;
   FColCount := 8;
   Palette := SystemPalette16;
@@ -95,14 +95,14 @@ end;
 
 function TColorSelector.GetColor(idx: Integer): TCOlor;
 begin
-  with FPaletteEntries [idx] do
+  with FPaletteEntries[idx] do
     Result := RGB (peRed, peGreen, peBlue);
 end;
 
 function TColorSelector.GetSelectedPaletteColor: TColor;
 begin
   if FPalette <> 0 then
-    with FPaletteEntries [FSelectedIdx] do
+    with FPaletteEntries[FSelectedIdx] do
       Result := RGB (peRed, peGreen, peBlue)
   else
     Result := FSelectedColor;
@@ -130,7 +130,7 @@ begin
       b.Width := ClientWidth;
       b.Height := ClientHeight;
       PaintHSL (b.Canvas);
-      selectedColor := b.Canvas.Pixels [x, y] // RGB (50, 60, 70) // Canvas.Pixels [x, y];
+      selectedColor := b.Canvas.Pixels[x, y] // RGB (50, 60, 70) // Canvas.Pixels[x, y];
     finally
       b.Free
     end
@@ -141,7 +141,7 @@ begin
     if selectedIdx < ColorCount then
     begin
 
-      with FPaletteEntries [selectedIdx] do
+      with FPaletteEntries[selectedIdx] do
         selectedColor := RGB (peRed, peGreen, peBlue)
     end
     else
@@ -183,15 +183,15 @@ begin
     y := 0;
     for i := 0 to ColorCount - 1 do
     begin
-      with FPaletteEntries [i] do
+      with FPaletteEntries[i] do
         Canvas.Brush.Color := RGB (peRed, peGreen, peBlue);
 
-      Canvas.Rectangle (x, y, x + FColWidth, y + FRowHeight);
-      Inc (x, FColWidth);
+      Canvas.Rectangle(x, y, x + FColWidth, y + FRowHeight);
+      Inc(x, FColWidth);
       if x + FColWidth > width then
       begin
         x := 0;
-        Inc (y, FRowHeight)
+        Inc(y, FRowHeight)
       end
     end
   end
@@ -213,13 +213,13 @@ begin
     bmp.Height := h;
     bmp.PixelFormat := pf24Bit;
 
-    bpss := BytesPerScanLine (w, 24, 32);
+    bpss := BytesPerScanLine(w, 24, 32);
     ps1 := bmp.ScanLine [0];
 
     try
       for sat := 0 to h - 1 do
       begin
-        ps := PRGBTriple (PChar (ps1) - bpss * sat);
+        ps := PRGBTriple(PChar (ps1) - bpss * sat);
         for hue := 0 to w - 1 do
         begin
           iHLSToRGB (hue * HLSMAX div w, FLum, (h - sat) * HLSMAX div h, r, g, b);
@@ -227,7 +227,7 @@ begin
           rt.rgbtGreen := g;
           rt.rgbtBlue := b;
           ps^ := rt;
-          Inc (ps);
+          Inc(ps);
         end
       end;
     except
@@ -287,7 +287,7 @@ begin
       Invalidate
     end
     else
-      raise EColorError.Create ('Luminescense must be in range 0..' + IntToStr (HLSMAX));
+      raise EColorError.Create('Luminescense must be in range 0..' + IntToStr (HLSMAX));
   end
 end;
 
@@ -308,8 +308,8 @@ begin
       begin
         SetLength (FPaletteEntries, colorCount);
         FColorCount := colorCount;
-        GetPaletteEntries (Value, 0, colorCount, FPaletteEntries [0]);
-        FPalette := CopyPalette (Value);
+        GetPaletteEntries (Value, 0, colorCount, FPaletteEntries[0]);
+        FPalette := CopyPalette(Value);
         CalcSettings;
         Invalidate
       end
@@ -337,10 +337,10 @@ begin
   begin
     rgb := ColorToRGB (color);
     SetLength (FPaletteEntries, colorCount);
-    GetPaletteEntries (FPalette, 0, colorCount, FPaletteEntries [0]);
-    FPaletteEntries [FSelectedIdx].peRed   := GetRValue (rgb);
-    FPaletteEntries [FSelectedIdx].peGreen := GetGValue (rgb);
-    FPaletteEntries [FSelectedIdx].peBlue  := GetBValue (rgb);
+    GetPaletteEntries (FPalette, 0, colorCount, FPaletteEntries[0]);
+    FPaletteEntries[FSelectedIdx].peRed   := GetRValue(rgb);
+    FPaletteEntries[FSelectedIdx].peGreen := GetGValue(rgb);
+    FPaletteEntries[FSelectedIdx].peBlue  := GetBValue(rgb);
 
     GetMem (logPal, sizeof (TLogPalette) + 256 * sizeof (TPaletteEntry));
     try
@@ -348,9 +348,9 @@ begin
       logPal^.palNumEntries := colorCount;
 
       for i := 0 to colorCount - 1 do
-        logPal^.palPalEntry [i] := FPaletteEntries [i];
+        logPal^.palPalEntry [i] := FPaletteEntries[i];
 
-      NewPal := CreatePalette (logPal^);
+      NewPal := CreatePalette(logPal^);
       if NewPal <> 0 then
       try
         Palette := NewPal;

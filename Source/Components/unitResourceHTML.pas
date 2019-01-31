@@ -14,7 +14,7 @@ type
   THTMLResourceDetails = class (TAnsiResourceDetails)
   protected
     procedure InitNew; override;
-    class function SupportsData (Size : Integer; data : Pointer) : Boolean; override;
+    class function SupportsData(Size : Integer; data : Pointer) : Boolean; override;
   public
     class function GetBaseType : WideString; override;
   end;

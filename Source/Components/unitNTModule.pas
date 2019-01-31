@@ -36,7 +36,7 @@ type
     FOrigFileName: string;
 
     procedure AddResourceToList (AType, AName: PWideChar; ADataLen:  Integer; AData: pointer; ALang: Word);
-    function LoadResourceFromModule (hModule: Integer; const ResType, ResName: PWideChar; language: Word): Boolean;
+    function LoadResourceFromModule(hModule: Integer; const ResType, ResName: PWideChar; language: Word): Boolean;
   protected
     function GetResourceCount: Integer; override;
     function GetResourceDetails(idx: Integer): TResourceDetails; override;
@@ -44,13 +44,13 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    procedure LoadFromFile (const FileName: string); override;
-    procedure SaveToFile (const FileName: string); override;
+    procedure LoadFromFile(const FileName: string); override;
+    procedure SaveToFile(const FileName: string); override;
     procedure LoadResources (const fileName: string; tp: PWideChar);
-    procedure DeleteResource (resourceNo: Integer); override;
-    procedure InsertResource (idx: Integer; Details: TResourceDetails); override;
-    function AddResource (Details: TResourceDetails): Integer; override;
-    function IndexOfResource (Details: TResourceDetails): Integer; override;
+    procedure DeleteResource(resourceNo: Integer); override;
+    procedure InsertResource(idx: Integer; Details: TResourceDetails); override;
+    function AddResource(Details: TResourceDetails): Integer; override;
+    function IndexOfResource(Details: TResourceDetails): Integer; override;
     procedure SortResources; override;
     property Tag: Integer read FTag write FTag;
   end;
@@ -79,7 +79,7 @@ var
  *----------------------------------------------------------------------------*)
 function EnumResLangProc (hModule: Integer; ResType, ResName: PWideChar; wIDLanguage: Word; lParam: Integer): BOOL; stdcall;
 begin
-  TNTModule (lParam).LoadResourceFromModule (hModule, ResType, ResName, wIDLanguage);
+  TNTModule(lParam).LoadResourceFromModule(hModule, ResType, ResName, wIDLanguage);
   Result := True
 end;
 
@@ -165,11 +165,11 @@ procedure TNTModule.DeleteResource(resourceNo: Integer);
 var
   res: TResourceDetails;
 begin
-  res := ResourceDetails [resourceNo];
+  res := ResourceDetails[resourceNo];
   inherited;
-  resourceNo := IndexOfResource (Res);
+  resourceNo := IndexOfResource(Res);
   if resourceNo <> -1 then
-    FDetailList.Delete (resourceNo);
+    FDetailList.Delete(resourceNo);
 end;
 
 destructor TNTModule.Destroy;
@@ -242,11 +242,11 @@ begin
   ResourceHandle := Windows.FindResourceW (hModule, ResName, ResType);
   if ResourceHandle <> 0 then
   begin
-    Size := SizeOfResource (hModule, ResourceHandle);
-    InfoHandle := LoadResource (hModule, ResourceHandle);
+    Size := SizeOfResource(hModule, ResourceHandle);
+    InfoHandle := LoadResource(hModule, ResourceHandle);
     if InfoHandle <> 0 then
     try
-      p := LockResource (InfoHandle);
+      p := LockResource(InfoHandle);
 
       if (Integer (ResType) and $ffff0000) = 0 then
         pt := PWideChar (ResType)
@@ -266,7 +266,7 @@ begin
 
       AddResourceToList (pt, pn, Size, p, language);
     finally
-      FreeResource (InfoHandle)
+      FreeResource(InfoHandle)
     end
     else
       RaiseLastOSError;
@@ -305,7 +305,7 @@ begin
       EnumResourceNamesW (Instance, tp, @EnumResNamesProc, Integer (Self))
     end
   finally
-    FreeLibrary (Instance)
+    FreeLibrary(Instance)
   end
   else
     RaiseLastOSError;
@@ -338,29 +338,29 @@ var
 
 begin
   if not Assigned(fnUpdateResource) or not Assigned(fnBeginUpdateResource) or not Assigned(fnEndUpdateResource) then
-    raise Exception.Create (rstCantUpdate);
+    raise Exception.Create(rstCantUpdate);
 
   if (FOrigFileName <> '') then
   begin
-    fn1 := ExpandFileName (FOrigFileName);
-    fn2 := ExpandFileName (FileName);
+    fn1 := ExpandFileName(FOrigFileName);
+    fn2 := ExpandFileName(FileName);
 
     if not SameText (fn1, fn2) then
-      CopyFile (PChar (fn1), PChar (fn2), false);
+      CopyFile(PChar (fn1), PChar (fn2), false);
   end;
 
   Discard := True;
-  UpdateHandle := fnBeginUpdateResource (PWideChar (WideString (FileName)), true);
+  UpdateHandle := fnBeginUpdateResource(PWideChar (WideString (FileName)), true);
   if UpdateHandle <> 0 then
   try
     for i := 0 to ResourceCount - 1 do
     begin
-      Details := ResourceDetails [i];
+      Details := ResourceDetails[i];
 
       Namest := Details.ResourceName;
       tpst   := Details.ResourceType;
 
-      if not fnUpdateResource (UpdateHandle,
+      if not fnUpdateResource(UpdateHandle,
                       ResourceNameInt (tpst),
                       ResourceNameInt (Namest),
                       Details.ResourceLanguage,
@@ -371,7 +371,7 @@ begin
     ClearDirty;
     Discard := False
   finally
-    fnEndUpdateResource (UpdateHandle, Discard);
+    fnEndUpdateResource(UpdateHandle, Discard);
     FOrigFileName := FileName;
   end
   else
@@ -382,10 +382,10 @@ procedure Initialize;
 var
   hkernel: THandle;
 begin
-  hkernel := LoadLibrary ('kernel32.dll');
-  fnBeginUpdateResource := TfnBeginUpdateResource (GetProcAddress (hkernel, 'BeginUpdateResourceW'));
-  fnEndUpdateResource := TfnEndUpdateResource (GetProcAddress (hkernel, 'EndUpdateResourceW'));
-  fnUpdateResource := TfnUpdateResource (GetProcAddress (hkernel, 'UpdateResourceW'));
+  hkernel := LoadLibrary('kernel32.dll');
+  fnBeginUpdateResource := TfnBeginUpdateResource(GetProcAddress (hkernel, 'BeginUpdateResourceW'));
+  fnEndUpdateResource := TfnEndUpdateResource(GetProcAddress (hkernel, 'EndUpdateResourceW'));
+  fnUpdateResource := TfnUpdateResource(GetProcAddress (hkernel, 'UpdateResourceW'));
 end;
 
 procedure TNTModule.SortResources;

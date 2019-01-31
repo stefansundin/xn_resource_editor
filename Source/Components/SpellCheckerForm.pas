@@ -49,7 +49,7 @@ type
     procedure Loaded; override;
   public
     destructor Destroy; override;
-    procedure Initialize (checker: TCWSpellChecker; ss, se: Integer; suggestions: TStrings);
+    procedure Initialize(checker: TCWSpellChecker; ss, se: Integer; suggestions: TStrings);
     property QuoteChars: string read FQuoteChars write FQuoteChars;
   end;
 
@@ -107,7 +107,7 @@ begin
     ListViewSuggestions.Items.Clear;
     for i := 0 to Suggestions.Count - 1 do
       with ListViewSuggestions.Items.Add do
-        Caption := suggestions [i];
+        Caption := suggestions[i];
   finally
     ListViewSuggestions.Items.EndUpdate;
   end
@@ -204,7 +204,7 @@ begin
 
   ss := FBadSS - 1;
 
-  FText := Copy (FText, 1, ss) + StringReplace (Copy (FText, ss + 1, MaxInt), FBadWord, newWord, [rfReplaceAll, rfIgnoreCase]);
+  FText := Copy(FText, 1, ss) + StringReplace(Copy(FText, ss + 1, MaxInt), FBadWord, newWord, [rfReplaceAll, rfIgnoreCase]);
   FChecker.ExRichEdit.Text := FText;
   reText.Text := FText;
 
@@ -215,7 +215,7 @@ end;
 
 procedure TfmSpellChecker.ListViewSuggestionsDblClick(Sender: TObject);
 begin
-  ButtonChangeClick (nil)
+  ButtonChangeClick(nil)
 end;
 
 function TfmSpellChecker.GetChangedWord: WideString;
@@ -239,13 +239,13 @@ begin
     else
       break;
 
-    Inc (p)
+    Inc(p)
   end;
 
   if ew = -1 then
-    result := ''
+    Result := ''
   else
-    result := Copy (changedText, FBadSS, ew - FBadSS + 1);
+    Result := Copy(changedText, FBadSS, ew - FBadSS + 1);
 end;
 
 procedure TfmSpellChecker.ButtonAddClick(Sender: TObject);
@@ -268,7 +268,7 @@ end;
 procedure TfmSpellChecker.FormShow(Sender: TObject);
 begin
   reText.SetRawSelection (FSS, FSE);
-  PostMessage (handle, WM_SETUP, 0, 0);
+  PostMessage(handle, WM_SETUP, 0, 0);
 end;
 
 procedure TfmSpellChecker.WmSetup(var message: TMessage);

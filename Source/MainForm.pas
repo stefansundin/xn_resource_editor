@@ -222,13 +222,13 @@ type
     FExaminer : TResourceExaminer;
 
     procedure SetCaption;
-    procedure UpdateDisplay (selectDetails : TResourceDetails);
-    procedure OpenFile (const fileName : string);
+    procedure UpdateDisplay(selectDetails : TResourceDetails);
+    procedure OpenFile(const fileName : string);
     procedure SwitchView (details : TObject);
-    procedure WmInitialize (var msg : TMessage); message WM_INITIALIZE;
+    procedure WmInitialize(var msg : TMessage); message WM_INITIALIZE;
     procedure WmStatusBar (var Msg : TMessage); message WM_STATUSBAR;
     procedure WmPropertiesChanged (var msg : TMessage); message WM_PROPERTIES_CHANGED;
-    procedure WmAddImageResource (var msg : TMessage); message WM_ADDIMAGERESOURCE;
+    procedure WmAddImageResource(var msg : TMessage); message WM_ADDIMAGERESOURCE;
     procedure SetFormMenuButton (item : TMenuItem);
     procedure SetFileName(const Value: string);
 
@@ -239,7 +239,7 @@ type
 
     function GetNodeElement (node : PVirtualNode; var elem : TResExamElement) : Boolean;
     function GetNodeResourceDetails (node : PVirtualNode) : TResourceDetails;
-    function GetResourceDetailsNode (details : TResourceDetails) : PVirtualNode;
+    function GetResourceDetailsNode(details : TResourceDetails) : PVirtualNode;
     function SelectedResourceDetails : TResourceDetails;
     function ResourceForm : TfmResource;
     procedure CheckDetails (p : PVirtualNode; param : Integer; var continue : Boolean);
@@ -264,9 +264,9 @@ var
   fmMain: TfmMain;
 
 //----------------------------------------------------------------------
-procedure AttachMenu (const buttonCaption : string; menu : TMenuItem);
-procedure DetachMenu (const buttonCaption : string);
-function GetTypeImage (const tp : string) : Integer;
+procedure AttachMenu(const buttonCaption : string; menu : TMenuItem);
+procedure DetachMenu(const buttonCaption : string);
+function GetTypeImage(const tp : string) : Integer;
 
 implementation
 
@@ -322,7 +322,7 @@ resourcestring
   rstTrueColor = 'True Colour';
   rstLanguageNeutral = 'Language Neutral';
   rstDuplicateResourceName = 'Duplicate Resource Name';
-  rstAnyFileFilter = 'Any File (*.*)|*.*';
+  rstAnyFileFilter = 'Any File(*.*)|*.*';
 
   rstBitmap       = 'Bitmap';
   rstIcon         = 'Icon';
@@ -365,7 +365,7 @@ const
  |                                                                      |
  | Global procedure - attaches a menu to a button (the ...Object one)   |
  *----------------------------------------------------------------------*)
-procedure AttachMenu (const buttonCaption : string; menu : TMenuItem);
+procedure AttachMenu(const buttonCaption : string; menu : TMenuItem);
 var
   i : Integer;
   btn : TToolButton;
@@ -374,9 +374,9 @@ begin
   if csDestroying in fmMain.ComponentState then Exit;
   btn := Nil;
   for i := 0 to fmMain.tbMenu.ButtonCount - 1 do
-    if fmMain.tbMenu.Buttons [i].Caption = buttonCaption then
+    if fmMain.tbMenu.Buttons[i].Caption = buttonCaption then
     begin
-      btn := fmMain.tbMenu.Buttons [i];
+      btn := fmMain.tbMenu.Buttons[i];
       break
     end;
 
@@ -392,7 +392,7 @@ end;
  |                                                                      |
  | Global procedure - detaches a menu to a button (the ...Object one)   |
  *----------------------------------------------------------------------*)
-procedure DetachMenu (const buttonCaption : string);
+procedure DetachMenu(const buttonCaption : string);
 var
   i : Integer;
   btn : TToolButton;
@@ -400,9 +400,9 @@ begin
   if csDestroying in fmMain.ComponentState then Exit;
   btn := Nil;
   for i := 0 to fmMain.tbMenu.ButtonCount - 1 do
-    if fmMain.tbMenu.Buttons [i].Caption = buttonCaption then
+    if fmMain.tbMenu.Buttons[i].Caption = buttonCaption then
     begin
-      btn := fmMain.tbMenu.Buttons [i];
+      btn := fmMain.tbMenu.Buttons[i];
       break
     end;
 
@@ -419,7 +419,7 @@ end;
  | Get the image index for a resource type.  The 'magic number'         |
  | returned is an index in the ilResources image list.                  |
  *----------------------------------------------------------------------*)
-function GetTypeImage (const tp : string) : Integer;
+function GetTypeImage(const tp : string) : Integer;
 var
   i : Integer;
 begin
@@ -454,9 +454,9 @@ end;
  *----------------------------------------------------------------------*)
 function GetGraphicsClass (ext : string) : TGraphicClass;
 begin
-  ext := UpperCase (ext);
+  ext := UpperCase(ext);
   if (ext <> '') and (ext [1] = '.') then
-    Delete (ext, 1, 1);
+    Delete(ext, 1, 1);
 
   if ext = 'BMP' then
     Result := TBitmap
@@ -515,7 +515,7 @@ begin
     else
       if newCls = TGifImage then        // GIF images can do cool things with
       begin                             // dithering and palettes.  Treat as a
-        gif := TGifImage (Result);      // a special case, so that these get used
+        gif := TGifImage(Result);      // a special case, so that these get used
         gif.DitherMode := dmFloydSteinberg;
         gif.ColorReduction := rmQuantizeWindows;
         Result.Assign (graphic);
@@ -589,7 +589,7 @@ begin
     GetNodeElement (vstResources.FocusedNode, elem);
     if elem is TResExamName then
     begin
-      TResExamName (elem).Redo;
+      TResExamName(elem).Redo;
       vstResources.InvalidateNode(vstResources.FocusedNode)
     end
   end
@@ -630,7 +630,7 @@ begin
     GetNodeElement (vstResources.FocusedNode, elem);
     if elem is TResExamName then
     begin
-      TResExamName (elem).Undo;
+      TResExamName(elem).Undo;
       vstResources.InvalidateNode(vstResources.FocusedNode)
     end
   end
@@ -659,7 +659,7 @@ begin
     ClearUndoDetails;
     FResourceModule := TResModule.Create; // Create an empty .RES module
     FileName := '';
-    UpdateDisplay (nil)
+    UpdateDisplay(nil)
   end
 end;
 
@@ -674,7 +674,7 @@ begin
 
   OpenDialog.InitialDir := MRUList1.MRUDirectory;
   if OpenDialog.Execute then
-    OpenFile (OpenDialog.FileName);
+    OpenFile(OpenDialog.FileName);
 end;
 
 (*----------------------------------------------------------------------*
@@ -728,14 +728,14 @@ var
   dlg : TdlgAddResource;
   res : TResourceDetails;
 begin
-  dlg := TdlgAddResource.Create (nil);
+  dlg := TdlgAddResource.Create(nil);
   try
     if dlg.ShowModal = mrOk then
     begin
-      res := dlg.ResourceDetailsClass.CreateNew (FResourceModule, 0, FResourceModule.GetUniqueResourceName (dlg.ResourceDetailsClass.GetBaseType));
+      res := dlg.ResourceDetailsClass.CreateNew (FResourceModule, 0, FResourceModule.GetUniqueResourceName(dlg.ResourceDetailsClass.GetBaseType));
       res.Dirty := True;
       FResourceModule.SortResources;
-      UpdateDisplay (res);
+      UpdateDisplay(res);
     end
   finally
     dlg.Free
@@ -772,13 +772,13 @@ begin
   FResourceModule.DeleteResource(idx);
 
   if nextAction = 1 then
-    details := FResourceModule.ResourceDetails [idx]
+    details := FResourceModule.ResourceDetails[idx]
   else
     if nextAction = 2 then
-      details := FResourceModule.ResourceDetails [idx - 1]
+      details := FResourceModule.ResourceDetails[idx - 1]
     else
       details := Nil;
-  UpdateDisplay (details);
+  UpdateDisplay(details);
 end;
 
 (*----------------------------------------------------------------------*
@@ -802,13 +802,13 @@ begin
   if fmResourceObject.Obj is TIconCursorGroupResourceDetails then
   begin
     pict := TPicture.Create;
-    TIconCursorGroupResourceDetails (fmResourceObject.Obj).GetImage (pict)
+    TIconCursorGroupResourceDetails (fmResourceObject.Obj).GetImage(pict)
   end
   else
     if fmResourceObject.Obj is TGraphicsResourceDetails then
     begin
       pict := TPicture.Create;
-      TGraphicsResourceDetails (fmResourceObject.Obj).GetImage (pict)
+      TGraphicsResourceDetails (fmResourceObject.Obj).GetImage(pict)
     end;
 
   if Assigned(pict) then
@@ -835,7 +835,7 @@ begin
           end
         end
         else
-          pict.SaveToFile (SavePictureDialog1.FileName);
+          pict.SaveToFile(SavePictureDialog1.FileName);
 
         PersistDirectoryName ['Export'] := ExtractFilePath (SavePictureDialog1.FileName)
       end
@@ -872,15 +872,15 @@ begin
   begin
     f := TMemoryStream.Create;
     try
-      f.LoadFromFile (OpenDialog1.FileName);
+      f.LoadFromFile(OpenDialog1.FileName);
 
-      resType := UpperCase (ExtractFileName (OpenDialog1.FileName));
+      resType := UpperCase(ExtractFileName(OpenDialog1.FileName));
       resName := SplitString ('.', resType);
 
       if resType = '' then
       begin
         resType := resName;
-        resName := FResourceModule.GetUniqueResourceName (resType)
+        resName := FResourceModule.GetUniqueResourceName(resType)
       end
       else
         if FResourceModule.FindResource(resType, resName, 0) <> Nil then
@@ -892,14 +892,14 @@ begin
         resType,
         f.Size, f.Memory);
 
-      FResourceModule.AddResource (res);
+      FResourceModule.AddResource(res);
 
       res.Dirty := True;
 
       PersistDirectoryName ['Import'] := ExtractFilePath (OpenDialog1.FileName);
 
       FResourceModule.SortResources;
-      UpdateDisplay (res);
+      UpdateDisplay(res);
     finally
       f.Free
     end
@@ -921,22 +921,22 @@ begin
   begin
     f := TMemoryStream.Create;
     try
-      f.LoadFromFile (OpenDialog1.FileName);
+      f.LoadFromFile(OpenDialog1.FileName);
 
       res := TResourceDetails.CreateResourceDetails (
         FResourceModule, 0,
-        FResourceModule.GetUniqueResourceName (IntToStr (Integer (RT_RCDATA))),
+        FResourceModule.GetUniqueResourceName(IntToStr (Integer (RT_RCDATA))),
         IntToStr (Integer (RT_RCDATA)),
         f.Size, f.Memory);
 
-      FResourceModule.AddResource (res);
+      FResourceModule.AddResource(res);
 
       res.Dirty := True;
 
       PersistDirectoryName ['Import'] := ExtractFilePath (OpenDialog1.FileName);
 
       FResourceModule.SortResources;
-      UpdateDisplay (res)
+      UpdateDisplay(res)
     finally
       f.Free
     end
@@ -959,7 +959,7 @@ begin
 
   if OpenPictureDialog1.Execute then
   begin
-    ext := UpperCase (ExtractFileExt (OpenPictureDialog1.FileName));
+    ext := UpperCase(ExtractFileExt (OpenPictureDialog1.FileName));
 
     if ext = '.ICO' then
       ResourceDetailsClass := TIconGroupResourceDetails
@@ -975,17 +975,17 @@ begin
           else
             ResourceDetailsClass := TBitmapResourceDetails;
 
-    res := ResourceDetailsClass.CreateNew (FResourceModule, 0, FResourceModule.GetUniqueResourceName (ResourceDetailsClass.GetBaseType));
+    res := ResourceDetailsClass.CreateNew (FResourceModule, 0, FResourceModule.GetUniqueResourceName(ResourceDetailsClass.GetBaseType));
     res.Dirty := True;
 
     if res is TIconCursorGroupResourceDetails then
-      TIconCursorGroupResourceDetails (res).LoadImage (OpenPictureDialog1.FileName)
+      TIconCursorGroupResourceDetails (res).LoadImage(OpenPictureDialog1.FileName)
     else
     begin
       img := TPicture.Create;
       try
-        img.LoadFromFile (OpenPictureDialog1.FileName);
-        TGraphicsResourceDetails (res).SetImage (img);
+        img.LoadFromFile(OpenPictureDialog1.FileName);
+        TGraphicsResourceDetails (res).SetImage(img);
       finally
         img.Free
       end
@@ -994,7 +994,7 @@ begin
     PersistDirectoryName ['Import'] := ExtractFilePath (OpenPictureDialog1.FileName);
 
     FResourceModule.SortResources;
-    UpdateDisplay (res);
+    UpdateDisplay(res);
   end
 
 end;
@@ -1012,7 +1012,7 @@ begin
 
   if Assigned(res) and Assigned(fm) and not (res is TIconCursorResourceDetails) then
   begin
-    dlg := TdlgResourceProperties.Create (nil);
+    dlg := TdlgResourceProperties.Create(nil);
     try
       dlg.ResourceDetails := res;
 
@@ -1026,11 +1026,11 @@ begin
 
         if (newLanguage <> res.ResourceLanguage) or (newName <> res.ResourceName) then
         begin
-          r := FResourceModule.FindResource (res.ResourceType, newName, newLanguage);
+          r := FResourceModule.FindResource(res.ResourceType, newName, newLanguage);
           if Assigned(r) and (r <> res) and (r.ResourceLanguage = newLanguage) then
-            raise Exception.Create (rstDuplicateResourceName);
+            raise Exception.Create(rstDuplicateResourceName);
 
-          fm.AddUndoEntry (rstChangeResourceProperties);
+          fm.AddUndoEntry(rstChangeResourceProperties);
 
 
           if newLanguage <> res.ResourceLanguage then
@@ -1065,7 +1065,7 @@ procedure TfmMain.actViewPropertiesExecute(Sender: TObject);
 var
   dlg : TfmProperties;
 begin
-  dlg := TfmProperties.Create (Nil);
+  dlg := TfmProperties.Create(Nil);
   try
     dlg.ShowModal
   finally
@@ -1098,14 +1098,14 @@ function TfmMain.ApplicationEvents1Help(Command: Word; Data: NativeInt;
 begin
   CallHelp := not (command = HELP_FINDER);
   if not CallHelp then
-    PostMessage (Application.Handle, CM_INVOKEHELP, HELP_CONTENTS, 0);
+    PostMessage(Application.Handle, CM_INVOKEHELP, HELP_CONTENTS, 0);
   Result := False
 end;
 
 procedure TfmMain.ApplicationEvents1Message(var Msg: tagMSG;
   var Handled: Boolean);
 begin
-  Handled := not HHPreTranslateMessage (Msg);
+  Handled := not HHPreTranslateMessage(Msg);
 end;
 
 procedure TfmMain.CheckDetails(p: PVirtualNode; param: Integer;
@@ -1114,7 +1114,7 @@ begin
   continue := Integer (GetNodeResourceDetails (p)) <> param
 end;
 
-function TfmMain.CloneResource (res : TResourceDetails; newName : string; newLanguage : Integer) : TResourceDetails;
+function TfmMain.CloneResource(res : TResourceDetails; newName : string; newLanguage : Integer) : TResourceDetails;
 var
   i : Integer;
   icg, clicg : TIconCursorGroupResourceDetails;
@@ -1148,14 +1148,14 @@ begin
     icg := TIconCursorGroupResourceDetails (res);
     clicg := Result as TIconCursorGroupResourceDetails;
     for i := 0 to icg.ResourceCount - 1 do
-      clicg.AddToGroup(TIconCursorResourceDetails (CloneResource (icg.ResourceDetails [i], '', newLanguage)));
+      clicg.AddToGroup(TIconCursorResourceDetails (CloneResource(icg.ResourceDetails[i], '', newLanguage)));
 
       // Remove first empty image that was created along with
       // the group resource.  Note that you have to do this
       // *after* adding the other images - otherwise the newly
       // created group resource will be zapped!
 
-    clicg.RemoveFromGroup(clicg.ResourceDetails [0]);
+    clicg.RemoveFromGroup(clicg.ResourceDetails[0]);
   end;
   Result.Dirty := True;
   FResourceModule.AddResource(Result);
@@ -1183,7 +1183,7 @@ procedure TfmMain.FormKeyDown(Sender: TObject; var Key: Word;
 begin
   if Assigned(fmResourceObject) then
   begin
-    fmResourceObject.PreviewKey (key, Shift);
+    fmResourceObject.PreviewKey(key, Shift);
     FIgnoreChar := key = 0;
   end
 end;
@@ -1220,7 +1220,7 @@ var
   elem : TResExamElement;
 begin
   if GetNodeElement (node, elem) and (elem is TResExamResource) then
-    Result := TResExamResource (elem).ResourceDetails
+    Result := TResExamResource(elem).ResourceDetails
   else
     Result := Nil
 end;
@@ -1230,9 +1230,9 @@ var
   reg : TRegistry;
 begin
   Result := '';
-  reg := TRegistry.Create (KEY_READ);
+  reg := TRegistry.Create(KEY_READ);
   try
-    if reg.OpenKey ('\' + PersistentPosition1.ApplicationKey + '\Directories', False) then
+    if reg.OpenKey('\' + PersistentPosition1.ApplicationKey + '\Directories', False) then
       Result := reg.ReadString (section);
   finally
     reg.Free
@@ -1261,8 +1261,8 @@ procedure TfmMain.Loaded;
 begin
   inherited;
   SetCaption;
-  gProperties := TPEResourceExplorerProperties.Create (self);
-  PostMessage (handle, WM_INITIALIZE, 0, 0);
+  gProperties := TPEResourceExplorerProperties.Create(self);
+  PostMessage(handle, WM_INITIALIZE, 0, 0);
 end;
 
 (*----------------------------------------------------------------------*
@@ -1300,7 +1300,7 @@ begin
     GetNodeElement (vstResources.FocusedNode, elem);
     if elem is TResExamName then
     begin
-      name := TResExamName (elem);
+      name := TResExamName(elem);
       s := name.UndoDescription;
       if s = '' then
         mnuEditUndo.Caption := FUndo
@@ -1332,7 +1332,7 @@ begin
     item := TMenuItem (sender);
     p := Pos (' ', Item.Caption);
     if p > 0 then
-      OpenFile (Copy (Item.Caption, p + 1, MaxInt))
+      OpenFile(Copy(Item.Caption, p + 1, MaxInt))
   end
 end;
 
@@ -1350,14 +1350,14 @@ begin
     FreeAndNil (FResourceModule);
     ClearUndoDetails;
 
-    ext := UpperCase (ExtractFileExt (fileName));
+    ext := UpperCase(ExtractFileExt (fileName));
     if (ext = '.RES') or (ext = '.DCR') then
       FResourceModule := TResModule.Create
     else
       if (ext = '.RC') then
       begin
         FResourceModule := TRCModule.Create;
-        TRCModule (FResourceModule).IncludePath := gProperties.IncludePath;
+        TRCModule(FResourceModule).IncludePath := gProperties.IncludePath;
       end
       else
         if (Win32Platform = VER_PLATFORM_WIN32_NT) and (gProperties.ParserType = 0) then
@@ -1365,17 +1365,17 @@ begin
         else
           FResourceModule := TPEResourceModule.Create;
 
-    FResourceModule.LoadFromFile (fileName);
+    FResourceModule.LoadFromFile(fileName);
     Self.FileName := FileName;
-    MRUList1.AddFile (fileName);
-    UpdateDisplay (Nil);
+    MRUList1.AddFile(fileName);
+    UpdateDisplay(Nil);
   end
 end;
 
 function TfmMain.ResourceForm: TfmResource;
 begin
   if Assigned(fmResourceObject) and (fmResourceObject is TfmResource) then
-    Result := TfmResource (fmResourceObject)
+    Result := TfmResource(fmResourceObject)
   else
     Result := Nil
 end;
@@ -1389,7 +1389,7 @@ begin
   if FileName = '' then
     s := rstUntitled
   else
-    s := ExtractFileName (FileName);
+    s := ExtractFileName(FileName);
   if ISDirty then
     case MessageBox (Handle, PChar (Format (rstChanges, [s])), PChar (Application.Title), MB_YESNOCANCEL or MB_ICONQUESTION) of
       ID_YES : Result := SaveFile;
@@ -1408,7 +1408,7 @@ begin
   else
   begin
     Application.ProcessMessages;
-    FResourceModule.SaveToFile (FFileName);
+    FResourceModule.SaveToFile(FFileName);
     Result := True;
   end
 end;
@@ -1434,12 +1434,12 @@ begin
         if fName [p] = '.' then
           break
         else
-          Dec (p);
+          Dec(p);
 
       if p = 0 then
         fName := fName + '.res'
       else
-        fName := Copy (s, 1, p - 1) + '.res';
+        fName := Copy(s, 1, p - 1) + '.res';
     end;
 
     SaveDialog.FileName := fName;
@@ -1449,7 +1449,7 @@ begin
     begin
       s := ExtractFileExt (fName);
       if Length (s) > 0 then
-        s := Copy (s, 2, MaxInt);
+        s := Copy(s, 2, MaxInt);
     end
     else
       if FResourceModule is TResModule then
@@ -1463,7 +1463,7 @@ begin
 
     if SaveDialog.Execute then
     begin
-      s := UpperCase (ExtractFileExt (SaveDialog.FileName));
+      s := UpperCase(ExtractFileExt (SaveDialog.FileName));
 
       if ((FResourceModule is TPEModule) or (FResourceModule is TRCModule)) and ((s = '.DCR') or (s = '.RES')) then
       begin
@@ -1489,11 +1489,11 @@ begin
           res := newModule.FindResource(tp, nm, lg)
         else
           res := Nil;
-        UpdateDisplay (res);
+        UpdateDisplay(res);
       end;
-      FResourceModule.SaveToFile (SaveDialog.FileName);
+      FResourceModule.SaveToFile(SaveDialog.FileName);
       FileName := SaveDialog.FileName;
-      MRUList1.AddFile (fileName);
+      MRUList1.AddFile(fileName);
       Result := True;
     end
   end
@@ -1517,7 +1517,7 @@ begin
     st := Application.Title
   else
   begin
-    st := ExtractFileName (FileName + ' - ' + Application.Title);
+    st := ExtractFileName(FileName + ' - ' + Application.Title);
     if IsDirty then
       st := '*' + st
   end;
@@ -1567,9 +1567,9 @@ procedure TfmMain.SetPersistDirectoryName(section: string;
 var
   reg : TRegistry;
 begin
-  reg := TRegistry.Create (KEY_READ or KEY_WRITE);
+  reg := TRegistry.Create(KEY_READ or KEY_WRITE);
   try
-    if reg.OpenKey ('\' + PersistentPosition1.ApplicationKey + '\Directories', True) then
+    if reg.OpenKey('\' + PersistentPosition1.ApplicationKey + '\Directories', True) then
       reg.WriteString (section, Value)
   finally
     reg.Free
@@ -1623,9 +1623,9 @@ begin { SwitchView }
   if Integer (details) > 32 then        // It's a genuine TResourceDetails or TImageSection
   begin
     for i := 0 to NoObjectDetails - 1 do
-      if details is ObjectForms [i].details then
+      if details is ObjectForms[i].details then
       begin
-        formClass := ObjectForms [i].form;
+        formClass := ObjectForms[i].form;
         break
       end
   end;
@@ -1643,7 +1643,7 @@ begin { SwitchView }
 
     if Assigned(formClass) then         // Create the new resource form
     begin
-      fmResourceObject := formClass.Create (Nil);
+      fmResourceObject := formClass.Create(Nil);
       fmResourceObject.Parent := pnlResource;
       fmResourceObject.TabStop := True;
       fmResourceObject.ResourceModule := FResourceModule;
@@ -1672,7 +1672,7 @@ var
 begin
   GetNodeElement (vstResources.FocusedNode, elem);
   if (elem is TResExamResource) then
-    res := TResExamResource (elem).ResourceDetails
+    res := TResExamResource(elem).ResourceDetails
   else
     res := Nil;
 
@@ -1697,8 +1697,8 @@ begin
   begin
     if elem is TResExamName then
     begin
-      actEditUndo.Enabled := TResExamName (elem).CanUndo;
-      actEditRedo.Enabled := TResExamName (elem).CanRedo
+      actEditUndo.Enabled := TResExamName(elem).CanUndo;
+      actEditRedo.Enabled := TResExamName(elem).CanRedo
     end
     else
     begin
@@ -1728,7 +1728,7 @@ begin
   end;
 (*
   if Assigned(ActiveControl) then
-  sbMain.Panels [0].Text := ActiveControl.Name; *)
+  sbMain.Panels[0].Text := ActiveControl.Name; *)
 end;
 
 (*----------------------------------------------------------------------*
@@ -1736,7 +1736,7 @@ end;
  |                                                                      |
  | Update the display by building the tree view.                        |
  *----------------------------------------------------------------------*)
-procedure TfmMain.UpdateDisplay (selectDetails : TResourceDetails);
+procedure TfmMain.UpdateDisplay(selectDetails : TResourceDetails);
 var
   resSection : TResExamSection;
 
@@ -1761,7 +1761,7 @@ begin { UpdateDisplay }
 
   if Assigned(SelectDetails) then
   begin
-    vstResources.SelectAndFocusNode (GetResourceDetailsNode (SelectDetails));
+    vstResources.SelectAndFocusNode(GetResourceDetailsNode(SelectDetails));
     SwitchView (SelectDetails)
   end
   else
@@ -1798,10 +1798,10 @@ begin
     if o is TIconCursorGroupResourceDetails then
     begin
       grp := TIconCursorGroupResourceDetails (o);
-      res := TIconCursorResourceDetails (CloneResource (res, '', -1));
+      res := TIconCursorResourceDetails (CloneResource(res, '', -1));
       grp.AddToGroup (res);
       FResourceModule.SortResources;
-      UpdateDisplay (res);
+      UpdateDisplay(res);
     end
   end
 end;
@@ -1820,7 +1820,7 @@ begin
   if ParamCount = 0 then
     actFileNew.Execute
   else
-    OpenFile (ParamStr (1))
+    OpenFile(ParamStr (1))
 end;
 
 (*----------------------------------------------------------------------*
@@ -1845,10 +1845,10 @@ end;
 procedure TfmMain.WmStatusBar(var Msg: TMessage);
 begin
   if Msg.lParam <> 0 then
-    sbMain.Panels [1].Text := PChar (Msg.lParam) + '     ';
+    sbMain.Panels[1].Text := PChar (Msg.lParam) + '     ';
 
   if Msg.wParam <> 0 then
-    sbMain.Panels [0].Text := PChar (Msg.wParam);
+    sbMain.Panels[0].Text := PChar (Msg.wParam);
 end;
 
 procedure TfmMain.actResourceCloneExecute(Sender: TObject);
@@ -1865,11 +1865,11 @@ begin
       if dlg.ShowModal = mrOk then
       begin
         if dlg.rbByLanguage.Checked then
-          res := CloneResource (res, '', dlg.Language)
+          res := CloneResource(res, '', dlg.Language)
         else
-          res := CloneResource (res, dlg.ntedName.Text, -1);
+          res := CloneResource(res, dlg.ntedName.Text, -1);
         FResourceModule.SortResources;
-        UpdateDisplay (res)
+        UpdateDisplay(res)
       end
     finally
       dlg.Free
@@ -1899,7 +1899,7 @@ begin
 
   details := GetNodeResourceDetails (Node);
   if Assigned(details) then
-    ImageIndex := GetTypeImage (details.ResourceType)
+    ImageIndex := GetTypeImage(details.ResourceType)
   else
     if vsExpanded in Node^.States then
       ImageIndex := imgOpenFolder
@@ -1943,7 +1943,7 @@ begin
     elem := pelem.Element [Node.Index];
     vstResources.NodeObject [Node] := elem;
     if elem.Count > 0 then
-      Include (InitialStates, ivsHasChildren)
+      Include(InitialStates, ivsHasChildren)
   end
 end;
 
@@ -1954,10 +1954,10 @@ var
 begin
   if GetNodeElement (node, elem) then
     if (elem is TResExamName) then
-      TResExamName (elem).Name := NewText
+      TResExamName(elem).Name := NewText
     else
       if (elem is TResExamType) then
-        TResExamType (elem).Name := NewText;
+        TResExamType(elem).Name := NewText;
 
   vstResources.InvalidateNode(node)
 end;
@@ -1981,7 +1981,7 @@ begin
       node := node^.Parent;
       if GetNodeElement (node, elem) and (elem is TResExamType) then
       begin
-        tp := TResExamType (elem);
+        tp := TResExamType(elem);
         if StrToIntDef (tp.Name, -1) = Integer (RT_STRING) then
           Result := False
       end
@@ -1989,7 +1989,7 @@ begin
     else
       if (elem is TResExamType) then
       begin
-        tp := TResExamType (elem);
+        tp := TResExamType(elem);
         Result:= tp.Name = tp.DisplayName
       end
 end;
@@ -2013,11 +2013,11 @@ begin
     begin
       if GetNodeElement (node, elem) then
         if elem is TResExamName then
-          TResExamName (elem).Name := nm
+          TResExamName(elem).Name := nm
         else
           if elem is TResExamType then
-            TResExamType (elem).Name := tp;
-      vstResources.InvalidateNode (node);
+            TResExamType(elem).Name := tp;
+      vstResources.InvalidateNode(node);
       node := node.Parent;
       if node = vstResources.RootNode then
         break

@@ -71,7 +71,7 @@ begin
     Result := inherited GetPropertyEnumCount (kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := 0;
     case kind of
       pkStyle :
@@ -87,10 +87,10 @@ function TListboxControlInfo.GetPropertyEnumName(kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumName (kind, idx, enum)
+    Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
     case kind of
       pkStyle :
@@ -116,10 +116,10 @@ function TListboxControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyName (kind, idx)
+    Result := inherited GetPropertyName(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
      case kind of
 //      pkGeneral : Result := StaticControlPropertyGeneralName [idx];
@@ -133,10 +133,10 @@ function TListboxControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyType (kind, idx)
+    Result := inherited GetPropertyType(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := ptInteger;
     case kind of
 //      pkGeneral : Result := StaticControlPropertyGeneralType [idx];
@@ -154,10 +154,10 @@ function TListboxControlInfo.GetPropertyValue(kind: TPropertyKind;
   idx: Integer): Variant;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyValue (kind, idx)
+    Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     case kind of
       pkStyle :
@@ -195,10 +195,10 @@ var
   recreateRequired : Boolean;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    inherited SetPropertyValue (kind, idx, Value)
+    inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     recreateRequired := False;
 
     case kind of
@@ -206,16 +206,16 @@ begin
         case idx of
           0 :
             case Value of
-              0 : SetMaskedStyle (0, LBS_SELECTIONMASK);
-              1 : SetMaskedStyle (LBS_MULTIPLESEL, LBS_SELECTIONMASK);
-              2 : SetMaskedStyle (LBS_EXTENDEDSEL, LBS_SELECTIONMASK);
-              3 : SetMaskedStyle (LBS_NOSEL, LBS_SELECTIONMASK)
+              0 : SetMaskedStyle(0, LBS_SELECTIONMASK);
+              1 : SetMaskedStyle(LBS_MULTIPLESEL, LBS_SELECTIONMASK);
+              2 : SetMaskedStyle(LBS_EXTENDEDSEL, LBS_SELECTIONMASK);
+              3 : SetMaskedStyle(LBS_NOSEL, LBS_SELECTIONMASK)
             end;
           1 :
             case Value of
-              0 : SetMaskedStyle (0, LBS_OWNERDRAWMASK);
-              1 : SetMaskedStyle (LBS_OWNERDRAWFIXED, LBS_OWNERDRAWMASK);
-              2 : SetMaskedStyle (LBS_OWNERDRAWVARIABLE, LBS_OWNERDRAWMASK);
+              0 : SetMaskedStyle(0, LBS_OWNERDRAWMASK);
+              1 : SetMaskedStyle(LBS_OWNERDRAWFIXED, LBS_OWNERDRAWMASK);
+              2 : SetMaskedStyle(LBS_OWNERDRAWVARIABLE, LBS_OWNERDRAWMASK);
             end;
 
           2 : HasStyle [LBS_SORT] := Value;

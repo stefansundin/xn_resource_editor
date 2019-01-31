@@ -57,12 +57,12 @@ var
 begin
   FillChar (vert, SizeOf (vert), 0);
 
-  sr := GetRValue (ColorToRGB (startColor));
-  sg := GetGValue (ColorToRGB (startColor));
-  sb := GetBValue (ColorToRGB (startColor));
-  er := GetRValue (ColorToRGB (endColor));
-  eg := GetGValue (ColorToRGB (endColor));
-  eb := GetBValue (ColorToRGB (endColor));
+  sr := GetRValue(ColorToRGB (startColor));
+  sg := GetGValue(ColorToRGB (startColor));
+  sb := GetBValue(ColorToRGB (startColor));
+  er := GetRValue(ColorToRGB (endColor));
+  eg := GetGValue(ColorToRGB (endColor));
+  eb := GetBValue(ColorToRGB (endColor));
 
   if RectType in [gsrTLBR, gsrBLTR] then
   begin

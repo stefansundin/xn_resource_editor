@@ -112,7 +112,7 @@ begin
     Result := inherited GetPropertyEnumCount (kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     Result := 0;
     if kind = pkStyle then
@@ -126,10 +126,10 @@ function THScrollbarControlInfo.GetPropertyEnumName(kind: TPropertyKind;
   idx, enum: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumName (kind, idx, enum)
+    Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
 
     if kind = pkStyle then
@@ -148,10 +148,10 @@ function THScrollbarControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyName (kind, idx)
+    Result := inherited GetPropertyName(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
     case kind of
 //      pkGeneral : Result := ScrollbarControlPropertyGeneralName [idx];
@@ -165,10 +165,10 @@ function THScrollbarControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyType (kind, idx)
+    Result := inherited GetPropertyType(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := ptInteger;
     case kind of
 //      pkGeneral : Result := ScrollbarControlPropertyGeneralType [idx];
@@ -182,10 +182,10 @@ function THScrollbarControlInfo.GetPropertyValue(kind: TPropertyKind;
   idx: Integer): Variant;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyValue (kind, idx)
+    Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     case kind of
       pkStyle :
@@ -209,19 +209,19 @@ var
 begin
   recreateRequired := False;
   if idx < inherited GetPropertyCount (kind) then
-    inherited SetPropertyValue (kind, idx, Value)
+    inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     case kind of
       pkStyle :
         case idx of
           0 :
             case Value of
-              0 : SetMaskedStyle (0, 6);
-              1 : SetMaskedStyle (SBS_TOPALIGN, 6);
-              3 : SetMaskedStyle (SBS_BOTTOMALIGN, 6)
+              0 : SetMaskedStyle(0, 6);
+              1 : SetMaskedStyle(SBS_TOPALIGN, 6);
+              3 : SetMaskedStyle(SBS_BOTTOMALIGN, 6)
             end
         end
     end;
@@ -259,7 +259,7 @@ begin
     Result := inherited GetPropertyEnumCount (kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     Result := 0;
     if kind = pkStyle then
@@ -273,10 +273,10 @@ function TVScrollbarControlInfo.GetPropertyEnumName(kind: TPropertyKind;
   idx, enum: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumName (kind, idx, enum)
+    Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
 
     if kind = pkStyle then
@@ -295,10 +295,10 @@ function TVScrollbarControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyName (kind, idx)
+    Result := inherited GetPropertyName(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
     case kind of
 //      pkGeneral : Result := ScrollbarControlPropertyGeneralName [idx];
@@ -312,10 +312,10 @@ function TVScrollbarControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyType (kind, idx)
+    Result := inherited GetPropertyType(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := ptInteger;
     case kind of
 //      pkGeneral : Result := ScrollbarControlPropertyGeneralType [idx];
@@ -329,10 +329,10 @@ function TVScrollbarControlInfo.GetPropertyValue(kind: TPropertyKind;
   idx: Integer): Variant;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyValue (kind, idx)
+    Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     case kind of
       pkStyle :
@@ -355,19 +355,19 @@ var
 begin
   recreateRequired := False;
   if idx < inherited GetPropertyCount (kind) then
-    inherited SetPropertyValue (kind, idx, Value)
+    inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     case kind of
       pkStyle :
         case idx of
           0 :
             case Value of
-              0 : SetMaskedStyle (0, 6);
-              1 : SetMaskedStyle (SBS_LEFTALIGN, 6);
-              3 : SetMaskedStyle (SBS_RIGHTALIGN, 6)
+              0 : SetMaskedStyle(0, 6);
+              1 : SetMaskedStyle(SBS_LEFTALIGN, 6);
+              3 : SetMaskedStyle(SBS_RIGHTALIGN, 6)
             end
         end
     end;

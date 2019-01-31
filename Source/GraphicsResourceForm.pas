@@ -3,7 +3,7 @@
  |                                                                      |
  | Remember:                                                            |
  |                                                                      |
- | The thumbnail image (Image1) contains the master image.  It is in    |
+ | The thumbnail image(Image1) contains the master image.  It is in    |
  | the correct format, has the correct palette, is the correct graphic  |
  | type, etc.                                                           |
  |                                                                      |
@@ -148,8 +148,8 @@ type
 
   public
     PropertyListBox1: TPropertyListBox;
-    procedure PreviewKey (var key : Word; shift : TShiftState); override;
-    procedure SaveResource (const undoDetails : string); virtual;
+    procedure PreviewKey(var key : Word; shift : TShiftState); override;
+    procedure SaveResource(const undoDetails : string); virtual;
     procedure SelectAll; override;
     procedure EditDelete; override;
     procedure Copy; override;
@@ -195,7 +195,7 @@ function GetPixelFormat (graphic : TGraphic) : TPixelFormat;
 begin
   if graphic is TGifImage then
   begin
-    case TGifImage (graphic).BitsPerPixel of
+    case TGifImage(graphic).BitsPerPixel of
       1 : Result := pf1Bit;
       4 : Result := pf4Bit;
       else Result := pf8Bit;
@@ -215,7 +215,7 @@ end;
  |   newWidth : Integer   The new width                                 |
  |   newHeight : Integer  The new height                                |
  *----------------------------------------------------------------------*)
-procedure ResizePicture (p : TPicture; newWidth, newHeight : Integer);
+procedure ResizePicture(p : TPicture; newWidth, newHeight : Integer);
 var
   b : TBitmap;
 begin
@@ -262,10 +262,10 @@ begin
   PropertyListBox1.Reset;
   FDetails := obj as TGraphicsResourceDetails;
 
-  FDetails.GetImage (Image1.Picture);            // Set the thumbnail picture
+  FDetails.GetImage(Image1.Picture);            // Set the thumbnail picture
   if Image1.Picture.Graphic is TGifImage then
   begin
-//    Transp := TGIFImage (Image1.Picture.Graphic).IsTransparent;
+//    Transp := TGIFImage(Image1.Picture.Graphic).IsTransparent;
     Transp := False;                            // Can't get transparent GIFs
                                                 // to work in initial D2006 release
     Image1.Transparent := Transp
@@ -291,19 +291,19 @@ begin
   with PropertyListBox1 do                      // Set the properties
   begin
 
-    with FindProperty (rstWidth) do
+    with FindProperty(rstWidth) do
     begin
       Tag := taWidth;                           // Save taWidth constant in properties
       PropertyValue := Image1.Picture.Width     // tag so we can use the 'OnPropertyChanged' event
     end;
 
-    with FindProperty (rstHeight) do
+    with FindProperty(rstHeight) do
     begin
       Tag := taHeight;
       PropertyValue := Image1.Picture.Height
     end;
 
-    with FindProperty (rstPixelFormat) do
+    with FindProperty(rstPixelFormat) do
     begin
       Tag := taPixelFormat;
 
@@ -398,8 +398,8 @@ begin
 
 
                                                 // Manually dock the panels
-  pnlGraphics.ManualDock (SizingPageControl1, Nil, alNone);
-  pnlColours.ManualDock (SizingPageControl1, Nil, alNone);
+  pnlGraphics.ManualDock(SizingPageControl1, Nil, alNone);
+  pnlColours.ManualDock(SizingPageControl1, Nil, alNone);
 end;
 
 (*----------------------------------------------------------------------*
@@ -416,7 +416,7 @@ begin
   with SizingPageControl1 do
   begin
     for i := 0 to PageCount - 1 do
-      Pages [i].Caption := TPanel (Pages [i].Controls [0]).Caption;
+      Pages[i].Caption := TPanel (Pages[i].Controls[0]).Caption;
 
     Width := FPCWidth + 8;      // Restore the width to it's original setting
                                 // - we've got at least one tab.
@@ -488,7 +488,7 @@ end;
  *----------------------------------------------------------------------*)
 function TfmGraphicsResource.GetMenuItem: TMenuItem;
 begin
-  result := mnuImage
+  Result := mnuImage
 end;
 
 (*----------------------------------------------------------------------*
@@ -511,7 +511,7 @@ begin
                         // Reload the editor to show the changed thumbnail
     BitmapEditor1.Picture := Image1.Picture;
                         // Update the resource
-    SaveResource (rstPaletteChange);
+    SaveResource(rstPaletteChange);
 
                         // Update the pen
     BitmapEditor1.DrawPen.Color := ColorSelector1.GetSelectedPaletteColor;
@@ -530,10 +530,10 @@ procedure TfmGraphicsResource.SaveResource(const undoDetails: string);
 var
   FDetails : TGraphicsResourceDetails;
 begin
-  AddUndoEntry (undoDetails);           // Call inherited to take undo snapshot
+  AddUndoEntry(undoDetails);           // Call inherited to take undo snapshot
   FDetails := obj as TGraphicsResourceDetails;
-  FDetails.SetImage (BitmapEditor1.Picture);
-  FDetails.GetImage (Image1.Picture);    // Make sure the thumnail *really*
+  FDetails.SetImage(BitmapEditor1.Picture);
+  FDetails.GetImage(Image1.Picture);    // Make sure the thumnail *really*
                                         // relflects what we've got..
 end;
 
@@ -545,7 +545,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TfmGraphicsResource.BitmapEditor1EndChange(Sender: TObject);
 begin
-  SaveResource (BitmapEditor1.GetDrawingChangeDescription);
+  SaveResource(BitmapEditor1.GetDrawingChangeDescription);
 end;
 
 procedure TfmGraphicsResource.BitmapEditor1GetText(sender: TObject; font: TFont;
@@ -636,9 +636,9 @@ begin
 
                         // Make sure the new drawing tool's button is pressed
   for i := 0 to Toolbar1.ControlCount - 1 do
-    if (Toolbar1.Controls [i] is TToolButton) and (Toolbar1.Controls [i].Tag = Ord (dt)) then
+    if (Toolbar1.Controls[i] is TToolButton) and (Toolbar1.Controls[i].Tag = Ord (dt)) then
     begin
-      TToolButton (Toolbar1.Controls [i]).Down := True;
+      TToolButton (Toolbar1.Controls[i]).Down := True;
       break
     end;
 
@@ -654,7 +654,7 @@ var
   paletteEntries : array [0..255] of TPaletteEntry;
   pal : HPalette;
 begin
-  result := Nil;
+  Result := Nil;
   case pf of
     pf1Bit : pal := SystemPalette2;
     pf4Bit : pal := SystemPalette16;
@@ -669,7 +669,7 @@ begin
 
   if ColorCount = 0 then
   begin
-    result := Nil;
+    Result := Nil;
     exit
   end;
 
@@ -677,22 +677,22 @@ begin
   if i = 0 then
     RaiseLastOSError;
 
-  result := TBitmap.Create;
+  Result := TBitmap.Create;
 
-  result.PixelFormat := pf;
-  result.Palette := CopyPalette (pal);
+  Result.PixelFormat := pf;
+  Result.Palette := CopyPalette(pal);
 
-  result.Height := 1;
-  result.Width := colorCount;
+  Result.Height := 1;
+  Result.Width := colorCount;
 
   for i := 0 to ColorCount - 1 do
-    result.Canvas.Pixels [i, 0] := RGB (paletteEntries [i].peRed, paletteEntries [i].peGreen, paletteEntries [i].peBlue);
+    Result.Canvas.Pixels[i, 0] := RGB (paletteEntries[i].peRed, paletteEntries[i].peGreen, paletteEntries[i].peBlue);
 end;
 
 (*----------------------------------------------------------------------*
  | TfmGraphicsResource.PropertyListBox1PropertyChanged                  |
  |                                                                      |
- | A property (width, height, pixelformat) has been changed.  Update    |
+ | A property(width, height, pixelformat) has been changed.  Update    |
  |the image                                                             |
  *----------------------------------------------------------------------*)
 procedure TfmGraphicsResource.PropertyListBox1PropertyChanged(
@@ -706,7 +706,7 @@ var
   pal : HPalette;
 begin
   with PropertyListBox1 do
-    prop := Properties [SelectedPropertyNo];
+    prop := Properties[SelectedPropertyNo];
 
   change := '';
   newPf := pfDevice;
@@ -715,13 +715,13 @@ begin
     taWidth : if Image1.Picture.Graphic.Width <> prop.PropertyValue then
               begin
                 change := rstWidthChanged;
-                ResizePicture (Image1.Picture, prop.PropertyValue, Image1.Picture.Graphic.Height);
+                ResizePicture(Image1.Picture, prop.PropertyValue, Image1.Picture.Graphic.Height);
               end;
 
     taHeight : if Image1.Picture.Graphic.Height <> prop.PropertyValue then
                begin
                  change := rstHeightChanged;
-                 ResizePicture (Image1.Picture, Image1.Picture.Graphic.Width, prop.PropertyValue);
+                 ResizePicture(Image1.Picture, Image1.Picture.Graphic.Width, prop.PropertyValue);
                end;
 
     taPixelFormat :
@@ -759,7 +759,7 @@ begin
                            case newPF of
                              pf1Bit : b1.Palette := SystemPalette2;
                              pf4Bit : b1.Palette := SystemPalette16;
-                             pf8Bit : b1.Palette := CopyPalette (SystemPalette256); // unitExIcon.WebPalette
+                             pf8Bit : b1.Palette := CopyPalette(SystemPalette256); // unitExIcon.WebPalette
                            end;
 
                            b1.Width := bmp.Width;
@@ -810,7 +810,7 @@ begin
   if change <> '' then
   begin
     BitmapEditor1.Picture := Image1.Picture;      // Set the editor picture
-    SaveResource (change);
+    SaveResource(change);
   end
 end;
 
@@ -900,7 +900,7 @@ end;
 
 procedure TfmGraphicsResource.EditDelete;
 begin
-  SaveResource (rstDeleteImage);
+  SaveResource(rstDeleteImage);
   BitmapEditor1.DeleteSelection
 end;
 
@@ -911,7 +911,7 @@ end;
 
 procedure TfmGraphicsResource.Cut;
 begin
-  SaveResource (rstCutImage);
+  SaveResource(rstCutImage);
   BitmapEditor1.CutSelection
 end;
 
@@ -920,7 +920,7 @@ begin
   if not BitmapEditor1.SelectionValid then
     BitmapEditor1.SelectAll;
   BitmapEditor1.PasteSelection;
-  SaveResource (rstPasteImage);
+  SaveResource(rstPasteImage);
 end;
 
 procedure TfmGraphicsResource.PreviewKey(var key: Word;
@@ -971,7 +971,7 @@ begin
   else
     Msg := '';
 
-  SendMessage (Application.MainForm.Handle, WM_STATUSBAR, 0, Integer (PChar (Msg)))
+  SendMessage(Application.MainForm.Handle, WM_STATUSBAR, 0, Integer (PChar (Msg)))
 end;
 
 procedure TfmGraphicsResource.PopupMenu1Popup(Sender: TObject);
@@ -992,7 +992,7 @@ begin
     else
       tp := -1;
 
-  SendMessage (Application.MainForm.Handle, WM_ADDIMAGERESOURCE, tp, 0);
+  SendMessage(Application.MainForm.Handle, WM_ADDIMAGERESOURCE, tp, 0);
 end;
 
 procedure TfmGraphicsResource.UpdateActions;

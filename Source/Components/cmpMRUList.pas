@@ -22,7 +22,7 @@ type
     function GetStrings: TStrings;
     procedure SetPopupMenu(const Value: TPopupMenu);
     procedure PopulateMenu;
-    procedure PopupMenuItemOnClick (sender: TObject);
+    procedure PopupMenuItemOnClick(sender: TObject);
     procedure SetAppSection(const Value: string);
     function GetMRUDirectory: string;
     function GetMRUFile: string;
@@ -31,10 +31,10 @@ type
     function GetKeyName: string; virtual;
 
   public
-    constructor Create (AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure AddFile (fileName: string);
+    procedure AddFile(fileName: string);
     procedure SaveList;
     procedure LoadList;
     property Strings: TStrings read GetStrings;
@@ -62,14 +62,14 @@ procedure TMRUList.AddFile(fileName: string);
 var
   idx: Integer;
 begin
-  fileName := LowerCase (fileName);
+  fileName := LowerCase(fileName);
   LoadList;
   idx := FMRU.IndexOf (fileName);
   if idx >= 0 then
-    FMRU.Delete (idx);
+    FMRU.Delete(idx);
 
   while FMRU.Count >= Capacity do
-    FMRU.Delete (FMRU.Count - 1);
+    FMRU.Delete(FMRU.Count - 1);
 
   FMRU.Insert (0, fileName);
   PopulateMenu
@@ -77,7 +77,7 @@ end;
 
 constructor TMRUList.Create(AOwner: TComponent);
 begin
-  inherited Create (AOwner);
+  inherited Create(AOwner);
   FMRU := TStringList.Create;
   FCapacity := 5
 end;
@@ -111,7 +111,7 @@ end;
 function TMRUList.GetMRUFile: string;
 begin
   if strings.Count > 0 then
-    Result := strings [0]
+    Result := strings[0]
   else
     Result := ''
 end;
@@ -133,13 +133,13 @@ begin
     if Manufacturer <> '' then
       with TRegistry.Create do
       try
-        if OpenKeyReadOnly (GetKeyName) then
+        if OpenKeyReadOnly(GetKeyName) then
         begin
           values := TStringList.Create;
           try
             GetValueNames (values);
             for i := 0 to values.Count - 1 do
-              FMRU.Add (ReadString (values [i]));
+              FMRU.Add (ReadString (values[i]));
           finally
             values.Free
           end
@@ -163,8 +163,8 @@ begin
       FPopupMenu.Items.Clear;
       for i := 0 to Strings.Count - 1 do
       begin
-        item := TMenuItem.Create (Self);
-        item.Caption := '&' + IntToHex (i, 0) + ' ' + Strings [i];
+        item := TMenuItem.Create(Self);
+        item.Caption := '&' + IntToHex (i, 0) + ' ' + Strings[i];
         item.OnClick := PopupMenuItemOnClick;
         PopupMenu.Items.Add (item)
       end
@@ -175,7 +175,7 @@ end;
 procedure TMRUList.PopupMenuItemOnClick(sender: TObject);
 begin
   if Assigned (OnPopupMenuClick) then
-    OnPopupMenuClick (sender);
+    OnPopupMenuClick(sender);
 end;
 
 procedure TMRUList.SaveList;
@@ -186,14 +186,14 @@ begin
     if FMRU.Count > 0 then
       with TRegistry.Create do
       try
-        if OpenKey (GetKeyName, True) then
+        if OpenKey(GetKeyName, True) then
           for i := 0 to FMRU.Count - 1 do
             WriteString (Format ('File %d', [i]), FMRU [i])
       finally
         Free
       end
     else
-      RegDeleteKey (HKEY_CURRENT_USER, PChar (GetKeyName));
+      RegDeleteKey(HKEY_CURRENT_USER, PChar (GetKeyName));
 end;
 
 procedure TMRUList.SetApplication(const Value: string);

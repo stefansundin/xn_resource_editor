@@ -62,13 +62,13 @@ type
   protected
     procedure Loaded; override;
   public
-    constructor Create (AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    function GetValue (const valueName: string): Integer;
-    function GetSzValue (const valueName: string): string;
-    procedure SetValue (const valueName: string; value: Integer);
-    procedure SetSzValue (const valueName, value: string);
+    function GetValue(const valueName: string): Integer;
+    function GetSzValue(const valueName: string): string;
+    procedure SetValue(const valueName: string; value: Integer);
+    procedure SetSzValue(const valueName, value: string);
 
     property ApplicationKey: string read GetAppKey;
     property Position: TRect read GetPosition;
@@ -93,7 +93,7 @@ resourcestring
  *----------------------------------------------------------------------*}
 constructor TPersistentPosition.Create(AOwner: TComponent);
 begin
-  inherited Create (AOwner);
+  inherited Create(AOwner);
   FEnabled := True;
   FManufacturer := rstWoozle;
 end;
@@ -112,12 +112,12 @@ var
 begin
   attr := KEY_READ;
   if canCreate then attr := attr or KEY_WRITE;
-  reg := TRegistry.Create (attr);
+  reg := TRegistry.Create(attr);
   try
     if FSection = '' then
-      result := reg.OpenKey(ApplicationKey + '\Position', canCreate)
+      Result := reg.OpenKey(ApplicationKey + '\Position', canCreate)
     else
-      result := reg.OpenKey(ApplicationKey + '\Position\' + FSection, canCreate)
+      Result := reg.OpenKey(ApplicationKey + '\Position\' + FSection, canCreate)
   except
     FreeAndNil (reg);
     raise
@@ -133,7 +133,7 @@ destructor TPersistentPosition.Destroy;
 begin
   UnSubclass;
   if Assigned (FObjectInstance) then
-    Classes.FreeObjectInstance (FObjectInstance);
+    Classes.FreeObjectInstance(FObjectInstance);
   inherited;
 end;
 
@@ -174,7 +174,7 @@ var
 begin
   if CreateReg (false, reg) then
   try
-    result := reg.ReadString(valueName)
+    Result := reg.ReadString(valueName)
   finally
     reg.Free
   end
@@ -189,11 +189,11 @@ function TPersistentPosition.GetValue(const valueName: string): Integer;
 var
   reg: TRegistry;
 begin
-  result := 0;
+  Result := 0;
   if CreateReg (false, reg) then
   try
     if reg.ValueExists(valueName) then
-      result := reg.ReadInteger(valueName)
+      Result := reg.ReadInteger(valueName)
   finally
     reg.Free
   end
@@ -242,7 +242,7 @@ begin
 
         wasVisible := fm.Visible;
         if wasVisible then
-          case TWindowState (reg.ReadInteger ('State')) of
+          case TWindowState(reg.ReadInteger ('State')) of
             wsNormal: wp.ShowCmd := SW_SHOW;
             wsMinimized: wp.showCmd := SW_SHOWMINIMIZED;
             wsMaximized: wp.showCmd := SW_SHOWMAXIMIZED
@@ -259,7 +259,7 @@ begin
         wp.rcNormalPosition.Bottom := reg.ReadInteger ('Height') + wp.rcNormalPosition.Top;
         SetWindowPlacement (fm.Handle, @wp);
         if not wasVisible then
-          fm.WindowState := TWindowState (reg.ReadInteger ('State'));
+          fm.WindowState := TWindowState(reg.ReadInteger ('State'));
       except
       end
     finally
@@ -351,16 +351,16 @@ begin
   if CreateReg (false, reg) then
   try
     try
-      result := Rect (reg.ReadInteger ('Left'), reg.ReadInteger ('Top'), reg.ReadInteger ('Width'), reg.ReadInteger ('Height'));
-      result.Right := result.Right + result.Left;
-      result.Bottom := result.Bottom + result.Top;
+      Result := Rect (reg.ReadInteger ('Left'), reg.ReadInteger ('Top'), reg.ReadInteger ('Width'), reg.ReadInteger ('Height'));
+      Result.Right := Result.Right + Result.Left;
+      Result.Bottom := Result.Bottom + Result.Top;
     except
     end
   finally
     reg.Free
   end
   else
-    result := Rect (0, 0, 0, 0);
+    Result := Rect (0, 0, 0, 0);
 end;
 
 procedure TPersistentPosition.Subclass;

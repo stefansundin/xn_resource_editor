@@ -19,7 +19,7 @@ type
     FUpdateCount: Integer;
 
     function GetEvent (idx: Integer): PMidiEventData;
-    procedure SetTrackName (const value: string);
+    procedure SetTrackName(const value: string);
     function GetTrackName: string;
     procedure SetChannel (value: TChannel);
     procedure SetPatch (value: TPatchNo);
@@ -28,7 +28,7 @@ type
     InstrumentName: string;
     TempPort: Integer;
 
-    constructor Create (MaxEvents: Integer);
+    constructor Create(MaxEvents: Integer);
     destructor Destroy; override;
     procedure CalcOnOffPointers;
     procedure Init;
@@ -48,10 +48,10 @@ type
     procedure CancelUpdate;
 
     // Clipboard support
-    function GetEventRange (startPos, endPos: Integer; var startEvent, endEvent: Integer): Boolean;
-    function CalcRangeDataSize (startEvent, endEvent, startPos, endPos: Integer): Integer;
-    procedure GetRangeData (buffer: PChar; startPos, startEvent, endEvent, endPos: Integer);
-    procedure DeleteRange (startPos, endPos: Integer);
+    function GetEventRange(startPos, endPos: Integer; var startEvent, endEvent: Integer): Boolean;
+    function CalcRangeDataSize(startEvent, endEvent, startPos, endPos: Integer): Integer;
+    procedure GetRangeData(buffer: PChar; startPos, startEvent, endEvent, endPos: Integer);
+    procedure DeleteRange(startPos, endPos: Integer);
     procedure CopyToClipboard (startPos, endPos: Integer);
     procedure DeleteToClipboard (startPos, endPos: Integer);
     procedure CutToClipboard (startPos, endPos: Integer);
@@ -79,9 +79,9 @@ const
 var
   TrackClipboardFormat: Word;
 
-constructor TMidiTrackStream.Create (maxEvents: Integer);
+constructor TMidiTrackStream.Create(maxEvents: Integer);
 begin
-  inherited Create (maxEvents * sizeof (TMidiEventData), 0);
+  inherited Create(maxEvents * sizeof (TMidiEventData), 0);
 end;
 
 (*---------------------------------------------------------------------*
@@ -98,12 +98,12 @@ begin
                             // Go thru the event buffer...
   for i := 0 to FEventCount - 1 do
   begin
-                            // If its a sysex message ($f0); a sysex continuation ($f7)
+                            // If its a sysex message($f0); a sysex continuation ($f7)
                             // or a meta event ($ff), we need to free the sysex
                             // data
     if event^.data.status in [midiSysex, midiSysexCont, midiMeta] then
       FreeMem (event^.data.sysex);
-    Inc (event)
+    Inc(event)
   end;
   inherited
 end;
@@ -152,8 +152,8 @@ var
     begin
       l := 0;
       repeat
-        b := PByte (Integer (buffer.Memory) + pos)^;
-        Inc (pos);
+        b := PByte(Integer (buffer.Memory) + pos)^;
+        Inc(pos);
         l := (l shl 7) + (b and $7f);  // Add it to what we've already got
       until (b and $80) = 0;           // Finish when the 8th bit is clear.
       Result := l
@@ -166,8 +166,8 @@ var
 
     function GetFChar: byte;
     begin
-      Result := PByte (Integer (buffer.Memory) + pos)^;
-      Inc (pos);
+      Result := PByte(Integer (buffer.Memory) + pos)^;
+      Inc(pos);
     end;
 
   begin
@@ -185,14 +185,14 @@ var
 
     while pos < trackSize do
     begin
-      Inc (divi, GetFVariNum);       // Get event position
+      Inc(divi, GetFVariNum);       // Get event position
 
       c := GetFChar;                 // Get first byte of event status if it's >= $80
 
                                      // If we're in the middle of a sysex msg, this
                                      // must be a sysex continuation event
       if sysexFlag and (c <> midiSysexCont) then
-        raise EMidiTrackStream.Create ('Error in Sysex');
+        raise EMidiTrackStream.Create('Error in Sysex');
 
       if (c and midiStatus) <> 0 then
       begin                          // It's a 'status' byte
@@ -205,7 +205,7 @@ var
         if status = 0 then
                                      // byte indicates 'running status' but we don't
                                      // know the status
-          raise EMidiTrackStream.Create ('Error in Running Status')
+          raise EMidiTrackStream.Create('Error in Running Status')
       end;
 
       if pass2 then
@@ -257,14 +257,14 @@ var
               c1 := GetFChar;        // Get meta type
               l := GetFVariNum;      // Get data len
 
-                                     // Allocate space for message (including meta type)
+                                     // Allocate space for message(including meta type)
               if pass2 then
               begin
                 events^.sysexSize := l + 1;
                 GetMem (events^.data.sysex, events^.sysexSize);
 
                 events^.data.sysex [0] := char (c1);
-                Move (pointer (Integer (buffer.Memory) + pos)^, events^.data.sysex [1], l);
+                Move(pointer (Integer (buffer.Memory) + pos)^, events^.data.sysex [1], l);
                 case c1 of             // Save 'track name' event
                   metaTrackName :
                     FTrackName := events;
@@ -276,7 +276,7 @@ var
                   if not gotEndOfTrack then
                     gotEndOfTrack := True;
 
-              Inc (pos, l);
+              Inc(pos, l);
 
             end;
 
@@ -289,16 +289,16 @@ var
                                     // Allocate a buffer, and copy it in.
                 events^.sysexSize := l;
                 GetMem (events^.data.sysex, l);
-                Move (pointer (Integer (buffer.Memory) + pos)^, events^.data.sysex [0], l);
+                Move(pointer (Integer (buffer.Memory) + pos)^, events^.data.sysex [0], l);
               end;
-              Inc (pos, l);
+              Inc(pos, l);
                                     // Set flag if the message doesn't end with f7
               sysexFlag := PChar (Integer (buffer.Memory) + pos - 1)^ <> char (midiSysexCont);
             end
         end
       end;
-      Inc (eventCount);
-      Inc (events);
+      Inc(eventCount);
+      Inc(events);
     end;
     Result := eventCount
   end;
@@ -306,7 +306,7 @@ var
 begin // LoadFromSMFStream
   SMFStream.Read (hdr, sizeof (hdr));      // Read the track header
   if StrLComp (hdr, 'MTrk', sizeof (hdr)) <> 0 then
-    raise EMidiTrackStream.Create ('Invalid track start ID');
+    raise EMidiTrackStream.Create('Invalid track start ID');
 
   SMFStream.ReadBuffer (trackSize, sizeof (trackSize));
   trackSize := SwapLong (trackSize);
@@ -318,7 +318,7 @@ begin // LoadFromSMFStream
     gotEndOfTrack := False;
     FEventCount := DoPass (False);
                                      // We now know how many events there are.
-                                     // Set the buffer size (commits the memory)
+                                     // Set the buffer size(commits the memory)
     Size := FEventCount * sizeof (TMidiEventData);
     DoPass (True);
 
@@ -327,7 +327,7 @@ begin // LoadFromSMFStream
   finally
     buffer.Free
   end;
-  Seek (EventCount * sizeof (TMidiEventData), soFromBeginning);
+  Seek(EventCount * sizeof (TMidiEventData), soFromBeginning);
   CalcOnOffPointers;
 end;
 
@@ -347,14 +347,14 @@ var
     pos: Integer;
 
   //-----------------------------------------------------------------------
-  //  procedure SetByte (b: byte);
+  //  procedure SetByte(b: byte);
   //
   // Set a byte of SMF data
-    procedure SetByte (b: byte);
+    procedure SetByte(b: byte);
     begin
      if pass2 then
-       pByte (Integer (buffer.Memory) + pos)^ := b;
-     Inc (pos);
+       pByte(Integer (buffer.Memory) + pos)^ := b;
+     Inc(pos);
     end;
 
   //-----------------------------------------------------------------------
@@ -370,29 +370,29 @@ var
       r := n shr 7;
       if r > 0 then
         SetVariNum (r, $80);
-      SetByte (b or mask)
+      SetByte(b or mask)
     end;
 
   //-----------------------------------------------------------------------
-  // procedure SetBlock (data: PChar; size: LongInt);
+  // procedure SetBlock(data: PChar; size: LongInt);
   //
   // Set a sysex or meta block.
-    procedure SetBlock (data: PChar; size: LongInt);
+    procedure SetBlock(data: PChar; size: LongInt);
     begin
       SetVariNum (size, 0);
       if pass2 then
-        Move (data^, Pointer (Integer (buffer.Memory) + pos)^, size);
-      Inc (pos, size);
+        Move(data^, Pointer (Integer (buffer.Memory) + pos)^, size);
+      Inc(pos, size);
     end;
 
   //-----------------------------------------------------------------------
-  // procedure SetMeta (data: PChar; size: LongInt);
+  // procedure SetMeta(data: PChar; size: LongInt);
   //
   // Set a meta block.  Meta event type first then size, then meta event data
-    procedure SetMeta (data: PChar; size: LongInt);
+    procedure SetMeta(data: PChar; size: LongInt);
     begin
-      SetByte (byte (data [0]));
-      SetBlock (data + 1, size - 1)
+      SetByte(byte(data [0]));
+      SetBlock(data + 1, size - 1)
     end;
 
   begin // DoPass
@@ -413,25 +413,25 @@ var
         if c <> status then          // If the status is the same as before,
         begin                        // don't save it.
           status := c;
-          SetByte (status)
+          SetByte(status)
         end;
                                      // Save the first data byte
-        SetByte (p^.data.b2);
+        SetByte(p^.data.b2);
                                      // Save the optional second data byte
         if ChanType [status shr 4] = 2 then
-          SetByte (p^.data.b3);
+          SetByte(p^.data.b3);
       end
       else
       begin                          // Sysex or meta event
-        SetByte (c);                 // Save the status byte
+        SetByte(c);                 // Save the status byte
         if (c = midiMeta) then       // Save the data.
-          SetMeta (p^.data.sysex, p^.sysexSize)
+          SetMeta(p^.data.sysex, p^.sysexSize)
         else
-          SetBlock (p^.data.sysex, p^.sysexSize);
+          SetBlock(p^.data.sysex, p^.sysexSize);
         Status := 0;                 // Clear running status
       end;
 
-      Inc (p)
+      Inc(p)
     end;
     Result := pos;
   end;
@@ -448,12 +448,12 @@ begin
     buffer.Size := trackSize;
 
     DoPass (True);
-    buffer.Seek (0, soFromBeginning);
+    buffer.Seek(0, soFromBeginning);
     SMFStream.CopyFrom (buffer, trackSize)
   finally
     buffer.Free
   end;
-  Seek (EventCount * sizeof (TMidiEventData), soFromBeginning);
+  Seek(EventCount * sizeof (TMidiEventData), soFromBeginning);
 end;
 
 (*---------------------------------------------------------------------*
@@ -471,21 +471,21 @@ function TMidiTrackStream.GetEvent (idx: Integer): PMidiEventData;
 begin
   if (idx >= 0) and (idx < EventCount) then
   begin
-    Result := PMidiEventData (Memory);
-    Inc (Result, idx)
+    Result := PMidiEventData(Memory);
+    Inc(Result, idx)
   end
   else Result := Nil
 end;
 
 (*---------------------------------------------------------------------*
- | procedure TMidiTrackStrean.SetTrackName ();                         |
+ | procedure TMidiTrackStrean.SetTrackName();                         |
  |                                                                     |
  | Sets the track name by modifying the 'meta track name' midi event   |
  |                                                                     |
  | Parameters:                                                         |
  |   value: string  The new track name                                |
  *---------------------------------------------------------------------*)
-procedure TMidiTrackStream.SetTrackName (const value: string);
+procedure TMidiTrackStream.SetTrackName(const value: string);
 var
   Event: TEventData;
 
@@ -496,7 +496,7 @@ var
     event.status := midiMeta;
     GetMem (Event.sysex, len + 1);
     Event.sysex [0] := char (metaTrackName);
-    if len > 0 then Move (value [1], Event.sysex [1], Len);
+    if len > 0 then Move(value [1], Event.sysex [1], Len);
   end;
 
 begin
@@ -534,7 +534,7 @@ begin
     else
     begin
       SetLength (Result, len - 1);
-      Move ((FTrackName^.data.sysex + 1)^, Result [1], len - 1);
+      Move((FTrackName^.data.sysex + 1)^, Result [1], len - 1);
       Result := PChar (Result);
     end
   end
@@ -648,7 +648,7 @@ begin
   begin
     mp := sp + (ep - sp) div 2;
     mev := p;
-    Inc (mev, mp);                   // Get the middle event
+    Inc(mev, mp);                   // Get the middle event
 
     if pos > mev^.pos then
       sp := mp + 1                   // Search the upper half of the buffer
@@ -659,9 +659,9 @@ begin
         break                        // We've found the event
   end;
 
-  while (mev <> Nil) and (mev^.pos < pos) do
+  while(mev <> Nil) and (mev^.pos < pos) do
   begin
-    Inc (mp);                        // Make sure we're on the next event if the
+    Inc(mp);                        // Make sure we're on the next event if the
     if mp < EventCount then
       mev := Event [mp]
     else
@@ -673,11 +673,11 @@ begin
   else
   begin
     mev := p;                        // Now go to the first or last matching event
-    Inc (mev, mp);
+    Inc(mev, mp);
     if mev^.pos = pos then
     case tp of
-      feLast : while (mp + 1 < EventCount) and (Event [mp + 1]^.pos = pos) do Inc (mp);
-      feFirst: while (mp - 1 >= 0) and (Event [mp - 1]^.pos = pos) do Dec (mp)
+      feLast : while(mp + 1 < EventCount) and (Event [mp + 1]^.pos = pos) do Inc(mp);
+      feFirst: while(mp - 1 >= 0) and (Event [mp - 1]^.pos = pos) do Dec(mp)
     end;
 
   end;
@@ -688,7 +688,7 @@ end;
 (*---------------------------------------------------------------------*
  | function TMidiTrackStream.FindEvent (): PMidiEventData;            |
  |                                                                     |
- | Find an event at a specified position (in ticks).  The tyype (tp)   |
+ | Find an event at a specified position (in ticks).  The tyype(tp)   |
  | indicates whether the function should return any event at the       |
  | specified position; the first event at the specified position, or   |
  | the last event at the specified position.  If no event is found at  |
@@ -724,25 +724,25 @@ begin
   begin
     no := FindEventNo (pos, feLast);
     if no = -1 then       // End of track must exist !
-      raise EMidiTrackStream.Create ('System error inserting event');
+      raise EMidiTrackStream.Create('System error inserting event');
   end
   else no := -1;          // No events at all.  Must be inserting end of track.
 
   p := Memory;
   if no <> -1 then
   begin
-    Inc (p, no);
+    Inc(p, no);
 
     p1 := p;
-    Inc (p1);
+    Inc(p1);
 
     if (no < EventCount - 1) and (pos = p^.pos) then
     begin
       p := p1;
-      Inc (p1);
-      Inc (no)
+      Inc(p1);
+      Inc(no)
     end;
-    Move (p^, p1^, sizeof (TMidiEventData) * (EventCount - no));
+    Move(p^, p1^, sizeof (TMidiEventData) * (EventCount - no));
 
     if no < EventCount - 1 then
       RecalcFlag := True;
@@ -751,7 +751,7 @@ begin
   p^.pos := pos;
   p^.sysexSize := sysexSize;
   p^.data := data;
-  Inc (FEventCount);
+  Inc(FEventCount);
   if RecalcFlag and (FUpdateCount = 0) then
     CalcOnOffPointers;
   FChanges := True;
@@ -766,7 +766,7 @@ begin
   GetMem (event.sysex, dataLen + 1);
   event.sysex [0] := char (metaEvent);
   if dataLen > 0 then
-    Move (data [0], event.sysex [1], dataLen);
+    Move(data [0], event.sysex [1], dataLen);
   Result := InsertEvent (pos, event, dataLen + 1);
 end;
 
@@ -784,24 +784,24 @@ begin
     if eventNo < EventCount - 1 then
     begin
       p2 := p1;
-      Inc (p2);
+      Inc(p2);
 
-      Move (p2^, p1^, (EventCount - EventNo - 1) * sizeof (TMidiEventData))
+      Move(p2^, p1^, (EventCount - EventNo - 1) * sizeof (TMidiEventData))
     end;
     FChanges := True;
-    Dec (FEventCount);
+    Dec(FEventCount);
     if FUpdateCount = 0 then
       CalcOnOffPointers;
   end
   else
-    raise Exception.Create ('Invalid event no');
+    raise Exception.Create('Invalid event no');
 end;
 
 (*---------------------------------------------------------------------*
- | procedure TMidiTrackStream.GetEventRange ();                        |
+ | procedure TMidiTrackStream.GetEventRange();                        |
  |                                                                     |
  | Get range of events to be deleted, copied, etc.  The range may      |
- | contain 'stubs'; where note-on is outside the range (shouldn't be   |
+ | contain 'stubs'; where note-on is outside the range(shouldn't be   |
  | operated on), or 'orphans' where the note-off is outside the range, |
  | and should be operated on (including the orphan).                   |
  |                                                                     |
@@ -811,7 +811,7 @@ end;
  |   startEvent                Returns the first event in the range    |
  |   endEvent                  Returns the last event in the range.    |
  *---------------------------------------------------------------------*)
-function TMidiTrackStream.GetEventRange (startPos, endPos: Integer; var startEvent, endEvent: Integer): Boolean;
+function TMidiTrackStream.GetEventRange(startPos, endPos: Integer; var startEvent, endEvent: Integer): Boolean;
 begin
   startEvent := FindEventNo (startPos, feFirst);   // Find first event in range
   endEvent := FindEventNo (endPos, feLast);        // Find last event in range
@@ -827,10 +827,10 @@ begin
                                             // next event if no event is
                                             // found at the position.
       if Event [endEvent].pos > endPos then
-        Dec (endEvent);                     // Adjust for this...
+        Dec(endEvent);                     // Adjust for this...
 
       if endEvent >= EventCount - 1 then    // protect 'end of track' meta event.
-        Dec (endEvent)
+        Dec(endEvent)
     end;
 
     Result := endEvent >= startEvent
@@ -839,7 +839,7 @@ begin
 end;
 
 (*---------------------------------------------------------------------*
- | procedure TMidiTrackStream.CalcRangeDataSize ();                    |
+ | procedure TMidiTrackStream.CalcRangeDataSize();                    |
  |                                                                     |
  | Calc size of requied DDE buffer to save events into.  Includes size |
  | of the events (excluding stubs, but including orphans), and size of |
@@ -851,7 +851,7 @@ end;
  |   startPos                  Range start position.                   |
  |   endPos                    Range end position                      |
  *---------------------------------------------------------------------*)
-function TMidiTrackStream.CalcRangeDataSize (startEvent, endEvent, startPos, endPos: Integer): Integer;
+function TMidiTrackStream.CalcRangeDataSize(startEvent, endEvent, startPos, endPos: Integer): Integer;
 var
   blockSize: Integer;
   p: PMidiEventData;
@@ -867,20 +867,20 @@ begin
   while endEvent >= startEvent do
   begin
     if p^.sysexSize > 0 then   // Add sysex size
-      Inc (blockSize, p^.sysexSize);
+      Inc(blockSize, p^.sysexSize);
 
     sts := p^.data.status and midiStatusMask;
 
                                // Add space for orphan midi-off
     if (sts = midiNoteOn) and (p^.OnOffEvent^.pos > endPos) then
-      Inc (blockSize, sizeof (TMidiEventData));
+      Inc(blockSize, sizeof (TMidiEventData));
 
                                // Remove space for stub midi-on.
     if ((sts = midiNoteOff) or ((sts = midiNoteOn) and (p^.data.b3 = 0))) and (p^.OnOffEvent^.pos < startPos) then
-      Dec (blockSize, sizeof (TMidiEventData));
+      Dec(blockSize, sizeof (TMidiEventData));
 
-    Inc (p);
-    Dec (endEvent)
+    Inc(p);
+    Dec(endEvent)
   end;
 
   Result := blockSize
@@ -897,10 +897,10 @@ end;
  *---------------------------------------------------------------------*)
 function CompareEvents (p1, p2: pointer): Integer;
 begin
-  if PMidiEventData (p1)^.pos > PMidiEventData (p2)^.pos then
+  if PMidiEventData(p1)^.pos > PMidiEventData(p2)^.pos then
     Result := 1
   else
-    if PMidiEventData (p1)^.pos < PMidiEventData (p2)^.pos then
+    if PMidiEventData(p1)^.pos < PMidiEventData(p2)^.pos then
       Result :=-1
     else
       if Integer (p1) > Integer (p2) then
@@ -910,7 +910,7 @@ begin
 end;
 
 (*---------------------------------------------------------------------*
- | procedure TMidiTrackStream.GetRangeData ();                         |
+ | procedure TMidiTrackStream.GetRangeData();                         |
  |                                                                     |
  | Fill DDE buffer from range. Buffer ends up with:                    |
  |    Header                                                           |
@@ -925,7 +925,7 @@ end;
  |   endEvent                  Last event in the range.                |
  |   endPos                    Range end position                      |
  *---------------------------------------------------------------------*)
-procedure TMidiTrackStream.GetRangeData (buffer: PChar; startPos, startEvent, endEvent, endPos: Integer);
+procedure TMidiTrackStream.GetRangeData(buffer: PChar; startPos, startEvent, endEvent, endPos: Integer);
 var
   i, bufferedEvents: Integer;
   pSrc, pDst: PMidiEventData;
@@ -945,7 +945,7 @@ begin
 
                                            // Copy events into buffer
   pSrc := Event [startEvent];
-  pDst := PMidiEventData (buffer + sizeof (TMidiEventClipboardHeader));
+  pDst := PMidiEventData(buffer + sizeof (TMidiEventClipboardHeader));
 
   OrphanList := Nil;
   bufferedEvents := 0;
@@ -965,55 +965,55 @@ begin
 
     if not (((sts = midiNoteOff) or ((sts = midiNoteOn) and (pSrc^.data.b3 = 0))) and (pSrc^.OnOffEvent^.pos < startPos)) then
     begin                                   // Copy event if it's not a 'stub'
-      Move (pSrc^, pDst^, sizeof (TMidiEventData));
-      Inc (pDst);
-      Inc (bufferedEvents)
+      Move(pSrc^, pDst^, sizeof (TMidiEventData));
+      Inc(pDst);
+      Inc(bufferedEvents)
     end
     else                                    // Remove stub from header event count.
-      Dec (PMidiEventClipboardHeader (buf)^.noEvents);
+      Dec(PMidiEventClipboardHeader (buf)^.noEvents);
 
-    Inc (pSrc);
+    Inc(pSrc);
   end;
 
   if Assigned(OrphanList) then             // Copy orphans to buffer
   try
                                             // Add orphans count to header event count
     with PMidiEventClipboardHeader (buf)^ do
-      Inc (noEvents, OrphanList.Count);
+      Inc(noEvents, OrphanList.Count);
 
     if OrphanList.Count > 1 then            // .. because of VCL bug...
       OrphanList.Sort (CompareEvents);
 
     for i := 0 to OrphanList.Count - 1 do   // Copy orphans
     begin
-      Move (OrphanList [i]^, pDst^, sizeof (TMidiEventData));
-      Inc (pDst);
+      Move(OrphanList [i]^, pDst^, sizeof (TMidiEventData));
+      Inc(pDst);
     end
   finally
     OrphanList.Free
   end;
 
 
-  pSrc := PMidiEventData (buffer + sizeof (TMidiEventClipboardHeader));
+  pSrc := PMidiEventData(buffer + sizeof (TMidiEventClipboardHeader));
   buffer := PChar (pDst);                   // sysex data comes after orphans
                                             // Move sysex data for each event into buffer
   for i := 0 to bufferedEvents - 1 do
   begin
     if pSrc^.sysexSize > 0 then
     begin
-      move (pSrc^.data.sysex^,buffer^, pSrc^.sysexSize);
+      move(pSrc^.data.sysex^,buffer^, pSrc^.sysexSize);
       pSrc^.data.sysex := buffer;           // Make the buffered event point to
                                             // the buffered sysex, instead of it's
                                             // original sysex.
-      Inc (buffer, pSrc^.sysexSize)
+      Inc(buffer, pSrc^.sysexSize)
     end;
 
-    Inc (pSrc)
+    Inc(pSrc)
   end
 end;
 
 (*---------------------------------------------------------------------*
- | procedure TMidiTrackStream.DeleteRange ();                          |
+ | procedure TMidiTrackStream.DeleteRange();                          |
  |                                                                     |
  | Delete data between the specified range.  Don't delete stubs, but   |
  | delete orphans.                                                     |
@@ -1022,7 +1022,7 @@ end;
  |   startPos                  Range start position.                   |
  |   endPos                    Range end position                      |
  *---------------------------------------------------------------------*)
-procedure TMidiTrackStream.DeleteRange (startPos, endPos: Integer);
+procedure TMidiTrackStream.DeleteRange(startPos, endPos: Integer);
 var
   n1, n2, i: Integer;
   p, p1, pClearRange: PMidiEventData;
@@ -1031,7 +1031,7 @@ var
   eventNo: Integer;
   OrphanList: TList;
 begin
-  if GetEventRange (startPos, endPos, n1, n2) then
+  if GetEventRange(startPos, endPos, n1, n2) then
   begin
     deleteNoEvents := n2 - n1 + 1;  // Nominal no of events to delete
     p := Event [n1];
@@ -1065,9 +1065,9 @@ begin
       else
       begin
         pClearRange  := p;
-        Inc (pClearRange)
+        Inc(pClearRange)
       end;
-      Inc (p);
+      Inc(p);
     end;
 
     // Delete orphans - they're off the end of the range, and may not be consecutive
@@ -1079,10 +1079,10 @@ begin
       for i := OrphanList.Count - 1 downto 0 do
       begin
         p1 := OrphanList [i];
-        Inc (p1);
+        Inc(p1);
         eventNo := (Integer (p1) - Integer (Event [0])) div sizeof (TMidiEventData);
-        Move (p1^, OrphanList [i]^, (EventCount - eventNo - 1) * sizeof (TMidiEventData));
-        Dec (FEventCount)
+        Move(p1^, OrphanList [i]^, (EventCount - eventNo - 1) * sizeof (TMidiEventData));
+        Dec(FEventCount)
       end
     finally
       OrphanList.Free
@@ -1093,8 +1093,8 @@ begin
     eventNo := (Integer (pClearRange) - Integer (Event [0])) div sizeof (TMidiEventData);
     if p <> pClearRange then
     begin
-      Move (p^, pClearRange^, (EventCount - n2 - 1) * sizeof (TMidiEventData));
-      Dec (FEventCount, n2 - eventNo + 1)
+      Move(p^, pClearRange^, (EventCount - n2 - 1) * sizeof (TMidiEventData));
+      Dec(FEventCount, n2 - eventNo + 1)
     end;
 
     // Delete events before the clear range that are marked for deletion (ie. which aren't stubs)
@@ -1105,15 +1105,15 @@ begin
       if ((p^.data.status and midiStatusMask) <> midiSysex) and ( p^.SysexSize = MaxWord) then
       begin
         p1 := p;
-        Inc (p1);
-        Move (p1^, p^, (EventCount - i) * sizeof (TMidiEventData));
-        Dec (FEventCount);
-        Dec (EventNo)
+        Inc(p1);
+        Move(p1^, p^, (EventCount - i) * sizeof (TMidiEventData));
+        Dec(FEventCount);
+        Dec(EventNo)
       end
       else
       begin
-        Inc (i);
-        Inc (p)
+        Inc(i);
+        Inc(p)
       end
     end;
 
@@ -1130,36 +1130,36 @@ var
   data: THandle;
   ptr: PChar;
 begin
-  if GetEventRange (startPos, endPos, startEvent, endEvent) then
+  if GetEventRange(startPos, endPos, startEvent, endEvent) then
   begin
-    blockSize := CalcRangeDataSize (startEvent, endEvent, startPos, endPos);
+    blockSize := CalcRangeDataSize(startEvent, endEvent, startPos, endPos);
                             // Allocate DDE buffer
     data := GlobalAlloc (GMEM_MOVEABLE or GMEM_DDESHARE, blockSize);
-    ptr := GlobalLock (data);
+    ptr := GlobalLock(data);
     if ptr <> Nil then
     try
-      GetRangeData (ptr, startPos, startEvent, endEvent, endPos);
-      GlobalUnlock (data);
+      GetRangeData(ptr, startPos, startEvent, endEvent, endPos);
+      GlobalUnlock(data);
     except
-      GlobalUnlock (data);
-      GlobalFree (data);
+      GlobalUnlock(data);
+      GlobalFree(data);
       raise
     end;
 
-    Clipboard.SetAsHandle (TrackClipboardFormat, data);
+    Clipboard.SetAsHandle(TrackClipboardFormat, data);
   end
 end;
 
 procedure TMidiTrackStream.DeleteToClipboard (startPos, endPos: Integer);
 begin
   CopyToClipboard (startPos, endPos);
-  DeleteRange (startPos, endPos)
+  DeleteRange(startPos, endPos)
 end;
 
 procedure TMidiTrackStream.CutToClipboard (startPos, endPos: Integer);
 begin
   CopyToClipboard (startPos, endPos);
-  DeleteRange (startPos, endPos);
+  DeleteRange(startPos, endPos);
   // ** TODO Shrink events
 end;
 
@@ -1169,7 +1169,7 @@ var
 begin
   Clipboard.Open;
   try
-    Handle := Clipboard.GetAsHandle (TrackClipboardFormat);
+    Handle := Clipboard.GetAsHandle(TrackClipboardFormat);
     if Handle <> 0 then
     begin
       MessageBeep ($ffff);
@@ -1203,15 +1203,15 @@ begin
       ep := sp;
       while i < count do
       begin
-        Inc (ep);
-        Dec (count);
+        Inc(ep);
+        Dec(count);
         if ep^.data.status = midiMeta then break
       end;
                                     // Found the next meta event.
-      if i < count then Move (ep^, sp^, (count - i) * sizeof (TMidiEventData));
+      if i < count then Move(ep^, sp^, (count - i) * sizeof (TMidiEventData));
     end;
-    Inc (sp);
-    Inc (i)
+    Inc(sp);
+    Inc(i)
   end;
   FEventCount := count
 end;
@@ -1226,7 +1226,7 @@ begin
   count := EventCount;
   sp := Memory;
   i := 0;
-  ZeroMemory (@noteOnCount, sizeof (noteOnCount));
+  ZeroMemory(@noteOnCount, sizeof (noteOnCount));
   while i < count do
   begin
     t := 0;
@@ -1246,7 +1246,7 @@ begin
           n := NoteOnCount [b];
           if n < 5 then
           begin
-            noteOns [n, b] := sp;
+            noteOns[n, b] := sp;
             NoteOnCount [b] := n + 1
           end
         end;
@@ -1257,23 +1257,23 @@ begin
           n := NoteOnCount [b];
           if n > 0 then
           begin
-            Dec (n);
-            sp^.OnOffEvent := NoteOns [n, b];
-            NoteOns [n, b]^.OnOffEvent := sp;
+            Dec(n);
+            sp^.OnOffEvent := NoteOns[n, b];
+            NoteOns[n, b]^.OnOffEvent := sp;
             NoteOnCount [b] := n
           end
         end
     end;
 
-    Inc (i);
-    Inc (sp);
+    Inc(i);
+    Inc(sp);
 
   end;
 
   try
     for i := Low (TNote) to High (TNote) do
       if NoteOnCount [i] <> 0 then
-//        raise Exception.Create ('Note ons don''t match note offs');
+//        raise Exception.Create('Note ons don''t match note offs');
   except
     raise
   end
@@ -1289,14 +1289,14 @@ end;
 
 procedure TMidiTrackStream.BeginUpdate;
 begin
-  Inc (FUpdateCount)
+  Inc(FUpdateCount)
 end;
 
 procedure TMidiTrackStream.EndUpdate;
 begin
   if FUpdateCount > 0 then
   begin
-    Dec (FUpdateCount);
+    Dec(FUpdateCount);
     if FUpdateCount = 0 then
       CalcOnOffPointers
   end
@@ -1305,7 +1305,7 @@ end;
 procedure TMidiTrackStream.CancelUpdate;
 begin
   if FUpdateCount > 0 then
-    Dec (FUpdateCount);
+    Dec(FUpdateCount);
 end;
 
 initialization

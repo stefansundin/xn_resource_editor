@@ -5,20 +5,20 @@ interface
 uses Windows, Classes, SysUtils, Contnrs, unitResourceDetails, Menus;
 
 const
-  RT_TOOLBAR = MakeIntResource (241);
+  RT_TOOLBAR = MakeIntResource(241);
 
 type
 TToolbarResourceDetails = class (TResourceDetails)
 //  private
 //    fHelpID : Integer;                    // Extended menu's help ID
   protected
-    constructor Create (AParent : TResourceModule; ALanguage : Integer; const AName, AType : WideString; ASize : Integer; AData : pointer); override;
+    constructor Create(AParent : TResourceModule; ALanguage : Integer; const AName, AType : WideString; ASize : Integer; AData : pointer); override;
 
   public
     destructor Destroy; override;
 
     class function GetBaseType : WideString; override;
-    procedure ChangeData (newData : TMemoryStream); override;
+    procedure ChangeData(newData : TMemoryStream); override;
 
     procedure InitNew; override;
 end;
@@ -46,7 +46,7 @@ constructor TToolbarResourceDetails.Create(AParent: TResourceModule;
   ALanguage: Integer; const AName, AType: WideString; ASize: Integer;
   AData: pointer);
 begin
-  inherited Create (AParent, ALanguage, AName, AType, ASize, AData);
+  inherited Create(AParent, ALanguage, AName, AType, ASize, AData);
 end;
 
 destructor TToolbarResourceDetails.Destroy;

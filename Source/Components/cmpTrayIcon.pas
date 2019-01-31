@@ -38,8 +38,8 @@ uses
 type
   TTrayIcon = class;
 
-  TTaskbarCreatedEvent = procedure (sender: TObject; var RedoIcon: Boolean) of object;
-  TXPFastUserSwitchEvent = procedure (sender: TObject; StatusCode, SessionID: DWORD) of object;
+  TTaskbarCreatedEvent = procedure(sender: TObject; var RedoIcon: Boolean) of object;
+  TXPFastUserSwitchEvent = procedure(sender: TObject; StatusCode, SessionID: DWORD) of object;
 
   TTrayIcon = class(TComponent)
   private
@@ -69,10 +69,10 @@ type
     procedure SetEnabled (Value: Boolean);
     procedure SetHint (Value: string);
   public
-    constructor Create (AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure RedoIcon;
-    procedure SetIconHandle (Handle: HICON);
+    procedure SetIconHandle(Handle: HICON);
   published
     property Icon: TIcon read FIcon write SetIcon;
     property Enabled: Boolean read FEnabled write SetEnabled;
@@ -98,19 +98,19 @@ uses
 const WM_ICONMESSAGE = WM_USER + $200;
 var WM_TASKBARCREATED: DWORD;
 
-constructor TTrayIcon.Create (AOwner: TComponent);
+constructor TTrayIcon.Create(AOwner: TComponent);
 begin
-  inherited Create (AOwner);
+  inherited Create(AOwner);
 
   FIcon := TIcon.Create;
   FIcon.Assign (Application.Icon);
 
-  WM_TASKBARCREATED := RegisterWindowMessage ('TaskbarCreated');
+  WM_TASKBARCREATED := RegisterWindowMessage('TaskbarCreated');
 
   if not (csDesigning in ComponentState) then
   begin
 
-    FObjectInstance := Classes.MakeObjectInstance (MainWProc);
+    FObjectInstance := Classes.MakeObjectInstance(MainWProc);
     FOldMainWProc := Pointer (SetWindowLong (Application.Handle, GWL_WNDPROC, Integer (FObjectInstance)));
 
     FWindowHandle := Classes.AllocateHWND (WProc);
@@ -137,7 +137,7 @@ begin
   if Assigned (FObjectInstance) then
   begin
     SetWindowLong (Application.Handle, GWL_WNDPROC, Integer (FOldMainWProc));
-    Classes.FreeObjectInstance (FObjectInstance)
+    Classes.FreeObjectInstance(FObjectInstance)
   end;
 
   if FWindowHandle <> 0 then
@@ -156,35 +156,35 @@ begin
         WM_RBUTTONDOWN :
           begin
             if Assigned (FOnRightBtnClick) then
-            	OnRightBtnClick (self);
+            	OnRightBtnClick(self);
 
             if Assigned (FPopupMenu) then
             begin
               GetCursorPos (pt);
-              if AutoShow then FPopupMenu.Items [0].default := True;
+              if AutoShow then FPopupMenu.Items[0].default := True;
               SetForegroundWindow (PopupList.Window);
               FPopupMenu.Popup (pt.x, pt.y);
-              PostMessage (PopupList.Window, WM_NULL, 0, 0);
+              PostMessage(PopupList.Window, WM_NULL, 0, 0);
             end
           end;
 
         WM_LBUTTONDOWN :
           if Assigned (FOnLeftBtnClick) then
-            OnLeftBtnClick (self);
+            OnLeftBtnClick(self);
 
         WM_LBUTTONDBLCLK :
         begin
           if Assigned (FOnLeftBtnDblClick) then
-            OnLeftBtnDblClick (self);
+            OnLeftBtnDblClick(self);
 
           if Assigned (FPopupMenu) and AutoShow then with FPopupMenu do
-            if Assigned (items [0]) then
-              items [0].click
+            if Assigned (items[0]) then
+              items[0].click
         end;
 
         WM_MOUSEMOVE :
           if Assigned (FOnMouseMove) then
-            OnMouseMove (self);
+            OnMouseMove(self);
       end
     else
       if msg = WM_QUERYENDSESSION then
@@ -202,7 +202,7 @@ begin
     iconData.uID := Tag;
     iconData.uFlags :=NIF_ICON or NIF_TIP or NIF_MESSAGE;
     iconData.uCallbackMessage := WM_ICONMESSAGE;
-    StrPCopy (iconData.szTip, FHint);
+    StrPCopy(iconData.szTip, FHint);
 
     if Assigned (FIcon) and FEnabled then
     begin

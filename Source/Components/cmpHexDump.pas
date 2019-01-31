@@ -647,10 +647,10 @@ begin
   if Value <> FCurrentLinePos then
   begin
     v := Value;
-    while (V >= FBytesPerLine) and (CurrentLine < FLineCount - 1) do
+    while(V >= FBytesPerLine) and (CurrentLine < FLineCount - 1) do
     begin
       CurrentLine := CurrentLine + 1;
-      Dec (V, FBytesPerLine)
+      Dec(V, FBytesPerLine)
     end;
 
     if V >= FBytesPerLine then
@@ -659,10 +659,10 @@ begin
       FLowNibble := True
     end;
 
-    while (V < 0) and (CurrentLine > 0) do
+    while(V < 0) and (CurrentLine > 0) do
     begin
       CurrentLine := CurrentLine - 1;
-      Inc (V, FBytesPerLine)
+      Inc(V, FBytesPerLine)
     end;
 
     if V < 0 then
@@ -689,7 +689,7 @@ begin
     begin
       x := (FItemWidth) * 3 * CurrentLinePos + FAddressWidth;
       if FLowNibble then
-        Inc (x, FItemWidth - 1)
+        Inc(x, FItemWidth - 1)
     end;
     Windows.SetCaretPos (x, y)
   end
@@ -733,7 +733,7 @@ begin
     else
       if ch in ['0'..'9', 'A'..'F', 'a'..'f'] then
       begin
-        data := Byte (PChar (Address) [Offset]);
+        data := Byte(PChar (Address) [Offset]);
         changes := True;
         b := StrToInt ('$' + ch);
         if LowNibble then

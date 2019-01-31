@@ -18,7 +18,7 @@ type
   protected
     procedure CreateWnd; override;
   public
-    constructor Create (AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent); override;
   published
     property UseTheme: Boolean read FUseTheme write SetUseTheme default True;
   end;
@@ -119,7 +119,7 @@ begin
     // Repaint only the part in the original clipping region and not yet drawn parts.
     IntersectClipRect(DC, RC.Left, RC.Top, RC.Right, RC.Bottom);
 
-    // Determine inner rectangle to exclude (RC corresponds then to the client area).
+    // Determine inner rectangle to exclude(RC corresponds then to the client area).
     InflateRect(RC, -BorderWidth, -BorderWidth);
 
     // Remove the inner rectangle.

@@ -11,9 +11,9 @@ type
     FReserved: Integer;
     FChunkSize: Integer;
   protected
-    procedure SetSize (NewSize: Integer); override;
+    procedure SetSize(NewSize: Integer); override;
   public
-    constructor Create (AReserved, AInitialSize: Integer);
+    constructor Create(AReserved, AInitialSize: Integer);
     destructor Destroy; override;
     function Write(const Buffer; Count: Longint): Longint; override;
     property Reserved: Integer read FReserved;
@@ -26,7 +26,7 @@ implementation
 
 { TVirtualMemoryStream }
 
-constructor TVirtualMemoryStream.Create (AReserved, AInitialSize: Integer);
+constructor TVirtualMemoryStream.Create(AReserved, AInitialSize: Integer);
 begin
   FReserved := AReserved;
   FChunkSize := 1024;
@@ -37,11 +37,11 @@ end;
 
 destructor TVirtualMemoryStream.Destroy;
 begin
-  VirtualFree (Memory, 0, MEM_RELEASE);
+  VirtualFree(Memory, 0, MEM_RELEASE);
   inherited;
 end;
 
-procedure TVirtualMemoryStream.SetSize (NewSize: Integer);
+procedure TVirtualMemoryStream.SetSize(NewSize: Integer);
 var
   oldSize: Integer;
   commitSize: Integer;
@@ -62,21 +62,21 @@ begin
         VirtualAlloc (PChar (memory) + oldSize, commitSize, MEM_COMMIT, PAGE_READWRITE)
       end
       else                           // Shrink the buffer (lop off the end)
-        VirtualFree (PChar (Memory) + NewSize, oldSize - NewSize, MEM_DECOMMIT);
+        VirtualFree(PChar (Memory) + NewSize, oldSize - NewSize, MEM_DECOMMIT);
       SetPointer (Memory, NewSize);
     end
-    else raise EVirtualMemory.Create ('Size exceeds capacity');
+    else raise EVirtualMemory.Create('Size exceeds capacity');
 end;
 
 function TVirtualMemoryStream.Write(const Buffer; Count: Longint): Longint;
 var
   Pos: Integer;
 begin
-  Pos := Seek (0, soFromCurrent);
+  Pos := Seek(0, soFromCurrent);
   if Pos + count > Size then
     Size := Pos + count;
-  Move (buffer, PChar (Integer (memory) + Pos)^, count);
-  Seek (count, soFromCurrent);
+  Move(buffer, PChar (Integer (memory) + Pos)^, count);
+  Seek(count, soFromCurrent);
   Result := Count
 end;
 

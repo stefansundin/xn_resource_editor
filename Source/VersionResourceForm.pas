@@ -143,25 +143,25 @@ begin
   ok := False;
   if p > 0 then
   begin
-    hh := StrToInt (Copy (s, 1, p - 1));
-    s := Copy (s, p + 1, MaxInt);
+    hh := StrToInt (Copy(s, 1, p - 1));
+    s := Copy(s, p + 1, MaxInt);
     p := Pos ('.', s);
     if p > 0 then
     begin
-      h := StrToInt (Copy (s, 1, p - 1));
-      s := Copy (s, p + 1, MaxInt);
+      h := StrToInt (Copy(s, 1, p - 1));
+      s := Copy(s, p + 1, MaxInt);
       p := Pos ('.', s);
       if p > 0 then
       begin
-        l := StrToInt (Copy (s, 1, p - 1));
-        ll := StrToInt (Copy (s, p + 1, MaxInt));
+        l := StrToInt (Copy(s, 1, p - 1));
+        ll := StrToInt (Copy(s, p + 1, MaxInt));
         ok := True;
       end
     end
   end;
 
   if not ok then
-    raise exception.Create (rstVersionFormatError);
+    raise exception.Create(rstVersionFormatError);
 
   result.HighPart := 65536 * hh + h;
   result.LowPart := 65536 * l + ll;
@@ -197,16 +197,16 @@ begin
     with FDetails do
     begin
       flags := FileFlags;
-      if PropertyListBox1.Properties [prDebug].PropertyValue then flags := flags + [ffDebug] else flags := flags - [ffDebug];
-      if PropertyListBox1.Properties [prInferred].PropertyValue then flags := flags + [ffInfoInferred] else flags := flags - [ffInfoInferred];
-      if PropertyListBox1.Properties [prPatched].PropertyValue then flags := flags + [ffPatched] else flags := flags - [ffPatched];
-      if PropertyListBox1.Properties [prPreRelease].PropertyValue then flags := flags + [ffPreRelease] else flags := flags - [ffPreRelease];
-      if PropertyListBox1.Properties [prPrivateBuild].PropertyValue then flags := flags + [ffPrivateBuild] else flags := flags - [ffPrivateBuild];
-      if PropertyListBox1.Properties [prSpecialBuild].PropertyValue then flags := flags + [ffSpecialBuild] else flags := flags - [ffSpecialBuild];
+      if PropertyListBox1.Properties[prDebug].PropertyValue then flags := flags + [ffDebug] else flags := flags - [ffDebug];
+      if PropertyListBox1.Properties[prInferred].PropertyValue then flags := flags + [ffInfoInferred] else flags := flags - [ffInfoInferred];
+      if PropertyListBox1.Properties[prPatched].PropertyValue then flags := flags + [ffPatched] else flags := flags - [ffPatched];
+      if PropertyListBox1.Properties[prPreRelease].PropertyValue then flags := flags + [ffPreRelease] else flags := flags - [ffPreRelease];
+      if PropertyListBox1.Properties[prPrivateBuild].PropertyValue then flags := flags + [ffPrivateBuild] else flags := flags - [ffPrivateBuild];
+      if PropertyListBox1.Properties[prSpecialBuild].PropertyValue then flags := flags + [ffSpecialBuild] else flags := flags - [ffSpecialBuild];
 
       if flags <> FileFlags then        // Has a flag changed ?
       begin
-        AddUndoEntry (rstChangeFlags);
+        AddUndoEntry(rstChangeFlags);
         FileFlags := flags
       end;
 
@@ -216,15 +216,15 @@ begin
       // Has the product version changed ??
       if v.QuadPart <> ProductVersion.QuadPart then
       begin
-        AddUndoEntry (rstChangeProductVersion);
+        AddUndoEntry(rstChangeProductVersion);
         ProductVersion := v
       end;
 
-      v := StringToVersion (PropertyListBox1.Properties [prFileVersion].PropertyValue);
+      v := StringToVersion (PropertyListBox1.Properties[prFileVersion].PropertyValue);
                                         // Has the file version changed ??
       if v.QuadPart <> FileVersion.QuadPart then
       begin
-        AddUndoentry (rstChangeFileVersion);
+        AddUndoentry(rstChangeFileVersion);
         FileVersion := v
       end
     end
@@ -255,15 +255,15 @@ begin
 
     // Initialize the form
 
-    PropertyListBox1.Properties [prFileVersion].PropertyValue := VersionToString (fVersion);
-    PropertyListBox1.Properties [prProductVersion].PropertyValue := VersionToString (pVersion);
+    PropertyListBox1.Properties[prFileVersion].PropertyValue := VersionToString (fVersion);
+    PropertyListBox1.Properties[prProductVersion].PropertyValue := VersionToString (pVersion);
 
-    PropertyListBox1.Properties [prDebug].PropertyValue := ffDebug in flags;
-    PropertyListBox1.Properties [prInferred].PropertyValue := ffInfoInferred in flags;
-    PropertyListBox1.Properties [prPatched].PropertyValue := ffPatched in flags;
-    PropertyListBox1.Properties [prPreRelease].PropertyValue := ffPreRelease in flags;
-    PropertyListBox1.Properties [prPrivateBuild].PropertyValue := ffPrivateBuild in flags;
-    PropertyListBox1.Properties [prSpecialBuild].PropertyValue := ffSpecialBuild in flags;
+    PropertyListBox1.Properties[prDebug].PropertyValue := ffDebug in flags;
+    PropertyListBox1.Properties[prInferred].PropertyValue := ffInfoInferred in flags;
+    PropertyListBox1.Properties[prPatched].PropertyValue := ffPatched in flags;
+    PropertyListBox1.Properties[prPreRelease].PropertyValue := ffPreRelease in flags;
+    PropertyListBox1.Properties[prPrivateBuild].PropertyValue := ffPrivateBuild in flags;
+    PropertyListBox1.Properties[prSpecialBuild].PropertyValue := ffSpecialBuild in flags;
 
     lvVersionStrings.Items.BeginUpdate;
     with lvVersionStrings.Items do
@@ -297,11 +297,11 @@ var
 begin
   if Assigned(lvVersionStrings.Selected) then
   begin
-    AddUndoEntry (rstDeleteString);
+    AddUndoEntry(rstDeleteString);
     n := lvVersionStrings.Selected.Index;
 
     // Delete the string from the resouce
-    FDetails.DeleteKey (n);
+    FDetails.DeleteKey(n);
 
     // Delete the string from the list view
     lvVersionStrings.Selected.Delete;
@@ -355,15 +355,15 @@ begin
   if mmoMessage.CanUndo or FAdding then
   begin
     if FAdding then
-      AddUndoEntry (rstAddString)
+      AddUndoEntry(rstAddString)
     else
-      AddUndoEntry (rstChangeString);
+      AddUndoEntry(rstChangeString);
 
                                 // Update the resource
-    FDetails.SetKeyValue (FSelectedItem.Caption, mmoMessage.Text);
+    FDetails.SetKeyValue(FSelectedItem.Caption, mmoMessage.Text);
 
                                 // Update the list view
-    FSelectedItem.SubItems [0] := StringToCString (mmoMessage.Text)
+    FSelectedItem.SubItems[0] := StringToCString (mmoMessage.Text)
   end;
   FAdding := False;
 end;
@@ -378,8 +378,8 @@ procedure TfmVersionResource.lvVersionStringsEdited(Sender: TObject;
 begin
   if s <> Item.Caption then
   begin
-    AddUndoEntry (rstChangeStringName);
-    FDetails.ChangeKey (Item.Caption, s)
+    AddUndoEntry(rstChangeStringName);
+    FDetails.ChangeKey(Item.Caption, s)
   end
 end;
 
@@ -417,7 +417,7 @@ begin
     p := Mouse.CursorPos;
     MapWindowPoints (HWND_DESKTOP, lvVersionStrings.Handle, p, 1);
 
-    if p.x > lvVersionStrings.Columns [0].Width then
+    if p.x > lvVersionStrings.Columns[0].Width then
       actStringModifyString.Execute
     else
       actStringModifyStringName.Execute
@@ -478,7 +478,7 @@ begin
     if lvVersionStrings.FindCaption (0, Result, False, True, False) = nil then
       break;
 
-    Inc (m)
+    Inc(m)
   until m = 0
 end;
 

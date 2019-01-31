@@ -43,7 +43,7 @@ type
     procedure actMenuAddChildItemExecute(Sender: TObject);
   private
     fDetails : TMenuResourceDetails;
-    procedure SaveResource (const undoDetails : string);
+    procedure SaveResource(const undoDetails : string);
   protected
     procedure SetObject(const Value: TObject); override;
     function GetMenuItem : TMenuItem; override;
@@ -93,7 +93,7 @@ begin
   inherited;
   fDetails := Obj as TMenuResourceDetails;
 
-  item := TMenuItem.Create (nil);
+  item := TMenuItem.Create(nil);
   try
     fDetails.GetItems (item);
     MenuDesigner1.SetItems (item, False)
@@ -117,16 +117,16 @@ begin
 
   item := TDesignerMenuItem (MenuDesigner1.SelectedItem);
 
-  with PropertyListBox1.FindProperty (rstCaption) do
+  with PropertyListBox1.FindProperty(rstCaption) do
   begin
     Tag := taCaption;
-    PropertyValue := ExtractCaption (utf8Decode (item.Caption));
+    PropertyValue := ExtractCaption (utf8Decode(item.Caption));
   end;
 
-  with PropertyListBox1.FindProperty (rstShortcut) do
+  with PropertyListBox1.FindProperty(rstShortcut) do
   begin
     Tag := taShortcut;
-    s := ExtractShortcut (Utf8Decode (item.Caption));
+    s := ExtractShortcut (Utf8Decode(item.Caption));
 
     if s = '' then
       s := rstNone;
@@ -134,19 +134,19 @@ begin
     PropertyValue := s
   end;
 
-  with PropertyListBox1.FindProperty (rstID) do
+  with PropertyListBox1.FindProperty(rstID) do
   begin
     Tag := taID;
     PropertyValue := IntToStr (item.ID);
   end;
 
-  with PropertyListBox1,FindProperty (rstEnabled) do
+  with PropertyListBox1,FindProperty(rstEnabled) do
   begin
     Tag := taEnabled;
     PropertyValue := item.Enabled
   end;
 
-  with PropertyListBox1,FindProperty (rstChecked) do
+  with PropertyListBox1,FindProperty(rstChecked) do
   begin
     Tag := taChecked;
     PropertyValue := item.Checked
@@ -157,7 +157,7 @@ procedure TfmMenuResource.FormShow(Sender: TObject);
 var
   prop : TPropertyListProperty;
 
-  procedure AddShortcutRange (lo, hi, flags : Word);
+  procedure AddShortcutRange(lo, hi, flags : Word);
   var
     w : Word;
     s : string;
@@ -172,28 +172,28 @@ var
 
 
 begin
-  prop := PropertyListBox1.FindProperty (rstShortcut);
+  prop := PropertyListBox1.FindProperty(rstShortcut);
 
   prop.EnumValues.Add (rstNone);
 
-  AddShortcutRange (Word ('A'), Word ('Z'), scCtrl);
-  AddShortcutRange (Word ('A'), Word ('Z'), scCtrl + scAlt);
+  AddShortcutRange(Word ('A'), Word ('Z'), scCtrl);
+  AddShortcutRange(Word ('A'), Word ('Z'), scCtrl + scAlt);
 
-  AddShortcutRange (VK_F1, VK_F12, 0);
-  AddShortcutRange (VK_F1, VK_F12, scCtrl);
-  AddShortcutRange (VK_F1, VK_F12, scShift);
-  AddShortcutRange (VK_F1, VK_F12, scCtrl + scCtrl);
+  AddShortcutRange(VK_F1, VK_F12, 0);
+  AddShortcutRange(VK_F1, VK_F12, scCtrl);
+  AddShortcutRange(VK_F1, VK_F12, scShift);
+  AddShortcutRange(VK_F1, VK_F12, scCtrl + scCtrl);
 
-  AddShortcutRange (VK_INSERT, VK_INSERT, 0);
-  AddShortcutRange (VK_INSERT, VK_INSERT, scCtrl);
-  AddShortcutRange (VK_INSERT, VK_INSERT, scShift);
+  AddShortcutRange(VK_INSERT, VK_INSERT, 0);
+  AddShortcutRange(VK_INSERT, VK_INSERT, scCtrl);
+  AddShortcutRange(VK_INSERT, VK_INSERT, scShift);
 
-  AddShortcutRange (VK_DELETE, VK_DELETE, 0);
-  AddShortcutRange (VK_DELETE, VK_DELETE, scCtrl);
-  AddShortcutRange (VK_DELETE, VK_DELETE, scShift);
+  AddShortcutRange(VK_DELETE, VK_DELETE, 0);
+  AddShortcutRange(VK_DELETE, VK_DELETE, scCtrl);
+  AddShortcutRange(VK_DELETE, VK_DELETE, scShift);
 
-  AddShortcutRange (VK_BACK, VK_BACK, scAlt);
-  AddShortcutRange (VK_BACK, VK_BACK, scAlt + scShift);
+  AddShortcutRange(VK_BACK, VK_BACK, scAlt);
+  AddShortcutRange(VK_BACK, VK_BACK, scAlt + scShift);
 end;
 
 function TfmMenuResource.GetMenuItem: TMenuItem;
@@ -206,7 +206,7 @@ begin
   if Assigned(menuDesigner1.SelectedItem) then
   begin
     menuDesigner1.DeleteItem (menuDesigner1.SelectedItem);
-    SaveResource (rstDeleteItem)
+    SaveResource(rstDeleteItem)
   end
 end;
 
@@ -222,7 +222,7 @@ procedure TfmMenuResource.SaveResource(const undoDetails: string);
 var
   sel : TMenuItem;
 begin
-  AddUndoEntry (undoDetails);
+  AddUndoEntry(undoDetails);
   sel := MenuDesigner1.SelectedItem;
   try
     MenuDesigner1.SelectedItem := nil;
@@ -243,21 +243,21 @@ var
 
 begin
   s := '';
-  prop := PropertyListBox1.Properties [PropertyListBox1.SelectedPropertyNo];
+  prop := PropertyListBox1.Properties[PropertyListBox1.SelectedPropertyNo];
   case PropertyListBox1.SelectedPropertyNo of
     taCaption :
       begin
-        MenuDesigner1.SelectedItem.Caption := Utf8Encode (MergeCaption (prop.PropertyValue, ExtractShortcut (Utf8Decode (MenuDesigner1.SelectedItem.Caption))));
+        MenuDesigner1.SelectedItem.Caption := Utf8Encode(MergeCaption (prop.PropertyValue, ExtractShortcut (Utf8Decode(MenuDesigner1.SelectedItem.Caption))));
         s := rstChangeItemCaption
       end;
 
     taShortcut :
       begin
         idx := prop.PropertyValue;
-        s := prop.EnumValues [idx];
+        s := prop.EnumValues[idx];
         if s = rstNone then
           s := '';
-        MenuDesigner1.SelectedItem.Caption := Utf8Encode (MergeCaption (ExtractCaption (Utf8Decode (MenuDesigner1.SelectedItem.Caption)), s));
+        MenuDesigner1.SelectedItem.Caption := Utf8Encode(MergeCaption (ExtractCaption (Utf8Decode(MenuDesigner1.SelectedItem.Caption)), s));
         s := rstChangeItemShortcut
       end;
 
@@ -282,25 +282,25 @@ begin
   end;
 
   if s <> '' then
-    SaveResource (s)
+    SaveResource(s)
 end;
 
 procedure TfmMenuResource.actMenuInsertItemExecute(Sender: TObject);
 begin
   menuDesigner1.InsertItem (menuDesigner1.SelectedItem);
-  SaveResource (rstInsertItem)
+  SaveResource(rstInsertItem)
 end;
 
 procedure TfmMenuResource.actMenuAppendItemExecute(Sender: TObject);
 begin
   menuDesigner1.AppendItem (menuDesigner1.SelectedItem);
-  SaveResource (rstInsertItem)
+  SaveResource(rstInsertItem)
 end;
 
 procedure TfmMenuResource.actMenuAddChildItemExecute(Sender: TObject);
 begin
   menuDesigner1.AddChildItem (menuDesigner1.SelectedItem);
-  SaveResource (rstInsertItem)
+  SaveResource(rstInsertItem)
 end;
 
 end.

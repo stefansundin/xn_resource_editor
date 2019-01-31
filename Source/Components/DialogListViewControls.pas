@@ -72,7 +72,7 @@ end;
 
 class function TListviewControlInfo.GetDescription: string;
 begin
-  result := rstListView
+  Result := rstListView
 end;
 
 function TListviewControlInfo.GetPropertyCount(kind: TPropertyKind): Integer;
@@ -87,7 +87,7 @@ begin
     Result := inherited GetPropertyEnumCount (kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := 0;
     case kind of
       pkStyle :
@@ -104,10 +104,10 @@ function TListviewControlInfo.GetPropertyEnumName(kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumName (kind, idx, enum)
+    Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
     case kind of
       pkStyle :
@@ -137,10 +137,10 @@ function TListviewControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyName (kind, idx)
+    Result := inherited GetPropertyName(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
      case kind of
 //      pkGeneral: Result := StaticControlPropertyGeneralName [idx];
@@ -154,10 +154,10 @@ function TListviewControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyType (kind, idx)
+    Result := inherited GetPropertyType(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     Result := ptInteger;
     case kind of
 //      pkGeneral: Result := StaticControlPropertyGeneralType [idx];
@@ -171,10 +171,10 @@ function TListviewControlInfo.GetPropertyValue(kind: TPropertyKind;
   idx: Integer): Variant;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyValue (kind, idx)
+    Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
 
     case kind of
       pkStyle :
@@ -197,7 +197,7 @@ begin
                 else
                   Result := 0
               end;
-          3: result := HasStyle [LVS_SHAREIMAGELISTS];
+          3: Result := HasStyle [LVS_SHAREIMAGELISTS];
         end
     end
   end
@@ -211,18 +211,18 @@ var
   ico: TIcon;
 begin
   FImages := TImageList.Create(nil);
-  FSmallImages := TImageList.Create (nil);
+  FSmallImages := TImageList.Create(nil);
 
   ico := TIcon.Create;
   try
     FImages.Width := 32;
     FImages.Height := 32;
-    ico.Handle := LoadImage (0, PChar (OIC_WINLOGO), IMAGE_ICON, FImages.Width, FImages.Height, LR_SHARED);
+    ico.Handle := LoadImage(0, PChar (OIC_WINLOGO), IMAGE_ICON, FImages.Width, FImages.Height, LR_SHARED);
     FImages.AddIcon(ico);
 
     FSmallImages.Width := 16;
     FSmallImages.Height := 16;
-    ico.Handle := LoadImage (0, PChar (OIC_WINLOGO), IMAGE_ICON, FSmallImages.Width, FSmallImages.Height, LR_SHARED);
+    ico.Handle := LoadImage(0, PChar (OIC_WINLOGO), IMAGE_ICON, FSmallImages.Width, FSmallImages.Height, LR_SHARED);
     FSmallImages.AddIcon(ico);
 
   finally
@@ -259,10 +259,10 @@ var
   recreateRequired: Boolean;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    inherited SetPropertyValue (kind, idx, Value)
+    inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     recreateRequired := False;
 
     case kind of
@@ -270,26 +270,26 @@ begin
         case idx of
           0: begin
                 case Value of
-                  0: SetMaskedStyle (0, LVS_TYPEMASK);
-                  1: SetMaskedStyle (LVS_SMALLICON, LVS_TYPEMASK);
-                  2: SetMaskedStyle (LVS_REPORT, LVS_TYPEMASK);
-                  3: SetMaskedStyle (LVS_LIST, LVS_TYPEMASK)
+                  0: SetMaskedStyle(0, LVS_TYPEMASK);
+                  1: SetMaskedStyle(LVS_SMALLICON, LVS_TYPEMASK);
+                  2: SetMaskedStyle(LVS_REPORT, LVS_TYPEMASK);
+                  3: SetMaskedStyle(LVS_LIST, LVS_TYPEMASK)
                 end;
                 recreateRequired := True;
               end;
           1: begin
                 case Value of
-                  0: SetMaskedStyle (LVS_ALIGNTOP, LVS_ALIGNMASK);
-                  1: SetMaskedStyle (LVS_ALIGNLEFT, LVS_ALIGNMASK);
+                  0: SetMaskedStyle(LVS_ALIGNTOP, LVS_ALIGNMASK);
+                  1: SetMaskedStyle(LVS_ALIGNLEFT, LVS_ALIGNMASK);
                 end;
                 recreateRequired := True;
               end;
 
           2: begin
                 case Value of
-                  0: SetMaskedStyle (0, LVS_SORTMASK);
-                  1: SetMaskedStyle (LVS_SORTASCENDING, LVS_SORTMASK);
-                  2: SetMaskedStyle (LVS_SORTDESCENDING, LVS_SORTMASK);
+                  0: SetMaskedStyle(0, LVS_SORTMASK);
+                  1: SetMaskedStyle(LVS_SORTASCENDING, LVS_SORTMASK);
+                  2: SetMaskedStyle(LVS_SORTDESCENDING, LVS_SORTMASK);
                 end;
                 recreateRequired := True;
               end;

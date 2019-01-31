@@ -26,6 +26,10 @@ object fmNTAboutBox: TfmNTAboutBox
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'TabSheet1'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object icoProduct: TImage
         Left = 8
         Top = 8
@@ -144,6 +148,10 @@ object fmNTAboutBox: TfmNTAboutBox
     object TabSheet2: TTabSheet
       Caption = 'Thank You!'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object stThankYou: TLabel
         Left = 16
         Top = 16

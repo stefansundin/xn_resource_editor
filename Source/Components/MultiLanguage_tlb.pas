@@ -4,7 +4,7 @@ unit MultiLanguage_TLB;
 // WARNING                                                                    
 // -------                                                                    
 // The types declared in this file were generated from data read from a       
-// Type Library. If this type library is explicitly or indirectly (via        
+// Type Library. If this type library is explicitly or indirectly(via        
 // another type library referring to this type library) re-imported, or the   
 // 'Refresh' command of the Type Library Editor activated while editing the   
 // Type Library, the contents of this file will be regenerated and all        

@@ -20,12 +20,12 @@ type
     function GetAccelerator(idx: Integer): TAccelerator;
     function GetAccelPointer (idx : Integer) : PAccelerator;
   public
-    constructor Create (AParent : TResourceModule; ALanguage : Integer; const AName, AType : WideString; ASize : Integer; AData : pointer); override;
+    constructor Create(AParent : TResourceModule; ALanguage : Integer; const AName, AType : WideString; ASize : Integer; AData : pointer); override;
     class function GetBaseType : WideString; override;
 
     procedure InitNew; override;
     function Add (flags, code, id : Integer) : Integer;
-    procedure Delete (idx : Integer);
+    procedure Delete(idx : Integer);
     procedure SetAccelDetails (idx : Integer; flags, code, id : Integer);
 
     property Count : Integer read GetCount;
@@ -43,7 +43,7 @@ var
 begin
   ct := Count;
   Data.Size := Data.Size + sizeof (TAccelerator);
-  Inc (FCount);
+  Inc(FCount);
   p := GetAccelPointer (ct);
   p^.flags := flags or $80;
   p^.code := code;
@@ -62,7 +62,7 @@ constructor TAcceleratorResourceDetails.Create(AParent: TResourceModule;
   ALanguage: Integer; const AName, AType: WideString; ASize: Integer;
   AData: pointer);
 begin
-  inherited Create (AParent, ALanguage, AName, AType, ASize, AData);
+  inherited Create(AParent, ALanguage, AName, AType, ASize, AData);
 
   FCount := -1;
 end;
@@ -77,10 +77,10 @@ begin
   begin
     p := GetAccelPointer (idx);
     p1 := GetAccelPointer (idx + 1);
-    Move (p1^, p^, sizeof (TAccelerator) * (Count - idx - 1));
+    Move(p1^, p^, sizeof (TAccelerator) * (Count - idx - 1));
   end;
 
-  Dec (FCount);
+  Dec(FCount);
   Data.Size := Data.Size - sizeof (TAccelerator);
 
   if Count > 0 then
@@ -102,7 +102,7 @@ begin
   if idx < Count then
   begin
     Result := PAccelerator (Data.Memory);
-    Inc (Result, idx)
+    Inc(Result, idx)
   end
   else
     raise ERangeError.Create('Index out of bounds');
@@ -125,11 +125,11 @@ begin
     sz := 0;
     while sz + sizeof (TAccelerator) <= Data.Size do
     begin
-      Inc (FCount);
+      Inc(FCount);
       if (p^.flags and $80) <> 0 then
         Break;
-      Inc (p);
-      Inc (sz, sizeof (TAccelerator))
+      Inc(p);
+      Inc(sz, sizeof (TAccelerator))
     end
   end;
   Result := FCount;

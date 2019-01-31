@@ -52,11 +52,11 @@ type
     procedure WMLButtonDown (var msg: TwmLButtonDown); message WM_LBUTTONDOWN;
     procedure WMRButtonDown (var msg: TwmRButtonDown); message WM_RBUTTONDOWN;
     procedure WMKeyDown (var msg: TwmKeyDown); message WM_KEYDOWN;
-    procedure WMMouseMove (var msg: TwmMouseMove); message WM_MOUSEMOVE;
+    procedure WMMouseMove(var msg: TwmMouseMove); message WM_MOUSEMOVE;
     procedure WMTimer (var msg: TwmTimer); message WM_TIMER;
     procedure WMMouseWheel (var msg: TwmMouseWheel); message WM_MOUSEWHEEL;
   published
-    constructor Create (AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     property AutoSize: Boolean read FAutoSize write SetAutoSize default True;
     property RightMargin: Integer read FRightMargin write SetRightMargin default 76;
@@ -98,7 +98,7 @@ type
     function GetHasText: Boolean; override;
     function FindText (const SearchStr: string; NewSearch: Boolean; Options: TStringSearchOptions; y: Integer): Boolean; override;
   public
-    constructor Create (AOwner: TMessageDisplay; AObj: TObject; codepage: Integer); override;
+    constructor Create(AOwner: TMessageDisplay; AObj: TObject; codepage: Integer); override;
     destructor Destroy; override;
     procedure SetTextObject (objNo: Integer; obj: TObject);
     procedure AddTextObject (obj: TObject);
@@ -157,7 +157,7 @@ begin
     ctrl.FScrollingParent := TScrollingWinControl (AOwner.Parent);
 
   ctrl.FObjectLink := self;
-  inherited Create (AOwner, ctrl, codepage);
+  inherited Create(AOwner, ctrl, codepage);
   BeginUpdate;
   ctrl.BorderStyle := bsNone;
 
@@ -200,7 +200,7 @@ end;
 procedure TNewsStringsDisplayObjectLink.DoOnURLMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  FOwner.OnURLClick (Sender, Button, Shift, RichEdit.URLText);
+  FOwner.OnURLClick(Sender, Button, Shift, RichEdit.URLText);
 end;
 
 procedure TNewsStringsDisplayObjectLink.EndUpdate;
@@ -363,18 +363,18 @@ var
   inQuote: Boolean;
   rtfCount: Integer;
 
-  procedure AddColorTableEntry (var st: string; color: TColor);
+  procedure AddColorTableEntry(var st: string; color: TColor);
   var
     rgb : DWORD;
   begin
     rgb := ColorTORGB (color);
-    st := st + '\red' + IntToStr (GetRValue (rgb));
-    st := st + '\green' + IntToStr (GetGValue (rgb));
-    st := st + '\blue' + IntToStr (GetBValue (rgb));
+    st := st + '\red' + IntToStr (GetRValue(rgb));
+    st := st + '\green' + IntToStr (GetGValue(rgb));
+    st := st + '\blue' + IntToStr (GetBValue(rgb));
     st := st + ';'
   end;
 
-  function FormatWordsInLine (const st: string): string;
+  function FormatWordsInLine(const st: string): string;
   var
     i, len, p, p1, l: Integer;
     ch, ch1, ch2: char;
@@ -408,13 +408,13 @@ var
             '\': styles := styles + [fsItalic];
           end;
 
-          Inc (p);
+          Inc(p);
           ch1 := st [p]
         until not (ch1 in ['*', '\', '_']);
 
         p1 := p;
         while st [p] in ['A'..'Z', '0'..'9', 'a'..'z'] do
-          Inc (p);
+          Inc(p);
         l := p - p1;
 
         styles1 := styles;
@@ -425,7 +425,7 @@ var
             '_': styles := styles - [fsUnderline];
             '\': styles := styles - [fsItalic]
           end;
-          Inc (p)
+          Inc(p)
         end;
 
         if styles = [] then
@@ -438,13 +438,13 @@ var
           if fsItalic in styles1 then
             Result := Result + #3'i';
 
-          Result := Result + ' ' + Copy (st, p1, l) + #4 + FormatWordsInLine (Copy (st, p, MaxInt));
+          Result := Result + ' ' + Copy(st, p1, l) + #4 + FormatWordsInLine(Copy(st, p, MaxInt));
           exit
         end
       end;
       Result := Result + ch;
       styles := [];
-      Inc (i)
+      Inc(i)
     end
   end;
 
@@ -460,35 +460,35 @@ begin
   if rtf then
   begin
     st := '{\rtf1 {{\colortbl;';
-    AddColorTableEntry (st, HeaderFontColor);
-    AddColorTableEntry (st, FooterFontColor);
-    AddColorTableEntry (st, Level1QuotesFontColor);
-    AddColorTableEntry (st, Level2QuotesFontColor);
-    AddColorTableEntry (st, Level3QuotesFontColor);
+    AddColorTableEntry(st, HeaderFontColor);
+    AddColorTableEntry(st, FooterFontColor);
+    AddColorTableEntry(st, Level1QuotesFontColor);
+    AddColorTableEntry(st, Level2QuotesFontColor);
+    AddColorTableEntry(st, Level3QuotesFontColor);
     st := st + '}';
-    Inc (rtfCount, 2)
+    Inc(rtfCount, 2)
   end
   else
     st := '';
 
   for j := 0 to FTextObjects.Count - 1 do
   begin
-    s := TStrings (FTextObjects [j]);
+    s := TStrings (FTextObjects[j]);
     if not rtf then
     begin
       st := st + s.Text;
-      Inc (count);
+      Inc(count);
       continue
     end;
 
     for i := 0 to s.Count - 1 do
     begin
-      Inc (count);
-      line := s [i];
+      Inc(count);
+      line := s[i];
 
       if rtf then
       begin
-        line := FormatWordsInLine (line);
+        line := FormatWordsInLine(line);
 
         offset := Pos ('\', line); if offset > 0 then line := StringReplaceEx (line, '\', '\\', [rfReplaceAll], offset);
         offset := Pos ('{', line); if offset > 0 then line := StringReplaceEx (line, '{', '\{', [rfReplaceAll], offset);
@@ -504,51 +504,51 @@ begin
         begin
           inHeader := True;
           st := st + '{\cf1 ';
-          Inc (rtfCount)
+          Inc(rtfCount)
         end;
-        Delete (line, 1, 1)
+        Delete(line, 1, 1)
       end
       else
       begin
         if inHeader and rtf then
         begin
           st := st + '}';
-          Dec (rtfCount);
+          Dec(rtfCount);
         end;
         inHeader := False;
       end;
 
       if rtf then
       begin
-        if (line = '>') or (Copy (line, 1, 2) = '> ') then
+        if (line = '>') or (Copy(line, 1, 2) = '> ') then
         begin
           p := 3;
           quoteLevel := 1;
           while line [p] in [' ', '>'] do
           begin
             if line [p] = '>' then
-              Inc (quoteLevel);
-            Inc (p);
+              Inc(quoteLevel);
+            Inc(p);
 
             if quoteLevel = 3 then
               break
           end;
           st := st + '{\cf' + IntToStr (2 + QuoteLevel) + ' ';
-          Inc (rtfCount);
+          Inc(rtfCount);
           inQuote := True
         end;
 
         if (line = '-- ') or (line = '--') then
         begin
           st := st + '{\cf2 ';
-          Inc (rtfCount)
+          Inc(rtfCount)
         end;
 
         st := st + line;
         if inQuote then
         begin
           st := st + '}';
-          Dec (rtfCount);
+          Dec(rtfCount);
           inQuote := False
         end;
         st := st + '\par ';
@@ -598,14 +598,14 @@ var
         case ch of
           #$0d: if (i + 2 < len) and (st [i + 1] = #$0a) and not (st [i + 2] in [' ', #9, ',']) then
                  begin
-                   Delete (st, i, 2);
-                   Dec (len, 2)
+                   Delete(st, i, 2);
+                   Dec(len, 2)
                  end
                  else
-                   Inc (i, 3);
+                   Inc(i, 3);
           ' ', #9, ',', #0: break;
           else
-            Inc (i)
+            Inc(i)
         end
       end
     end
@@ -614,7 +614,7 @@ var
 begin
  len := Length (st);
   for i := Low (urlIndicators) to High (urlIndicators) do
-    Unwrap (urlIndicators [i])
+    Unwrap (urlIndicators[i])
 end;
 *)
 
@@ -639,8 +639,8 @@ begin
   lastLen := 0;
   for i := 0 to FTextObjects.Count - 1 do
   begin
-    Inc (n);
-    st := StringReplace (TStrings (FTextObjects [i]).Text, 'url:', 'url: ', [rfReplaceAll, rfIgnoreCase]);
+    Inc(n);
+    st := StringReplace(TStrings (FTextObjects[i]).Text, 'url:', 'url: ', [rfReplaceAll, rfIgnoreCase]);
 //    UnwrapURLS (st);
     ws := StringToWideString (st, cp);
     lastLen := Length (ws);
@@ -691,7 +691,7 @@ end;
 procedure TNewsStringsDisplayObjectLink.SetTextObject(objNo: Integer;
   obj: TObject);
 begin
-  FTextObjects [objNo] := obj;
+  FTextObjects[objNo] := obj;
   LoadFromTextObjects
 end;
 
@@ -746,7 +746,7 @@ begin
 
   Result := (sp.ClientHeight div lineHeight) ;
   if sp.ClientHeight mod lineHeight > 0 then
-    Inc (Result)
+    Inc(Result)
 end;
 
 function TNewsRichEditX.MoveCursor(lines: Integer; moveUp: Boolean; shiftState: TShiftState): Boolean;
@@ -761,9 +761,9 @@ begin
   else
     spos := SelStart;
 
-  line := SendMessage (handle, EM_LINEFROMCHAR, spos, 0);
+  line := SendMessage(handle, EM_LINEFROMCHAR, spos, 0);
 
-  spos := spos - SendMessage (handle, EM_LINEINDEX, line, 0);
+  spos := spos - SendMessage(handle, EM_LINEINDEX, line, 0);
 
   if moveUp then
     if lines > line then lines := -line else lines := -lines
@@ -774,12 +774,12 @@ begin
   if Assigned(sp) then
     sp.VertScrollBar.Position := sp.VertScrollBar.Position + lines * Abs (Font.Height);
 
-  pos := SendMessage (handle, EM_LINEINDEX, line + lines, 0);
-  l := SendMessage (handle, EM_LINELENGTH, line + lines, 0);
+  pos := SendMessage(handle, EM_LINEINDEX, line + lines, 0);
+  l := SendMessage(handle, EM_LINELENGTH, line + lines, 0);
 
   if spos > l then
     spos := l;
-  Inc (pos, spos);
+  Inc(pos, spos);
 
   Result := True;
   if ssShift in shiftState then
@@ -808,7 +808,7 @@ begin
   sp := FindScrollingParent;
   if not Assigned(sp) then exit;
 
-  SendMessage (handle, EM_POSFROMCHAR, Integer (@pt), self.SelStart + self.SelLength);
+  SendMessage(handle, EM_POSFROMCHAR, Integer (@pt), self.SelStart + self.SelLength);
 
   lineHeight := Abs (font.Height);
   if Top + pt.y + lineHeight >= sp.VertScrollBar.Position + sp.ClientHeight then
@@ -838,7 +838,7 @@ begin
   begin
     FAutoSize := Value;
     if Value then
-      SendMessage (Handle, EM_REQUESTRESIZE, 0, 0)
+      SendMessage(Handle, EM_REQUESTRESIZE, 0, 0)
   end
 end;
 
@@ -997,5 +997,5 @@ begin
 end;
 
 initialization
-  RegisterDisplayObjectLink (TNewsStringsDisplayObjectLink, 0)
+  RegisterDisplayObjectLink(TNewsStringsDisplayObjectLink, 0)
 end.

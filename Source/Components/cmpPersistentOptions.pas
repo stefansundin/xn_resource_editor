@@ -71,7 +71,7 @@ type
   protected
     function GetDisplayName: string; override;
   public
-    constructor Create (Collection: TCollection); override;
+    constructor Create(Collection: TCollection); override;
     destructor Destroy; override;
     property Base: TPersistentOptions read GetBase;
 
@@ -172,7 +172,7 @@ type
     procedure DeleteOldOptions (const application, manufacturer, version: string); virtual; abstract;
     property InUpdate: Boolean read FUpdating;
   public
-    constructor Create (AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Save; virtual; abstract;
     procedure Load; virtual; abstract;
@@ -237,7 +237,7 @@ type
 
   EOptionTypeMismatch = class (EOptionError)
   public
-    constructor Create (Option: TOption);
+    constructor Create(Option: TOption);
   end;
 
 implementation
@@ -269,9 +269,9 @@ end;
  |                                                                      |
  | Constructor for TPersistentOptions                                   |
  *----------------------------------------------------------------------*)
-constructor TPersistentOptions.Create (AOwner: TComponent);
+constructor TPersistentOptions.Create(AOwner: TComponent);
 begin
-  inherited Create (AOwner);
+  inherited Create(AOwner);
   FOptions := TOptions.Create(self, TOption);
   FSections := TSections.Create(self, TSection);
 end;
@@ -322,20 +322,20 @@ end;
  *----------------------------------------------------------------------*)
 function TPersistentOptions.GetDirty: Boolean;
 
-  function OptionsDirty (options: TOptions): Boolean;
+  function OptionsDirty(options: TOptions): Boolean;
   var
     i: Integer;
   begin
     Result := False;
     for i := 0 to options.Count - 1 do
-      if options [i].FDirty then
+      if options[i].FDirty then
       begin
         Result := True;
         break
       end
   end;
 
-  function SectionsDirty (sections: TSections): Boolean;
+  function SectionsDirty(sections: TSections): Boolean;
   var
     i: Integer;
     section: TSection;
@@ -343,17 +343,17 @@ function TPersistentOptions.GetDirty: Boolean;
     Result := False;
     for i := 0 to sections.Count - 1 do
     begin
-      section := sections [i];
-      Result := OptionsDirty (section.Options);
+      section := sections[i];
+      Result := OptionsDirty(section.Options);
       if not Result then
-        Result := SectionsDirty (section.Sections);
+        Result := SectionsDirty(section.Sections);
       if Result then
         break
     end
   end;
 
 begin
-  Result := OptionsDirty (Options) or SectionsDirty (Sections)
+  Result := OptionsDirty(Options) or SectionsDirty(Sections)
 end;
 
 (*----------------------------------------------------------------------*
@@ -370,7 +370,7 @@ end;
  |                                                                      |
  | or even (because it's the default property):                         |
  |                                                                      |
- |   MyPersistentOptions ['Position\Width']                             |
+ |   MyPersistentOptions['Position\Width']                             |
  |                                                                      |
  | Parameters:                                                          |
  |   path: string               The option name or path                 |
@@ -397,8 +397,8 @@ begin
   if Assigned (p) then
   begin
     n := Integer (p) - Integer (PChar (path)) + 1;
-    s := Sections.SectionByName [Trim (Copy (path, 1, n - 1))];
-    path := Trim (Copy (path, n + 1, MaxInt));
+    s := Sections.SectionByName [Trim (Copy(path, 1, n - 1))];
+    path := Trim (Copy(path, n + 1, MaxInt));
   end;
 
   if Assigned (s) then
@@ -472,8 +472,8 @@ end;
 
 procedure TPersistentOptions.RemoveLeadingSlash (var path: string);
 begin
-  if Copy (path, 1, 1) = '\' then
-    path := Copy (path, 2, MaxInt);
+  if Copy(path, 1, 1) = '\' then
+    path := Copy(path, 2, MaxInt);
 end;
 
 (*----------------------------------------------------------------------*
@@ -591,7 +591,7 @@ begin
     self.FVersion := version;
 
     if GetFileName <> f then
-      DeleteFile (GetFileName)
+      DeleteFile(GetFileName)
   finally
     self.FApplication := application;
     self.FManufacturer := manSave;
@@ -611,7 +611,7 @@ var
 begin
   if FFileName <> '' then       // Use the FileName property if it's been set
   begin
-    if (Copy (fileName, 1, 1) = '\') or (Pos (':', fileName) <> 0) then
+    if (Copy(fileName, 1, 1) = '\') or (Pos (':', fileName) <> 0) then
       Result := FFileName
     else
       Result := ExtractFilePath (ParamStr (0)) + FFileName
@@ -620,10 +620,10 @@ begin
   begin                         // application name
     if Application = '' then
     begin
-      st := ExtractFileName (ParamStr (0));
+      st := ExtractFileName(ParamStr (0));
       p := Pos ('.', st);
       if p > 0 then
-        st := Copy (st, 1, p - 1)
+        st := Copy(st, 1, p - 1)
     end
     else
       st := Application;
@@ -691,7 +691,7 @@ begin
 
     for i := 0 to Options.Count - 1 do
     begin
-      option := Options [i];
+      option := Options[i];
 
       if forceDefaults or (sl.IndexOfName(option.Name) = -1) then
       case option.OptionType of
@@ -702,10 +702,10 @@ begin
       end
       else
       case option.OptionType of
-        otString : option.FStrVal  := sl.Values [option.Name];
-        otInteger: option.FIntVal  := StrToIntDef (sl.Values [option.Name], StrToIntDef (option.FDefaultValue, 0));
-        otBoolean: option.FBoolVal := StrToBoolDef (sl.Values [option.Name], StrToBoolDef (option.FDefaultValue, False));
-        otEnum   : option.FIntVal  := StrToIntDef (sl.Values [option.Name], option.FEnumValues.IndexOf(option.FDefaultValue))
+        otString : option.FStrVal  := sl.Values[option.Name];
+        otInteger: option.FIntVal  := StrToIntDef (sl.Values[option.Name], StrToIntDef (option.FDefaultValue, 0));
+        otBoolean: option.FBoolVal := StrToBoolDef (sl.Values[option.Name], StrToBoolDef (option.FDefaultValue, False));
+        otEnum   : option.FIntVal  := StrToIntDef (sl.Values[option.Name], option.FEnumValues.IndexOf(option.FDefaultValue))
       end;
       option.FDirty := False
     end
@@ -737,7 +737,7 @@ var
 begin
   for i := 0 to Sections.Count - 1 do
   begin
-    sect := Sections [i];
+    sect := Sections[i];
     if section = '' then
       ss := sect.Name
     else
@@ -795,7 +795,7 @@ begin
 
   for i := 0 to Options.Count - 1 do
   begin
-    option := Options [i];
+    option := Options[i];
 
     if not option.HasDefaultValue then
     case option.OptionType of
@@ -827,7 +827,7 @@ var
 begin
   for i := 0 to Sections.Count - 1 do
   begin
-    sect := Sections [i];
+    sect := Sections[i];
     if section = '' then
       ss := sect.Name
     else
@@ -859,7 +859,7 @@ end;
 (*----------------------------------------------------------------------*
  | procedure TRegistryPersistentOptions.DeleteOldOptions                |
  |                                                                      |
- | Delete the old registry settings after changing the root key (by     |
+ | Delete the old registry settings after changing the root key(by     |
  | changine the application, manufacturer or version properties)        |
  *----------------------------------------------------------------------*)
 procedure TRegistryPersistentOptions.DeleteOldOptions(const application,
@@ -871,7 +871,7 @@ begin
   if not Persist then Exit;
 
   if Application = '' then
-    raise EOptionError.Create (rstNoAppName);
+    raise EOptionError.Create(rstNoAppName);
 
   if Manufacturer <> '' then
     keyName := '\Software\' + Manufacturer + '\' + Application
@@ -883,7 +883,7 @@ begin
 
   if keyName <> GetRootKeyName then
   begin
-    reg := TRegistry.Create (KEY_READ or KEY_WRITE);
+    reg := TRegistry.Create(KEY_READ or KEY_WRITE);
     try
       reg.DeleteKey(keyName)
     finally
@@ -902,7 +902,7 @@ end;
 function TRegistryPersistentOptions.GetRootKeyName: string;
 begin
   if Application = '' then
-    raise EOptionError.Create (rstNoAppName);
+    raise EOptionError.Create(rstNoAppName);
 
   if Manufacturer <> '' then
     Result := '\Software\' + Manufacturer + '\' + Application
@@ -926,7 +926,7 @@ var
 begin
   if not Persist then Exit;
 
-  reg := TRegistry.Create (KEY_READ);
+  reg := TRegistry.Create(KEY_READ);
   try
     if OptionsType = otMachine then
       Reg.RootKey := HKEY_LOCAL_MACHINE;
@@ -958,7 +958,7 @@ var
 begin
   for i := 0 to Options.Count - 1 do
   begin
-    option := Options [i];
+    option := Options[i];
 
     if forceDefaults or not reg.ValueExists(option.Name) then
     case option.OptionType of
@@ -995,14 +995,14 @@ var
   reg1: TRegistry;
 begin
   if not forceDefaults then
-    reg1 := TRegistry.Create (KEY_READ)
+    reg1 := TRegistry.Create(KEY_READ)
   else
     reg1 := Nil;
 
   try
     for i := 0 to Sections.Count - 1 do
     begin
-      section := Sections [i];
+      section := Sections[i];
 
       if not forceDefaults then
       begin
@@ -1029,7 +1029,7 @@ var
 begin
   if not Persist then Exit;
 
-  reg := TRegistry.Create (KEY_READ or KEY_WRITE);
+  reg := TRegistry.Create(KEY_READ or KEY_WRITE);
   try
     if OptionsType = otMachine then
       reg.RootKey := HKEY_LOCAL_MACHINE;
@@ -1072,7 +1072,7 @@ begin
 
     for i := 0 to Options.Count - 1 do
     begin
-      Option := Options [i];
+      Option := Options[i];
 
       if not Option.HasDefaultValue then        // Save the value if it's not the
       begin                                     // default value for the option
@@ -1097,7 +1097,7 @@ begin
 
     if Options.DeleteObsoleteOptions then          // Delete obsolete values.
       for i := 0 to deleteValues.count - 1 do
-        reg.DeleteValue(deleteValues [i])
+        reg.DeleteValue(deleteValues[i])
   finally
     deleteValues.Free
   end
@@ -1130,10 +1130,10 @@ begin
     deleteSections.Sort;
 
   // Save the sections & options
-    reg1 := TRegistry.Create (KEY_READ or KEY_WRITE);
+    reg1 := TRegistry.Create(KEY_READ or KEY_WRITE);
     for i := 0 to Sections.Count - 1 do
     begin
-      section := Sections [i];
+      section := Sections[i];
 
       idx := deleteSections.IndexOf(Section.Name);
       if idx >= 0 then
@@ -1150,7 +1150,7 @@ begin
     reg1.RootKey := reg.CurrentKey;
     if Sections.DeleteObsoleteSections then
       for i := 0 to deleteSections.Count - 1 do
-        reg1.DeleteKey(deleteSections [i])
+        reg1.DeleteKey(deleteSections[i])
   finally
     deleteSections.Free;
     reg1.Free
@@ -1167,7 +1167,7 @@ end;
 constructor TOptions.Create(AOwner: TPersistent;
   ItemClass: TCollectionItemClass);
 begin
-  inherited Create (AOwner, ItemClass);
+  inherited Create(AOwner, ItemClass);
   FDeleteObsoleteOptions := True
 end;
 
@@ -1178,7 +1178,7 @@ end;
  *----------------------------------------------------------------------*)
 function TOptions.GetOption(idx: Integer): TOption;
 begin
-  Result := TOption (Items [idx])
+  Result := TOption (Items[idx])
 end;
 
 (*----------------------------------------------------------------------*
@@ -1265,7 +1265,7 @@ end;
 function TOption.GetAsEnum: string;
 begin
   if OptionType = otEnum then
-    Result := EnumValues [FIntVal]
+    Result := EnumValues[FIntVal]
   else
     raise EOptionTypeMismatch (self)
 end;
@@ -1522,7 +1522,7 @@ end;
 
 constructor EOptionTypeMismatch.Create(Option: TOption);
 begin
-  inherited CreateFmt (rstTypeMismatch, [Option.Name, OptionTypeNames [Option.OptionType]])
+  inherited CreateFmt (rstTypeMismatch, [Option.Name, OptionTypeNames[Option.OptionType]])
 end;
 
 { TSections }
@@ -1534,7 +1534,7 @@ end;
  *----------------------------------------------------------------------*)
 function TSections.GetSection(idx: Integer): TSection;
 begin
-  Result := TSection (Items [idx])
+  Result := TSection (Items[idx])
 end;
 
 (*----------------------------------------------------------------------*
@@ -1552,9 +1552,9 @@ begin
   p := Pos ('\', name);
   if p > 0 then
   begin
-    s := SectionByName [Trim (Copy (name, 1, p - 1))];
+    s := SectionByName [Trim (Copy(name, 1, p - 1))];
     if Assigned (s) then
-      Result := s.Sections.SectionByName [Trim (Copy (name, p + 1, MaxInt))]
+      Result := s.Sections.SectionByName [Trim (Copy(name, p + 1, MaxInt))]
     else
       raise EOptionError.CreateFmt(rstSectionNotFound, [s.Name]);
   end

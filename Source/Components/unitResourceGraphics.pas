@@ -25,8 +25,8 @@ type
     function GetPixelFormat: TPixelFormat; virtual; abstract;
     function GetWidth: Integer; virtual; abstract;
   public
-    procedure GetImage (picture: TPicture); virtual; abstract;
-    procedure SetImage (image: TPicture); virtual;
+    procedure GetImage(picture: TPicture); virtual; abstract;
+    procedure SetImage(image: TPicture); virtual;
 
     property Width: Integer read GetWidth;
     property Height: Integer read GetHeight;
@@ -44,14 +44,14 @@ type
     function GetPixelFormat: TPixelFormat; override;
     function GetWidth: Integer; override;
     procedure InitNew; override;
-    procedure InternalGetImage (s: TStream; picture: TPicture);
-    procedure InternalSetImage (s: TStream; image: TPicture);
+    procedure InternalGetImage(s: TStream; picture: TPicture);
+    procedure InternalSetImage(s: TStream; image: TPicture);
 
   public
     class function GetBaseType: WideString; override;
-    procedure GetImage (picture: TPicture); override;
-    procedure SetImage (image: TPicture); override;
-    procedure LoadImage (const FileName: string);
+    procedure GetImage(picture: TPicture); override;
+    procedure SetImage(image: TPicture); override;
+    procedure LoadImage(const FileName: string);
   end;
 
 //------------------------------------------------------------------------
@@ -63,12 +63,12 @@ type
 
   TDIBResourceDetails = class (TBitmapResourceDetails)
   protected
-    class function SupportsData (Size: Integer; data: Pointer): Boolean; override;
+    class function SupportsData(Size: Integer; data: Pointer): Boolean; override;
     procedure InitNew; override;
   public
     class function GetBaseType: WideString; override;
-    procedure GetImage (picture: TPicture); override;
-    procedure SetImage (image: TPicture); override;
+    procedure GetImage(picture: TPicture); override;
+    procedure SetImage(image: TPicture); override;
   end;
 
   TIconCursorResourceDetails = class;
@@ -84,13 +84,13 @@ type
   protected
     procedure InitNew; override;
   public
-    procedure GetImage (picture: TPicture);
+    procedure GetImage(picture: TPicture);
     property ResourceCount: Integer read GetResourceCount;
-    property ResourceDetails [idx: Integer]: TIconCursorResourceDetails read GetResourceDetails;
+    property ResourceDetails[idx: Integer]: TIconCursorResourceDetails read GetResourceDetails;
     function Contains (Details: TIconCursorResourceDetails): Boolean;
     procedure RemoveFromGroup (Details: TIconCursorResourceDetails);
     procedure AddToGroup (Details: TIconCursorResourceDetails);
-    procedure LoadImage (const FileName: string);
+    procedure LoadImage(const FileName: string);
     procedure BeforeDelete; override;
   end;
 
@@ -122,8 +122,8 @@ type
     procedure InitNew; override;
   public
     procedure BeforeDelete; override;
-    procedure GetImage (picture: TPicture); override;
-    procedure SetImage (image: TPicture); override;
+    procedure GetImage(picture: TPicture); override;
+    procedure SetImage(image: TPicture); override;
     property Width: Integer read GetWidth;
     property Height: Integer read GetHeight;
     property PixelFormat: TPixelFormat read GetPixelFormat;
@@ -209,11 +209,11 @@ begin
     hdr.bfReserved2 := 0;
     hdr.bfOffBits := sizeof (hdr);
 
-    s.Write (hdr, sizeof (hdr));
-    data.Seek (0, soFromBeginning);
+    s.Write(hdr, sizeof (hdr));
+    data.Seek(0, soFromBeginning);
     s.CopyFrom (data, data.size);
 
-    InternalGetImage (s, picture)
+    InternalGetImage(s, picture)
   finally
     s.Free
   end
@@ -251,7 +251,7 @@ begin
   bi.biBitCount := GetPixelFormatBitCount (DefaultBitmapPixelFormat);
   bi.biCompression := BI_RGB;
 
-  imageSize := BytesPerScanLine (DefaultBitmapWidth, bi.biBitCount, 32) * DefaultBitmapHeight;
+  imageSize := BytesPerScanLine(DefaultBitmapWidth, bi.biBitCount, 32) * DefaultBitmapHeight;
   bi.biSizeImage := imageSize;
 
   bi.biXPelsPerMeter := 0;
@@ -260,11 +260,11 @@ begin
   bi.biClrUsed := 0;
   bi.biClrImportant := 0;
 
-  data.Write (bi, SizeOf (bi));
+  data.Write(bi, SizeOf (bi));
 
   bits := AllocMem (ImageSize);
   try
-    data.Write (bits^, ImageSize);
+    data.Write(bits^, ImageSize);
   finally
     ReallocMem (bits, 0)
   end
@@ -278,7 +278,7 @@ var
   hangOnToPalette: Boolean;
   newBmp: TBitmap;
 begin
-  s.Seek (0, soFromBeginning);
+  s.Seek(0, soFromBeginning);
   picture.Bitmap.IgnorePalette := False;
   picture.Bitmap.LoadFromStream (s);
 
@@ -319,7 +319,7 @@ begin
 
             newBmp.Width := Picture.Bitmap.Width;
             newBmp.Height := Picture.Bitmap.Height;
-            newBmp.Palette := CopyPalette (pal);
+            newBmp.Palette := CopyPalette(pal);
             newBmp.Canvas.Draw (0, 0, picture.Bitmap);
             picture.Bitmap.Assign (newBmp);
           finally
@@ -375,7 +375,7 @@ begin
   try
     s.LoadFromFile(FileName);
     data.Clear;
-    data.Write ((PChar (s.Memory) + sizeof (TBitmapFileHeader))^, s.Size - sizeof (TBitmapFileHeader));
+    data.Write((PChar (s.Memory) + sizeof (TBitmapFileHeader))^, s.Size - sizeof (TBitmapFileHeader));
   finally
     s.Free;
   end
@@ -387,9 +387,9 @@ var
 begin
   s := TMemoryStream.Create;
   try
-    InternalSetImage (s, image);
+    InternalSetImage(s, image);
     data.Clear;
-    data.Write ((PChar (s.Memory) + sizeof (TBitmapFileHeader))^, s.Size - sizeof (TBitmapFileHeader));
+    data.Write((PChar (s.Memory) + sizeof (TBitmapFileHeader))^, s.Size - sizeof (TBitmapFileHeader));
   finally
     s.Free;
   end
@@ -488,7 +488,7 @@ begin
     hdr.wReserved := 0;
     hdr.wCount := 1;
 
-    strm.Write (hdr, sizeof (hdr));
+    strm.Write(hdr, sizeof (hdr));
 
     dirEntry.bWidth := infoHeader^.biWidth;
     dirEntry.bHeight := infoHeader^.biHeight div 2;
@@ -501,9 +501,9 @@ begin
     dirEntry.dwBytesInRes := data.Size;
     dirEntry.dwImageOffset := sizeof (hdr) + sizeof (dirEntry);
 
-    strm.Write (dirEntry, sizeof (dirEntry));
+    strm.Write(dirEntry, sizeof (dirEntry));
     strm.CopyFrom (data, 0);
-    strm.Seek (0, soFromBeginning);
+    strm.Seek(0, soFromBeginning);
 
     iconcursor.LoadFromStream (strm);
     picture.Graphic := iconcursor
@@ -522,7 +522,7 @@ var
 begin
   icon := TExIconCursor (image.graphic);
   data.Clear;
-  data.CopyFrom (icon.Images [icon.CurrentImage].MemoryImage, 0);
+  data.CopyFrom (icon.Images[icon.CurrentImage].MemoryImage, 0);
 end;
 
 
@@ -570,9 +570,9 @@ var
   cc: Integer;
 begin
   data.Size := Data.Size + sizeof (TResourceDirectory);
-  attributes := PResourceDirectory (PChar (Data.Memory) + sizeof (TIconHeader));
+  attributes := PResourceDirectory(PChar (Data.Memory) + sizeof (TIconHeader));
 
-  Inc (Attributes, PIconHeader (data.Memory)^.wCount);
+  Inc(Attributes, PIconHeader (data.Memory)^.wCount);
 
   attributes^.wNameOrdinal :=  StrToInt (Details.ResourceName);
   attributes^.lBytesInRes := Details.Data.Size;
@@ -599,7 +599,7 @@ begin
   attributes^.wPlanes := infoHeader^.biPlanes;
   attributes^.wBitCount := infoHeader^.biBitCount;
 
-  Inc (PIconHeader (data.Memory)^.wCount);
+  Inc(PIconHeader (data.Memory)^.wCount);
 end;
 
 procedure TIconCursorGroupResourceDetails.BeforeDelete;
@@ -607,7 +607,7 @@ begin
   fDeleting := True;
   try
     while ResourceCount > 0 do
-      Parent.DeleteResource (Parent.IndexOfResource (ResourceDetails [0]));
+      Parent.DeleteResource(Parent.IndexOfResource(ResourceDetails[0]));
   finally
     fDeleting := False
   end
@@ -625,7 +625,7 @@ begin
   Result := False;
   if ResourceNameToInt (Details.ResourceType) = ResourceNameToInt (ResourceType) - DIFFERENCE then
   begin
-    attributes := PResourceDirectory (PChar (Data.Memory) + sizeof (TIconHeader));
+    attributes := PResourceDirectory(PChar (Data.Memory) + sizeof (TIconHeader));
     id := ResourceNameToInt (Details.ResourceName);
 
     for i := 0 to PIconHeader (Data.Memory)^.wCount - 1 do
@@ -635,7 +635,7 @@ begin
         break
       end
       else
-        Inc (attributes)
+        Inc(attributes)
   end
 end;
 
@@ -673,35 +673,35 @@ begin
     hdr.wReserved := 0;
     hdr.wCount := ResourceCount;
 
-    strm.Write (hdr, sizeof (hdr));
+    strm.Write(hdr, sizeof (hdr));
 
     for i := 0 to ResourceCount - 1 do
     begin
-      infoHeader := PBitmapInfoHeader (PChar (ResourceDetails [i].Data.Memory) + hdrOffset);
+      infoHeader := PBitmapInfoHeader (PChar (ResourceDetails[i].Data.Memory) + hdrOffset);
       dirEntry.bWidth := infoHeader^.biWidth;
       dirEntry.bHeight := infoHeader^.biHeight div 2;
       dirEntry.wPlanes := infoHeader^.biPlanes;
       dirEntry.bColorCount := GetBitmapInfoNumColors (infoHeader^);
       dirEntry.bReserved := 0;
       dirEntry.wBitCount := infoHeader^.biBitCount;
-      dirEntry.dwBytesInRes := resourceDetails [i].data.Size;
+      dirEntry.dwBytesInRes := resourceDetails[i].data.Size;
       dirEntry.dwImageOffset := 0;
 
-      strm.Write (dirEntry, sizeof (dirEntry));
+      strm.Write(dirEntry, sizeof (dirEntry));
     end;
 
     for i := 0 to ResourceCount - 1 do
     begin
       imgOffset := strm.Position;
-      pDirEntry := PIconDirEntry (PChar (strm.Memory) + SizeOf (TIconHeader) + i * SizeOf (TIconDirEntry));
+      pDirEntry := PIconDirEntry(PChar (strm.Memory) + SizeOf (TIconHeader) + i * SizeOf (TIconDirEntry));
       pDirEntry^.dwImageOffset := imgOffset;
 
-      strm.CopyFrom (ResourceDetails [i].Data, 0);
+      strm.CopyFrom (ResourceDetails[i].Data, 0);
     end;
 
     if ResourceCount > 0 then
     begin
-      strm.Seek (0, soFromBeginning);
+      strm.Seek(0, soFromBeginning);
       iconcursor.LoadFromStream (strm);
       picture.Graphic := iconcursor
     end
@@ -733,8 +733,8 @@ var
   iconCursorResourceType: string;
 begin
   Result := Nil;
-  attributes := PResourceDirectory (PChar (Data.Memory) + sizeof (TIconHeader));
-  Inc (attributes, idx);
+  attributes := PResourceDirectory(PChar (Data.Memory) + sizeof (TIconHeader));
+  Inc(attributes, idx);
 
   // DIFFERENCE (from Windows.pas) is 11.  It's the difference between a 'group
   // resource' and the resource itself.  They called it 'DIFFERENCE' to be annoying.
@@ -742,7 +742,7 @@ begin
   iconCursorResourceType := IntToStr (ResourceNameToInt (ResourceType) - DIFFERENCE);
   for i := 0 to Parent.ResourceCount - 1 do
   begin
-    res := Parent.ResourceDetails [i];
+    res := Parent.ResourceDetails[i];
     if (res is TIconCursorResourceDetails) and (iconCursorResourceType = res.ResourceType) and (attributes.wNameOrdinal = ResourceNameToInt (res.ResourceName)) then
     begin
       Result := TIconCursorResourceDetails (res);
@@ -768,17 +768,17 @@ begin
   if Self is TCursorGroupResourceDetails then
   begin
     iconHeader.wType := 2;
-    nm := Parent.GetUniqueResourceName (TCursorResourceDetails.GetBaseType);
+    nm := Parent.GetUniqueResourceName(TCursorResourceDetails.GetBaseType);
     imageResource := TCursorResourceDetails.CreateNew (Parent, ResourceLanguage, nm)
   end
   else
   begin
     iconHeader.wType := 1;
-    nm := Parent.GetUniqueResourceName (TIconResourceDetails.GetBaseType);
+    nm := Parent.GetUniqueResourceName(TIconResourceDetails.GetBaseType);
     imageResource := TIconResourceDetails.CreateNew (Parent, ResourceLanguage, nm)
   end;
 
-  data.Write (iconHeader, SizeOf (iconHeader));
+  data.Write(iconHeader, SizeOf (iconHeader));
 
   if Self is TIconGroupResourceDetails then
   begin
@@ -798,7 +798,7 @@ begin
   dir.lBytesInRes := imageResource.Data.Size;
   dir.wNameOrdinal := ResourceNametoInt (imageResource.ResourceName);
 
-  data.Write (dir, SizeOf (dir));
+  data.Write(dir, SizeOf (dir));
 end;
 
 (*----------------------------------------------------------------------*
@@ -815,7 +815,7 @@ var
 begin
   for i := 0 to Parent.ResourceCount - 1 do
   begin
-    Details := Parent.ResourceDetails [i];
+    Details := Parent.ResourceDetails[i];
     if (Details.ResourceType = IntToStr (ResourceNameToInt (ResourceType) + DIFFERENCE)) then
     begin
       resGroup := Details as TIconCursorGroupResourceDetails;
@@ -853,43 +853,43 @@ begin
     resTp := TCursorResourceDetails.GetBaseType;
   end;
 
-  img.LoadFromFile (FileName);
+  img.LoadFromFile(FileName);
 
   hdr.wReserved := 0;
   hdr.wCount := img.ImageCount;
 
   data.Clear;
 
-  data.Write (hdr, SizeOf (hdr));
+  data.Write(hdr, SizeOf (hdr));
 
   for i := 0 to img.ImageCount - 1 do
   begin
     if hdr.wType = 1 then
     begin
-      dirEntry.Details.IconWidth := img.Images [i].FWidth;
-      dirEntry.Details.IconHeight := img.Images [i].FHeight;
-      dirEntry.Details.IconColorCount := GetPixelFormatNumColors (img.Images [i].FPixelFormat);
+      dirEntry.Details.IconWidth := img.Images[i].FWidth;
+      dirEntry.Details.IconHeight := img.Images[i].FHeight;
+      dirEntry.Details.IconColorCount := GetPixelFormatNumColors (img.Images[i].FPixelFormat);
       dirEntry.Details.IconReserved := 0
     end
     else
     begin
-      dirEntry.Details.CursorWidth := img.Images [i].FWidth;
-      dirEntry.Details.cursorHeight := img.Images [i].FHeight;
+      dirEntry.Details.CursorWidth := img.Images[i].FWidth;
+      dirEntry.Details.cursorHeight := img.Images[i].FHeight;
     end;
 
     dirEntry.wPlanes := 1;
-    dirEntry.wBitCount := GetPixelFormatBitCount (img.Images [i].FPixelFormat);
+    dirEntry.wBitCount := GetPixelFormatBitCount (img.Images[i].FPixelFormat);
 
-    dirEntry.lBytesInRes := img.Images [i].FMemoryImage.Size;
+    dirEntry.lBytesInRes := img.Images[i].FMemoryImage.Size;
 
     if hdr.wType = 1 then
-      res := TIconResourceDetails.Create (Parent, ResourceLanguage, Parent.GetUniqueResourceName (resTp), resTp, img.Images [i].FMemoryImage.Size, img.Images [i].FMemoryImage.Memory)
+      res := TIconResourceDetails.Create(Parent, ResourceLanguage, Parent.GetUniqueResourceName(resTp), resTp, img.Images[i].FMemoryImage.Size, img.Images[i].FMemoryImage.Memory)
     else
-      res := TCursorResourceDetails.Create (Parent, ResourceLanguage, Parent.GetUniqueResourceName (resTp), resTp, img.Images [i].FMemoryImage.Size, img.Images [i].FMemoryImage.Memory);
-    Parent.AddResource (res);
+      res := TCursorResourceDetails.Create(Parent, ResourceLanguage, Parent.GetUniqueResourceName(resTp), resTp, img.Images[i].FMemoryImage.Size, img.Images[i].FMemoryImage.Memory);
+    Parent.AddResource(res);
     dirEntry.wNameOrdinal := ResourceNameToInt (res.ResourceName);
 
-    data.Write (dirEntry, SizeOf (dirEntry));
+    data.Write(dirEntry, SizeOf (dirEntry));
   end
 end;
 
@@ -904,7 +904,7 @@ var
 begin
   if ResourceNametoInt (Details.ResourceType) = ResourceNameToInt (ResourceType) - DIFFERENCE then
   begin
-    attributes := PResourceDirectory (PChar (Data.Memory) + sizeof (TIconHeader));
+    attributes := PResourceDirectory(PChar (Data.Memory) + sizeof (TIconHeader));
     id := ResourceNametoInt (Details.ResourceName);
 
     Count := PIconHeader (Data.Memory)^.wCount;
@@ -915,18 +915,18 @@ begin
         if i < Count - 1 then
         begin
           ap := Attributes;
-          Inc (ap);
-          Move (ap^, Attributes^, SizeOf (TResourceDirectory) * (Count - i - 1));
+          Inc(ap);
+          Move(ap^, Attributes^, SizeOf (TResourceDirectory) * (Count - i - 1));
         end;
 
         Data.Size := data.Size - SizeOf (TResourceDirectory);
         PIconHeader (Data.Memory)^.wCount := Count - 1;
         if (Count = 1) and not fDeleting then
-          Parent.DeleteResource (Parent.IndexOfResource (Self));
+          Parent.DeleteResource(Parent.IndexOfResource(Self));
         break
       end
       else
-        Inc (attributes)
+        Inc(attributes)
   end
 end;
 
@@ -944,7 +944,7 @@ var
 
 begin
   if Self is TCursorResourceDetails then
-    Data.Write (DefaultCursorHotspot, SizeOf (DefaultCursorHotspot));
+    Data.Write(DefaultCursorHotspot, SizeOf (DefaultCursorHotspot));
 
   hdr.biSize := SizeOf (hdr);
   hdr.biWidth := DefaultIconCursorWidth;
@@ -965,7 +965,7 @@ begin
   hdr.biClrUsed := GetPixelFormatNumColors (DefaultIconCursorPixelFormat);
   hdr.biClrImportant := hdr.biClrUsed;
 
-  Data.Write (hdr, SizeOf (hdr));
+  Data.Write(hdr, SizeOf (hdr));
 
   pal := 0;
   case DefaultIconCursorPixelFormat of
@@ -981,17 +981,17 @@ begin
       GetMem (entries, hdr.biClrUsed * sizeof (PALETTEENTRY));
       GetPaletteEntries (pal, 0, hdr.biClrUsed, entries^);
 
-      data.Write (entries^, hdr.biClrUsed * SizeOf (PALETTEENTRY))
+      data.Write(entries^, hdr.biClrUsed * SizeOf (PALETTEENTRY))
     end
     else
       if hdr.biCompression = BI_BITFIELDS then
       begin { 5,6,5 bitfield }
         w := $0f800;  // 1111 1000 0000 0000  5 bit R mask
-        data.Write (w, SizeOf (w));
+        data.Write(w, SizeOf (w));
         w := $07e0;   // 0000 0111 1110 0000  6 bit G mask
-        data.Write (w, SizeOf (w));
+        data.Write(w, SizeOf (w));
         w := $001f;   // 0000 0000 0001 1111  5 bit B mask
-        data.Write (w, SizeOf (w))
+        data.Write(w, SizeOf (w))
       end
 
   finally
@@ -999,10 +999,10 @@ begin
   end;
 
   // Write dummy image
-  cImageSize := BytesPerScanLine (hdr.biWidth, hdr.biBitCount, 32) * DefaultIconCursorHeight;
+  cImageSize := BytesPerScanLine(hdr.biWidth, hdr.biBitCount, 32) * DefaultIconCursorHeight;
   p := AllocMem (cImageSize);
   try
-    data.Write (p^, cImageSize);
+    data.Write(p^, cImageSize);
   finally
     ReallocMem (p, 0)
   end;
@@ -1014,7 +1014,7 @@ begin
   FillChar (p^, cImageSize, $ff);
 
   try
-    data.Write (p^, cImageSize);
+    data.Write(p^, cImageSize);
   finally
     ReallocMem (p, 0)
   end;
@@ -1029,7 +1029,7 @@ end;
 
 procedure TDIBResourceDetails.GetImage(picture: TPicture);
 begin
-  InternalGetImage (data, Picture);
+  InternalGetImage(data, Picture);
 end;
 
 procedure TDIBResourceDetails.InitNew;
@@ -1041,14 +1041,14 @@ begin
   hdr.bfReserved1 := 0;
   hdr.bfReserved2 := 0;
   hdr.bfOffBits := hdr.bfSize;
-  data.Write (hdr, SizeOf (hdr));
+  data.Write(hdr, SizeOf (hdr));
 
   inherited;
 end;
 
 procedure TDIBResourceDetails.SetImage(image: TPicture);
 begin
-  InternalSetImage (data, image);
+  InternalSetImage(data, image);
 end;
 
 class function TDIBResourceDetails.SupportsData(Size: Integer;

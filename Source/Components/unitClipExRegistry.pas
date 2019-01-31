@@ -45,12 +45,12 @@ PValueData = ^TValueData;
 
 function ClipboardHasRegEdtValue: Boolean;
 begin
-  result := Clipboard.HasFormat (CF_VALUES)
+  Result := Clipboard.HasFormat (CF_VALUES)
 end;
 
 function ClipboardHasRegEdtKey: Boolean;
 begin
-  result := Clipboard.HasFormat (CF_HIVE)
+  Result := Clipboard.HasFormat (CF_HIVE)
 end;
 
 { TClipExRegistry }
@@ -63,7 +63,7 @@ var
   ddeSize: DWORD;
   ddeHandle: THandle;
 
-  function GetRequiredSize (const name: string; key: HKEY): DWORD;
+  function GetRequiredSize(const name: string; key: HKEY): DWORD;
   var
     cbClass, cbValueName, cbData: DWORD;
     cSubkeys: DWORD;
@@ -74,39 +74,39 @@ var
     err := RegOpenKeyEx (key, PChar (name), 0, KEY_READ, k);
     if err = ERROR_SUCCESS then
     try
-      result := sizeof (TKeyData) + Length (name) + 1;
+      Result := sizeof (TKeyData) + Length (name) + 1;
       cbClass := 0;
-      err := RegQueryInfoKey (k, Nil, @cbClass, Nil, @cSubkeys, Nil, Nil, @cValues, nil, nil, nil, nil);
+      err := RegQueryInfoKey(k, Nil, @cbClass, Nil, @cSubkeys, Nil, Nil, @cValues, nil, nil, nil, nil);
       if err = ERROR_SUCCESS then
       begin
-        Inc (result, cbClass + 1);
-        Inc (result, cValues * sizeof (TValueData));
+        Inc(Result, cbClass + 1);
+        Inc(Result, cValues * sizeof (TValueData));
 
         if cValues > 0 then
           for i := 0 to cValues - 1 do
           begin
             cbValueName := sizeof (buf);
             cbData := 0;
-            if RegEnumValue (k, i, buf, cbValueName, Nil, Nil, Nil, @cbData) = ERROR_SUCCESS then
+            if RegEnumValue(k, i, buf, cbValueName, Nil, Nil, Nil, @cbData) = ERROR_SUCCESS then
             begin
-              Inc (result, cbValueName + 1);
-              Inc (result, cbData)
+              Inc(Result, cbValueName + 1);
+              Inc(Result, cbData)
             end
           end;
 
         if cSubkeys > 0 then
           for i := 0 to cSubkeys - 1 do
-            if RegEnumKey (k, i, buf, sizeof (buf)) = ERROR_SUCCESS then
-              result := result + GetRequiredSize (buf, k);
+            if RegEnumKey(k, i, buf, sizeof (buf)) = ERROR_SUCCESS then
+              Result := Result + GetRequiredSize(buf, k);
       end
     finally
-      RegCloseKey (k)
+      RegCloseKey(k)
     end
     else
-      raise EExRegistryException.Create (err, 'Unable to open key')
+      raise EExRegistryException.Create(err, 'Unable to open key')
   end;
 
-  procedure CopyData (const name: string; key: HKEY);
+  procedure CopyData(const name: string; key: HKEY);
   var
     cbClass, cbValueName, cbData: DWORD;
     cSubkeys, cValues: DWORD;
@@ -122,22 +122,22 @@ var
     if err = ERROR_SUCCESS then
     try
       cbClass := sizeof (buf);
-      err := RegQueryInfoKey (k, buf, @cbClass, Nil, @cSubkeys, Nil, Nil, @cValues, nil, nil, nil, nil);
+      err := RegQueryInfoKey(k, buf, @cbClass, Nil, @cSubkeys, Nil, Nil, @cValues, nil, nil, nil, nil);
       if err <> ERROR_SUCCESS then
-        raise EExRegistryException.Create (err, 'Unable to get key info');
+        raise EExRegistryException.Create(err, 'Unable to get key info');
 
 
       ddeRootPos := ddeBufPos;
-      pData := pKeyData (ddeBuf + ddeBufPos);
-      Inc (ddeBufPos, sizeof (TKeyData));
+      pData := pKeyData(ddeBuf + ddeBufPos);
+      Inc(ddeBufPos, sizeof (TKeyData));
 
       pkName := ddeBuf + ddeBufPos;
-      lstrcpy (pkName, PChar (name));
-      Inc (ddeBufPos, Length (name) + 1);
+      lstrcpy(pkName, PChar (name));
+      Inc(ddeBufPos, Length (name) + 1);
 
       pkClass := PChar (ddeBuf + ddeBufPos);
-      lstrcpy (pkClass, buf);
-      Inc (ddeBufPos, lstrlen (buf) + 1);
+      lstrcpy(pkClass, buf);
+      Inc(ddeBufPos, lstrlen (buf) + 1);
 
       pData^.noValues := cValues;
       pData^.valuesOffset := ddeBufPos - ddeRootPos;
@@ -147,22 +147,22 @@ var
         begin
           cbValueName := sizeof (buf);
           cbData := 0;
-          err := RegEnumValue (k, i, buf, cbValueName, Nil, Nil, Nil, @cbData);
+          err := RegEnumValue(k, i, buf, cbValueName, Nil, Nil, Nil, @cbData);
           if err <> ERROR_SUCCESS then
-            raise EExRegistryException.Create (err, 'Unable to enumerate values');
+            raise EExRegistryException.Create(err, 'Unable to enumerate values');
 
-          pValue := PValueData (ddeBuf + ddeBufPos);
-          Inc (ddeBufPos, sizeof (TValueData));
-          Move (buf [0], (ddeBuf + ddeBufPos)^, cbValueName + 1);
-          Inc (ddeBufPos, cbValueName + 1);
+          pValue := PValueData(ddeBuf + ddeBufPos);
+          Inc(ddeBufPos, sizeof (TValueData));
+          Move(buf [0], (ddeBuf + ddeBufPos)^, cbValueName + 1);
+          Inc(ddeBufPos, cbValueName + 1);
 
           pValue^.dataLen := cbData;
           cbValueName := sizeof (buf);
-          err := RegEnumValue (k, i, buf, cbValueName, Nil, @pValue^.valueType, PBYTE (ddeBuf + ddeBufPos), @cbData);
+          err := RegEnumValue(k, i, buf, cbValueName, Nil, @pValue^.valueType, PBYTE (ddeBuf + ddeBufPos), @cbData);
           if err <> ERROR_SUCCESS then
-            raise EExRegistryException.Create (err, 'Unable to enumerate values');
+            raise EExRegistryException.Create(err, 'Unable to enumerate values');
 
-          Inc (ddeBufPos, cbData)
+          Inc(ddeBufPos, cbData)
         end;
 
       pData^.noSubKeys := cSubkeys;
@@ -173,33 +173,33 @@ var
         if cSubkeys > 0 then
           for i := 0 to cSubkeys - 1 do
           begin
-            err := RegEnumKey (k, i, buf, sizeof (buf));
+            err := RegEnumKey(k, i, buf, sizeof (buf));
             if err <> ERROR_SUCCESS then
-              raise EExRegistryException.Create (err, 'Unable to enunerate sub-keys');
-            CopyData (buf, k)
+              raise EExRegistryException.Create(err, 'Unable to enunerate sub-keys');
+            CopyData(buf, k)
           end
       end
     finally
-      RegCloseKey (k);
+      RegCloseKey(k);
     end
     else
-      raise EExRegistryException.Create (err, 'Unable to open key')
+      raise EExRegistryException.Create(err, 'Unable to open key')
   end;
 
 begin  // CopyKeyToClipboard
-  ddeSize := GetRequiredSize (keyName, CurrentKey);
+  ddeSize := GetRequiredSize(keyName, CurrentKey);
   ddeHandle := GlobalAlloc (GMEM_MOVEABLE, ddeSize);
   try
-    ddeBuf := GlobalLock (ddeHandle);
+    ddeBuf := GlobalLock(ddeHandle);
     try
       ddeBufPos := 0;
-      CopyData (keyName, CurrentKey)
+      CopyData(keyName, CurrentKey)
     finally
-      GlobalUnlock (ddeHandle)
+      GlobalUnlock(ddeHandle)
     end;
-    Clipboard.SetAsHandle (CF_HIVE, ddeHandle)
+    Clipboard.SetAsHandle(CF_HIVE, ddeHandle)
   except
-    GlobalFree (ddeHandle);
+    GlobalFree(ddeHandle);
     raise
   end
 end;
@@ -218,42 +218,42 @@ begin
   ddeSize := sizeof (DWORD) + Values.count * sizeof (TValueData);
   for i := 0 to Values.count - 1 do
   begin
-    err := RegQueryValueEx (CurrentKey, PChar (Values [i]), Nil, Nil, Nil, @cbData);
-    if (Values [i] = '') and (err = ERROR_FILE_NOT_FOUND) then
+    err := RegQueryValueEx (CurrentKey, PChar (Values[i]), Nil, Nil, Nil, @cbData);
+    if (Values[i] = '') and (err = ERROR_FILE_NOT_FOUND) then
       cbData := 0
     else
       if err <> ERROR_SUCCESS then
-        raise EExRegistryException.Create (err, 'Unable to get value info');
-    Inc (ddeSize, DWORD (Length (Values [i])) + 1 + cbData)
+        raise EExRegistryException.Create(err, 'Unable to get value info');
+    Inc(ddeSize, DWORD (Length (Values[i])) + 1 + cbData)
   end;
 
   ddeHandle := GlobalAlloc (GMEM_MOVEABLE, ddeSize);
   try
     if cfText in fmt then
       StartExport;
-    ddeBuf := GlobalLock (ddeHandle);
+    ddeBuf := GlobalLock(ddeHandle);
     try
       ddeBufPos := 0;
       PDWORD (ddeBuf)^ := Values.count;
-      Inc (ddeBufPos, sizeof (DWORD));
+      Inc(ddeBufPos, sizeof (DWORD));
 
       for i := 0 to Values.count - 1 do
       begin
-        pValue := PValueData (ddeBuf + ddeBufPos);
-        Inc (ddeBufPos, sizeof (TValueData));
+        pValue := PValueData(ddeBuf + ddeBufPos);
+        Inc(ddeBufPos, sizeof (TValueData));
         pName := ddeBuf + ddeBufPos;
-        Move (PChar (Values [i])^, pName^, Length (Values [i]) + 1);
-        Inc (ddeBufPos, Length (Values [i]) + 1);
+        Move(PChar (Values[i])^, pName^, Length (Values[i]) + 1);
+        Inc(ddeBufPos, Length (Values[i]) + 1);
         pData := ddeBuf + ddeBufPos;
 
         pValue^.dataLen := ddeSize - ddeBufPos;
 
-        err := RegQueryValueEx (CurrentKey, PChar (Values [i]), Nil, @pValue^.valueType, PBYTE (ddeBuf + ddeBufPos), @pValue^.dataLen);
-        if not ((Values [i] = '') and (err = ERROR_FILE_NOT_FOUND)) then
+        err := RegQueryValueEx (CurrentKey, PChar (Values[i]), Nil, @pValue^.valueType, PBYTE (ddeBuf + ddeBufPos), @pValue^.dataLen);
+        if not ((Values[i] = '') and (err = ERROR_FILE_NOT_FOUND)) then
         begin
           if err <> ERROR_SUCCESS then
-            raise EExRegistryException.Create (err, 'Unable to query value info.');
-          Inc (ddeBufPos, pValue^.dataLen);
+            raise EExRegistryException.Create(err, 'Unable to query value info.');
+          Inc(ddeBufPos, pValue^.dataLen);
           if cfText in fmt then
             ExportProc ('', pName, pValue^.valueType, pData, pValue^.dataLen)
 
@@ -262,16 +262,16 @@ begin
           pValue^.dataLen := 0
       end
     finally
-      GlobalUnlock (ddeHandle);
+      GlobalUnlock(ddeHandle);
       txt := EndExport
     end;
     Clipboard.Open;
     try
       if cfRegEdt in fmt then
-        Clipboard.SetAsHandle (CF_VALUES, ddeHandle)
+        Clipboard.SetAsHandle(CF_VALUES, ddeHandle)
       else
       begin
-        GlobalFree (ddeHandle);
+        GlobalFree(ddeHandle);
         ddeHandle := 0
       end;
 
@@ -282,7 +282,7 @@ begin
     end;
   except
     if ddeHandle <> 0 then
-      GlobalFree (ddeHandle);
+      GlobalFree(ddeHandle);
     raise
   end
 end;
@@ -293,7 +293,7 @@ var
   ddeHandle: THandle;
   ddeBuf: PChar;
 
-  function PasteKey (keyData: PKeyData; destKey: HKEY): DWORD;
+  function PasteKey(keyData: PKeyData; destKey: HKEY): DWORD;
   var
     err, disposition: DWORD;
     k: HKEY;
@@ -303,14 +303,14 @@ var
     len: DWORD;
     pName, pData, pkName, pkClass: PChar;
   begin
-    result := sizeof (TKeyData);
-    pkName := PChar (keyData) + result;
+    Result := sizeof (TKeyData);
+    pkName := PChar (keyData) + Result;
     pkClass := pkName + lstrlen (pkName) + 1;
-    Inc (result, lstrlen (pkName) + lstrlen (pkClass) + 2);
+    Inc(Result, lstrlen (pkName) + lstrlen (pkClass) + 2);
     err := RegCreateKeyEx (destKey, pkName, 0, pkClass, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, Nil, k, @disposition);
     if err = ERROR_SUCCESS then
     try
-      valueData := PValueData (PChar (keyData) + keyData^.valuesOffset);
+      valueData := PValueData(PChar (keyData) + keyData^.valuesOffset);
       if keyData^.noValues > 0 then
         for i := 0 to keyData^.noValues - 1 do
         begin
@@ -318,37 +318,37 @@ var
           pData := pName + lstrlen (pName) + 1;
           err := RegSetValueEx (k, pName, 0, valueData^.valueType, pData, valueData^.dataLen);
           if err <> ERROR_SUCCESS then
-            raise EExRegistryException.Create (err, 'Unable to set value');
+            raise EExRegistryException.Create(err, 'Unable to set value');
           len := sizeof (TValueData) + DWORD (lstrlen (pName)) + 1 + valueData^.dataLen;
-          valueData := PValueData (PChar (valueData) + len);
-          Inc (result, len);
+          valueData := PValueData(PChar (valueData) + len);
+          Inc(Result, len);
         end;
 
-      subKeyData := PKeyData (PChar (keyData) + keyData^.subKeysOffset);
+      subKeyData := PKeyData(PChar (keyData) + keyData^.subKeysOffset);
       if keyData^.noSubkeys > 0 then
         for i := 0 to keyData^.noSubkeys - 1 do
         begin
-          len := PasteKey (subKeyData, k);
-          subKeyData := PKeyData (PChar (subKeyData) + len);
-          Inc (result, len);
+          len := PasteKey(subKeyData, k);
+          subKeyData := PKeyData(PChar (subKeyData) + len);
+          Inc(Result, len);
         end
     finally
-      RegCloseKey (k)
+      RegCloseKey(k)
     end
     else
-      raise EExRegistryException.Create (err, 'Unable to open key')
+      raise EExRegistryException.Create(err, 'Unable to open key')
   end;
 
 begin
-  ddeHandle := Clipboard.GetAsHandle (CF_HIVE);
+  ddeHandle := Clipboard.GetAsHandle(CF_HIVE);
   if ddeHandle <> INVALID_HANDLE_VALUE then
   begin
-    ddeBuf := GlobalLock (ddeHandle);
+    ddeBuf := GlobalLock(ddeHandle);
     try
-      PasteKey (PKeyData (ddeBuf), CurrentKey);
-      result := ddeBuf + sizeof (TKeyData);
+      PasteKey(PKeyData(ddeBuf), CurrentKey);
+      Result := ddeBuf + sizeof (TKeyData);
     finally
-      GlobalUnlock (ddeHandle)
+      GlobalUnlock(ddeHandle)
     end
   end
 end;
@@ -365,34 +365,34 @@ var
 begin
   if Assigned(Values) then
     Values.Clear;
-  ddeHandle := Clipboard.GetAsHandle (CF_VALUES);
+  ddeHandle := Clipboard.GetAsHandle(CF_VALUES);
   if ddeHandle <> INVALID_HANDLE_VALUE then
   begin
-    ddeBuf := GlobalLock (ddeHandle);
+    ddeBuf := GlobalLock(ddeHandle);
     try
       p := ddeBuf;
       count := PDWORD (p)^;
-      Inc (p, sizeof (DWORD));
+      Inc(p, sizeof (DWORD));
       ddeBufPos := 0;
 
       for i := 0 to count - 1 do
       begin
-        value := PValueData (p + ddeBufPos);
-        Inc (ddeBufPos, sizeof (TValueData));
+        value := PValueData(p + ddeBufPos);
+        Inc(ddeBufPos, sizeof (TValueData));
         pName := p + ddeBufPos;
 
-        Inc (ddeBufPos, lstrlen (pName) + 1);
+        Inc(ddeBufPos, lstrlen (pName) + 1);
         pData := p + ddeBufPos;
-        Inc (ddeBufPos, value^.dataLen);
+        Inc(ddeBufPos, value^.dataLen);
         err := RegSetValueEx (CurrentKey, pName, 0, value^.valueType, pData, value^.dataLen);
         if err <> ERROR_SUCCESS then
-          raise EExRegistryException.Create (err, 'Unable to set value');
+          raise EExRegistryException.Create(err, 'Unable to set value');
         if Assigned(Values) then
           Values.Add (pName);
       end
 
     finally
-      GlobalUnlock (ddeHandle)
+      GlobalUnlock(ddeHandle)
     end
   end
 end;

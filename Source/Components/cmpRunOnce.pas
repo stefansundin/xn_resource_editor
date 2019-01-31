@@ -9,7 +9,7 @@ const
   WM_PARAMS = WM_USER + $200;
 
 type
-  TOnOtherInstance = procedure (Sender: TObject; ParamCount: DWORD; ParamStr: array of string) of object;
+  TOnOtherInstance = procedure(Sender: TObject; ParamCount: DWORD; ParamStr: array of string) of object;
 
   TRunOnce = class(TComponent)
   private
@@ -28,7 +28,7 @@ type
   protected
     procedure Loaded; override;
   public
-    constructor Create (AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   published
     property OnOtherInstance: TOnOtherInstance read FOnOtherInstance write FOnOtherInstance;
@@ -56,26 +56,26 @@ end;
 
 constructor TRunOnce.Create(AOwner: TComponent);
 begin
-  inherited Create (AOwner);
+  inherited Create(AOwner);
 end;
 
 destructor TRunOnce.Destroy;
 begin
   if Assigned (FObjectInstance) then
-    Classes.FreeObjectInstance (FObjectInstance);
+    Classes.FreeObjectInstance(FObjectInstance);
 
 
   if FMutex <> 0 then
   begin
     ReleaseMutex (FMutex);
-    CloseHandle (FMutex)
+    CloseHandle(FMutex)
   end;
   inherited;
 end;
 
 function EnumWindowsProc (hwnd: HWND; lParam: LPARAM): BOOL; stdcall;
 begin
-  Result := not TRunOnce (lParam).CheckOtherApp (hwnd)
+  Result := not TRunOnce(lParam).CheckOtherApp (hwnd)
 end;
 
 procedure TRunOnce.OwnerWindowProc (var msg: TMessage);
@@ -104,17 +104,17 @@ begin
   inherited;
   if not (csDesigning in ComponentState) and (Owner is TForm) then
   begin
-    FName := UpperCase (ExtractFileName (Application.Exename));
+    FName := UpperCase(ExtractFileName(Application.Exename));
     FMutex := CreateMutex (Nil, True, PChar (FName));
     if GetLastError <>  0 then
     begin
-      CloseHandle (FMutex);
+      CloseHandle(FMutex);
       FMutex := 0
     end;
-    FUniqueMessage := RegisterWindowMessage (PChar (FName));
-    FParamsMessage := RegisterWindowMessage ('WoozleRunOnce');
+    FUniqueMessage := RegisterWindowMessage(PChar (FName));
+    FParamsMessage := RegisterWindowMessage('WoozleRunOnce');
 
-    FObjectInstance := Classes.MakeObjectInstance (OwnerWindowProc);
+    FObjectInstance := Classes.MakeObjectInstance(OwnerWindowProc);
     FOldOwnerWindowProc := TfnWndProc (SetWindowLong (TForm (Owner).Handle, GWL_WNDPROC, Integer (FObjectInstance)));
 
     if FMutex = 0 then
@@ -126,29 +126,29 @@ begin
       begin
         paramSize := 1;
         for i := 0 to ParamCount do
-          Inc (paramSize, 1 + Length (ParamStr (i)));
+          Inc(paramSize, 1 + Length (ParamStr (i)));
         mapHandle := CreateFileMapping ($ffffffff, Nil, PAGE_READWRITE, 0, 65536, Nil);
         if mapHandle <> 0 then
         try
-          paramPtr := MapViewOfFile (mapHandle, FILE_MAP_WRITE, 0, 0, paramSize);
+          paramPtr := MapViewOfFile(mapHandle, FILE_MAP_WRITE, 0, 0, paramSize);
           if paramPtr <> Nil then
           try
             p := paramPtr;
             for i := 0 to ParamCount do
             begin
-              lstrcpy (p, PChar (ParamStr (i)));
-              Inc (p, Length (ParamStr (i)) + 1)
+              lstrcpy(p, PChar (ParamStr (i)));
+              Inc(p, Length (ParamStr (i)) + 1)
             end;
             p^ := #0;
           finally
-            UnmapViewOfFile (paramPtr);
+            UnmapViewOfFile(paramPtr);
           end
           else
             RaiseLastOSError;
 
-          SendMessage (FOtherWindowHandle, FParamsMessage, mapHandle, GetCurrentProcessID);
+          SendMessage(FOtherWindowHandle, FParamsMessage, mapHandle, GetCurrentProcessID);
         finally
-          CloseHandle (mapHandle);
+          CloseHandle(mapHandle);
         end
         else
           RaiseLastOSError;
@@ -175,9 +175,9 @@ begin
   remoteProcessHandle := OpenProcess (PROCESS_DUP_HANDLE, false, remoteProcessID);
   if remoteProcessHandle <> 0 then
   try
-    if DuplicateHandle (remoteProcessHandle, remoteMemHandle, GetCurrentProcess, @memHandle, FILE_MAP_READ, False, 0) then
+    if DuplicateHandle(remoteProcessHandle, remoteMemHandle, GetCurrentProcess, @memHandle, FILE_MAP_READ, False, 0) then
     try
-      paramPtr := MapViewOfFile (memHandle, FILE_MAP_READ, 0, 0, 65536);
+      paramPtr := MapViewOfFile(memHandle, FILE_MAP_READ, 0, 0, 65536);
       if paramPtr <> Nil then
       try
         if Assigned (FOnOtherInstance) and not (csDestroying in ComponentState) then
@@ -186,33 +186,33 @@ begin
           paramCount := 0;
           while p^ <> #0 do
           begin
-            Inc (paramCount);
-            Inc (p, lstrlen (p) + 1)
+            Inc(paramCount);
+            Inc(p, lstrlen (p) + 1)
           end;
           SetLength (params, paramCount);
           p := paramPtr;
           i := 0;
           while p^ <> #0 do
           begin
-            params [i] := p;
-            Inc (p, lstrlen (p) + 1);
-            Inc (i);
+            params[i] := p;
+            Inc(p, lstrlen (p) + 1);
+            Inc(i);
           end;
 
-          OnOtherInstance (self, paramCount - 1, params)
+          OnOtherInstance(self, paramCount - 1, params)
         end
       finally
-        UnmapViewOfFile (paramPtr)
+        UnmapViewOfFile(paramPtr)
       end
       else
         RaiseLastOSError
     finally
-      CloseHandle (memHandle);
+      CloseHandle(memHandle);
     end
     else
       RaiseLastOSError
   finally
-    CloseHandle (remoteProcessHandle)
+    CloseHandle(remoteProcessHandle)
   end
   else
     RaiseLastOSError;

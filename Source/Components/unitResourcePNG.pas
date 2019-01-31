@@ -13,10 +13,10 @@ type
     function GetHeight: Integer; override;
     function GetPixelFormat: TPixelFormat; override;
     function GetWidth: Integer; override;
-    class function SupportsData (Size : Integer; data : Pointer) : Boolean; override;
+    class function SupportsData(Size : Integer; data : Pointer) : Boolean; override;
   public
     class function GetBaseType : WideString; override;
-    procedure GetImage (picture : TPicture); override;
+    procedure GetImage(picture : TPicture); override;
   end;
 
 
@@ -37,7 +37,7 @@ end;
 procedure TPngResourceDetails.GetImage(picture: TPicture);
 begin
   picture.graphic := TPngObject.Create;
-  data.Seek (0, soFromBeginning);
+  data.Seek(0, soFromBeginning);
   TPngObject (picture.graphic).LoadFromStream (data)
 end;
 
@@ -57,7 +57,7 @@ var
   p : PChar;
 begin
   p := PChar (data);
-  Inc (p);
+  Inc(p);
 
   Result := (StrLIComp (p, 'PNG', 3) = 0);
 end;

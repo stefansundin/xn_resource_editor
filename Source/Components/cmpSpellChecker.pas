@@ -40,7 +40,7 @@ type
     FProcessInformation: TProcessInformation;
     FHInputWrite, FHErrorRead, FHOutputRead: THandle;
   public
-    constructor Create (const APath, ACmd: string; ACodePage: Integer);
+    constructor Create(const APath, ACmd: string; ACodePage: Integer);
     destructor Destroy; override;
     procedure SpellCommand (const cmd: string);
     function GetResponse: string;
@@ -62,7 +62,7 @@ type
     FLang: Integer;
     FName: string;
   public
-    constructor Create (const APath, AName: string; ACodePage, ALang: Integer; const ACmd: string);
+    constructor Create(const APath, AName: string; ACodePage, ALang: Integer; const ACmd: string);
 
     property CodePage: Integer read FCodePage;
     property Cmd: string read FCmd;      // Cmd to send to ISpell.exe
@@ -86,14 +86,14 @@ type
     procedure Initialize;
   protected
   public
-    constructor Create (AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
     class function LanguageCount: Integer;
-    class function Language (idx: Integer): TISpellLanguage;
+    class function Language(idx: Integer): TISpellLanguage;
 
     function CheckWord (const ws: WideString; Suggestions: TStrings = Nil): Boolean;
-    function Check (const ws: WideString; startPos: Integer; var selStart, selEnd: Integer; Suggestions: TStrings = Nil; SkipFirstLine: Boolean = False): Boolean;
+    function Check(const ws: WideString; startPos: Integer; var selStart, selEnd: Integer; Suggestions: TStrings = Nil; SkipFirstLine: Boolean = False): Boolean;
     procedure Add (const word: WideString);
     property LanguageIdx: Integer read FLanguageIdx write SetLanguageIdx default -1;
     property QuoteChars: string read FQuoteChars write FQuoteChars;
@@ -139,7 +139,7 @@ end;
  | word, or True if there aren't any misspelt words.                    |
  |                                                                      |
  | If it returns false, also fill in the selStart and selEnd variables  |
- | to indicate the (1-based) position and length of the misspelt        |
+ | to indicate the(1-based) position and length of the misspelt        |
  | word, and fil in the optional list of Suggestions.                   |
  |                                                                      |
  | Parameters:                                                          |
@@ -164,8 +164,8 @@ var
   begin
     if sw <> -1 then
     begin
-      result := CheckWord (Copy (ws, sw, ew - sw + 1), Suggestions);
-      if not result then
+      Result := CheckWord (Copy(ws, sw, ew - sw + 1), Suggestions);
+      if not Result then
       begin
         selStart := sw;
         selEnd := ew
@@ -173,14 +173,14 @@ var
       sw := -1
     end
     else
-      result := True;
+      Result := True;
   end;
 
 begin
   l := Length (ws);
   if l = 0 then
   begin
-    result := True;
+    Result := True;
     exit
   end;
 
@@ -193,23 +193,23 @@ begin
   if SkipFirstLine then
   begin
     ch := ' ';
-    while (p <= l) do
+    while(p <= l) do
     begin
-      ch := ws [p];
+      ch := ws[p];
       if (ch = #$a) or (ch = #$d) then
         break
       else
-        Inc (p)
+        Inc(p)
     end;
 
-    while (p <= l) and ((ch = #$a)or (ch = #$d)) do
+    while(p <= l) and ((ch = #$a)or (ch = #$d)) do
     begin
-      Inc (p);
-      ch := ws [p]
+      Inc(p);
+      ch := ws[p]
     end;
   end;
 
-  result := True;
+  Result := True;
 
   InQuoteLine := False;
   lp := p;
@@ -217,22 +217,22 @@ begin
   // If the StartPos wasn't at the beginning, detect
   // whether we're in the middle of a quote line.
 
-  while (lp > 1) do
+  while(lp > 1) do
   begin
-    ch := ws [lp - 1];
+    ch := ws[lp - 1];
     if (ch = #$d) or (ch = #$a) then
     begin
-      InQuoteLine := Pos (ws [lp], QuoteChars) > 0;
+      InQuoteLine := Pos (ws[lp], QuoteChars) > 0;
       break
     end
     else
-      Dec (lp)
+      Dec(lp)
   end;
 
                                 // Find each word
-  while result and (p <= l) do
+  while Result and (p <= l) do
   begin
-    ch := ws [p];
+    ch := ws[p];
 
         // Keep track of 'start of line' so we can
         // detect quoted lines.
@@ -251,14 +251,14 @@ begin
     else
       if sw <> -1 then
         if not InQuoteLine then
-          result := DoCheck       // End of word found.  Check it.
+          Result := DoCheck       // End of word found.  Check it.
         else
           sw := -1;
-    Inc (p);
-    Inc (lp);
+    Inc(p);
+    Inc(lp);
   end;
-  if result and (sw <> -1) and not InQuoteLine then
-    result := DoCheck;          // Check final word
+  if Result and (sw <> -1) and not InQuoteLine then
+    Result := DoCheck;          // Check final word
 end;
 
 (*----------------------------------------------------------------------*
@@ -284,14 +284,14 @@ begin
   begin                         // Send word to ispell.exe
     FSpeller.SpellCommand(WideStringToString (ws, FSpeller.CodePage));
     resp := FSpeller.GetResponse;
-    result := resp = '';        // If blank line received the word was
+    Result := resp = '';        // If blank line received the word was
                                 // spelt OK.
     if Assigned (Suggestions) then
     begin
       Suggestions.BeginUpdate;
       Suggestions.Clear;
       try
-        if (not result) then
+        if (not Result) then
         begin                   // Misspelt word.  Parse the Suggestions
           SplitString (':', resp);
 
@@ -304,7 +304,7 @@ begin
     end
   end
   else
-    result := True;
+    Result := True;
 end;
 
 (*----------------------------------------------------------------------*
@@ -339,7 +339,7 @@ begin
 
   FreeAndNil (FSpeller);
   if (FLanguageIdx >= 0) and Assigned (gISpellLanguages) and (FLanguageIdx < gISpellLanguages.Count) then
-    with TISpellLanguage (gISpellLanguages [FLanguageIdx]) do
+    with TISpellLanguage(gISpellLanguages[FLanguageIdx]) do
       FSpeller := TSpeller.Create(Path, Cmd, CodePage);
 end;
 
@@ -351,17 +351,17 @@ end;
 class function TSpellChecker.Language(idx: Integer): TISpellLanguage;
 begin
   if (idx >= 0) and (idx < gISpellLanguages.Count) then
-    result := TISpellLanguage (gISpellLanguages [idx])
+    Result := TISpellLanguage(gISpellLanguages[idx])
   else
-    result := nil
+    Result := nil
 end;
 
 class function TSpellChecker.LanguageCount: Integer;
 begin
   if Assigned (gISpellLanguages) then
-    result := gISpellLanguages.Count
+    Result := gISpellLanguages.Count
   else
-    result := 0
+    Result := 0
 end;
 
 procedure TSpellChecker.SetLanguageIDx(const Value: Integer);
@@ -415,38 +415,38 @@ begin
   hErrorWrite := 0;
 
   try
-    if not CreatePipe (hOutputReadTmp, hOutputWrite, @sa, 0) then
+    if not CreatePipe(hOutputReadTmp, hOutputWrite, @sa, 0) then
       RaiseLastOSError;
 
-    if not CreatePipe (hErrorReadTmp, hErrorWrite, @sa, 0) then
+    if not CreatePipe(hErrorReadTmp, hErrorWrite, @sa, 0) then
       RaiseLastOSError;
 
-    if not CreatePipe (hInputRead, hInputWriteTmp, @sa, 0) then
+    if not CreatePipe(hInputRead, hInputWriteTmp, @sa, 0) then
       RaiseLastOSError;
 
-    if not DuplicateHandle (GetCurrentProcess, hOutputReadTmp, GetCurrentProcess, @hOutputRead, 0, FALSE, DUPLICATE_SAME_ACCESS) then
+    if not DuplicateHandle(GetCurrentProcess, hOutputReadTmp, GetCurrentProcess, @hOutputRead, 0, FALSE, DUPLICATE_SAME_ACCESS) then
       RaiseLastOSError;
 
-    if not DuplicateHandle (GetCurrentProcess, hErrorReadTmp, GetCurrentProcess, @hErrorRead, 0, FALSE, DUPLICATE_SAME_ACCESS) then
+    if not DuplicateHandle(GetCurrentProcess, hErrorReadTmp, GetCurrentProcess, @hErrorRead, 0, FALSE, DUPLICATE_SAME_ACCESS) then
       RaiseLastOSError;
 
-    if not DuplicateHandle (GetCurrentProcess, hInputWriteTmp, GetCurrentProcess, @hInputWrite, 0, FALSE, DUPLICATE_SAME_ACCESS) then
+    if not DuplicateHandle(GetCurrentProcess, hInputWriteTmp, GetCurrentProcess, @hInputWrite, 0, FALSE, DUPLICATE_SAME_ACCESS) then
       RaiseLastOSError;
 
-    CloseHandle (hOutputReadTmp); hOutputReadTmp := 0;
-    CloseHandle (hInputWriteTmp); hInputWriteTmp := 0;
-    CloseHandle (hErrorReadTmp);  hErrorReadTmp  := 0;
+    CloseHandle(hOutputReadTmp); hOutputReadTmp := 0;
+    CloseHandle(hInputWriteTmp); hInputWriteTmp := 0;
+    CloseHandle(hErrorReadTmp);  hErrorReadTmp  := 0;
 
   except
-    if hOutputReadTmp  <> 0 then CloseHandle (hOutputReadTmp);
-    if hInputWriteTmp  <> 0 then CloseHandle (hInputWriteTmp);
-    if hErrorReadTmp   <> 0 then CloseHandle (hErrorReadTmp);
-    if hInputRead      <> 0 then CloseHandle (hInputRead);    hInputRead   := 0;
-    if hInputWrite     <> 0 then CloseHandle (hInputWrite);   hInputWrite  := 0;
-    if hOutputRead     <> 0 then CloseHandle (hOutputRead);   hOutputRead  := 0;
-    if hOutputWrite    <> 0 then CloseHandle (hOutputWrite);  hOutputWrite := 0;
-    if hErrorRead      <> 0 then CloseHandle (hErrorRead);    hErrorRead   := 0;
-    if hErrorWrite     <> 0 then CloseHandle (hErrorWrite);   hErrorWrite  := 0;
+    if hOutputReadTmp  <> 0 then CloseHandle(hOutputReadTmp);
+    if hInputWriteTmp  <> 0 then CloseHandle(hInputWriteTmp);
+    if hErrorReadTmp   <> 0 then CloseHandle(hErrorReadTmp);
+    if hInputRead      <> 0 then CloseHandle(hInputRead);    hInputRead   := 0;
+    if hInputWrite     <> 0 then CloseHandle(hInputWrite);   hInputWrite  := 0;
+    if hOutputRead     <> 0 then CloseHandle(hOutputRead);   hOutputRead  := 0;
+    if hOutputWrite    <> 0 then CloseHandle(hOutputWrite);  hOutputWrite := 0;
+    if hErrorRead      <> 0 then CloseHandle(hErrorRead);    hErrorRead   := 0;
+    if hErrorWrite     <> 0 then CloseHandle(hErrorWrite);   hErrorWrite  := 0;
 
     raise
   end
@@ -474,7 +474,7 @@ var
   sa: TSecurityAttributes;
 begin
   FCodePage := ACodePage;
-  SetEnvironmentVariable ('HOME', PChar (APath));
+  SetEnvironmentVariable('HOME', PChar (APath));
 
   sa.nLength := sizeof (TSecurityAttributes);
   sa.lpSecurityDescriptor := Nil;
@@ -496,9 +496,9 @@ begin
     if not CreateProcess (nil, PChar (ACmd),  @sa, @sa, True, 0, nil, nil, si, FProcessInformation) then
       RaiseLastOSError;
   finally
-    CloseHandle (hOutputWrite);
-    CloseHandle (hInputRead);
-    CloseHandle (hErrorWrite);
+    CloseHandle(hOutputWrite);
+    CloseHandle(hInputRead);
+    CloseHandle(hErrorWrite);
   end;
 
   buf := GetCheckResponse;
@@ -519,11 +519,11 @@ begin
   end;
 
   try
-    if FProcessInformation.hThread <> 0 then CloseHandle (FProcessInformation.hThread);
-    if FProcessInformation.hProcess <> 0 then CloseHandle (FProcessInformation.hProcess);
-    if FHInputWrite <> 0 then CloseHandle (FHInputWrite);
-    if FHErrorRead <> 0 then CloseHandle (FHErrorRead);
-    if FHOutputRead <> 0 then CloseHandle (FHOutputRead);
+    if FProcessInformation.hThread <> 0 then CloseHandle(FProcessInformation.hThread);
+    if FProcessInformation.hProcess <> 0 then CloseHandle(FProcessInformation.hProcess);
+    if FHInputWrite <> 0 then CloseHandle(FHInputWrite);
+    if FHErrorRead <> 0 then CloseHandle(FHErrorRead);
+    if FHOutputRead <> 0 then CloseHandle(FHOutputRead);
   except on E: Exception do
     TerminateProcess(FProcessInformation.hProcess,0);
   end;
@@ -542,25 +542,25 @@ var
  // ReadPipe
  //
  // Read from a pipe.  If there's nothing in the pipe return an empty string
-  function ReadPipe (pipeHandle: THandle; var s: string): Boolean;
+  function ReadPipe(pipeHandle: THandle; var s: string): Boolean;
   var
     avail: DWORD;
   begin
-    if not PeekNamedPipe (pipeHandle, nil, 0, nil, @avail, nil) then
+    if not PeekNamedPipe(pipeHandle, nil, 0, nil, @avail, nil) then
       RaiseLastOSError;
 
     if avail > 0 then
     begin
       SetLength (s, avail + 512);
 
-      if not ReadFile (pipeHandle, s [1], avail + 512, avail, nil) then
+      if not ReadFile(pipeHandle, s[1], avail + 512, avail, nil) then
         RaiseLastOSError;
 
       SetLength (s, avail);
-      result := True
+      Result := True
     end
     else
-      result := False
+      Result := False
   end;
 
 begin { GetCheckResponse }
@@ -568,21 +568,21 @@ begin { GetCheckResponse }
   Sleep (100);
   repeat
         { Try stdout first }
-    if ReadPipe (FHOutputRead, result) then
+    if ReadPipe(FHOutputRead, Result) then
       break;
 
       {  Try stderr}
-    if ReadPipe (FHErrorRead, result) then
-      raise EISpell.Create (result);
+    if ReadPipe(FHErrorRead, Result) then
+      raise EISpell.Create(Result);
 
     Sleep (100);
-    Dec (l)
+    Dec(l)
   until l = 0;
 
   if l = 0 then
-    result := ''; // raise EISpell.Create ('Timeout in ISpell');
+    Result := ''; // raise EISpell.Create('Timeout in ISpell');
 
-  result := Trim (result);
+  Result := Trim (Result);
 end;
 
 (*----------------------------------------------------------------------*
@@ -594,11 +594,11 @@ function TSpeller.GetResponse: string;
 var
   avail: DWORD;
 begin
-  SetLength (result, 2048);
-  if ReadFile (FHOutputRead, result [1], 2048, avail, nil) then
+  SetLength (Result, 2048);
+  if ReadFile(FHOutputRead, Result [1], 2048, avail, nil) then
   begin
-    SetLength (result, avail);
-    result := Trim (result)
+    SetLength (Result, avail);
+    Result := Trim (Result)
   end
   else
     raiseLastOSError;
@@ -613,7 +613,7 @@ procedure TSpeller.SpellCommand(const cmd: string);
 var
   n: DWORD;
 begin
-  WriteFile (FHInputWrite, (cmd + #13#10) [1], Length (cmd) + 2, n, Nil);
+  WriteFile(FHInputWrite, (cmd + #13#10) [1], Length (cmd) + 2, n, Nil);
 end;
 
 procedure InitISpell;
@@ -625,25 +625,25 @@ var
   i: Integer;
   sectionLanguage: Integer;
 
-  function SpellerForLocale (locale: Integer): Integer;
+  function SpellerForLocale(locale: Integer): Integer;
   var
     i: Integer;
   begin
-    result := -1;
+    Result := -1;
 
     for i := 0 to gISpellLanguages.Count - 1 do
-      if TISpellLanguage (gISpellLanguages [i]).Lang = locale then
+      if TISpellLanguage(gISpellLanguages[i]).Lang = locale then
       begin
-        result := i;
+        Result := i;
         break
       end
   end;
 
 begin
-  if CoInitialize (nil) = S_OK then
+  if CoInitialize(nil) = S_OK then
     gCoInitialize := True;
   sections := Nil;
-  reg := TDefRegistry.Create (KEY_READ);
+  reg := TDefRegistry.Create(KEY_READ);
   try
     reg.RootKey := HKEY_LOCAL_MACHINE;
     if reg.OpenKey('\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ispell.exe', False) then
@@ -660,7 +660,7 @@ begin
                                 // Enumerate the subdirectories of the ISpell
                                 // directory.  Each one will containe a language
         repeat
-          if ((f.Attr and faDirectory) <> 0) and (Copy (f.Name, 1, 1) <> '.') then
+          if ((f.Attr and faDirectory) <> 0) and (Copy(f.Name, 1, 1) <> '.') then
             with TInIFile.Create(ISpellPath + f.Name + '\ISpell.ini') do
             try
               ReadSections (sections);
@@ -669,11 +669,11 @@ begin
               begin
                                 // Read the language settings from the .INI file
                                 // in the language directory
-                s := sections [i];
+                s := sections[i];
                 if s = '' then name := f.Name else name := s;
 
                 cmd := ReadString (s, 'Cmd', '');
-                cmd := StringReplace (cmd, '%UniRed%',path, [rfReplaceAll, rfIgnoreCase]);
+                cmd := StringReplace(cmd, '%UniRed%',path, [rfReplaceAll, rfIgnoreCase]);
 
                 if not Assigned (gISpellLanguages) then
                   gISpellLanguages := TObjectList.Create;
@@ -683,7 +683,7 @@ begin
                 gISpellLanguages.Add(TISpellLanguage.Create(
                   ExcludeTrailingPathDelimiter (ISpellPath),
                   name,
-                  MIMECharsetNameToCodePage (ReadString (s, 'Charset', 'us-ascii')),
+                  MIMECharsetNameToCodePage(ReadString (s, 'Charset', 'us-ascii')),
                   sectionLanguage,
                   cmd))
 
@@ -693,19 +693,19 @@ begin
             end
         until FindNext (f) <> 0
       finally
-        FindClose (f)
+        FindClose(f)
       end;
 
-      gDefaultISpellLanguage := SpellerForLocale (GetThreadLocale);
+      gDefaultISpellLanguage := SpellerForLocale(GetThreadLocale);
 
       if gDefaultISpellLanguage = -1 then
-        gDefaultISpellLanguage := SpellerForLocale (GetUserDefaultLCID);
+        gDefaultISpellLanguage := SpellerForLocale(GetUserDefaultLCID);
 
       if gDefaultISpellLanguage = -1 then
-        gDefaultISpellLanguage := SpellerForLocale (GetSystemDefaultLCID);
+        gDefaultISpellLanguage := SpellerForLocale(GetSystemDefaultLCID);
 
       if gDefaultISpellLanguage = -1 then
-        gDefaultISpellLanguage := SpellerForLocale (1033); // US English
+        gDefaultISpellLanguage := SpellerForLocale(1033); // US English
 
       if (gDefaultISpellLanguage = -1) and (gISpellLanguages.Count > 0) then
         gDefaultISpellLanguage := 0

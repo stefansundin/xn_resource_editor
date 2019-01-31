@@ -10,9 +10,9 @@ uses
 type
   TOnDuplicates = (duCopy, duAsk, duAbort);
   TCopyMode = (cmCopy, cmMove, cmNothing);
-  TOnCopyFile = procedure (sender: TObject; const srcfileName, dstFileName: string; fileSize: Integer) of object;
-  TForEachProc = procedure (const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean) of object;
-  TOnException = procedure (sender: TObject; e: Exception) of object;
+  TOnCopyFile = procedure(sender: TObject; const srcfileName, dstFileName: string; fileSize: Integer) of object;
+  TForEachProc = procedure(const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean) of object;
+  TOnException = procedure(sender: TObject; e: Exception) of object;
   TFileCopier = class (TComponent)
   private
     FCopierThread: TThread;
@@ -42,8 +42,8 @@ type
     FCheckedDrive: Boolean;
     FOnException: TOnException;
 
-    procedure AnalyzeFile (const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean);
-    procedure CopyFile (const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean);
+    procedure AnalyzeFile(const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean);
+    procedure CopyFile(const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean);
     procedure TidyDir (const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean);
     function ForEach (const Mask, destPath: string; proc, proc1: TForEachProc): Boolean;
     procedure AnalyzeFiles (const sourceFiles: string);
@@ -61,7 +61,7 @@ type
     procedure SetSourceFiles(const Value: TStrings);
 
   public
-    constructor Create (AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Start;
     procedure Cancel;
@@ -104,12 +104,12 @@ type
   protected
     procedure Execute; override;
   public
-    constructor Create (AOwner: TFileCopier);
+    constructor Create(AOwner: TFileCopier);
   end;
 
   TCopierProgressThread = class (TThread)
   public
-    constructor Create (AOwner: TFileCopier);
+    constructor Create(AOwner: TFileCopier);
   end;
 
 { TFileCopier }
@@ -119,11 +119,11 @@ var
   destFileName: string;
   fa: Integer;
 begin
-  Inc (FAnalyzedFileCount);
+  Inc(FAnalyzedFileCount);
   FAnalyzedFileSize := FAnalyzedFileSize + sr.Size;
 
   // Check we can open the source file for reading.
-  with TFileStream.Create (Directory + sr.Name, fmOpenRead or fmShareDenyNone) do
+  with TFileStream.Create(Directory + sr.Name, fmOpenRead or fmShareDenyNone) do
     Free;
 
   if not FCheckedDrive then
@@ -131,17 +131,17 @@ begin
                 // Check the dest drive or share is valid
     FCheckedDrive := True;
     destFileName := dest + sr.Name;
-    fa := FileGetAttr (ExtractFileDrive (destFileName));
+    fa := FileGetAttr (ExtractFileDrive(destFileName));
     if fa = -1 then
       raise Exception.Create('Destination drive or share not valid');
 
                 // Check we can create files on the dest share or drive
-    destFileName := ExtractFileDrive (destFilename) + 'copier.woozle.1122';
+    destFileName := ExtractFileDrive(destFilename) + 'copier.woozle.1122';
     if FileExists (destFileName) then
-      DeleteFile (destFileName);
+      DeleteFile(destFileName);
     with TFileStream.Create(destFileName, fmCreate or fmShareDenyNone) do
       Free;
-    if not DeleteFile (destFileName) then
+    if not DeleteFile(destFileName) then
       RaiseLastOSError;
   end;
 
@@ -178,7 +178,7 @@ begin
     FSourceMask := sourceFiles
   else
   begin
-    st := Copy (sourceFiles, Length (sourceFiles), 1);
+    st := Copy(sourceFiles, Length (sourceFiles), 1);
     if (st = '\') or (st = ':') then
       FSourceMask := sourceFiles + '*.*'
   end;
@@ -186,9 +186,9 @@ begin
   FDestDir := FDestFiles;
   err := FileGetAttr (FDestDir);
   if (err <> -1) and ((err and faDirectory) = 0) then
-    raise EFileCopier.Create ('Destination must be a directory');
+    raise EFileCopier.Create('Destination must be a directory');
 
-  st := Copy (FDestDir, Length (FDestDir), 1);
+  st := Copy(FDestDir, Length (FDestDir), 1);
   if (st = '\') or (st = ':') then
     FDestDir := FDestDir
   else
@@ -202,7 +202,7 @@ begin
     if (err and faDirectory) <> 0 then
     begin
       FSourceMask := sourceFiles + '\*.*';
-      FDestDir := FDestDir + ExtractFileName (sourceFiles) + '\'
+      FDestDir := FDestDir + ExtractFileName(sourceFiles) + '\'
     end
   end;
 
@@ -213,16 +213,16 @@ begin
     if FindFirst (sourceFiles, faAnyFile, sr) = 0 then
     try
       Continue := True;
-      AnalyzeFile (ExtractFilePath (sourceFiles), FDestDir, sr, Continue)
+      AnalyzeFile(ExtractFilePath (sourceFiles), FDestDir, sr, Continue)
     finally
-      FindClose (sr)
+      FindClose(sr)
     end
     else
       raise EFOpenError.CreateFmt (rstFileNotFound, [sourceFiles]);
 
-  if (CopyMode = cmCopy) or (ExtractFileDrive (sourceFiles) <> ExtractFileDrive (FDestDir)) then
+  if (CopyMode = cmCopy) or (ExtractFileDrive(sourceFiles) <> ExtractFileDrive(FDestDir)) then
   begin
-    SysUtils.GetDiskFreeSpaceEx (PChar (ExtractFileDrive (FDestDir)), available, a1, @a2);
+    SysUtils.GetDiskFreeSpaceEx (PChar (ExtractFileDrive(FDestDir)), available, a1, @a2);
 
     if FAnalyzedFileSize + FLeeway > available then
       raise EFileCopier.Create('Not enough space to copy files')
@@ -268,7 +268,7 @@ begin
     FSourceMask := sourceFiles
   else
   begin
-    st := Copy (sourceFiles, Length (sourceFiles), 1);
+    st := Copy(sourceFiles, Length (sourceFiles), 1);
     if (st = '\') or (st = ':') then
       FSourceMask := sourceFiles + '*.*'
   end;
@@ -276,9 +276,9 @@ begin
   FDestDir := FDestFiles;
   err := FileGetAttr (FDestDir);
   if (err <> -1) and ((err and faDirectory) = 0) then
-    raise EFileCopier.Create ('Destination must be a directory');
+    raise EFileCopier.Create('Destination must be a directory');
 
-  st := Copy (FDestDir, Length (FDestDir), 1);
+  st := Copy(FDestDir, Length (FDestDir), 1);
   if (st = '\') or (st = ':') then
     FDestDir := FDestDir
   else
@@ -292,7 +292,7 @@ begin
     if (err and faDirectory) <> 0 then
     begin
       FSourceMask := sourceFiles + '\*.*';
-      FDestDir := FDestDir + ExtractFileName (sourceFiles) + '\'
+      FDestDir := FDestDir + ExtractFileName(sourceFiles) + '\'
     end
   end;
 
@@ -302,9 +302,9 @@ begin
     if FindFirst (sourceFiles, faAnyFile, sr) = 0 then
     try
       Continue := True;
-      CopyFile (ExtractFilePath (sourceFiles), FDestDir, sr, Continue)
+      CopyFile(ExtractFilePath (sourceFiles), FDestDir, sr, Continue)
     finally
-      FindClose (sr)
+      FindClose(sr)
     end
 end;
 
@@ -334,7 +334,7 @@ end;
 
 procedure TFileCopier.DoMoveFile;
 begin
-  if not SameText (ExtractFileDrive (FCurrentFileName), ExtractFileDrive (FDestFileName)) then
+  if not SameText (ExtractFileDrive(FCurrentFileName), ExtractFileDrive(FDestFileName)) then
   begin
     if not Windows.CopyFile(PChar (FCurrentFileName), PChar (FDestFileName), False) then
       RaiseLastOSError;
@@ -345,7 +345,7 @@ begin
   end
   else
   begin
-    DeleteFile (FDestFileName);
+    DeleteFile(FDestFileName);
     if not Windows.MoveFile(PChar (FCurrentFileName), PChar (FDestFileName)) then
       RaiseLastOSError
   end
@@ -360,13 +360,13 @@ end;
 procedure TFileCopier.DoOnEndCopy;
 begin
   if (not (csDesigning in ComponentState)) and Assigned(OnEndCopy) then
-    OnEndCopy (self);
+    OnEndCopy(self);
 end;
 
 procedure TFileCopier.DoOnEndCopyFile;
 begin
   if (not (csDesigning in ComponentState)) and Assigned(OnEndCopyFile) then
-    OnEndCopyFile (self, FCurrentFileName, FDestFileName, FCurrentFileSize);
+    OnEndCopyFile(self, FCurrentFileName, FDestFileName, FCurrentFileSize);
 end;
 
 procedure TFileCopier.DoOnException;
@@ -386,13 +386,13 @@ end;
 procedure TFileCopier.DoOnStartCopy;
 begin
   if (not (csDesigning in ComponentState)) and Assigned(OnStartCopy) then
-    OnStartCopy (self);
+    OnStartCopy(self);
 end;
 
 procedure TFileCopier.DoOnStartCopyFile;
 begin
   if (not (csDesigning in ComponentState)) and Assigned(OnStartCopyFile) then
-    OnStartCopyFile (self, FCurrentFileName, FDestFileName, FCurrentFileSize);
+    OnStartCopyFile(self, FCurrentFileName, FDestFileName, FCurrentFileSize);
 end;
 
 function TFileCopier.ForEach(const Mask, destPath: string; proc, proc1: TForEachProc): Boolean;
@@ -411,7 +411,7 @@ begin
           begin
             st := destPath + sr.Name + '\';
 
-            Result := ForEach (ExtractFilePath (Mask) + sr.Name + '\' + ExtractFileName (Mask), st, proc, proc1)
+            Result := ForEach (ExtractFilePath (Mask) + sr.Name + '\' + ExtractFileName(Mask), st, proc, proc1)
           end
         end
         else
@@ -420,7 +420,7 @@ begin
           Result := False;
       until not Result or (FindNext (sr) <> 0)
     finally
-      FindClose (sr);
+      FindClose(sr);
       if Assigned(proc1) then
         proc1 (ExtractFilePath (Mask), '', sr, Result)
     end
@@ -452,10 +452,10 @@ var
   st: string;
 begin
   st := Directory;
-  if Copy (st, Length (st), 1) = '\' then
+  if Copy(st, Length (st), 1) = '\' then
   begin
-    Delete (st, Length (st), 1);
-    RemoveDirectory (PChar (st)) // Don't error check this.  It may be open in a
+    Delete(st, Length (st), 1);
+    RemoveDirectory(PChar (st)) // Don't error check this.  It may be open in a
                                  // command window or something...
   end
 end;
@@ -465,7 +465,7 @@ end;
 constructor TCopierThread.Create(AOwner: TFileCopier);
 begin
   FOwner := AOwner;
-  inherited Create (True);
+  inherited Create(True);
   FreeOnTerminate := True;
   resume;
 end;
@@ -476,20 +476,20 @@ var
 begin
   try
     try
-      Synchronize (FOwner.DoOnStartAnalysis);
+      Synchronize(FOwner.DoOnStartAnalysis);
       for i := 0 to FOwner.FSourceFiles.Count - 1 do
-        FOwner.AnalyzeFiles (FOwner.FSourceFiles [i]);
-      Synchronize (FOwner.DoOnEndAnalysis);
-      Synchronize (FOwner.DoOnStartCopy);
+        FOwner.AnalyzeFiles (FOwner.FSourceFiles[i]);
+      Synchronize(FOwner.DoOnEndAnalysis);
+      Synchronize(FOwner.DoOnStartCopy);
 
       for i := 0 to FOwner.FSourceFiles.Count - 1 do
-        FOwner.CopyFiles (FOwner.FSourceFiles [i]);
-      Synchronize (FOwner.DoOnEndCopy)
+        FOwner.CopyFiles (FOwner.FSourceFiles[i]);
+      Synchronize(FOwner.DoOnEndCopy)
     except
       on E: Exception do
       begin
         FOwner.FExcep := E;
-        Synchronize (FOwner.DoOnException)
+        Synchronize(FOwner.DoOnException)
       end
     end
   finally

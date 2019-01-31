@@ -63,9 +63,9 @@ begin
     Result := inherited GetPropertyEnumCount (kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     if idx = 1 then
-      result := 3
+      Result := 3
     else
       Result := 0;
   end
@@ -75,20 +75,20 @@ function THotkeyControlInfo.GetPropertyEnumName(kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumName (kind, idx, enum)
+    Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     if idx = 1 then
       case enum of
-        0 : result := rstBoth;
-        1 : result := rstTopLeft;
-        2 : result := rstBottomRight;
+        0 : Result := rstBoth;
+        1 : Result := rstTopLeft;
+        2 : Result := rstBottomRight;
         else
-          result := ''
+          Result := ''
       end
     else
-      result := ''
+      Result := ''
   end
 end;
 
@@ -96,10 +96,10 @@ function THotkeyControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyName (kind, idx)
+    Result := inherited GetPropertyName(kind, idx)
   else
   begin
-//    Dec (idx, inherited GetPropertyCount (kind));
+//    Dec(idx, inherited GetPropertyCount (kind));
     Result := '';
 (*     case kind of
 //      pkGeneral : Result := StaticControlPropertyGeneralName [idx];
@@ -114,10 +114,10 @@ function THotkeyControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyType (kind, idx)
+    Result := inherited GetPropertyType(kind, idx)
   else
   begin
-//    Dec (idx, inherited GetPropertyCount (kind));
+//    Dec(idx, inherited GetPropertyCount (kind));
     Result := ptInteger;
 (*
     case kind of
@@ -133,10 +133,10 @@ function THotkeyControlInfo.GetPropertyValue(kind: TPropertyKind;
   idx: Integer): Variant;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyValue (kind, idx)
+    Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-//    Dec (idx, inherited GetPropertyCount (kind));
+//    Dec(idx, inherited GetPropertyCount (kind));
   end
 end;
 
@@ -144,7 +144,7 @@ procedure THotkeyControlInfo.Init;
 begin
   inherited;
 
-  SendMessage (ControlHandle, TBM_SETPOS, 66, 0);
+  SendMessage(ControlHandle, TBM_SETPOS, 66, 0);
 end;
 
 procedure THotkeyControlInfo.SetPropertyValue(kind: TPropertyKind;
@@ -153,10 +153,10 @@ var
   recreateRequired : Boolean;
 begin
   if idx < inherited GetPropertyCount (kind) then
-    inherited SetPropertyValue (kind, idx, Value)
+    inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount (kind));
     recreateRequired := True;
 
     case kind of
@@ -164,9 +164,9 @@ begin
         case idx of
           0 : HasStyle [TBS_VERT] := Value;
           1 : case Integer (Value) of
-                0 : SetMaskedStyle (TBS_BOTH, TBS_BOTH or TBS_LEFT);
-                1 : SetMaskedStyle (TBS_LEFT, TBS_BOTH or TBS_LEFT);
-                2 : SetMaskedStyle (0,        TBS_BOTH or TBS_LEFT)
+                0 : SetMaskedStyle(TBS_BOTH, TBS_BOTH or TBS_LEFT);
+                1 : SetMaskedStyle(TBS_LEFT, TBS_BOTH or TBS_LEFT);
+                2 : SetMaskedStyle(0,        TBS_BOTH or TBS_LEFT)
               end;
           2 : HasStyle [TBS_NOTICKS] := not Boolean (Value);
           3 : HasStyle [TBS_AUTOTICKS] := Value;

@@ -20,7 +20,7 @@ type
   protected
     procedure Paint; override;
   public
-    constructor Create (AOwner : TComponent); override;
+    constructor Create(AOwner : TComponent); override;
     destructor Destroy; override;
 
     property Bitmap : TBitmap read fBitmap;

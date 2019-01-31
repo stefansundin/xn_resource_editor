@@ -17,10 +17,10 @@ type
     destructor Destroy; override;
 
     procedure Assign (Src: TResourceModule);
-    procedure InsertResource (Index: Integer; details: TResourceDetails); override;
-    procedure DeleteResource (Index: Integer); override;
-    function AddResource (details: TResourceDetails): Integer; override;
-    function IndexOfResource (details: TResourceDetails): Integer; override;
+    procedure InsertResource(Index: Integer; details: TResourceDetails); override;
+    procedure DeleteResource(Index: Integer); override;
+    function AddResource(details: TResourceDetails): Integer; override;
+    function IndexOfResource(details: TResourceDetails): Integer; override;
     procedure SortResources; override;
   end;
 
@@ -37,7 +37,7 @@ implementation
 
 { TResModule }
 
-procedure TResModule.ParseResource (Header, data: PChar; DataSize: Integer);
+procedure TResModule.ParseResource(Header, data: PChar; DataSize: Integer);
 var
   p: PChar;
   sName, sType: WideString;
@@ -49,37 +49,37 @@ var
   begin
     if PWord (p)^ = $ffff then
     begin
-      Inc (p, sizeof (word));
+      Inc(p, sizeof (word));
       Result := IntToStr (PWord (p)^);
-      Inc (p, sizeof (word))
+      Inc(p, sizeof (word))
     end
     else
     begin
       Result := WideString (PWideChar (p));
-      Inc (p, (Length (Result) + 1) * sizeof (WideChar))
+      Inc(p, (Length (Result) + 1) * sizeof (WideChar))
     end
   end;
 
 begin
   try
     p := Header;
-    Inc (p, 2 * sizeof (Integer));
+    Inc(p, 2 * sizeof (Integer));
     sType := GetName;
     sName := GetName;
 
     if (Integer (p) mod 4) <> 0 then
-      Inc (p, 4 - Integer (p) mod 4);
+      Inc(p, 4 - Integer (p) mod 4);
 
     dataVersion := PDWORD (p)^;
-    Inc (p, sizeof (DWORD));
+    Inc(p, sizeof (DWORD));
     memoryFlags := PWORD (p)^;
-    Inc (p, sizeof (word));
+    Inc(p, sizeof (word));
     language := PWORD (p)^;
-    Inc (p, sizeof (word));
+    Inc(p, sizeof (word));
     version := PDWORD (p)^;
-    Inc (p, sizeof (DWORD));
+    Inc(p, sizeof (DWORD));
     Characteristics := PDWORD (p)^;
-    Inc (p, sizeof (DWORD));
+    Inc(p, sizeof (DWORD));
 
     if (DataSize <> 0) or (sName <> '0') then
     begin
@@ -88,7 +88,7 @@ begin
       ResourceDetails.Version := version;
       ResourceDetails.MemoryFlags := memoryFlags;
       ResourceDetails.DataVersion := dataVersion;
-      AddResource (ResourceDetails)
+      AddResource(ResourceDetails)
     end
     else       // NB!!!  32 bit .ResourceDetails files start with a dummy '32-bit indicator'
                // resource !!!  Is this documented?  I don't think so!
@@ -118,16 +118,16 @@ begin
     begin
       DataSize := PInteger (p)^;
       q := p;
-      Inc (q, SizeOf  (Integer));
+      Inc(q, SizeOf  (Integer));
       HeaderSize := PInteger (q)^;
       q := p;
-      Inc (q, HeaderSize);
+      Inc(q, HeaderSize);
 
-      ParseResource (p, q, DataSize);
+      ParseResource(p, q, DataSize);
       ChunkSize := DataSize + HeaderSize;
       ChunkSize := ((ChunkSize + 3) div 4) * 4;
-      Inc (p, ChunkSize);
-      Inc (n, ChunkSize);
+      Inc(p, ChunkSize);
+      Inc(n, ChunkSize);
     end;
 
   finally
@@ -152,25 +152,25 @@ var
     ws: WideString;
   begin
     pos := 0;
-    ZeroMemory (Header, 1024);
+    ZeroMemory(Header, 1024);
 
     i := ResourceNameToInt (ResourceDetail.ResourceType);
     if i = -1 then
     begin
       ws := ResourceDetail.ResourceType;
       len := (Length (ws) + 1) * sizeof (WideChar);
-      Move (PWideChar (ws)^, Header [pos], len);
-      Inc (pos, len)
+      Move(PWideChar (ws)^, Header [pos], len);
+      Inc(pos, len)
     end
     else
     begin
       w := $ffff;
-      Move (w, Header [pos], sizeof (w));
-      Inc (pos, sizeof (w));
+      Move(w, Header [pos], sizeof (w));
+      Inc(pos, sizeof (w));
 
       w := Word (i);
-      Move (w, Header [pos], sizeof (w));
-      Inc (pos, sizeof (w))
+      Move(w, Header [pos], sizeof (w));
+      Inc(pos, sizeof (w))
     end;
 
     i := ResourceNameToInt (ResourceDetail.ResourceName);
@@ -178,42 +178,42 @@ var
     begin
       ws := ResourceDetail.ResourceName;
       len := (Length (ws) + 1) * sizeof (WideChar);
-      Move (PWideChar (ws)^, Header [pos], len);
-      Inc (pos, len)
+      Move(PWideChar (ws)^, Header [pos], len);
+      Inc(pos, len)
     end
     else
     begin
       w := $ffff;
-      Move (w, Header [pos], sizeof (w));
-      Inc (pos, sizeof (w));
+      Move(w, Header [pos], sizeof (w));
+      Inc(pos, sizeof (w));
 
       w := Word (i);
-      Move (w, Header [pos], sizeof (w));
-      Inc (pos, sizeof (w))
+      Move(w, Header [pos], sizeof (w));
+      Inc(pos, sizeof (w))
     end;
 
     if (pos mod 4) <> 0 then
-      Inc (pos, 4 - (pos mod 4));
+      Inc(pos, 4 - (pos mod 4));
 
     dw := ResourceDetail.DataVersion;
-    Move (dw, Header [pos], sizeof (DWORD));
-    Inc (pos, sizeof (DWORD));
+    Move(dw, Header [pos], sizeof (DWORD));
+    Inc(pos, sizeof (DWORD));
 
     w := ResourceDetail.MemoryFlags;
-    Move (w, Header [pos], sizeof (WORD));
-    Inc (pos, sizeof (WORD));
+    Move(w, Header [pos], sizeof (WORD));
+    Inc(pos, sizeof (WORD));
 
     w := ResourceDetail.ResourceLanguage;
-    Move (w, Header [pos], sizeof (WORD));
-    Inc (pos, sizeof (WORD));
+    Move(w, Header [pos], sizeof (WORD));
+    Inc(pos, sizeof (WORD));
 
     dw := ResourceDetail.Version;
-    Move (dw, Header [pos], sizeof (DWORD));
-    Inc (pos, sizeof (DWORD));
+    Move(dw, Header [pos], sizeof (DWORD));
+    Inc(pos, sizeof (DWORD));
 
     dw := ResourceDetail.Characteristics;
-    Move (dw, Header [pos], sizeof (DWORD));
-    Inc (pos, sizeof (DWORD));
+    Move(dw, Header [pos], sizeof (DWORD));
+    Inc(pos, sizeof (DWORD));
     Result := pos;
   end;
 
@@ -253,7 +253,7 @@ begin
       Stream.WriteBuffer (ResourceDetail.Data.Memory^, DataSize);
 
       TotalSize := DataSize + TotalSize;
-      ZeroMemory (@Header, sizeof (Header));
+      ZeroMemory(@Header, sizeof (Header));
 
       if (TotalSize mod 4) <> 0 then
         Stream.WriteBuffer (Header, 4 - (TotalSize mod 4));
@@ -278,11 +278,11 @@ begin
   begin
     ResourceDetails := TResourceDetails.CreateResourceDetails (
       Self,
-      Src.ResourceDetails [i].ResourceLanguage,
-      Src.ResourceDetails [i].ResourceName,
-      Src.ResourceDetails [i].ResourceType,
-      Src.ResourceDetails [i].Data.Size,
-      Src.ResourceDetails [i].Data.Memory);
+      Src.ResourceDetails[i].ResourceLanguage,
+      Src.ResourceDetails[i].ResourceName,
+      Src.ResourceDetails[i].ResourceType,
+      Src.ResourceDetails[i].Data.Size,
+      Src.ResourceDetails[i].Data.Memory);
 
     FResourceList.Add (ResourceDetails)
   end
@@ -301,7 +301,7 @@ begin
   inherited;
   Index := IndexOfResource(ResourceDetail);
   if Index <> -1 then
-    FResourceList.Delete (Index)
+    FResourceList.Delete(Index)
 end;
 
 destructor TResourceList.Destroy;

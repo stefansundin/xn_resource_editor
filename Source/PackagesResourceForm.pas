@@ -43,29 +43,29 @@ begin
 
   fDetails := Obj as TRCDataPackagesResourceDetails;
 
-  prop := plbFlags.FindProperty ('Environment');
+  prop := plbFlags.FindProperty('Environment');
   prop.PropertyValue := fDetails.Environment;
 
-  prop := plbFlags.FindProperty ('Module Type');
+  prop := plbFlags.FindProperty('Module Type');
   prop.PropertyValue := fDetails.ModuleType;
 
-  prop := plbFlags.FindProperty ('Never Build');
+  prop := plbFlags.FindProperty('Never Build');
   prop.PropertyValue := fDetails.NeverBuild;
 
-  prop := plbFlags.FindProperty ('Design Only');
+  prop := plbFlags.FindProperty('Design Only');
   prop.PropertyValue := fDetails.DesignTimeOnly;
 
-  prop := plbFlags.FindProperty ('Runtime Only');
+  prop := plbFlags.FindProperty('Runtime Only');
   prop.PropertyValue := fDetails.RuntimeOnly;
 
-  prop := plbFlags.FindProperty ('Check Duplicates');
+  prop := plbFlags.FindProperty('Check Duplicates');
   prop.PropertyValue := fDetails.CheckForDuplicates;
 
   lvRequires.Items.BeginUpdate;
   try
     for i := 0 to fDetails.RequiresCount - 1 do
       with lvRequires.Items.Add do
-        Caption := fDetails.Requires [i];
+        Caption := fDetails.Requires[i];
     if lvRequires.Items.Count > 0 then
       lvRequires.ItemIndex := 0;
   finally
@@ -77,7 +77,7 @@ begin
     for i := 0 to fDetails.ContainsCount - 1 do
       with lvContains.Items.Add do
       begin
-        Caption := fDetails.Contains [i];
+        Caption := fDetails.Contains[i];
   { PackageUnitFlags:
     bit      meaning
     -----------------------------------------------------------------------------------------
@@ -97,7 +97,7 @@ begin
         if (flgs and  8) <> 0 then st := st + ', original containment of $WEAKPACKAGEUNIT';
         if (flgs and 16) <> 0 then st := st + ', implictly imported';
 
-        system.Delete (st, 1, 2);
+        system.Delete(st, 1, 2);
         SubItems.Add (st)
       end;
 

@@ -94,12 +94,12 @@ begin
       begin
         if CompareText (ext, '.URL') = 0 then
         begin
-          AssignFile (f, param);
+          AssignFile(f, param);
           Reset (f);
           try
             ReadLn (f, url)
           finally
-            CloseFile (f)
+            CloseFile(f)
           end
         end
         else
@@ -127,15 +127,15 @@ begin
           if ch = ' ' then
             if not InQuote then
               break;
-        Inc (p)
+        Inc(p)
       end;
       if p > Length (link) then
         p := 0;
 
       if p > 0 then
       begin
-        cmd := Copy (Link, 1, p - 1);
-        param := Copy (Link, p + 1, MaxInt);
+        cmd := Copy(Link, 1, p - 1);
+        param := Copy(Link, p + 1, MaxInt);
         pp := PChar (param)
       end
       else
@@ -143,7 +143,7 @@ begin
         cmd := AnsiDequotedStr (Link, '"');
         pp := Nil
       end;
-      ShellExecute (TCustomForm (Owner).Handle, 'Open', PChar (cmd), pp, nil, SW_SHOWNORMAL)
+      ShellExecute(TCustomForm (Owner).Handle, 'Open', PChar (cmd), pp, nil, SW_SHOWNORMAL)
     end
   end
 
@@ -233,7 +233,7 @@ begin
     Flags := DT_EXPANDTABS or DT_VCENTER or DT_LEFT or DT_NOPREFIX;
     Flags := DrawTextBiDiModeFlags(Flags);
 
-    SetBkMode (Handle, Windows.TRANSPARENT);
+    SetBkMode(Handle, Windows.TRANSPARENT);
     DrawText(Handle, PChar(Caption), -1, Rect, Flags);
   end;
 
@@ -283,7 +283,7 @@ begin
     begin
       Perform(CM_MOUSELEAVE, 0, 0);
       if Assigned (OnEndCapture) then
-        OnEndCapture (self);
+        OnEndCapture(self);
       SetCaptureControl (nil)
     end
     else

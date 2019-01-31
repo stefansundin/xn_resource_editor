@@ -41,7 +41,7 @@ begin
   template.cy := cy;
   template.cdit :=0;
 
-  data.Write (template, SizeOf (template));
+  data.Write(template, SizeOf (template));
 
   WriteSzOrID (data, menu);
   WriteSzOrID (data, cls);
@@ -51,7 +51,7 @@ begin
   data.Write(w, sizeof (w));
 
   wFace := faceName;
-  data.Write (PWideChar (wFace)^, (Length (wFace) + 1) * SizeOf (WideChar))
+  data.Write(PWideChar (wFace)^, (Length (wFace) + 1) * SizeOf (WideChar))
 end;
 
 procedure TDialogResourceDetails.BeginInitEx(x, y, cx, cy: Integer; Style,
@@ -77,7 +77,7 @@ begin
   template.signature := $ffff;
   template.helpID := helpId;
 
-  data.Write (template, SizeOf (template));
+  data.Write(template, SizeOf (template));
 
   WriteSzOrID (data, menu);
   WriteSzOrID (data, cls);
@@ -96,14 +96,14 @@ begin
   data.Write(b, sizeof (b));
 
   wFace := faceName;
-  data.Write (PWideChar (wFace)^, (Length (wFace) + 1) * SizeOf (WideChar))
+  data.Write(PWideChar (wFace)^, (Length (wFace) + 1) * SizeOf (WideChar))
 end;
 
 procedure TDialogResourceDetails.EndInit (ctrlCount : DWORD);
 var
   p : PDlgTemplate;
 begin
-  p := PDlgTemplate (Data.Memory);
+  p := PDlgTemplate(Data.Memory);
   p^.cdit := CtrlCount
 end;
 
@@ -145,7 +145,7 @@ begin
   WriteSZOrID (Data, text);
 
   w := dataLen;
-  Data.Write (w, sizeof (w));
+  Data.Write(w, sizeof (w));
 
   if w > 0 then
     Data.Write(dat, w)
@@ -178,7 +178,7 @@ begin
   WriteSZOrID (Data, text);
 
   w := dataLen;
-  Data.Write (w, sizeof (w));
+  Data.Write(w, sizeof (w));
 
   if w > 0 then
     Data.Write(dat, w)

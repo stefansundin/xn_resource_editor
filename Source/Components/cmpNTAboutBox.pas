@@ -64,7 +64,7 @@ var
   g: TGifImage;
   rs: TResourceStream;
 begin
-  result := False;
+  Result := False;
   g := Nil;
   if FindResource(hInstance, PChar(ResName), 'GIF') <> 0 then
   try
@@ -75,7 +75,7 @@ begin
         g := TGifImage.Create;
         g.LoadFromStream(rs);
         Image.Picture.Assign(g);
-        result := True
+        Result := True
       end
     finally
       g.Free;

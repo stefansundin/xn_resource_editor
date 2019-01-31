@@ -23,7 +23,7 @@ type
     function GetCaption: string; virtual;
     function GetHelpText: string; virtual;
   public
-    constructor Create (const ACaption, AHelpText, AHelpKeyword: string; AMinCX, AMinCY: Integer; AParam: Integer = 0);
+    constructor Create(const ACaption, AHelpText, AHelpKeyword: string; AMinCX, AMinCY: Integer; AParam: Integer = 0);
     procedure Apply; virtual;
     procedure Cancel; virtual;
 

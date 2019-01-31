@@ -86,7 +86,7 @@ function FindToken (const token: string): TRTFTokens;
     if si <= ei then
     begin
       m := TRTFTokens (si + (ei - si) div 2);
-      c := AnsiCompareText (token, RTFTokens [m]);
+      c := AnsiCompareText (token, RTFTokens[m]);
       if c > 0 then
         Result := bsearch (Succ (m), e)
       else
@@ -191,7 +191,7 @@ var
     EmitChar ('>');
 
     // Add the tag to the HTML tag stack
-    if Copy (tag, 1, 1) <> '/' then
+    if Copy(tag, 1, 1) <> '/' then
     begin
       HTMLTagStack.Insert(0, tag);
       inTags := True
@@ -207,7 +207,7 @@ var
     st: string;
   begin
     if HTMLTagStack.IndexOf(tag) >= 0 then
-      while (HTMLTagStack.Count > 0) do
+      while(HTMLTagStack.Count > 0) do
       begin
         st := HTMLTagStack [0];
 
@@ -238,7 +238,7 @@ var
   begin
     ch := p^;
     Result := ch;
-    Inc (p)
+    Inc(p)
   end;
 
   function GetValue: string;
@@ -246,7 +246,7 @@ var
     value := '';
     while not (GetChar in [' ', '\', '{', ';', #13, #10]) do
       value := value + ch;
-    if ch <> ' ' then Dec (p);
+    if ch <> ' ' then Dec(p);
     Result := value
   end;
 
@@ -257,7 +257,7 @@ var
     st := '';
     while GetChar in ['A'..'Z', 'a'..'z'] do
       st := st + ch;
-    Dec (p);
+    Dec(p);
     token := FindToken (st);
     Result := token
   end;
@@ -267,7 +267,7 @@ var
     value := '';
     while GetChar in ['A'..'Z', 'a'..'z'] do
       value := value + ch;
-    Dec (p);
+    Dec(p);
     Result := value;
   end;
 
@@ -281,7 +281,7 @@ var
 
       while not (GetChar in [';', '\']) do
         Value := Value + ch;
-      Dec (p);
+      Dec(p);
     end;
 
   begin
@@ -352,14 +352,14 @@ var
       if ch <> '}' then
         Error ('} expected in Font Table')
       else
-        Dec (p)
+        Dec(p)
     end;
 
     procedure ProcessColorTable;
     begin
       while not (ch in  ['}', #0]) do
         GetColorGroup;
-      Dec (p)
+      Dec(p)
     end;
 
     procedure ProcessToken;
@@ -407,12 +407,12 @@ var
             intVal := StrToIntDef (value, -1);
             if (intVal >= 0) and (colors <> Nil) and (intVal < colors.Count) then
             begin
-              intVal := Integer (colors [intVal]);
+              intVal := Integer (colors[intVal]);
               PopTag ('FONT');
               EmitTag ('FONT', Format ('Color=#%2.2x%2.2x%2.2x', [
-                getRValue (intVal),
-                getGValue (intVal),
-                getBValue (intVal)]));
+                getRValue(intVal),
+                getGValue(intVal),
+                getBValue(intVal)]));
             end
           end
       end
@@ -428,7 +428,7 @@ var
             '''':
               begin // Hex literal
                 Value := p [1] + p [2];
-                Inc (p, 3);
+                Inc(p, 3);
                 EmitTextChar (Char (StrToInt ('$' + Value)));
               end;
             '{', '}', '/' :

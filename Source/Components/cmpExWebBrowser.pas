@@ -34,7 +34,7 @@ type
     function FilterDataObject(const pDO: IDataObject; out ppDORet: IDataObject): HRESULT; stdcall;
   end;
 
-  ICustomDoc = interface (IUnknown)
+  ICustomDoc = interface(IUnknown)
   ['{3050f3f0-98b5-11cf-bb82-00aa00bdce0b}']
     function SetUIHandler (const pUIHandler : IDocHostUIHandler) : HRESULT; stdcall;
   end;
@@ -56,7 +56,7 @@ type
     FEnableDownloadActiveX: Boolean;
     FEnableJava: Boolean;
   public
-    constructor Create (AOwner : TExWebBrowser);
+    constructor Create(AOwner : TExWebBrowser);
   published
     property EnableContextMenu : Boolean read FEnableContextMenu write FEnableContextMenu;
     property EnableScrollBars : Boolean read FEnableScrollBars write FEnableScrollBars;
@@ -103,7 +103,7 @@ type
   protected
     procedure Loaded; override;
   public
-    constructor Create (AOwner : TComponent); override;
+    constructor Create(AOwner : TComponent); override;
     destructor Destroy; override;
 
     procedure LoadFromString (const st : string);
@@ -140,15 +140,15 @@ constructor TExWebBrowser.Create(AOwner: TComponent);
 ///var
 //  Factory : IClassFactory;
 begin
-  inherited Create (AOwner);
-  FUIProperties := TUIProperties.Create (self);
-  OleCheck (CoInternetGetSession (0, FInternetSession, 0));
+  inherited Create(AOwner);
+  FUIProperties := TUIProperties.Create(self);
+  OleCheck(CoInternetGetSession (0, FInternetSession, 0));
 
   if FInternetSession <> Nil then
   begin
 //    CoGetClassObject(Class_CIDMimeFilter, CLSCTX_SERVER, nil, IClassFactory, Factory);
-//    OleCheck (FInternetSession.RegisterMimeFilter(Factory, Class_CIDMimeFilter, 'cid'));
-//    OleCheck (FInternetSession.RegisterNameSpace(Factory, CLASS_CIDMIMEFilter, 'cid', 0, nil, 0))
+//    OleCheck(FInternetSession.RegisterMimeFilter(Factory, Class_CIDMimeFilter, 'cid'));
+//    OleCheck(FInternetSession.RegisterNameSpace(Factory, CLASS_CIDMIMEFilter, 'cid', 0, nil, 0))
   end
 end;
 
@@ -276,7 +276,7 @@ var
   ort : HRESULT;
   dlc : Integer;
 begin
-  Result := inherited Invoke (DispID, IID, LocaleID, Flags, Params, VarResult, ExcepInfo, ArgErr);
+  Result := inherited Invoke(DispID, IID, LocaleID, Flags, Params, VarResult, ExcepInfo, ArgErr);
   if (Flags and DISPATCH_PROPERTYGET <> 0) and (VarResult <> nil) then
   begin
     ort := Result;
@@ -320,9 +320,9 @@ begin
 
   if not (csDesigning in ComponentState) then
     if FURL = '' then
-      Navigate ('about:blank')
+      Navigate('about:blank')
     else
-      Navigate (FURL);
+      Navigate(FURL);
 end;
 
 procedure TExWebBrowser.LoadFromStream(s: TStream; takeOwnership: Boolean);
@@ -333,7 +333,7 @@ var
 
 begin
   if Document = Nil then
-    Navigate ('about:blank');
+    Navigate('about:blank');
   if Supports (Document, IPersistStreamInit, persistStreamInit) then
   begin
     if takeOwnership then
@@ -341,8 +341,8 @@ begin
     else
       ownership := soReference;
     adapter := TStreamAdapter.Create(s, ownership);
-    OleCheck (persistStreamInit.InitNew);
-    OleCheck (persistStreamInit.Load(adapter))
+    OleCheck(persistStreamInit.InitNew);
+    OleCheck(persistStreamInit.Load(adapter))
   end
 end;
 
@@ -376,9 +376,9 @@ begin
     Exit;
 
   if Value = '' then
-    Navigate ('about:blank')
+    Navigate('about:blank')
   else
-    Navigate (value);
+    Navigate(value);
 end;
 
 function TExWebBrowser.ShowContextMenu(const dwID: DWORD;

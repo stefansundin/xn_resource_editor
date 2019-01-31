@@ -28,15 +28,15 @@ type
     function GetCount: Integer;
     function GetPackage(idx: Integer): TIncludePathPackage;
     function GetIncludePath(const PackageName: string): string;
-    function FindIncludePathPackage (const PackageName : string) : TIncludePathPackage;
+    function FindIncludePathPackage(const PackageName : string) : TIncludePathPackage;
   public
     property Count : Integer read GetCount;
     property Package [idx : Integer] : TIncludePathPackage read GetPackage;
     property IncludePath [const PackageName : string] : string read GetIncludePath;
   end;
 
-function GetIncludePathForPackage (const PackageName : string) : string;
-procedure RegisterIncludePathPackage (const key : string; cls : TIncludePathPackageClass);
+function GetIncludePathForPackage(const PackageName : string) : string;
+procedure RegisterIncludePathPackage(const key : string; cls : TIncludePathPackageClass);
 
 implementation
 
@@ -46,7 +46,7 @@ uses
 var
   gRegisteredPackages : TClassStringAssociations;
 
-procedure RegisterIncludePathPackage (const key : string; cls : TIncludePathPackageClass);
+procedure RegisterIncludePathPackage(const key : string; cls : TIncludePathPackageClass);
 begin
   if gRegisteredPackages = Nil then
     gRegisteredPackages := TClassStringAssociations.Create;
@@ -54,7 +54,7 @@ begin
   gRegisteredPackages.Associate(key, cls);
 end;
 
-function GetIncludePathForPackage (const PackageName : string) : string;
+function GetIncludePathForPackage(const PackageName : string) : string;
 var
   packages : TIncludePathPackages;
 begin
@@ -75,7 +75,7 @@ begin
 
   for i := gRegisteredPackages.Count - 1 downto 0 do
   begin
-    pckg := TIncludePathPackageClass (gRegisteredPackages.Classes [i]).Create;
+    pckg := TIncludePathPackageClass (gRegisteredPackages.Classes[i]).Create;
     if pckg.Installed then
       FIncludePathPackages.Add(pckg)
     else
@@ -107,7 +107,7 @@ function TIncludePathPackages.GetIncludePath(const PackageName: string): string;
 var
   incl : TIncludePathPackage;
 begin
-  incl := FindIncludePathPackage (PackageName);
+  incl := FindIncludePathPackage(PackageName);
   if Assigned(incl) then
     Result := incl.IncludePath
   else
@@ -117,7 +117,7 @@ end;
 function TIncludePathPackages.GetPackage(idx: Integer): TIncludePathPackage;
 begin
   Analyze;
-  Result := TIncludePathPackage (FIncludePathPackages [idx]);
+  Result := TIncludePathPackage(FIncludePathPackages[idx]);
 end;
 
 { TIncludePathPackage }
@@ -137,9 +137,9 @@ var
   i : Integer;
 begin
   for i := 0 to gRegisteredPackages.Count - 1 do
-    if self is gRegisteredPackages.Classes [i] then
+    if self is gRegisteredPackages.Classes[i] then
     begin
-      Result := gRegisteredPackages.Strings [i];
+      Result := gRegisteredPackages.Strings[i];
       break
     end
 end;

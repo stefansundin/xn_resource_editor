@@ -130,9 +130,9 @@ type
 (* No DAT needed. *)
   TW_ELEMENT8 = packed record
     Index : TW_UINT8;    (* Value used to index into the color table. *)
-    Channel1 : TW_UINT8; (* First  tri-stimulus value (e.g Red)       *)
-    Channel2 : TW_UINT8; (* Second tri-stimulus value (e.g Green)     *)
-    Channel3 : TW_UINT8  (* Third  tri-stimulus value (e.g Blue)      *)
+    Channel1 : TW_UINT8; (* First  tri-stimulus value(e.g Red)       *)
+    Channel2 : TW_UINT8; (* Second tri-stimulus value(e.g Green)     *)
+    Channel3 : TW_UINT8  (* Third  tri-stimulus value(e.g Blue)      *)
   end;
   pTW_ELEMENT8 = ^TW_ELEMENT8;
 
@@ -277,7 +277,7 @@ type
   end;
   pTW_IMAGELAYOUT = ^TW_IMAGELAYOUT;
 
-(* DAT_IMAGEMEMXFER. Used to pass image data (e.g. in strips) from DS to application.*)
+(* DAT_IMAGEMEMXFER. Used to pass image data(e.g. in strips) from DS to application.*)
   TW_IMAGEMEMXFER = packed record
     Compression : TW_UINT16;  (* How the data is compressed                *)
     BytesPerRow : TW_UINT32;  (* Number of bytes in a row of data          *)
@@ -374,14 +374,14 @@ type
 
   TW_TWUNKDSENTRYPARAMS = packed record
     destFlag : TW_INT8;       (* TRUE if dest is not NULL                 *)
-    dest : TW_IDENTITY;       (* Identity of data source (if used)        *)
+    dest : TW_IDENTITY;       (* Identity of data source(if used)        *)
     dataGroup : TW_INT32;     (* DSM_Entry dataGroup parameter            *)
     dataArgType : TW_INT16;   (* DSM_Entry dataArgType parameter          *)
     message : TW_INT16;       (* DSM_Entry message parameter              *)
-    pDataSize : TW_INT32;     (* Size of pData (0 if NULL)                *)
+    pDataSize : TW_INT32;     (* Size of pData(0 if NULL)                *)
     //  TW_MEMREF   pData;    (* Based on implementation specifics, a     *)
                               (* pData parameter makes no sense in this   *)
-                              (* structure, but data (if provided) will be*)
+                              (* structure, but data(if provided) will be*)
                               (* appended in the data block.              *)
   end;
   pTW_TWUNKDSENTRYPARAMS = ^TW_TWUNKDSENTRYPARAMS;
@@ -391,10 +391,10 @@ type
   TW_TWUNKEDSENTRYRETURN = packed record
     returnCode : TW_UINT16;    (* Thunker DsEntry return code.             *)
     conditionCode : TW_UINT16; (* Thunker DsEntry condition code.          *)
-    pDataSize : TW_INT32;      (* Size of pData (0 if NULL)                *)
+    pDataSize : TW_INT32;      (* Size of pData(0 if NULL)                *)
     //  TW_MEMREF   pData;     (* Based on implementation specifics, a     *)
                                (* pData parameter makes no sense in this   *)
-                               (* structure, but data (if provided) will be*)
+                               (* structure, but data(if provided) will be*)
                                (* appended in the data block.              *)
   end;
   pTW_TWUNKEDSENTRYRETURN = ^TW_TWUNKEDSENTRYRETURN;
@@ -1329,13 +1329,13 @@ const
 
 (*  SDH - 03/23/95 - WATCH                                                  *)
 (*  The thunker requires knowledge about size of data being passed in the   *)
-(*  lpData parameter to DS_Entry (which is not readily available due to     *)
+(*  lpData parameter to DS_Entry(which is not readily available due to     *)
 (*  type LPVOID.  Thus, we key off the DAT_ argument to determine the size. *)
 (*  This has a couple implications:                                         *)
 (*  1) Any additional DAT_ features require modifications to the thunk code *)
 (*     for thunker support.                                                 *)
 (*  2) Any applications which use the custom capabailites are not supported *)
-(*     under thunking since we have no way of knowing what size data (if    *)
+(*     under thunking since we have no way of knowing what size data(if    *)
 (*     any) is being passed.                                                *)
 
   DAT_NULL            = $0000; (* No data or structure. *)
@@ -1706,7 +1706,7 @@ const
   TWCC_NOTEMPTY           = 19; (* Operation failed because directory is not empty *)
   TWCC_PAPERJAM           = 20;  (* The feeder is jammed *)
   TWCC_PAPERDOUBLEFEED    = 21;  (* The feeder detected multiple pages *)
-  TWCC_FILEWRITEERROR     = 22;  (* Error writing the file (meant for things like disk full conditions) *)
+  TWCC_FILEWRITEERROR     = 22;  (* Error writing the file(meant for things like disk full conditions) *)
   TWCC_CHECKDEVICEONLINE  = 23;  (* The device went offline prior to or during this operation *)
 
 
@@ -1821,5 +1821,5 @@ initialization
     DSM_Entry := DSMENTRYPROC (GetProcAddress (twainHandle, 'DSM_Entry'));
 finalization
   if twainHandle <> 0 then
-    FreeLibrary (twainHandle)
+    FreeLibrary(twainHandle)
 end.

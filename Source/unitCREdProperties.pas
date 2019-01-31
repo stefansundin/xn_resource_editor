@@ -67,9 +67,9 @@ type
     procedure Load;
     procedure Notify;
 
-    function GetBoolPropertyValue (idx: TPropertyEnum): Boolean;
+    function GetBoolPropertyValue(idx: TPropertyEnum): Boolean;
     procedure SetBoolPropertyValue(idx: TPropertyEnum; const Value: Boolean);
-    function GetIntPropertyValue (idx: TPropertyEnum): Integer;
+    function GetIntPropertyValue(idx: TPropertyEnum): Integer;
     procedure SetIntPropertyValue(idx: TPropertyEnum; const Value: Integer);
     function GetLStringPropertyValue(const idx: TPropertyEnum): string;
     procedure SetLStringPropertyValue(const idx: TPropertyEnum; const Value: string);
@@ -79,7 +79,7 @@ type
 
     property CustomIncludePath: string index peRCCustomInclude read GetLStringPropertyValue write SetLStringPropertyValue;
   public
-    constructor Create (ANotifyWindow: TForm);
+    constructor Create(ANotifyWindow: TForm);
     procedure Save;
 
     property ShowToolbar: Boolean index peShowToolbar           read GetBoolPropertyValue write SetBoolPropertyValue;
@@ -110,7 +110,7 @@ begin
   FUpdating := True;
 end;
 
-constructor TPEResourceExplorerProperties.Create (ANotifyWindow: TForm);
+constructor TPEResourceExplorerProperties.Create(ANotifyWindow: TForm);
 var
   i: TPropertyEnum;
 begin
@@ -118,9 +118,9 @@ begin
 
   for i := Low (TPropertyEnum) to High (TPropertyEnum) do
   begin
-    FValues [i] := Properties [i].value;
-    if FValues [i].tp = ptLString then
-      FLStrings [FValues [i].strIdx] := Properties [i].defltStr
+    FValues[i] := Properties[i].value;
+    if FValues[i].tp = ptLString then
+      FLStrings[FValues[i].strIdx] := Properties[i].defltStr
   end;
 
   Load
@@ -140,14 +140,14 @@ end;
 function TPEResourceExplorerProperties.GetBoolPropertyValue(
   idx: TPropertyEnum): Boolean;
 begin
-  Result := FValues [idx].boolVal
+  Result := FValues[idx].boolVal
 end;
 
 function TPEResourceExplorerProperties.GetIncludePath: string;
 begin
   case IncludePathType of
-    includePathPackage: Result := GetIncludePathForPackage (IncludePathPackageName);
-    includePathEnv: Result := GetEnvironmentVariable ('Include');
+    includePathPackage: Result := GetIncludePathForPackage(IncludePathPackageName);
+    includePathEnv: Result := GetEnvironmentVariable('Include');
     includePathCustom: Result := CustomIncludePath;
     else
       Result := ''
@@ -157,7 +157,7 @@ end;
 function TPEResourceExplorerProperties.GetIntPropertyValue(
   idx: TPropertyEnum): Integer;
 begin
-  Result := FValues [idx].intVal;
+  Result := FValues[idx].intVal;
 end;
 
 function TPEResourceExplorerProperties.GetLStringPropertyValue(
@@ -165,8 +165,8 @@ function TPEResourceExplorerProperties.GetLStringPropertyValue(
 var
   strIdx: Integer;
 begin
-  strIdx := FValues [idx].strIdx;
-  Result := FLStrings [strIdx];
+  strIdx := FValues[idx].strIdx;
+  Result := FLStrings[strIdx];
 end;
 
 procedure TPEResourceExplorerProperties.Load;
@@ -174,19 +174,19 @@ var
   reg: TRegistry;
   i: TPropertyEnum;
 begin
-  reg := TRegistry.Create (KEY_READ);
+  reg := TRegistry.Create(KEY_READ);
   try
-    if reg.OpenKey ('Software\Woozle\' + Application.Title + '\Properties', False) then
+    if reg.OpenKey('Software\Woozle\' + Application.Title + '\Properties', False) then
     begin
       BeginUpdate;
       try
         for i := Low (TPropertyEnum) to High (TPropertyEnum) do
-          if reg.ValueExists (Properties [i].Name) then
-            case Properties [i].value.tp of
-              ptBool: FValues [i].boolVal := reg.ReadBool (Properties [i].Name);
-              ptInteger: FValues [i].intVal := reg.ReadInteger (Properties [i].Name);
-              ptString: FValues [i].stringVal := reg.ReadString (Properties [i].Name);
-              ptLString: FLStrings [FValues [i].strIdx] := reg.ReadString (Properties [i].Name);
+          if reg.ValueExists (Properties[i].Name) then
+            case Properties[i].value.tp of
+              ptBool: FValues[i].boolVal := reg.ReadBool (Properties[i].Name);
+              ptInteger: FValues[i].intVal := reg.ReadInteger (Properties[i].Name);
+              ptString: FValues[i].stringVal := reg.ReadString (Properties[i].Name);
+              ptLString: FLStrings[FValues[i].strIdx] := reg.ReadString (Properties[i].Name);
             end
       finally
         EndUpdate
@@ -200,7 +200,7 @@ end;
 procedure TPEResourceExplorerProperties.Notify;
 begin
   if not FUpdating then
-    PostMessage (FNotifyWindow.Handle, WM_PROPERTIES_CHANGED, 0, 0)
+    PostMessage(FNotifyWindow.Handle, WM_PROPERTIES_CHANGED, 0, 0)
 end;
 
 procedure TPEResourceExplorerProperties.Save;
@@ -214,16 +214,16 @@ begin
     Exit
   end;
 
-  reg := TRegistry.Create (KEY_READ or KEY_WRITE);
+  reg := TRegistry.Create(KEY_READ or KEY_WRITE);
   try
-    if reg.OpenKey ('Software\Woozle\' + Application.Title + '\Properties', True) then
+    if reg.OpenKey('Software\Woozle\' + Application.Title + '\Properties', True) then
     begin
       for i := Low (TPropertyEnum) to High (TPropertyEnum) do
-         case Properties [i].value.tp of
-           ptBool: reg.WriteBool (Properties [i].Name, FValues [i].boolVal);
-           ptInteger: reg.WriteInteger (Properties [i].Name, FValues [i].intVal);
-           ptString: reg.WriteString (Properties [i].Name, FValues [i].stringVal);
-           ptLString: reg.WriteString (Properties [i].Name, FLStrings [FValues [i].strIdx])
+         case Properties[i].value.tp of
+           ptBool: reg.WriteBool (Properties[i].Name, FValues[i].boolVal);
+           ptInteger: reg.WriteInteger (Properties[i].Name, FValues[i].intVal);
+           ptString: reg.WriteString (Properties[i].Name, FValues[i].stringVal);
+           ptLString: reg.WriteString (Properties[i].Name, FLStrings[FValues[i].strIdx])
          end
     end
   finally
@@ -235,9 +235,9 @@ end;
 procedure TPEResourceExplorerProperties.SetBoolPropertyValue(
   idx: TPropertyEnum; const Value: Boolean);
 begin
-  if value <> FValues [idx].boolVal then
+  if value <> FValues[idx].boolVal then
   begin
-    FValues [idx].boolVal := Value;
+    FValues[idx].boolVal := Value;
     Save;
     Notify
   end
@@ -255,21 +255,21 @@ end;
 procedure TPEResourceExplorerProperties.SetIntPropertyValue(idx: TPropertyEnum;
   const Value: Integer);
 begin
-  if value <> FValues [idx].intVal then
+  if value <> FValues[idx].intVal then
   begin
-    FValues [idx].intVal := Value;
+    FValues[idx].intVal := Value;
     Save;
     Notify
   end
 end;
 
-procedure TPEResourceExplorerProperties.SetLStringPropertyValue (const Idx: TPropertyEnum;
+procedure TPEResourceExplorerProperties.SetLStringPropertyValue(const Idx: TPropertyEnum;
   const Value: string);
 var
   strIdx: Integer;
 begin
-  strIdx := FValues [idx].stridx;
-  FLStrings [strIdx] := Value;
+  strIdx := FValues[idx].stridx;
+  FLStrings[strIdx] := Value;
   Save;
   Notify
 end;

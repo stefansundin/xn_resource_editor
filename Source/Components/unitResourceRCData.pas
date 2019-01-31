@@ -15,7 +15,7 @@ type
     function GetDescription: WideString;
     procedure SetDescription(const Value: WideString);
   protected
-    class function SupportsRCData (const AName : string; Size : Integer; data : Pointer) : Boolean; override;
+    class function SupportsRCData(const AName : string; Size : Integer; data : Pointer) : Boolean; override;
   public
     property Description : WideString read GetDescription write SetDescription;
   end;
@@ -25,7 +25,7 @@ type
     function GetText: WideString;
     procedure SetText(const Value: WideString);
   protected
-    class function SupportsRCData (const AName : string; Size : Integer; data : Pointer) : Boolean; override;
+    class function SupportsRCData(const AName : string; Size : Integer; data : Pointer) : Boolean; override;
   public
     property Text : WideString read GetText write SetText;
   end;
@@ -53,14 +53,14 @@ type
     function GetNeverBuild: Boolean;
     function GetRunTimeOnly: Boolean;
   protected
-    class function SupportsRCData (const AName : string; Size : Integer; data : Pointer) : Boolean; override;
+    class function SupportsRCData(const AName : string; Size : Integer; data : Pointer) : Boolean; override;
   public
     destructor Destroy; override;
-    procedure ChangeData (newData : TMemoryStream); override;
+    procedure ChangeData(newData : TMemoryStream); override;
     property RequiresCount : Integer read GetRequiresCount;
-    property Requires [idx : Integer] : string read GetRequires;
+    property Requires[idx : Integer] : string read GetRequires;
     property ContainsCount : Integer read GetContainsCount;
-    property Contains [idx : Integer] : string read GetContains;
+    property Contains[idx : Integer] : string read GetContains;
     property ContainsFlag [idx : Integer] : Byte read GetContainsFlag;
 
     property NeverBuild : Boolean read GetNeverBuild;
@@ -116,7 +116,7 @@ procedure TRCDataDescriptionResourceDetails.SetDescription(
   const Value: WideString);
 begin
   data.Size := (Length (Value) + 1) * SizeOf (WideChar);
-  Move (Value [1], data.memory^, (Length (Value) + 1) * SizeOf (WideChar))
+  Move(Value [1], data.memory^, (Length (Value) + 1) * SizeOf (WideChar))
 end;
 
 class function TRCDataDescriptionResourceDetails.SupportsRCData(
@@ -149,28 +149,28 @@ begin
 
     p := Data.Memory;
     FFlags := PDWORD (p)^;
-    Inc (p, SizeOf (DWORD)); //  Flags
+    Inc(p, SizeOf (DWORD)); //  Flags
 
     Count := PInteger (p)^;
-    Inc (p, SizeOf (Integer));
+    Inc(p, SizeOf (Integer));
 
     for i := 0 to Count - 1 do
     begin
-      pkg := PPkgName (p);
+      pkg := PPkgName(p);
 
 
       FRequiresList.Add (pkg^.Name);
-      Inc (p, 2 + lstrlen (pkg^.Name));
+      Inc(p, 2 + lstrlen (pkg^.Name));
     end;
 
     Count := PInteger (p)^;
-    Inc (p, SizeOf (Integer));
+    Inc(p, SizeOf (Integer));
 
     for i := 0 to Count - 1 do
     begin
-      unt := PUnitName (p);
+      unt := PUnitName(p);
       FContainsList.AddObject (unt^.Name, TObject (Integer (unt.Flags)));
-      Inc (p, 3 + lstrlen (unt^.Name));
+      Inc(p, 3 + lstrlen (unt^.Name));
     end
   end
 end;
@@ -204,7 +204,7 @@ function TRCDataPackagesResourceDetails.GetContainsFlag(
   idx: Integer): Byte;
 begin
   DecodeData;
-  Result := Integer (FContainsList.Objects [idx])
+  Result := Integer (FContainsList.Objects[idx])
 end;
 
 function TRCDataPackagesResourceDetails.GetDesignTimeOnly: Boolean;
@@ -222,7 +222,7 @@ end;
 function TRCDataPackagesResourceDetails.GetModuleType: TModuleType;
 begin
   DecodeData;
-  Result := TModuleType (FFlags shr 30);
+  Result := TModuleType(FFlags shr 30);
 end;
 
 function TRCDataPackagesResourceDetails.GetNeverBuild: Boolean;
@@ -261,11 +261,11 @@ function TRCDataFormResourceDetails.GetText: WideString;
 var
   s: TStringStream;
 begin
-  s := TStringStream.Create ('');
+  s := TStringStream.Create('');
   try
-    data.Seek (0, soFromBeginning);
+    data.Seek(0, soFromBeginning);
     ObjectBinaryToText (data, s);
-    Result := UTF8Decode (s.DataString);
+    Result := UTF8Decode(s.DataString);
   finally
     s.Free
   end
@@ -276,13 +276,13 @@ var
   s: TStringStream;
   m: TMemoryStream;
 begin
-  s := TStringStream.Create (Utf8Encode (Value));
+  s := TStringStream.Create(Utf8Encode(Value));
   try
     m := TMemoryStream.Create;
     try
-      s.Seek (0, soFromBeginning);
-      ObjectTextToBinary (s, m);
-      ChangeData (m);
+      s.Seek(0, soFromBeginning);
+      ObjectTextToBinary(s, m);
+      ChangeData(m);
     finally
       m.Free;
     end

@@ -12,7 +12,7 @@ type
     procedure Memo1Exit(Sender: TObject);
   private
     fDetails : TRCDataFormResourceDetails;
-    procedure SaveResource (const undoDetails : string);
+    procedure SaveResource(const undoDetails : string);
   public
     procedure SetObject(const Value: TObject); override;
   end;
@@ -43,12 +43,12 @@ begin
   inherited;
 
   if Memo1.CanUndo then
-   SaveResource (rstFormChange);
+   SaveResource(rstFormChange);
 end;
 
 procedure TfmRCDataFormResource.SaveResource(const undoDetails: string);
 begin
-  AddUndoEntry (undoDetails);
+  AddUndoEntry(undoDetails);
   fDetails.Text := Memo1.Text
 end;
 

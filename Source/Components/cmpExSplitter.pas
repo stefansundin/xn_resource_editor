@@ -37,7 +37,7 @@ type
     property ResizeControl: TControl read GetResizeControl;
     procedure StopSizing; override;
   public
-    constructor Create (AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent); override;
     property Shrunken: Boolean read FShrunken write SetShrunken;
     property ResizeControlSize: Integer read GetResizeControlSize;
   published
@@ -100,9 +100,9 @@ var
 begin
   Result := nil;
   for i := 0 to Parent.ControlCount - 1 do
-    if (Parent.Controls [i] <> Self) and (Parent.Controls [i].Align = Align) then
+    if (Parent.Controls[i] <> Self) and (Parent.Controls[i].Align = Align) then
     begin
-      Result := Parent.Controls [i];
+      Result := Parent.Controls[i];
       break
     end
 end;
@@ -156,7 +156,7 @@ begin
     bs := ClientWidth + 8;
     tl := Point (-4, (ClientHeight - bs) div 2);
     if not FShrunken then
-      Inc (tl.X);
+      Inc(tl.X);
   end
   else
     if Align in [alTop, alBottom] then
@@ -164,7 +164,7 @@ begin
        bs := ClientHeight + 8;
        tl := Point ((ClientWidth - bs) div 2, -4);
        if not FShrunken then
-         Inc (tl.y);
+         Inc(tl.y);
      end;
 
   Result := rect (tl.X, tl.Y, tl.x + bs - 1, tl.Y + bs - 1);

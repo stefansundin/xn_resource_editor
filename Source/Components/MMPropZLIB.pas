@@ -4,7 +4,7 @@ interface
 
 type
   TAlloc = function (AppData: Pointer; Items, Size: Integer): Pointer;
-  TFree = procedure (AppData, Block: Pointer);
+  TFree = procedure(AppData, Block: Pointer);
 
   // Internal structure.  Ignore.
   TZStreamRec = packed record

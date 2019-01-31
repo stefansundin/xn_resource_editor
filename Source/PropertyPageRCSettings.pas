@@ -38,8 +38,8 @@ type
   private
     FIncludePathPackages: TIncludePathPackages;
     FData: TPropertyPageRCSettingsData;
-    function GetNodePackage (Node: PVirtualNode): TIncludePathPackage;
-    function GetNodeForPackage (const packageName: string): PVirtualNode;
+    function GetNodePackage(Node: PVirtualNode): TIncludePathPackage;
+    function GetNodeForPackage(const packageName: string): PVirtualNode;
     procedure UpdateCustomText;
   protected
     procedure UpdateActions; override;
@@ -75,12 +75,12 @@ begin
   FIncludePathPackages := TIncludePathPackages.Create;
   vstIncludePackages.RootNodeCount := FIncludePathPackages.Count;
 
-  FData := TPropertyPageRCSettingsData (AData);
+  FData := TPropertyPageRCSettingsData(AData);
 
   case FData.FIncludePathType of
     includePathPackage: begin
                            rbCompilerIncludePath.Checked := True;
-                           Node := GetNodeForPackage (FData.FIncludePathPackageName);
+                           Node := GetNodeForPackage(FData.FIncludePathPackageName);
                            if Assigned (Node) then
                              Node.CheckState := csCheckedNormal
                          end;
@@ -122,7 +122,7 @@ var
   Data: PObject;
 begin
   Data := PObject (vstIncludePackages.GetNodeData(Node));
-  Result := TIncludePathPackage (Data^);
+  Result := TIncludePathPackage(Data^);
 end;
 
 function TfmPropertyPageRCSettings.GetNodeForPackage(
@@ -131,7 +131,7 @@ begin
   Result := vstIncludePackages.GetFirst;
   while Assigned (Result) do
   begin
-    if SameText (GetNodePackage (Result).Name, packageName) then
+    if SameText (GetNodePackage(Result).Name, packageName) then
       break
     else
       Result := vstIncludePackages.GetNext(Result)
@@ -143,9 +143,9 @@ var
   st: string;
 begin
   case FData.FIncludePathType of
-    includePathPackage: st := GetIncludePathForPackage (FData.FIncludePathPackageName);
+    includePathPackage: st := GetIncludePathForPackage(FData.FIncludePathPackageName);
     includePathCustom : st := FData.FCustomIncludePath;
-    includePathEnv    : st := GetEnvironmentVariable ('Include');
+    includePathEnv    : st := GetEnvironmentVariable('Include');
   end;
 
   edCustomIncludePath.Text := st;
@@ -193,7 +193,7 @@ begin
   inherited;
   if Node.CheckState = csCheckedNormal then
   begin
-    FData.FIncludePathPackageName := GetNodePackage (Node).Name;
+    FData.FIncludePathPackageName := GetNodePackage(Node).Name;
     UpdateCustomText
   end;
 end;

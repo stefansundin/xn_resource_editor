@@ -56,23 +56,23 @@ protected
   procedure ClearDirty;
 
 public
-  procedure DeleteResource (idx : Integer); virtual;
-  procedure InsertResource (idx : Integer; details : TResourceDetails); virtual;
-  function AddResource (details : TResourceDetails) : Integer; virtual;
-  function IndexOfResource (details : TResourceDetails) : Integer; virtual; abstract;
-  function GetUniqueResourceName (const tp : WideString) : WideString;
+  procedure DeleteResource(idx : Integer); virtual;
+  procedure InsertResource(idx : Integer; details : TResourceDetails); virtual;
+  function AddResource(details : TResourceDetails) : Integer; virtual;
+  function IndexOfResource(details : TResourceDetails) : Integer; virtual; abstract;
+  function GetUniqueResourceName(const tp : WideString) : WideString;
 
   procedure SaveToStream (stream : TStream); virtual;
   procedure LoadFromStream (stream : TStream); virtual;
 
-  procedure SaveToFile (const FileName : string); virtual;
-  procedure LoadFromFile (const FileName : string); virtual;
+  procedure SaveToFile(const FileName : string); virtual;
+  procedure LoadFromFile(const FileName : string); virtual;
   procedure SortResources; virtual;
 
-  function FindResource (const tp, Name : WideString; ALanguage : Integer) : TResourceDetails;
+  function FindResource(const tp, Name : WideString; ALanguage : Integer) : TResourceDetails;
 
   property ResourceCount : Integer read GetResourceCount;
-  property ResourceDetails [idx : Integer] : TResourceDetails read GetResourceDetails;
+  property ResourceDetails[idx : Integer] : TResourceDetails read GetResourceDetails;
   property Dirty : Boolean read GetDirty write fDirty;
 end;
 
@@ -100,11 +100,11 @@ private
                                          // Resource header characteristics
 
 protected
-  constructor Create (AParent : TResourceModule; ALanguage : Integer; const AName, AType : WideString; ASize : Integer; AData : pointer); virtual;
+  constructor Create(AParent : TResourceModule; ALanguage : Integer; const AName, AType : WideString; ASize : Integer; AData : pointer); virtual;
   procedure InitNew; virtual;
   procedure SetResourceName(const Value: WideString); virtual;
-  class function SupportsRCData (const AName : string; Size : Integer; data : Pointer) : Boolean; virtual;
-  class function SupportsData (Size : Integer; data : Pointer) : Boolean; virtual;
+  class function SupportsRCData(const AName : string; Size : Integer; data : Pointer) : Boolean; virtual;
+  class function SupportsData(Size : Integer; data : Pointer) : Boolean; virtual;
 public
   class function CreateResourceDetails (AParent : TResourceModule; ALanguage : Integer; const AName, AType : WideString; ASize : Integer; AData : pointer) : TResourceDetails;
   class function GetBaseType : WideString; virtual;
@@ -113,7 +113,7 @@ public
   destructor Destroy; override;
   procedure BeforeDelete; virtual;
 
-  procedure ChangeData (newData : TMemoryStream); virtual;
+  procedure ChangeData(newData : TMemoryStream); virtual;
 
   property Parent : TResourceModule read fParent;
   property Data : TMemoryStream read fData;
@@ -142,7 +142,7 @@ private
   procedure SetText(const Value: string);
 protected
   procedure InitNew; override;
-  class function SupportsData (Size : Integer; data : Pointer) : Boolean; override;
+  class function SupportsData(Size : Integer; data : Pointer) : Boolean; override;
 public
   property Text : string read GetText write SetText;
 end;
@@ -158,7 +158,7 @@ private
   procedure SetText(const Value: WideString);
 protected
   procedure InitNew; override;
-  class function SupportsData (Size : Integer; data : Pointer) : Boolean; override;
+  class function SupportsData(Size : Integer; data : Pointer) : Boolean; override;
 public
   property Text : WideString read GetText write SetText;
 end;
@@ -199,9 +199,9 @@ begin
   if Length (registeredResourceDetails) = registeredResourceDetailsCount then
     SetLength (registeredResourceDetails, Length (registeredResourceDetails) + 10);
 
-  registeredResourceDetails [registeredResourceDetailsCount] := resourceClass;
+  registeredResourceDetails[registeredResourceDetailsCount] := resourceClass;
 
-  Inc (registeredResourceDetailsCount)
+  Inc(registeredResourceDetailsCount)
 end;
 
 (*----------------------------------------------------------------------*
@@ -216,15 +216,15 @@ var
 begin
   i := 0;
   while i < registeredResourceDetailsCount do
-    if registeredResourceDetails [i] = resourceClass then
+    if registeredResourceDetails[i] = resourceClass then
     begin
       if i < Length (registeredResourceDetails) - 1 then
-        Move (registeredResourceDetails [i + 1], registeredResourceDetails [i], (Length (registeredResourceDetails) - i - 1) * sizeof (TResourceDetailsClass));
+        Move(registeredResourceDetails[i + 1], registeredResourceDetails[i], (Length (registeredResourceDetails) - i - 1) * sizeof (TResourceDetailsClass));
 
-      Dec (registeredResourceDetailsCount)
+      Dec(registeredResourceDetailsCount)
     end
     else
-      Inc (i)
+      Inc(i)
 end;
 
 (*----------------------------------------------------------------------------*
@@ -242,9 +242,9 @@ var
 begin
   len := word (wstr^);
   SetLength (Result, len);
-  Inc (wstr);
+  Inc(wstr);
   WideCharToMultiByte(codePage, 0, WStr, Len, PAnsiChar(Result), Len + 1, nil, nil);
-  Inc (wstr, len);
+  Inc(wstr, len);
   Result := PChar(Result);
 end;
 
@@ -289,9 +289,9 @@ begin
   try
     MultiByteToWideChar (codePage, 0, PAnsiChar(s), -1, buffer, size);
     p^ := WideChar (len);
-    Inc (p);
-    Move (buffer^, p^, len * sizeof (WideChar));
-    Inc (p, len)
+    Inc(p);
+    Move(buffer^, p^, len * sizeof (WideChar));
+    Inc(p, len)
   finally
     FreeMem (buffer)
   end
@@ -313,15 +313,15 @@ var
 begin
   len := Length (s);
   p^ := WideChar (len);
-  Inc (p);
-  Move (PWideChar (s)^, p^, len * sizeof (WideChar));
-  Inc (p, len)
+  Inc(p);
+  Move(PWideChar (s)^, p^, len * sizeof (WideChar));
+  Inc(p, len)
 end;
 
 (*----------------------------------------------------------------------*
  | procedure ResourceNameToInt                                          |
  |                                                                      |
- | Get integer value of resource name (or type).  Return -1 if it's     |
+ | Get integer value of resource name(or type).  Return -1 if it's     |
  | not numeric.                                                         |
  *----------------------------------------------------------------------*)
 function ResourceNameToInt (const s : string) : Integer;
@@ -331,7 +331,7 @@ var
 begin
   isNumeric := Length (s) > 0;
   for i := 1 to Length (s) do
-    if not (s [i] in ['0'..'9']) then
+    if not (s[i] in ['0'..'9']) then
     begin
       isNumeric := False;
       break
@@ -451,12 +451,12 @@ constructor TResourceDetails.Create(AParent: TResourceModule; ALanguage: Integer
 begin
   fParent := AParent;
   fResourceLanguage := ALanguage;
-  fCodePage := LCIDToCodePage (fResourceLanguage);
+  fCodePage := LCIDToCodePage(fResourceLanguage);
   fResourceName := AName;
   fResourceType := AType;
   fData := TMemoryStream.Create;
   if AData <> Nil then
-    fData.Write (AData^, ASize)
+    fData.Write(AData^, ASize)
   else
     InitNew
 end;
@@ -471,11 +471,11 @@ constructor TResourceDetails.CreateNew(AParent: TResourceModule;
 begin
   fParent := AParent;
   fResourceLanguage := ALanguage;
-  fCodePage := LCIDToCodePage (fResourceLanguage);
+  fCodePage := LCIDToCodePage(fResourceLanguage);
   fResourceName := AName;
   fResourceType := GetBaseType;
   if Assigned(AParent) then
-    AParent.AddResource (Self);
+    AParent.AddResource(Self);
   fData := TMemoryStream.Create;
   InitNew
 end;
@@ -501,11 +501,11 @@ begin
   // Check for exact match
 
     for i := 0 to registeredResourceDetailsCount - 1 do
-      if registeredResourceDetails [i].GetBaseType = AType then
+      if registeredResourceDetails[i].GetBaseType = AType then
       begin
-        if (AType <> IntToStr (Integer (RT_RCDATA))) or registeredResourceDetails [i].SupportsRCData (AName, ASize, AData) then
+        if (AType <> IntToStr (Integer (RT_RCDATA))) or registeredResourceDetails[i].SupportsRCData(AName, ASize, AData) then
         begin
-          Result := registeredResourceDetails [i].Create (AParent, ALanguage, AName, AType, ASize, AData);
+          Result := registeredResourceDetails[i].Create(AParent, ALanguage, AName, AType, ASize, AData);
           break
         end
       end;
@@ -516,9 +516,9 @@ begin
   if Result = nil then
   try
     for i := 0 to registeredResourceDetailsCount - 1 do
-      if registeredResourceDetails [i].SupportsData (ASize, AData) then
+      if registeredResourceDetails[i].SupportsData(ASize, AData) then
       begin
-        Result := registeredResourceDetails [i].Create (AParent, ALanguage, AName, AType, ASize, AData);
+        Result := registeredResourceDetails[i].Create(AParent, ALanguage, AName, AType, ASize, AData);
         break
       end;
   except
@@ -526,12 +526,12 @@ begin
 
   if Result = Nil then
     if TAnsiResourceDetails.SupportsData(ASize, AData) then
-      Result := TAnsiResourceDetails.Create (AParent, ALanguage, AName, AType, ASize, AData)
+      Result := TAnsiResourceDetails.Create(AParent, ALanguage, AName, AType, ASize, AData)
     else
       if TUnicodeResourceDetails.SupportsData(ASize, AData) then
-        Result := TUnicodeResourceDetails.Create (AParent, ALanguage, AName, AType, ASize, AData)
+        Result := TUnicodeResourceDetails.Create(AParent, ALanguage, AName, AType, ASize, AData)
       else
-        Result := TResourceDetails.Create (AParent, ALanguage, AName, AType, ASize, AData)
+        Result := TResourceDetails.Create(AParent, ALanguage, AName, AType, ASize, AData)
 end;
 
 (*----------------------------------------------------------------------*
@@ -628,7 +628,7 @@ var
 begin
   fDirty := False;
   for i := 0 to ResourceCount - 1 do
-    ResourceDetails [i].Dirty := False
+    ResourceDetails[i].Dirty := False
 end;
 
 (*----------------------------------------------------------------------*
@@ -641,7 +641,7 @@ end;
 procedure TResourceModule.DeleteResource(idx: Integer);
 begin
   fDirty := True;
-  ResourceDetails [idx].BeforeDelete;
+  ResourceDetails[idx].BeforeDelete;
 end;
 
 (*----------------------------------------------------------------------*
@@ -656,17 +656,17 @@ var
 begin
   Result := nil;
   for i := 0 to ResourceCount - 1 do
-    if (ResourceDetails [i].fResourceType = tp) and (ResourceDetails [i].fResourceName = Name) and (Integer (ResourceDetails [i].fResourceLanguage) = ALanguage) then
+    if (ResourceDetails[i].fResourceType = tp) and (ResourceDetails[i].fResourceName = Name) and (Integer (ResourceDetails[i].fResourceLanguage) = ALanguage) then
     begin
-      Result := ResourceDetails [i];
+      Result := ResourceDetails[i];
       break
     end;
 
   if not Assigned(Result) then
     for i := 0 to ResourceCount - 1 do
-      if (ResourceDetails [i].fResourceType = tp) and (ResourceDetails [i].fResourceName = Name) and (ResourceDetails [i].fResourceLanguage = 0) then
+      if (ResourceDetails[i].fResourceType = tp) and (ResourceDetails[i].fResourceName = Name) and (ResourceDetails[i].fResourceLanguage = 0) then
       begin
-        Result := ResourceDetails [i];
+        Result := ResourceDetails[i];
         break
       end
 end;
@@ -687,7 +687,7 @@ begin
   Result := fDirty;
   if not fDirty then
     for i := 0 to ResourceCount - 1 do
-      if ResourceDetails [i].Dirty then
+      if ResourceDetails[i].Dirty then
       begin
         Result := True;
         break
@@ -710,7 +710,7 @@ begin
 
   for i := 0 to ResourceCount - 1 do
   begin
-    details := ResourceDetails [i];
+    details := ResourceDetails[i];
     if details.ResourceType = tp then
     begin
       n1 := ResourceNametoInt (details.ResourceName);
@@ -738,7 +738,7 @@ procedure TResourceModule.LoadFromFile(const FileName: string);
 var
   s : TFileStream;
 begin
-  s := TFileStream.Create (FileName, fmOpenRead or fmShareDenyNone);
+  s := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
   try
     LoadFromStream (s);
   finally
@@ -749,7 +749,7 @@ end;
 
 procedure TResourceModule.LoadFromStream(stream: TStream);
 begin
-  raise Exception.Create (rstNoStreaming);
+  raise Exception.Create(rstNoStreaming);
 end;
 
 (*----------------------------------------------------------------------*
@@ -771,7 +771,7 @@ begin
   if p <> Nil then
   begin
     p^ := #0;
-    Inc (p);
+    Inc(p);
     ext := p;
     oldFileName := PChar (oldFileName);
   end
@@ -781,12 +781,12 @@ begin
   oldFileName := oldFileName + '.' + ext;
 
   if FileExists (oldFileName) then
-    DeleteFile (oldFileName);
+    DeleteFile(oldFileName);
 
-  RenameFile (FileName, oldFileName);
+  RenameFile(FileName, oldFileName);
 
   try
-    s := TFileStream.Create (FileName, fmCreate);
+    s := TFileStream.Create(FileName, fmCreate);
     try
       SaveToStream (s);
       ClearDirty
@@ -795,15 +795,15 @@ begin
     end
   except
 // Failed.  Rename old file back.
-    DeleteFile (FileName);
-    RenameFile (oldFileName, FileName);
+    DeleteFile(FileName);
+    RenameFile(oldFileName, FileName);
     raise
   end
 end;
 
 procedure TResourceModule.SaveToStream(stream: TStream);
 begin
-  raise Exception.Create (rstNoStreaming);
+  raise Exception.Create(rstNoStreaming);
 end;
 
 procedure TResourceModule.SortResources;
@@ -854,7 +854,7 @@ begin
           break
         end;
 
-      Inc (pc)
+      Inc(pc)
     end
 end;
 {$endregion}
@@ -865,7 +865,7 @@ end;
 function TUnicodeResourceDetails.GetText: WideString;
 begin
   SetLength (Result, Data.Size div sizeof (WideChar));
-  Move (Data.Memory^, Result [1], data.Size);
+  Move(Data.Memory^, Result [1], data.Size);
 end;
 
 procedure TUnicodeResourceDetails.InitNew;
@@ -889,7 +889,7 @@ begin
   if Sample > 1024 then
     Sample := 1024
   else
-    Dec (Sample);
+    Dec(Sample);
   pc := PChar (data);
 
   if Result then
@@ -902,7 +902,7 @@ begin
           break
         end;
 
-      Inc (pc, 2)
+      Inc(pc, 2)
     end
 end;
 {$endregion}

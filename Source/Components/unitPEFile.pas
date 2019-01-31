@@ -48,7 +48,7 @@ type
 
     function GetSectionName: string;
   public
-    constructor Create (AParent: TPEModule; const AHeader: TImageSectionHeader; rawData: pointer);
+    constructor Create(AParent: TPEModule; const AHeader: TImageSectionHeader; rawData: pointer);
     destructor Destroy; override;
     property Parent: TPEModule read FParent;
 
@@ -98,7 +98,7 @@ type
     function GetExportSectionData: PChar;
 
   protected
-    procedure Decode (memory: pointer; exeSize: Integer); virtual;
+    procedure Decode(memory: pointer; exeSize: Integer); virtual;
     procedure Encode; virtual;
     property OptionalHeaderPtr: PImageOptionalHeader32 read FOptionalHeader;
     function FindDictionaryEntrySection (entryNo: Integer; var Offset: Integer): Integer;
@@ -127,10 +127,10 @@ type
 
 
     procedure LoadFromStream (s: TStream); override;
-    procedure LoadFromFile (const name: string); override;
+    procedure LoadFromFile(const name: string); override;
 
     procedure SaveToStream (s: TStream); override;
-  //  procedure SaveToFile (const name: string); override;
+  //  procedure SaveToFile(const name: string); override;
   end;
 
   //----------------------------------------------------------------------
@@ -141,7 +141,7 @@ type
     timeDateStamp: DWORD;   // Time the resource Data was created by the resource compiler.
     versionMajor: WORD;     // Major version number, set by the user.
     versionMinor: WORD;     // Minor version number.
-    cNameEntries: WORD;     // Number of directory entries, immediately following the table, that use strings to identify Type, Name, or Language (depending on the level of the table).
+    cNameEntries: WORD;     // Number of directory entries, immediately following the table, that use strings to identify Type, Name, or Language(depending on the level of the table).
     cIDEntries: WORD;       // Number of directory entries, immediately following the Name entries, that use numeric identifiers for Type, Name, or Language.
   end;
   PResourceDirectoryTable = ^TResourceDirectoryTable;
@@ -151,8 +151,8 @@ type
 
   TResourceDirectoryEntry = packed record
     name: DWORD;         // RVA Address of integer or string that gives the Type, Name, or Language identifier, depending on level of table.
-    RVA: DWORD;          // RVA High bit 0. Address of a Resource Data Entry (a leaf).
-                          // RVA High bit 1. Lower 31 bits are the address of another Resource Directory Table (the next level down).
+    RVA: DWORD;          // RVA High bit 0. Address of a Resource Data Entry(a leaf).
+                          // RVA High bit 1. Lower 31 bits are the address of another Resource Directory Table(the next level down).
   end;
   PResourceDirectoryEntry = ^TResourceDirectoryEntry;
 
@@ -175,7 +175,7 @@ type
     fDetailList: TObjectList;             // List of TResourceDetails objects
 
   protected
-    procedure Decode (memory: pointer; exeSize: Integer); override;
+    procedure Decode(memory: pointer; exeSize: Integer); override;
     procedure Encode; override;
     function GetResourceCount: Integer;  override;
     function GetResourceDetails(idx: Integer): TResourceDetails; override;
@@ -185,11 +185,11 @@ type
 
 
     property ResourceCount: Integer read GetResourceCount;
-    property ResourceDetails [idx: Integer]: TResourceDetails read GetResourceDetails;
-    procedure DeleteResource (resourceNo: Integer); override;
-    procedure InsertResource (idx: Integer; details: TResourceDetails); override;
-    function AddResource (details: TResourceDetails): Integer; override;
-    function IndexOfResource (details: TResourceDetails): Integer; override;
+    property ResourceDetails[idx: Integer]: TResourceDetails read GetResourceDetails;
+    procedure DeleteResource(resourceNo: Integer); override;
+    procedure InsertResource(idx: Integer; details: TResourceDetails); override;
+    function AddResource(details: TResourceDetails): Integer; override;
+    function IndexOfResource(details: TResourceDetails): Integer; override;
     procedure SortResources; override;
   end;
 
@@ -217,11 +217,11 @@ type
         true: (Data: TMemoryStream; CodePage: DWORD)
       end;
 
-    constructor Create (const AType, AName: string; ALang: Integer; aData: TMemoryStream; CodePage: DWORD);
-    constructor CreateNameNode (const AName: string; ALang: Integer; aData: TMemoryStream; CodePage: DWORD);
-    constructor CreateLangNode (ALang: Integer; aData: TMemoryStream; CodePage: DWORD);
+    constructor Create(const AType, AName: string; ALang: Integer; aData: TMemoryStream; CodePage: DWORD);
+    constructor CreateNameNode(const AName: string; ALang: Integer; aData: TMemoryStream; CodePage: DWORD);
+    constructor CreateLangNode(ALang: Integer; aData: TMemoryStream; CodePage: DWORD);
     procedure Add (const AType, AName: string; ALang: Integer; aData: TMemoryStream; CodePage: DWORD);
-    procedure AddName (const AName: string; ALang: Integer; aData: TMemoryStream; CodePage: DWORD);
+    procedure AddName(const AName: string; ALang: Integer; aData: TMemoryStream; CodePage: DWORD);
     procedure AddLang (ALang: Integer; aData: TMemoryStream; CodePage: DWORD);
     function IsID (idx: Integer): Boolean;
     destructor Destroy; override;
@@ -245,7 +245,7 @@ end;
  | Decode the PE file.  Load the DOS header, the COFF header and the    |
  | 'optional' header, then load each Section into FSectionList          |
  *----------------------------------------------------------------------*)
-procedure TPEModule.Decode (Memory: pointer; exeSize: Integer);
+procedure TPEModule.Decode(Memory: pointer; exeSize: Integer);
 var
   Offset: LongInt;
   i: Integer;
@@ -256,35 +256,35 @@ begin
 
                                 // Check it's really a PE file.
   if PWORD (Memory)^ <> IMAGE_DOS_SIGNATURE then
-    raise EPEException.Create (rstInvalidDOSSignature);
+    raise EPEException.Create(rstInvalidDOSSignature);
 
                                 // Load the DOS header
   FDOSHeader := PImageDosHeader (Memory)^;
 
   Offset := FDOSHeader._lfanew;
-  FDOSStub.Write ((PChar (Memory) + sizeof (FDOSHeader))^, FDOSHeader._lfanew - sizeof (FDOSHeader));
+  FDOSStub.Write((PChar (Memory) + sizeof (FDOSHeader))^, FDOSHeader._lfanew - sizeof (FDOSHeader));
 
                                 // Check the COFF signature
   if PDWORD (PChar (Memory) + Offset)^ <> IMAGE_NT_SIGNATURE then
-    raise EPEException.Create (rstInvalidCOFFSignature);
+    raise EPEException.Create(rstInvalidCOFFSignature);
 
                                 // Load the COFF header
-  Inc (Offset, sizeof (DWORD));
+  Inc(Offset, sizeof (DWORD));
   FCOFFHeader := PImageFileHEader (PChar (Memory) + Offset)^;
 
-  Inc (Offset, sizeof (FCOFFHeader));
+  Inc(Offset, sizeof (FCOFFHeader));
 
                                 // Check the Optional Header signature.  nb
                                 // the optional header is compulsory for
                                 // 32 bit windows modules!
   if PWORD (PChar (Memory) + Offset)^ <> IMAGE_NT_OPTIONAL_HDR_MAGIC then
-    raise EPEException.Create (rstInvalidOptionalHeader);
+    raise EPEException.Create(rstInvalidOptionalHeader);
 
                                 // Save the 'optional' header
   ReallocMem (FOptionalHeader, FCOFFHeader.SizeOfOptionalHeader);
-  Move ((PChar (Memory) + Offset)^, FOptionalHeader^, FCOFFHeader.SizeOfOptionalHeader);
+  Move((PChar (Memory) + Offset)^, FOptionalHeader^, FCOFFHeader.SizeOfOptionalHeader);
 
-  Inc (Offset, FCOFFHeader.SizeOfOptionalHeader);
+  Inc(Offset, FCOFFHeader.SizeOfOptionalHeader);
 
   sectionHeader := PImageSectionHeader (PChar (memory) + Offset);
   commentOffset := Offset + FCOFFHeader.NumberOfSections * sizeof (TImageSectionHeader);
@@ -298,14 +298,14 @@ begin
   if FCommentSize > 0 then
   begin
     GetMem (FCommentBlock, FCommentSize);
-    Move ((PChar (memory) + commentOffset)^, FCommentBlock^, FCommentSize)
+    Move((PChar (memory) + commentOffset)^, FCommentBlock^, FCommentSize)
   end;
                                 // Now save each image Section in the FSectionList
   for i := 0 to FCOFFHeader.NumberOfSections - 1 do
   begin
     sectionHeader := PImageSectionHeader (PChar (memory) + Offset);
-    FSectionList.Add (TImageSection.Create (self, sectionHeader^, PChar (memory) + sectionHeader^.PointertoRawData));
-    Inc (Offset, sizeof (TImageSectionHeader));
+    FSectionList.Add (TImageSection.Create(self, sectionHeader^, PChar (memory) + sectionHeader^.PointertoRawData));
+    Inc(Offset, sizeof (TImageSectionHeader));
   end;
 
   i := sectionHeader^.PointerToRawData + sectionHeader^.SizeOfRawData;
@@ -317,7 +317,7 @@ begin
   if FEndCommentSize > 0 then
   begin
     GetMem (FEndComment, FEndCommentSize);
-    Move ((PChar (memory) + i)^, FEndComment^, FEndCommentSize)
+    Move((PChar (memory) + i)^, FEndComment^, FEndCommentSize)
   end
 end;
 
@@ -415,20 +415,20 @@ begin
 
     if (Section.FSectionHeader.Characteristics and IMAGE_SCN_MEM_EXECUTE) <> 0 then
     begin
-      Inc (codeSize, alignedSize);
+      Inc(codeSize, alignedSize);
       if DWORD (address) < FOptionalHeader^.BaseOfCode then
         FOptionalHeader^.BaseOfCode := address
     end
     else
       if (Section.FSectionHeader.Characteristics and IMAGE_SCN_CNT_INITIALIZED_DATA) <> 0 then
-        Inc (iDataSize, alignedSize)
+        Inc(iDataSize, alignedSize)
       else
         if (Section.FSectionHeader.Characteristics and IMAGE_SCN_CNT_UNINITIALIZED_DATA) <> 0 then
-          Inc (uDataSize, alignedSize);
+          Inc(uDataSize, alignedSize);
 
-    Inc (iSize, addrAlignedSize);
-    Inc (Offset, Section.FSectionHeader.SizeOfRawData);
-    Inc (address, (Integer (Section.FSectionHeader.Misc.VirtualSize) + addrAlign - 1) div addrAlign * addrAlign);
+    Inc(iSize, addrAlignedSize);
+    Inc(Offset, Section.FSectionHeader.SizeOfRawData);
+    Inc(address, (Integer (Section.FSectionHeader.Misc.VirtualSize) + addrAlign - 1) div addrAlign * addrAlign);
   end;
 
   FOptionalHeader^.SizeOfCode := codeSize;
@@ -443,7 +443,7 @@ begin
   i := (i + addrAlign - 1) div addrAlign * addrAlign;
 
   // With explorer.exe, codeSize is $14800, i is 148E8, so aligned 'i' is $15000
-  // .. so BaseOfData should be $15000 + BaseOfCode ($1000) = $16000.
+  // .. so BaseOfData should be $15000 + BaseOfCode($1000) = $16000.
   //
   // ... but it's not - it's $15000, which means that the last $8e8 bytes of code
   // should be stampled over by the Data!
@@ -504,11 +504,11 @@ begin
   if index < DataDictionaryCount then
   begin
     p := @FOptionalHeader.DataDirectory [0];
-    Inc (p, index);
+    Inc(p, index);
     Result := p
   end
   else
-    raise ERangeError.Create (rstBadDictionaryIndex);
+    raise ERangeError.Create(rstBadDictionaryIndex);
 end;
 
 (*----------------------------------------------------------------------*
@@ -545,7 +545,7 @@ begin
   Section := GetExportSection (Offset);
   if Assigned(Section) then
   begin
-    ExportSection := PImageExportDirectory (PChar (Section.FRawData.memory) + Offset);
+    ExportSection := PImageExportDirectory(PChar (Section.FRawData.memory) + Offset);
     Result := ExportSection^.NumberOfNames
   end
   else
@@ -567,15 +567,15 @@ begin
   if Assigned(Section) then
   begin
     Data := GetExportSectionData;
-    ExportSection := PImageExportDirectory (PChar (Section.FRawData.memory) + Offset);
+    ExportSection := PImageExportDirectory(PChar (Section.FRawData.memory) + Offset);
     po := DWORD (ExportSection^.AddressOfNameOrdinals);
     pw := PWORD (Data + po);
-    Inc (pw, idx);
+    Inc(pw, idx);
     ordinal := pw^;
 
     po := DWORD (ExportSection^.AddressOfNames);
     p := PDWORD (Data + po);
-    Inc (p, idx);
+    Inc(p, idx);
     name := Data + p^
   end
 end;
@@ -638,12 +638,12 @@ begin
   Result := Nil;
   if Assigned(Section) then
   begin
-    ImportSection := PImageImportDirectory (PChar (Section.FRawData.memory) + Offset);
+    ImportSection := PImageImportDirectory(PChar (Section.FRawData.memory) + Offset);
 
     while DirValid (ImportSection) and (idx > 0) do
     begin
-      Inc (ImportSection);
-      Dec (idx)
+      Inc(ImportSection);
+      Dec(idx)
     end;
 
     if DirValid (ImportSection) then
@@ -661,12 +661,12 @@ begin
   Result := 0;
   if Assigned(Section) then
   begin
-    ImportSection := PImageImportDirectory (PChar (Section.FRawData.memory) + Offset);
+    ImportSection := PImageImportDirectory(PChar (Section.FRawData.memory) + Offset);
 
     while DirValid (ImportSection) do
     begin
-      Inc (Result);
-      Inc (ImportSection)
+      Inc(Result);
+      Inc(ImportSection)
     end
   end
 end;
@@ -716,7 +716,7 @@ procedure TPEModule.LoadFromFile(const name: string);
 var
   f: TFileStream;
 begin
-  f := TFileStream.Create (name, fmOpenRead or fmShareDenyNone);
+  f := TFileStream.Create(name, fmOpenRead or fmShareDenyNone);
   try
     LoadFromStream (f)
   finally
@@ -737,7 +737,7 @@ begin
   try
     m.CopyFrom (s, 0);
 
-    Decode (m.memory, m.size)
+    Decode(m.memory, m.size)
   finally
     m.Free
   end
@@ -753,7 +753,7 @@ procedure TPEModule.SaveToFile(const name: string);
 var
   f: TFileStream;
 begin
-  f := TFileStream.Create (name, fmCreate);
+  f := TFileStream.Create(name, fmCreate);
   try
     SaveToStream (f)
   finally
@@ -783,24 +783,24 @@ begin
   NTSignature := IMAGE_NT_SIGNATURE;
 
                                 // Write the DOS stub
-  s.Write (FDOSHeader, sizeof (FDOSHeader));
+  s.Write(FDOSHeader, sizeof (FDOSHeader));
   s.CopyFrom (FDOSStub, 0);
 
                                 // Write NT sig and COFF header
-  s.Write (NTSignature, sizeof (NTSignature));
-  s.Write (FCOFFHeader, sizeof (FCOFFHeader));
+  s.Write(NTSignature, sizeof (NTSignature));
+  s.Write(FCOFFHeader, sizeof (FCOFFHeader));
   ckOffset := s.Position + Integer (@FOptionalHeader^.CheckSum) - Integer (@FOptionalHeader^);
-  s.Write (FOptionalHeader^, FCOFFHeader.SizeOfOptionalHeader);
+  s.Write(FOptionalHeader^, FCOFFHeader.SizeOfOptionalHeader);
 
                                 // Write the Section headers
   for i := 0 to FSectionList.Count - 1 do
   begin
     Section := TImageSection (FSectionList [i]);
-    s.Write (Section.FSectionHeader, sizeof (Section.FSectionHeader))
+    s.Write(Section.FSectionHeader, sizeof (Section.FSectionHeader))
   end;
 
   if FCommentSize > 0 then      // Save the 'comment' Section.  See 'Decode' for details
-    s.Write (FCommentBlock^, FCommentSize);
+    s.Write(FCommentBlock^, FCommentSize);
 
                                 // Write the sections
   padding := Nil;
@@ -816,11 +816,11 @@ begin
       begin
         paddingLen := paddingSize + 65536;
         ReallocMem (padding, paddingLen);
-        ZeroMemory (padding, paddingLen);
+        ZeroMemory(padding, paddingLen);
       end;
 
       if paddingSize > 0 then   // Put our signature at the start of the first
-          s.Write (padding^, paddingSize);
+          s.Write(padding^, paddingSize);
 
                                 // Write the Section Data.
       s.CopyFrom (Section.FRawData, 0);
@@ -834,36 +834,36 @@ begin
       begin
         paddingLen := paddingSize + 65536;
         ReallocMem (padding, paddingLen);
-        ZeroMemory (padding, paddingLen);
+        ZeroMemory(padding, paddingLen);
       end;
 
       if paddingSize > 0 then
-        s.Write (padding^, paddingSize)
+        s.Write(padding^, paddingSize)
 
     end;
 
     if FEndCommentSize > 0 then  // Save the debug info.
-      s.Write (FEndComment^, FEndCommentSize)
+      s.Write(FEndComment^, FEndCommentSize)
   finally
     ReallocMem (padding, 0)
   end;
 
   f := TMemoryStream.Create;    // Now calculate the checksum....
   try
-    s.Seek (0, soFromBeginning);
+    s.Seek(0, soFromBeginning);
     f.LoadFromStream (s);
-    ntHeaders := ChecksumMappedFile (f.Memory, f.Size, @oldCheckSum, @newCheckSum);
+    ntHeaders := ChecksumMappedFile(f.Memory, f.Size, @oldCheckSum, @newCheckSum);
 
     if Assigned(ntHeaders) then
     begin
-      s.Seek (ckOffset, soFromBeginning);
-      s.Write (newChecksum, sizeof (newChecksum))
+      s.Seek(ckOffset, soFromBeginning);
+      s.Write(newChecksum, sizeof (newChecksum))
     end
   finally
     f.Free
   end;
 
-  s.Seek (0, soFromEnd);
+  s.Seek(0, soFromEnd);
 end;
 
 
@@ -892,14 +892,14 @@ begin
 
     if FSectionHeader.Misc.VirtualSize = 0 then
       FSectionHeader.Misc.VirtualSize := FSectionHeader.SizeOfRawData;
-    FRawData.Write (rawData^, FSectionHeader.Misc.VirtualSize)
+    FRawData.Write(rawData^, FSectionHeader.Misc.VirtualSize)
   end
   else
 
 // nb.  If VirtualSize is bigger than SizeOfRawData it implies that extra padding is required.
 //      Save the amount, so we can get all the COFF header values right.  See 'Encode' above.
   begin
-    FRawData.Write (rawData^, FSectionHeader.SizeOfRawData);
+    FRawData.Write(rawData^, FSectionHeader.SizeOfRawData);
     FUninitializedDataSize := FSectionHeader.Misc.VirtualSize - FSectionHeader.SizeOfRawData;
   end;
 
@@ -932,17 +932,17 @@ end;
 (*----------------------------------------------------------------------*
  | procedure TPEResourceModule.DeleteResource                           |
  |                                                                      |
- | Delete the specified resource (by index)                             |
+ | Delete the specified resource(by index)                             |
  *----------------------------------------------------------------------*)
 procedure TPEResourceModule.DeleteResource(resourceNo: Integer);
 var
   res: TResourceDetails;
 begin
-  res := ResourceDetails [resourceNo];
+  res := ResourceDetails[resourceNo];
   inherited;
-  resourceNo := IndexOfResource (Res);
+  resourceNo := IndexOfResource(Res);
   if resourceNo <> -1 then
-    fDetailList.Delete (resourceNo);
+    fDetailList.Delete(resourceNo);
 end;
 
 (*----------------------------------------------------------------------*
@@ -994,7 +994,7 @@ var
   end;
 
   // (recursively) get resources
-  procedure GetResource (Offset, level: Integer);
+  procedure GetResource(Offset, level: Integer);
   var
     entry: PResourceDirectoryEntry;
     i, count: Integer;
@@ -1003,11 +1003,11 @@ var
     table: PResourceDirectoryTable;
     details: TResourceDetails;
   begin
-    table := PResourceDirectoryTable (PChar (Section.FRawData.memory) + Offset);
+    table := PResourceDirectoryTable(PChar (Section.FRawData.memory) + Offset);
     with table^ do
       count := cNameEntries + cIDEntries;
 
-    entry := PResourceDirectoryEntry (PChar (Section.FRawData.memory) + Offset + sizeof (TResourceDirectoryTable));
+    entry := PResourceDirectoryEntry(PChar (Section.FRawData.memory) + Offset + sizeof (TResourceDirectoryTable));
     for i := 0 to count - 1 do
     begin
       idOrName := i >= table^.cNameEntries;
@@ -1018,18 +1018,18 @@ var
         2 :
           begin
             if not IdOrName then
-              raise EPEException.Create (rstBadLangID);
+              raise EPEException.Create(rstBadLangID);
 
             lang := entry^.name
           end
       end;
 
       if (entry^.RVA and $80000000) > 0 then // Not a leaf node - traverse the tree
-        GetResource (entry^.RVA and $7fffffff, level + 1)
+        GetResource(entry^.RVA and $7fffffff, level + 1)
       else
       begin
                                              // It's a leaf node - create resource details
-        dataEntry := PResourceDataEntry (PChar (Section.FRawData.Memory) + entry^.RVA);
+        dataEntry := PResourceDataEntry(PChar (Section.FRawData.Memory) + entry^.RVA);
         details := TResourceDetails.CreateResourceDetails (self, lang, name, tp, dataEntry^.Size, PChar (Section.FRawData.Memory) + dataEntry^.OffsetToData - Section.FSectionHeader.VirtualAddress);
         details.CodePage := dataEntry^.CodePage;
         details.Characteristics := table^.characteristics;
@@ -1038,7 +1038,7 @@ var
 
       end;
 
-      Inc (entry)
+      Inc(entry)
     end
   end;
 
@@ -1046,7 +1046,7 @@ begin
   inherited;
   Section := GetResourceSection (Offset);
   if Section <> nil then
-    GetResource (Offset, 0)
+    GetResource(Offset, 0)
 end;
 
 (*----------------------------------------------------------------------*
@@ -1118,34 +1118,34 @@ var
   // Calculate Offset and size of name table and DirectoryEntry table.
   // Calculate size of Data
 
-  procedure GetNameTableSize (node: TResourceNode);
+  procedure GetNameTableSize(node: TResourceNode);
   var
     i: Integer;
   begin
-    Inc (nameOffset, sizeof (TResourceDirectoryTable));
-    Inc (deOffset, sizeof (TResourceDirectoryTable));
+    Inc(nameOffset, sizeof (TResourceDirectoryTable));
+    Inc(deOffset, sizeof (TResourceDirectoryTable));
 
     for i := 0 to node.count - 1 do
     begin
-      Inc (nameOffset, sizeof (TResourceDirectoryEntry));
-      Inc (deOffset, sizeof (TResourceDirectoryEntry));
+      Inc(nameOffset, sizeof (TResourceDirectoryEntry));
+      Inc(deOffset, sizeof (TResourceDirectoryEntry));
 
-      if not node.nodes [i].intID then
-        Inc (nameSize, Length (node.nodes [i].id) * sizeof (WideChar) + sizeof (word));
+      if not node.nodes[i].intID then
+        Inc(nameSize, Length (node.nodes[i].id) * sizeof (WideChar) + sizeof (word));
 
-      if not node.nodes [i].leaf then
-        GetNameTableSize (node.nodes [i].next)
+      if not node.nodes[i].leaf then
+        GetNameTableSize(node.nodes[i].next)
       else
       begin
-        Inc (nameOffset, sizeof (TResourceDataEntry));
-        Inc (deSize, sizeof (TResourceDataEntry));
-        dataSize := (dataSize + DWORD (node.nodes [i].Data.Size) + 3) div 4 * 4;
+        Inc(nameOffset, sizeof (TResourceDataEntry));
+        Inc(deSize, sizeof (TResourceDataEntry));
+        dataSize := (dataSize + DWORD (node.nodes[i].Data.Size) + 3) div 4 * 4;
       end
     end
   end;
 
   //------------------------------------------------------------------
-  // Save a node to Section.FRawData (and save it's child nodes recursively)
+  // Save a node to Section.FRawData(and save it's child nodes recursively)
 
   procedure SaveToSection (node: TResourceNode);
   var
@@ -1157,46 +1157,46 @@ var
     wl: word;
 
   //------------------------------------------------------------------
-  // Save entry (i), and the child nodes
+  // Save entry(i), and the child nodes
 
-    procedure SaveNode (i: Integer);
+    procedure SaveNode(i: Integer);
     begin
-      if node.nodes [i].intID then      // id is a simple integer
-        entry.name := StrToInt (node.nodes [i].id)
+      if node.nodes[i].intID then      // id is a simple integer
+        entry.name := StrToInt (node.nodes[i].id)
       else
       begin                             // id is an Offset to a name in the
                                         // name table.
         entry.name := nameOffset + namePos + $80000000;
-        w := node.nodes [i].id;
-        wl := Length (node.nodes [i].id);
-        Move (wl, nameTable [namePos], sizeof (wl));
-        Inc (namePos, sizeof (wl));
-        Move (w [1], nameTable [namePos], wl * sizeof (WideChar));
-        Inc (namePos, wl * sizeof (WideChar))
+        w := node.nodes[i].id;
+        wl := Length (node.nodes[i].id);
+        Move(wl, nameTable [namePos], sizeof (wl));
+        Inc(namePos, sizeof (wl));
+        Move(w [1], nameTable [namePos], wl * sizeof (WideChar));
+        Inc(namePos, wl * sizeof (WideChar))
       end;
 
-      if node.nodes [i].leaf then       // RVA points to a TResourceDataEntry in the
+      if node.nodes[i].leaf then       // RVA points to a TResourceDataEntry in the
       begin                             // Data entry table.
         entry.RVA := deOffset + dePos;
-        dataEntry := PResourceDataEntry (deTable + dePos);
-        dataEntry^.CodePage := node.nodes [i].CodePage;
+        dataEntry := PResourceDataEntry(deTable + dePos);
+        dataEntry^.CodePage := node.nodes[i].CodePage;
         dataEntry^.Reserved := 0;
-        dataEntry^.Size := node.nodes [i].Data.Size;
+        dataEntry^.Size := node.nodes[i].Data.Size;
         dataEntry^.OffsetToData := dataOffset + dataPos + Section.FSectionHeader.VirtualAddress;
 
-        Move (node.nodes [i].Data.memory^, Data [dataPos], dataEntry^.Size);
+        Move(node.nodes[i].Data.memory^, Data [dataPos], dataEntry^.Size);
 
-        Inc (dePos, sizeof (TResourceDataEntry));
+        Inc(dePos, sizeof (TResourceDataEntry));
         dataPos := (dataPos + dataEntry^.size + 3) div 4 * 4;
-        Section.FRawData.Write (entry, sizeof (entry));
+        Section.FRawData.Write(entry, sizeof (entry));
       end
       else                              // RVA points to another table.
       begin
         entry.RVA := $80000000 + tableOffset;
-        Section.FRawData.Write (entry, sizeof (entry));
+        Section.FRawData.Write(entry, sizeof (entry));
         n := Section.FRawData.Position;
-        SaveToSection (node.nodes [i].next);
-        Section.FRawData.Seek (n, soFromBeginning);
+        SaveToSection (node.nodes[i].next);
+        Section.FRawData.Seek(n, soFromBeginning);
       end
     end;
 
@@ -1210,13 +1210,13 @@ var
 
                                         // Calculate no of integer and string IDs
     for i := 0 to node.count - 1 do
-      if node.nodes [i].intID then
-        Inc (table.cIDEntries)
+      if node.nodes[i].intID then
+        Inc(table.cIDEntries)
       else
-        Inc (table.cNameEntries);
+        Inc(table.cNameEntries);
 
-    Section.FRawData.Seek (tableOffset, soFromBeginning);
-    Section.FRawData.Write (table, sizeof (table));
+    Section.FRawData.Seek(tableOffset, soFromBeginning);
+    Section.FRawData.Write(table, sizeof (table));
 
     tableOffset := tableOffset + sizeof (TResourceDirectoryTable) + DWORD (node.Count) * sizeof (TResourceDirectoryEntry);
 
@@ -1224,14 +1224,14 @@ var
                                         // with string entries first.  Goodness knows why,
                                         // but play along...
     for i := 0 to node.count - 1 do
-      if not node.nodes [i].intID then
-       SaveNode (i);
+      if not node.nodes[i].intID then
+       SaveNode(i);
 
     for i := 0 to node.count - 1 do
-      if node.nodes [i].intID then
-       SaveNode (i);
+      if node.nodes[i].intID then
+       SaveNode(i);
 
-    Section.FRawData.Seek (0, soFromEnd);
+    Section.FRawData.Seek(0, soFromEnd);
   end;
 
 
@@ -1247,17 +1247,17 @@ begin { Encode }
   try
     for i := 0 to fDetailList.Count - 1 do
     begin
-      details := TResourceDetails (fDetailList.Items [i]);
+      details := TResourceDetails (fDetailList.Items[i]);
       if root = Nil then
-        root := TResourceNode.Create (details.ResourceType, details.ResourceName, details.ResourceLanguage, details.Data, details.CodePage)
+        root := TResourceNode.Create(details.ResourceType, details.ResourceName, details.ResourceLanguage, details.Data, details.CodePage)
       else
         root.Add (details.ResourceType, details.ResourceName, details.ResourceLanguage, details.Data, details.CodePage)
     end;
 
                                           // Save elements of their original EXE
-    versMajor := PResourceDirectoryTable (Section.FRawData.Memory)^.versionMajor;
-    versMinor := PResourceDirectoryTable (Section.FRawData.Memory)^.versionMinor;
-    TimeStamp := PResourceDirectoryTable (Section.FRawData.Memory)^.timeDateStamp;
+    versMajor := PResourceDirectoryTable(Section.FRawData.Memory)^.versionMajor;
+    versMinor := PResourceDirectoryTable(Section.FRawData.Memory)^.versionMinor;
+    TimeStamp := PResourceDirectoryTable(Section.FRawData.Memory)^.timeDateStamp;
 
 
     Section.FRawData.Clear;               // Clear the Data.  We're gonna recreate
@@ -1267,7 +1267,7 @@ begin { Encode }
     deSize := 0; deOffset := Offset;
     dataSize := 0;
 
-    GetNameTableSize (root);              // Calculate sizes and offsets of the
+    GetNameTableSize(root);              // Calculate sizes and offsets of the
                                           // name table, the Data entry table and
                                           // the size of the Data.
 
@@ -1288,20 +1288,20 @@ begin { Encode }
     SaveToSection (root);               // Do the work.
 
                                         // Save the tables
-    Section.FRawData.Write (deTable^, deSize);
-    Section.FRawData.Write (nameTable^, nameSize);
+    Section.FRawData.Write(deTable^, deSize);
+    Section.FRawData.Write(nameTable^, nameSize);
 
                                         // Add padding so the Data goes on a
                                         // 16 byte boundary.
     if DWORD (Section.FRawData.Position) < dataOffset then
     begin
       GetMem (zeros, dataOffset - DWORD (Section.FRawData.Position));
-      ZeroMemory (zeros, dataOffset - DWORD (Section.FRawData.Position));
-      Section.FRawData.Write (zeros^, dataOffset - DWORD (Section.FRawData.Position))
+      ZeroMemory(zeros, dataOffset - DWORD (Section.FRawData.Position));
+      Section.FRawData.Write(zeros^, dataOffset - DWORD (Section.FRawData.Position))
     end;
 
                                         // Write the Data.
-    Section.FRawData.Write (Data^, dataSize);
+    Section.FRawData.Write(Data^, dataSize);
 
     inherited; // **** Must call inherited !
 
@@ -1324,18 +1324,18 @@ var
 
 begin
   for i := 0 to count - 1 do
-    if AType = nodes [i].id then
+    if AType = nodes[i].id then
     begin
-      nodes [i].next.AddName (AName, ALang, aData, codePage);
+      nodes[i].next.AddName(AName, ALang, aData, codePage);
       exit
     end;
 
-  Inc (count);
+  Inc(count);
   SetLength (nodes, count);
-  nodes [count - 1].id := AType;
-  nodes [count - 1].intID := isID (count - 1);
-  nodes [count - 1].leaf := False;
-  nodes [count - 1].next := TResourceNode.CreateNameNode (AName, ALang, AData, codePage)
+  nodes[count - 1].id := AType;
+  nodes[count - 1].intID := isID (count - 1);
+  nodes[count - 1].leaf := False;
+  nodes[count - 1].next := TResourceNode.CreateNameNode(AName, ALang, AData, codePage)
 end;
 
 procedure TResourceNode.AddLang(ALang: Integer; aData: TMemoryStream; codePage: DWORD);
@@ -1343,19 +1343,19 @@ var
   i: Integer;
 begin
   for i := 0 to count - 1 do
-    if IntToStr (ALang) = nodes [i].id then
+    if IntToStr (ALang) = nodes[i].id then
     begin
-      nodes [i].Data := aData;
+      nodes[i].Data := aData;
       exit
     end;
 
-  Inc (count);
+  Inc(count);
   SetLength (nodes, count);
-  nodes [count - 1].id := IntToStr (ALang);
-  nodes [count - 1].intId := True;
-  nodes [count - 1].leaf := True;
-  nodes [count - 1].Data := aData;
-  nodes [count - 1].CodePage := codePage;
+  nodes[count - 1].id := IntToStr (ALang);
+  nodes[count - 1].intId := True;
+  nodes[count - 1].leaf := True;
+  nodes[count - 1].Data := aData;
+  nodes[count - 1].CodePage := codePage;
 end;
 
 procedure TResourceNode.AddName(const AName: string; ALang: Integer;
@@ -1364,18 +1364,18 @@ var
   i: Integer;
 begin
   for i := 0 to count - 1 do
-    if AName = nodes [i].id then
+    if AName = nodes[i].id then
     begin
-      nodes [i].next.AddLang (ALang, aData, codePage);
+      nodes[i].next.AddLang (ALang, aData, codePage);
       exit
     end;
 
-  Inc (count);
+  Inc(count);
   SetLength (nodes, count);
-  nodes [count - 1].id := AName;
-  nodes [count - 1].intID := isID (count - 1);
-  nodes [count - 1].leaf := False;
-  nodes [count - 1].next := TResourceNode.CreateLangNode (ALang, aData, codePage)
+  nodes[count - 1].id := AName;
+  nodes[count - 1].intID := isID (count - 1);
+  nodes[count - 1].leaf := False;
+  nodes[count - 1].next := TResourceNode.CreateLangNode(ALang, aData, codePage)
 end;
 
 constructor TResourceNode.Create(const AType, AName: string;
@@ -1383,10 +1383,10 @@ constructor TResourceNode.Create(const AType, AName: string;
 begin
   count := 1;
   SetLength (nodes, 1);
-  nodes [0].id := AType;
-  nodes [count - 1].intID := isID (count - 1);
-  nodes [0].leaf := False;
-  nodes [0].next := TResourceNode.CreateNameNode (AName, ALang, aData, codePage);
+  nodes[0].id := AType;
+  nodes[count - 1].intID := isID (count - 1);
+  nodes[0].leaf := False;
+  nodes[0].next := TResourceNode.CreateNameNode(AName, ALang, aData, codePage);
 end;
 
 constructor TResourceNode.CreateLangNode(ALang: Integer;
@@ -1394,11 +1394,11 @@ constructor TResourceNode.CreateLangNode(ALang: Integer;
 begin
   count := 1;
   SetLength (nodes, 1);
-  nodes [0].id := IntToStr (ALang);
-  nodes [count - 1].intID := True;
-  nodes [0].leaf := True;
-  nodes [0].Data := aData;
-  nodes [0].CodePage := codePage
+  nodes[0].id := IntToStr (ALang);
+  nodes[count - 1].intID := True;
+  nodes[0].leaf := True;
+  nodes[0].Data := aData;
+  nodes[0].CodePage := codePage
 end;
 
 constructor TResourceNode.CreateNameNode(const AName: string;
@@ -1406,11 +1406,11 @@ constructor TResourceNode.CreateNameNode(const AName: string;
 begin
   count := 1;
   SetLength (nodes, 1);
-  nodes [0].id := AName;
-  nodes [count - 1].intID := isID (count - 1);
+  nodes[0].id := AName;
+  nodes[count - 1].intID := isID (count - 1);
 
-  nodes [0].leaf := False;
-  nodes [0].next := TResourceNode.CreateLangNode (ALang, aData, codePage)
+  nodes[0].leaf := False;
+  nodes[0].next := TResourceNode.CreateLangNode(ALang, aData, codePage)
 end;
 
 destructor TResourceNode.Destroy;
@@ -1418,8 +1418,8 @@ var
   i: Integer;
 begin
   for i := 0 to count - 1 do
-    if not nodes [i].leaf then
-      nodes [i].next.Free;
+    if not nodes[i].leaf then
+      nodes[i].next.Free;
 
   inherited;
 end;
@@ -1429,15 +1429,15 @@ var
   i: Integer;
 begin
   Result := True;
-  for i := 1 to Length (nodes [idx].id) do
-    if not (nodes [idx].id [i] in ['0'..'9']) then
+  for i := 1 to Length (nodes[idx].id) do
+    if not (nodes[idx].id [i] in ['0'..'9']) then
     begin
       Result := False;
       Break
     end;
 
   if Result then
-    Result := IntToStr (StrToInt (nodes [idx].id)) = nodes [idx].id;
+    Result := IntToStr (StrToInt (nodes[idx].id)) = nodes[idx].id;
 end;
 
 function TPEResourceModule.AddResource(details: TResourceDetails): Integer;

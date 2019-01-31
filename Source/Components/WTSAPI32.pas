@@ -57,7 +57,7 @@ type
   TfnWTSUnRegisterSessionNotification = function (handle: HWND): BOOL; stdcall;
   TfnWTSGetActiveConsoleSessionID = function: DWORD; stdcall;
   TfnWTSEnumerateProcesses = function (hServer: THandle; reserved, Version: DWORD; var ppProcessInfo: PWTS_PROCESS_INFO; var pCount: DWORD): BOOL; stdcall;
-  TfnWTSFreeMemory = procedure (mem: pointer); stdcall;
+  TfnWTSFreeMemory = procedure(mem: pointer); stdcall;
   TfnWTSQueryUserToken = function (sessionId: ULONG; var token: THandle): BOOL; stdcall;
   TfnWTSQuerySessionInformation = function (hServer: THandle; sessionID: DWORD; WTSInfoClass: WTS_INFO_CLASS; var buffer: pointer; var size: DWORD): BOOL; stdcall;
 
@@ -93,7 +93,7 @@ end;
 
 procedure InitWTSAPI;
 begin
-  gDLLHandle := LoadLibrary ('wtsapi32.dll');
+  gDLLHandle := LoadLibrary('wtsapi32.dll');
   if gDLLHandle <> 0 then
   begin
     WTSRegisterSessionNotification := GetProcAddress (gDLLHandle, 'WTSRegisterSessionNotification');
@@ -105,11 +105,11 @@ begin
 
     if not Assigned(WTSRegisterSessionNotification) or not Assigned(WTSUnRegisterSessionNotification) then
     begin
-      FreeLibrary (gDLLHandle);
+      FreeLibrary(gDLLHandle);
       gDLLHandle := 0
     end;
   end;
-  gKernelDLLHandle := LoadLibrary ('kernel32.dll');
+  gKernelDLLHandle := LoadLibrary('kernel32.dll');
   if gKernelDLLHandle <> 0 then
     WTSGetActiveConsoleSessionID := GetProcAddress (gKernelDLLHandle, 'WTSGetActiveConsoleSessionId');
 end;
@@ -117,7 +117,7 @@ end;
 procedure TerminateWTSAPI;
 begin
 (*  if gDLLHandle <> 0 then
-    FreeLibrary (gDLLHandle)
+    FreeLibrary(gDLLHandle)
 *)
 end;
 

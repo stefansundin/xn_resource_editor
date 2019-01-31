@@ -114,7 +114,7 @@ function AdjustForTimesig (n, beatDiv : Integer) : Integer;
 function UnadjustForTimesig (n, beatDiv : Integer) : Integer;
 function GetBPM (tempo, beatDiv : Integer) : Integer;
 function SwapLong (value : LongInt) : LongInt;
-function GetNoteName (note : Integer) : string;
+function GetNoteName(note : Integer) : string;
 
 implementation
 
@@ -175,7 +175,7 @@ begin
   Result := UnAdjustForTimesig (60000 div tempo, beatDiv);
 end;
 
-function GetNoteName (note : Integer) : string;
+function GetNoteName(note : Integer) : string;
 var
   ch : char;
   Octave : Integer;

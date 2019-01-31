@@ -9,7 +9,7 @@ const
   hcAddResourceDialog = 1000;
   hcNewImageDialog = 1001;
 
-function HelpLink (context : THelpContext) : string;
+function HelpLink(context : THelpContext) : string;
 
 implementation
 
@@ -25,7 +25,7 @@ const
     (context:hcNewImageDialog; jump:'NewImage.htm')
   );
 
-function HelpLink (context : THelpContext) : string;
+function HelpLink(context : THelpContext) : string;
 
   function bsearch (s, e : Integer) : string;
   var
@@ -35,13 +35,13 @@ function HelpLink (context : THelpContext) : string;
     begin
       m := s + (e - s) div 2;
 
-      if context > HelpLinks [m].context then
+      if context > HelpLinks[m].context then
         Result := bsearch (m + 1, e)
       else
-        if context < HelpLinks [m].context then
+        if context < HelpLinks[m].context then
           Result := bsearch (s, m - 1)
         else
-          Result := HelpLinks [m].jump
+          Result := HelpLinks[m].jump
     end
     else
       Result := 'notfound.htm';

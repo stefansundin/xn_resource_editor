@@ -56,8 +56,8 @@ begin
   for i := Low(CAddableItems) to High(CAddableItems) do
     with ListView.Items.Add do
     begin
-      Caption := GetTypeName(CAddableItems [i].GetBaseType);
-      ImageIndex := GetTypeImage(CAddableItems [i].GetBaseType);
+      Caption := GetTypeName(CAddableItems[i].GetBaseType);
+      ImageIndex := GetTypeImage(CAddableItems[i].GetBaseType);
     end
 end;
 
@@ -77,7 +77,7 @@ end;
 
 procedure TdlgAddResource.FormResize(Sender: TObject);
 begin
-  ListView.Columns [0].Width := ListView.Width - 16;
+  ListView.Columns[0].Width := ListView.Width - 16;
 end;
 
 end.

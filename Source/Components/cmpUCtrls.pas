@@ -10,7 +10,7 @@ type
   private
     FCodePage: Integer;
     procedure SetCodePage(const Value: Integer);
-    procedure WMPaste (var msg: TwmPaste); message WM_PASTE;
+    procedure WMPaste(var msg: TwmPaste); message WM_PASTE;
     function GetWideText: WideString;
     procedure SetWideText(const Value: WideString);
   public
@@ -38,7 +38,7 @@ type
     procedure DropDown; override;
     procedure EditWndProc(var Message: TMessage); override;
   public
-    constructor Create (AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     property CodePage: Integer read FCodePage write SetCodePage;
 
@@ -67,11 +67,11 @@ begin
   try
     if Data <> 0 then
       if Unicode then
-        result := PWideChar(GlobalLock(Data))
+        Result := PWideChar(GlobalLock(Data))
       else
-        result := PChar (GlobalLock (Data))
+        Result := PChar (GlobalLock(Data))
     else
-      result := '';
+      Result := '';
   finally
     if Data <> 0 then GlobalUnlock(Data);
     Clipboard.Close;
@@ -83,7 +83,7 @@ end;
 
 function TuEdit.GetWideText: WideString;
 begin
-  result := StringToWideString (Text, CodePage);
+  Result := StringToWideString (Text, CodePage);
 end;
 
 procedure TuEdit.SetCodePage(const Value: Integer);
@@ -128,7 +128,7 @@ end;
 destructor TuComboBox.Destroy;
 begin
   FreeObjectInstance(FuEditInstance);
-  FreeObjectInstance (FuListInstance);
+  FreeObjectInstance(FuListInstance);
   inherited;
 end;
 
@@ -152,7 +152,7 @@ begin
   if message.Msg = WM_PASTE then
   begin
     st := WideStringToString (WideStringFromClipboard (CodePage), CodePage);
-    SendMessage (FEditHandle, WM_SETFONT, Font.Handle, 1);
+    SendMessage(FEditHandle, WM_SETFONT, Font.Handle, 1);
     SetWindowText (FEditHandle, PChar (st));
     Message.Result := 0;
   end
@@ -162,7 +162,7 @@ end;
 
 function TuComboBox.GetWideText: WideString;
 begin
-  result := StringToWideString (Text, CodePage);
+  Result := StringToWideString (Text, CodePage);
 end;
 
 procedure TuComboBox.ListWndProc(var Message: TMessage);
@@ -191,7 +191,7 @@ begin
     Font.Charset := CodePageToCharset (Value);
     FCodePage := Value;
     if FListHandle <> 0 then
-      SendMessage (FListHandle, WM_SETFONT, SendMessage (FEditHandle, WM_GETFONT, 0, 0), 0);
+      SendMessage(FListHandle, WM_SETFONT, SendMessage(FEditHandle, WM_GETFONT, 0, 0), 0);
   end
 end;
 
@@ -206,7 +206,7 @@ begin
   begin
     FuDefListProc := Pointer (GetWindowLong (FListHandle, GWL_WNDPROC));
     SetWindowLong (FListHandle, GWL_WNDPROC, LongInt (FuListInstance));
-    SendMessage (FListHandle, WM_SETFONT, SendMessage (FEditHandle, WM_GETFONT, 0, 0), 0);
+    SendMessage(FListHandle, WM_SETFONT, SendMessage(FEditHandle, WM_GETFONT, 0, 0), 0);
   end;
 end;
 

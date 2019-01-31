@@ -14,10 +14,10 @@ type
     function GetPixelFormat: TPixelFormat; override;
     function GetWidth: Integer; override;
     procedure InitNew; override;
-    class function SupportsData (Size : Integer; data : Pointer) : Boolean; override;
+    class function SupportsData(Size : Integer; data : Pointer) : Boolean; override;
   public
     class function GetBaseType : WideString; override;
-    procedure GetImage (picture : TPicture); override;
+    procedure GetImage(picture : TPicture); override;
   end;
 
 
@@ -41,8 +41,8 @@ var
 begin
   gif := TGifImage.Create;
   picture.graphic := gif;
-  data.Seek (0, soFromBeginning);
-  TGifImage (picture.graphic).LoadFromStream (data);
+  data.Seek(0, soFromBeginning);
+  TGifImage(picture.graphic).LoadFromStream (data);
 end;
 
 function TGifResourceDetails.GetPixelFormat: TPixelFormat;

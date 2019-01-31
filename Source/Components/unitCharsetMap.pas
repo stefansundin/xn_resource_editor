@@ -9,20 +9,20 @@ var
   CP_USASCII: Integer = 0;
   DefaultCodePage: Integer = 0;
 
-function MIMECharsetNameToCodepage (const MIMECharsetName: string): Integer;
-function CharsetNameToCodepage (const CharsetName: string): Integer;
-function CodepageToMIMECharsetName (codepage: Integer): string;
-function CodepageToCharsetName (codepage: Integer): string;
-function CharsetToCodePage (FontCharset: TFontCharset): Integer;
+function MIMECharsetNameToCodepage(const MIMECharsetName: string): Integer;
+function CharsetNameToCodepage(const CharsetName: string): Integer;
+function CodepageToMIMECharsetName(codepage: Integer): string;
+function CodepageToCharsetName(codepage: Integer): string;
+function CharsetToCodePage(FontCharset: TFontCharset): Integer;
 function CodePageToCharset (codePage: Integer): TFontCharset;
 function WideStringToString (const ws: WideString; codePage: Integer): string;
 function StringToWideString (const st: string; codePage: Integer): WideString;
 function StringToGDIString (const s: string; codePage: Integer): string;
 function GDIStringToString (const s: string; codePage: Integer): string;
-function URLSuffixToCodePage (urlSuffix: string): Integer;
+function URLSuffixToCodePage(urlSuffix: string): Integer;
 procedure GetCharsetNames (sl: TStrings);
 function TrimEx(const S: string): string;
-function IsWideCharAlpha (ch: WideChar): Boolean;
+function IsWideCharAlpha(ch: WideChar): Boolean;
 function IsWideCharAlnum (ch: WideChar): Boolean;
 procedure FontToCharFormat(font: TFont; codePage: Integer; var Format: TCharFormatW);
 function WideStringToUTF8 (const ws: WideString): string;
@@ -52,16 +52,16 @@ var
   gCharsetMap: array [0..35] of TCharsetRec = (
     (Name:'US ASCII';                      URLSuffix:'';    CodePage: 0; Charset:0;   MIMECharsetName:'';            CharsetName:'ANSI_CHARSET'       ),
     (Name:'US ASCII';                      URLSuffix:'';    CodePage: 0; Charset:0;   MIMECharsetName:'us-ascii';    CharsetName:'ANSI_CHARSET'       ),
-    (Name:'Western Europe (ISO)';          URLSuffix:'';    CodePage:28591; Charset:0;   MIMECharsetName:'iso-8859-1';        CharsetName:'ANSI_CHARSET'       ),
-    (Name:'Western Europe (Windows)';      URLSuffix:'';    CodePage:01252; Charset:0;   MIMECharsetName:'windows-1252';      CharsetName:'ANSI_CHARSET'       ),
+    (Name:'Western Europe(ISO)';          URLSuffix:'';    CodePage:28591; Charset:0;   MIMECharsetName:'iso-8859-1';        CharsetName:'ANSI_CHARSET'       ),
+    (Name:'Western Europe(Windows)';      URLSuffix:'';    CodePage:01252; Charset:0;   MIMECharsetName:'windows-1252';      CharsetName:'ANSI_CHARSET'       ),
     (Name:'Latin (3)';                     URLSuffix:'';    CodePage:28593; Charset:162; MIMECharsetName:'iso-8859-3';        CharsetName:'TURKISH_CHARSET'     ),
     (Name:'Latin (9)';                     URLSuffix:'';    CodePage:28605; Charset:0;   MIMECharsetName:'iso-8859-15';       CharsetName:'ANSI_CHARSET'       ),
     (Name:'Thai';                          URLSuffix:'.th'; CodePage:00874; Charset:222; MIMECharsetName:'iso-8859-11';       CharsetName:'ARABIC_CHARSET'     ),
-    (Name:'Japanese (JIS)';                URLSuffix:'.jp'; CodePage:50220; Charset:128; MIMECharsetName:'iso-2022-jp';       CharsetName:'SHIFTJIS_CHARSET'   ),
-    (Name:'Japanese (EUC)';                URLSuffix:'';    CodePage:51932; Charset:128; MIMECharsetName:'euc-jp';          CharsetName:'SHIFTJIS_CHARSET'   ),
-    (Name:'Japanese (EUC)';                URLSuffix:'';    CodePage:51932; Charset:128; MIMECharsetName:'x-euc-jp';          CharsetName:'SHIFTJIS_CHARSET'   ),
-    (Name:'Japanese (Shift-JIS)';          URLSuffix:'';    CodePage:00932; Charset:128; MIMECharsetName:'shift-jis';    CharsetName:'SHIFTJIS_CHARSET'   ),
-    (Name:'Japanese (Shift-JIS)';          URLSuffix:'';    CodePage:00932; Charset:128; MIMECharsetName:'x-shift-jis';    CharsetName:'SHIFTJIS_CHARSET'   ),
+    (Name:'Japanese(JIS)';                URLSuffix:'.jp'; CodePage:50220; Charset:128; MIMECharsetName:'iso-2022-jp';       CharsetName:'SHIFTJIS_CHARSET'   ),
+    (Name:'Japanese(EUC)';                URLSuffix:'';    CodePage:51932; Charset:128; MIMECharsetName:'euc-jp';          CharsetName:'SHIFTJIS_CHARSET'   ),
+    (Name:'Japanese(EUC)';                URLSuffix:'';    CodePage:51932; Charset:128; MIMECharsetName:'x-euc-jp';          CharsetName:'SHIFTJIS_CHARSET'   ),
+    (Name:'Japanese(Shift-JIS)';          URLSuffix:'';    CodePage:00932; Charset:128; MIMECharsetName:'shift-jis';    CharsetName:'SHIFTJIS_CHARSET'   ),
+    (Name:'Japanese(Shift-JIS)';          URLSuffix:'';    CodePage:00932; Charset:128; MIMECharsetName:'x-shift-jis';    CharsetName:'SHIFTJIS_CHARSET'   ),
     (Name:'Chinese - Simplified (GB2312)'; URLSuffix:'';    CodePage:00936; Charset:134; MIMECharsetName:'gb2312';         CharsetName:'GB2312_CHARSET'     ),
     (Name:'Chinese - Simplified (HZ)';     URLSuffix:'';    CodePage:52936; Charset:134; MIMECharsetName:'hz-gb-2312';          CharsetName:'GB2312_CHARSET'     ),
     (Name:'Chinese - Traditional (Big5)';  URLSuffix:'.cn'; CodePage:00950; Charset:136; MIMECharsetName:'big5';              CharsetName:'CHINESEBIG5_CHARSET'),
@@ -78,14 +78,14 @@ var
     (Name:'Russian (KOI8)';                URLSuffix:'';    CodePage:20866; Charset:204; MIMECharsetName:'x-koi8';            CharsetName:'RUSSIAN_CHARSET'    ),
     (Name:'Russian (ISO)';                 URLSuffix:'';    CodePage:28595; Charset:204; MIMECharsetName:'iso-8859-5';        CharsetName:'RUSSIAN_CHARSET'    ),
     (Name:'Russian (Windows)';             URLSuffix:'';    CodePage:01251; Charset:204; MIMECharsetName:'windows-1251';              CharsetName:'RUSSIAN_CHARSET'    ),
-    (Name:'Greek (ISO)';                   URLSuffix:'';    CodePage:28597; Charset:161; MIMECharsetName:'iso-8859-7';        CharsetName:'GREEK_CHARSET'      ),
-    (Name:'Greek (Windows)';               URLSuffix:'.gr'; CodePage:01253; Charset:161; MIMECharsetName:'windows-1253';        CharsetName:'GREEK_CHARSET'      ),
+    (Name:'Greek(ISO)';                   URLSuffix:'';    CodePage:28597; Charset:161; MIMECharsetName:'iso-8859-7';        CharsetName:'GREEK_CHARSET'      ),
+    (Name:'Greek(Windows)';               URLSuffix:'.gr'; CodePage:01253; Charset:161; MIMECharsetName:'windows-1253';        CharsetName:'GREEK_CHARSET'      ),
     (Name:'Turkish (ISO)';                 URLSuffix:'.tr'; CodePage:28599; Charset:162; MIMECharsetName:'iso-8859-9';        CharsetName:'TURKISH_CHARSET'    ),
     (Name:'Hebrew (Windows)';              URLSuffix:'.il'; CodePage:01255; Charset:177; MIMECharsetName:'windows-1255';        CharsetName:'HEBREW_CHARSET'     ),
     (Name:'Hebrew (ISO)';                  URLSuffix:'';    CodePage:28598; Charset:177; MIMECharsetName:'iso-8859-9';        CharsetName:'HEBREW_CHARSET'     ),
     (Name:'Arabic (ISO)';                  URLSuffix:'';    CodePage:28596; Charset:178; MIMECharsetName:'iso-8859-6';        CharsetName:'ARABIC_CHARSET'     ),
     (Name:'Baltic (ISO)';                  URLSuffix:'';    CodePage:28594; Charset:186; MIMECharsetName:'iso-8859-4';        CharsetName:'BALTIC_CHARSET'     ),
-    (Name:'Unicode (UTF-8)';               URLSuffix:'';    CodePage:65001; Charset:0;   MIMECharsetName:'utf-8';             CharsetName:'BALTIC_CHARSET'     )
+    (Name:'Unicode(UTF-8)';               URLSuffix:'';    CodePage:65001; Charset:0;   MIMECharsetName:'utf-8';             CharsetName:'BALTIC_CHARSET'     )
   );
 
   CharsetMap: array of TCharsetRec;
@@ -130,9 +130,9 @@ begin
             CharsetMap [i + c].CharSet  := p^.bGDICharset;
             CharsetMap [i + c].MIMECharsetName := p^.wszWebCharset;
             CharsetMap [i + c].CharsetName := '';
-            Inc (p);
+            Inc(p);
           end;
-          Inc (c, ct);
+          Inc(c, ct);
         end;
 
         for i := 0 to c - 1 do
@@ -163,7 +163,7 @@ begin
             end;
 
       finally
-        CoTaskMemFree (info)
+        CoTaskMemFree(info)
       end;
       gMultiLang := True
     end
@@ -176,7 +176,7 @@ begin
   end
 end;
 
-function MIMECharsetNameToCodepage (const MIMECharsetName: string): Integer;
+function MIMECharsetNameToCodepage(const MIMECharsetName: string): Integer;
 var
   i: Integer;
 begin
@@ -189,8 +189,8 @@ begin
     Result := 0;
     i := Pos ('-', MIMECharsetName);
     if i > 0 then
-      if CompareText (Copy (MIMECharsetName, 1, i - 1), 'windows') = 0 then
-        Result := StrToIntDef (Copy (MIMECharsetName, i + 1, MaxInt), 1252);
+      if CompareText (Copy(MIMECharsetName, 1, i - 1), 'windows') = 0 then
+        Result := StrToIntDef (Copy(MIMECharsetName, i + 1, MaxInt), 1252);
 
     if Result = 0 then
     begin
@@ -205,7 +205,7 @@ begin
   end
 end;
 
-function CharsetNameToCodepage (const CharsetName: string): Integer;
+function CharsetNameToCodepage(const CharsetName: string): Integer;
 var
   i: Integer;
 begin
@@ -219,7 +219,7 @@ begin
     end
 end;
 
-function CodepageToMIMECharsetName (codepage: Integer): string;
+function CodepageToMIMECharsetName(codepage: Integer): string;
 var
   i: Integer;
 begin
@@ -234,7 +234,7 @@ begin
     end
 end;
 
-function CodepageToCharsetName (codepage: Integer): string;
+function CodepageToCharsetName(codepage: Integer): string;
 var
   i: Integer;
 begin
@@ -249,7 +249,7 @@ begin
     end
 end;
 
-function CharsetToCodePage (FontCharset: TFontCharset): Integer;
+function CharsetToCodePage(FontCharset: TFontCharset): Integer;
 var
   i: Integer;
 begin
@@ -337,12 +337,12 @@ begin
   end
 end;
 
-function URLSuffixToCodePage (urlSuffix: string): Integer;
+function URLSuffixToCodePage(urlSuffix: string): Integer;
 var
   i: Integer;
 begin
   LoadMultiLanguage;
-  urlSuffix := LowerCase (urlSuffix);
+  urlSuffix := LowerCase(urlSuffix);
   Result := CP_USASCII;
   if urlSuffix <> '' then
     for i := Low (CharsetMap) to High (CharsetMap) do
@@ -375,10 +375,10 @@ var
 begin
   L := Length(S);
   I := 1;
-  while (I <= L) and ((S[I] = ' ') or (s [i] = #9)) do Inc(I);
+  while(I <= L) and ((S[I] = ' ') or (s[i] = #9)) do Inc(I);
   if I > L then Result := '' else
   begin
-    while (S[L] = ' ') or (s [l] = #9) do Dec(L);
+    while(S[L] = ' ') or (s[l] = #9) do Dec(L);
     Result := Copy(S, I, L - I + 1);
   end;
 end;
@@ -411,7 +411,7 @@ begin
       break
     end;
 
-  if (destCP = -1) or (destCP = codePage) or (gIMultiLanguage.IsConvertible (codePage, destCP) <> S_OK) then
+  if (destCP = -1) or (destCP = codePage) or (gIMultiLanguage.IsConvertible(codePage, destCP) <> S_OK) then
     Result := s
   else
   begin
@@ -448,7 +448,7 @@ begin
       break
     end;
 
-  if (srcCP = -1) or (srcCP = codePage) or (gIMultiLanguage.IsConvertible (srcCP, codePage) <> S_OK) then
+  if (srcCP = -1) or (srcCP = codePage) or (gIMultiLanguage.IsConvertible(srcCP, codePage) <> S_OK) then
     Result := s
   else
   begin
@@ -466,7 +466,7 @@ begin
   end
 end;
 
-function IsWideCharAlpha (ch: WideChar): Boolean;
+function IsWideCharAlpha(ch: WideChar): Boolean;
 var
   w: word;
 begin
@@ -512,7 +512,7 @@ begin
   if (w >= $30) and (w <= $39) then
     Result := True
   else
-    Result := IsWideCharAlpha (ch)
+    Result := IsWideCharAlpha(ch)
 end;
 
 procedure FontToCharFormat(font: TFont; codePage: Integer; var Format: TCharFormatW);
@@ -575,5 +575,5 @@ initialization
   gCharsetMap [0].CodePage := CP_USASCII;
   gCharsetMap [1].CodePage := CP_USASCII;
 
-  DefaultCodePage := LCIDToCodePage (SysLocale.DefaultLCID);
+  DefaultCodePage := LCIDToCodePage(SysLocale.DefaultLCID);
 end.

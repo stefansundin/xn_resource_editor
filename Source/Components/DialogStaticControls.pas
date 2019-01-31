@@ -116,7 +116,7 @@ begin
     Result := inherited GetPropertyEnumCount (Kind, idx)
   else
   begin
-//    Dec (idx, inherited GetPropertyCount (Kind));
+//    Dec(idx, inherited GetPropertyCount (Kind));
     Result := 0;
   end
 end;
@@ -125,10 +125,10 @@ function TStaticControlInfo.GetPropertyEnumName(Kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
   if idx < inherited GetPropertyCount (Kind) then
-    Result := inherited GetPropertyEnumName (Kind, idx, enum)
+    Result := inherited GetPropertyEnumName(Kind, idx, enum)
   else
   begin
-//    Dec (idx, inherited GetPropertyCount (Kind));
+//    Dec(idx, inherited GetPropertyCount (Kind));
     Result := '';
   end
 end;
@@ -137,10 +137,10 @@ function TStaticControlInfo.GetPropertyName(Kind: TPropertyKind;
   idx: Integer): string;
 begin
   if idx < inherited GetPropertyCount (Kind) then
-    Result := inherited GetPropertyName (Kind, idx)
+    Result := inherited GetPropertyName(Kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount (Kind));
     Result := '';
     case Kind of
 //      pkGeneral: Result := StaticControlPropertyGeneralName [idx];
@@ -154,10 +154,10 @@ function TStaticControlInfo.GetPropertyType(Kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
   if idx < inherited GetPropertyCount (Kind) then
-    Result := inherited GetPropertyType (Kind, idx)
+    Result := inherited GetPropertyType(Kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount (Kind));
     Result := ptInteger;
     case Kind of
 //      pkGeneral: Result := StaticControlPropertyGeneralType [idx];
@@ -171,10 +171,10 @@ function TStaticControlInfo.GetPropertyValue(Kind: TPropertyKind;
   idx: Integer): Variant;
 begin
   if idx < inherited GetPropertyCount (Kind) then
-    Result := inherited GetPropertyValue (Kind, idx)
+    Result := inherited GetPropertyValue(Kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount (Kind));
 
     case Kind of
       pkStyle :
@@ -191,10 +191,10 @@ procedure TStaticControlInfo.SetPropertyValue(Kind: TPropertyKind;
   idx: Integer; const Value: Variant);
 begin
   if idx < inherited GetPropertyCount (Kind) then
-    inherited SetPropertyValue (Kind, idx, Value)
+    inherited SetPropertyValue(Kind, idx, Value)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount (Kind));
 
     case Kind of
       pkStyle :
@@ -235,13 +235,13 @@ begin
     Result := inherited GetPropertyEnumCount (Kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount (Kind));
     Result := 0;
 
     case Kind of
       pkGeneral :
         case idx of
-          0: if GetPropertyValue (Kind, inherited GetPropertyCount (Kind) + 2) = 0 then
+          0: if GetPropertyValue(Kind, inherited GetPropertyCount (Kind) + 2) = 0 then
                 Result := 4
               else
                 Result := 3;
@@ -260,10 +260,10 @@ function TPictureControlInfo.GetPropertyEnumName(Kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
   if idx < inherited GetPropertyCount (Kind) then
-    Result := inherited GetPropertyEnumName (Kind, idx, enum)
+    Result := inherited GetPropertyEnumName(Kind, idx, enum)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount (Kind));
     Result := '';
 
     case Kind of
@@ -304,10 +304,10 @@ function TPictureControlInfo.GetPropertyName(Kind: TPropertyKind;
   idx: Integer): string;
 begin
   if idx < inherited GetPropertyCount (Kind) then
-    Result := inherited GetPropertyName (Kind, idx)
+    Result := inherited GetPropertyName(Kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount (Kind));
     Result := '';
     case Kind of
       pkGeneral: Result := PictureControlPropertyGeneralName [idx];
@@ -321,10 +321,10 @@ function TPictureControlInfo.GetPropertyType(Kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
   if idx < inherited GetPropertyCount (Kind) then
-    Result := inherited GetPropertyType (Kind, idx)
+    Result := inherited GetPropertyType(Kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount (Kind));
     Result := ptInteger;
     case Kind of
       pkGeneral: Result := PictureControlPropertyGeneralType [idx];
@@ -341,10 +341,10 @@ var
   s: Integer;
 begin
   if idx < inherited GetPropertyCount (Kind) then
-    Result := inherited GetPropertyValue (Kind, idx)
+    Result := inherited GetPropertyValue(Kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount (Kind));
 
     case Kind of
       pkGeneral:
@@ -389,7 +389,7 @@ begin
 
       pkStyle :
         case idx of
-          0: if GetPropertyValue (pkGeneral, inherited GetPropertyCount (pkGeneral) + 2) < 2 then
+          0: if GetPropertyValue(pkGeneral, inherited GetPropertyCount (pkGeneral) + 2) < 2 then
                 Result := Unassigned
               else
               begin
@@ -406,7 +406,7 @@ begin
                       Result := 0
               end;
 
-          1: if GetPropertyValue (pkGeneral, inherited GetPropertyCount (pkGeneral) + 2) < 2 then
+          1: if GetPropertyValue(pkGeneral, inherited GetPropertyCount (pkGeneral) + 2) < 2 then
                 Result := Unassigned
               else
                 Result := HasStyle [SS_RIGHTJUST];
@@ -428,10 +428,10 @@ begin
   FrameChanged := False;
   RecreateRequired := False;
   if idx < inherited GetPropertyCount (Kind) then
-    inherited SetPropertyValue (Kind, idx, Value)
+    inherited SetPropertyValue(Kind, idx, Value)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount (Kind));
 
     case Kind of
       pkGeneral :
@@ -454,10 +454,10 @@ begin
 
           case idx of
             0: case value of
-                  0: if isFrame then SetMaskedStyle (SS_BLACKFRAME, SS_TYPEMASK) else SetMaskedStyle (SS_BLACKRECT, SS_TYPEMASK);
-                  1: if isFrame then SetMaskedStyle (SS_GRAYFRAME, SS_TYPEMASK) else SetMaskedStyle (SS_GRAYRECT, SS_TYPEMASK);
-                  2: if isFrame then SetMaskedStyle (SS_WHITEFRAME, SS_TYPEMASK) else SetMaskedStyle (SS_WHITERECT, SS_TYPEMASK);
-                  3: SetMaskedStyle (SS_ETCHEDFRAME, SS_TYPEMASK);
+                  0: if isFrame then SetMaskedStyle(SS_BLACKFRAME, SS_TYPEMASK) else SetMaskedStyle(SS_BLACKRECT, SS_TYPEMASK);
+                  1: if isFrame then SetMaskedStyle(SS_GRAYFRAME, SS_TYPEMASK) else SetMaskedStyle(SS_GRAYRECT, SS_TYPEMASK);
+                  2: if isFrame then SetMaskedStyle(SS_WHITEFRAME, SS_TYPEMASK) else SetMaskedStyle(SS_WHITERECT, SS_TYPEMASK);
+                  3: SetMaskedStyle(SS_ETCHEDFRAME, SS_TYPEMASK);
                 end;
 
             1: begin
@@ -467,29 +467,29 @@ begin
 
             2: case value of
                   0: case ColorIdx of
-                        0: SetMaskedStyle (SS_BLACKFRAME, SS_TYPEMASK);
-                        1: SetMaskedStyle (SS_GRAYFRAME, SS_TYPEMASK);
-                        2: SetMaskedStyle (SS_WHITEFRAME, SS_TYPEMASK);
+                        0: SetMaskedStyle(SS_BLACKFRAME, SS_TYPEMASK);
+                        1: SetMaskedStyle(SS_GRAYFRAME, SS_TYPEMASK);
+                        2: SetMaskedStyle(SS_WHITEFRAME, SS_TYPEMASK);
                         else
-                           SetMaskedStyle (SS_ETCHEDFRAME, SS_TYPEMASK)
+                           SetMaskedStyle(SS_ETCHEDFRAME, SS_TYPEMASK)
                       end;
                   1: case ColorIdx of
-                        0: SetMaskedStyle (SS_BLACKRECT, SS_TYPEMASK);
-                        1: SetMaskedStyle (SS_GRAYRECT, SS_TYPEMASK);
-                        2: SetMaskedStyle (SS_WHITERECT, SS_TYPEMASK);
+                        0: SetMaskedStyle(SS_BLACKRECT, SS_TYPEMASK);
+                        1: SetMaskedStyle(SS_GRAYRECT, SS_TYPEMASK);
+                        2: SetMaskedStyle(SS_WHITERECT, SS_TYPEMASK);
                         else
-                          SetMaskedStyle (SS_BLACKRECT, SS_TYPEMASK);
+                          SetMaskedStyle(SS_BLACKRECT, SS_TYPEMASK);
                       end;
                   2: begin
-                        SetMaskedStyle (SS_ICON, SS_TYPEMASK);
+                        SetMaskedStyle(SS_ICON, SS_TYPEMASK);
                         RecreateRequired := True;
                       end;
                   3: begin
-                        SetMaskedStyle (SS_BITMAP, SS_TYPEMASK);
+                        SetMaskedStyle(SS_BITMAP, SS_TYPEMASK);
                         RecreateRequired := True;
                       end;
                   4: begin
-                        SetMaskedStyle (SS_ENHMETAFILE, SS_TYPEMASK);
+                        SetMaskedStyle(SS_ENHMETAFILE, SS_TYPEMASK);
                         RecreateRequired := True;
                       end;
                 end
@@ -501,10 +501,10 @@ begin
             0 :
               begin
                 case value of
-                  0: SetMaskedStyle (0, SS_CENTERIMAGE or SS_REALSIZEIMAGE or SS_REALSIZECONTROL);
-                  1: SetMaskedStyle (SS_CENTERIMAGE, SS_CENTERIMAGE or SS_REALSIZEIMAGE or SS_REALSIZECONTROL);
-                  2: SetMaskedStyle (SS_REALSIZEIMAGE, SS_CENTERIMAGE or SS_REALSIZEIMAGE or SS_REALSIZECONTROL);
-                  3: SetMaskedStyle (SS_REALSIZECONTROL, SS_CENTERIMAGE or SS_REALSIZEIMAGE or SS_REALSIZECONTROL)
+                  0: SetMaskedStyle(0, SS_CENTERIMAGE or SS_REALSIZEIMAGE or SS_REALSIZECONTROL);
+                  1: SetMaskedStyle(SS_CENTERIMAGE, SS_CENTERIMAGE or SS_REALSIZEIMAGE or SS_REALSIZECONTROL);
+                  2: SetMaskedStyle(SS_REALSIZEIMAGE, SS_CENTERIMAGE or SS_REALSIZEIMAGE or SS_REALSIZECONTROL);
+                  3: SetMaskedStyle(SS_REALSIZECONTROL, SS_CENTERIMAGE or SS_REALSIZEIMAGE or SS_REALSIZECONTROL)
                 end
               end;
             1 :
@@ -537,7 +537,7 @@ begin
     Result := inherited GetPropertyEnumCount (Kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount (Kind));
     Result := 0;
 
     case Kind of
@@ -554,10 +554,10 @@ function TCaptionedStaticControlInfo.GetPropertyEnumName(
   Kind: TPropertyKind; idx, enum: Integer): string;
 begin
   if idx < inherited GetPropertyCount (Kind) then
-    Result := inherited GetPropertyEnumName (Kind, idx, enum)
+    Result := inherited GetPropertyEnumName(Kind, idx, enum)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount (Kind));
     Result := '';
 
     case Kind of
@@ -585,10 +585,10 @@ function TCaptionedStaticControlInfo.GetPropertyName(Kind: TPropertyKind;
   idx: Integer): string;
 begin
   if idx < inherited GetPropertyCount (Kind) then
-    Result := inherited GetPropertyName (Kind, idx)
+    Result := inherited GetPropertyName(Kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount (Kind));
     Result := '';
     case Kind of
       pkGeneral: Result := CaptionedStaticControlPropertyGeneralName [idx];
@@ -602,10 +602,10 @@ function TCaptionedStaticControlInfo.GetPropertyType(Kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
   if idx < inherited GetPropertyCount (Kind) then
-    Result := inherited GetPropertyType (Kind, idx)
+    Result := inherited GetPropertyType(Kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount (Kind));
     Result := ptInteger;
     case Kind of
       pkGeneral: Result := CaptionedStaticControlPropertyGeneralType [idx];
@@ -619,10 +619,10 @@ function TCaptionedStaticControlInfo.GetPropertyValue(Kind: TPropertyKind;
   idx: Integer): Variant;
 begin
   if idx < inherited GetPropertyCount (Kind) then
-    Result := inherited GetPropertyValue (Kind, idx)
+    Result := inherited GetPropertyValue(Kind, idx)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount (Kind));
 
     case Kind of
       pkGeneral :
@@ -661,10 +661,10 @@ var
 begin
   RecreateRequired := False;
   if idx < inherited GetPropertyCount (Kind) then
-    inherited SetPropertyValue (Kind, idx, Value)
+    inherited SetPropertyValue(Kind, idx, Value)
   else
   begin
-    Dec (idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount (Kind));
 
     case Kind of
       pkGeneral :
@@ -676,7 +676,7 @@ begin
         begin
           RecreateRequired := True; // Maybe not - but the docs say you should...
           case idx of
-            0: SetMaskedStyle (Value, 3);
+            0: SetMaskedStyle(Value, 3);
             1 :
               begin
                 case Value of
@@ -686,7 +686,7 @@ begin
                   else
                     s := 0;
                 end;
-                SetMaskedStyle (s, SS_ELLIPSISMASK)
+                SetMaskedStyle(s, SS_ELLIPSISMASK)
               end;
             2: HasStyle [SS_CENTERIMAGE] := Value;
             3: HasStyle [SS_NOPREFIX] := Value;

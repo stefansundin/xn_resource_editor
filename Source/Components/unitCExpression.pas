@@ -18,7 +18,7 @@ type
   private
     RValue: string;
   public
-    constructor Create (const AValue: string);
+    constructor Create(const AValue: string);
     property Value: string read RValue;
   end;
 
@@ -131,7 +131,7 @@ end;
 procedure DoUnaryOp (op: TOperator; var x: TValue);
 begin
   if x.tp = vString then
-    raise Exception.Create ('Type mismatch in expression');
+    raise Exception.Create('Type mismatch in expression');
 
   case op of
     opSub: if x.tp = vInteger then
@@ -139,7 +139,7 @@ begin
             else
               x.rVal := -x.rVal;
     opNot: if x.tp <> vInteger then
-              raise Exception.Create ('Type mismatch in expression')
+              raise Exception.Create('Type mismatch in expression')
             else
               if x.iVal <> 0 then
                 x.iVal := 0
@@ -161,7 +161,7 @@ var
     if pos < Length (st) then
     begin
       ch := st [pos + 1];
-      Inc (pos)
+      Inc(pos)
     end
     else
       ch := #0;
@@ -200,7 +200,7 @@ var
           id := id + ch;
         SkipWhitespace;
         if ch <> ')' then
-          raise Exception.Create ('Missing '')''');
+          raise Exception.Create('Missing '')''');
         idx := defines.IndexOf(id);
         Result.tp := vInteger;
         if idx = -1 then
@@ -216,7 +216,7 @@ var
 
     idx := defines.IndexOf(id);
     if idx >= 0 then
-      CalcExpression (TStrValue (defines.Objects [idx]).RValue, defines, Result)
+      CalcExpression (TStrValue(defines.Objects[idx]).RValue, defines, Result)
     else
     begin
       Result.tp := vInteger;
@@ -241,7 +241,7 @@ var
       GetChar;
     end;
 
-    while (ch in ['0'..'9']) or (hexFlag and (ch in ['A'..'F', 'a'..'f'])) do
+    while(ch in ['0'..'9']) or (hexFlag and (ch in ['A'..'F', 'a'..'f'])) do
     begin
       n := n + ch;
 
@@ -259,9 +259,9 @@ var
 
     if dotPos = Length (n) then
     begin
-      Delete (n, Length (n), 1);
+      Delete(n, Length (n), 1);
       ch := '.';
-      Dec (pos);
+      Dec(pos);
       dotPos := 0;
     end;
 
@@ -317,7 +317,7 @@ var
               GetNonWhitespace;
               Result := CalcBoolean;
               if ch <> ')' then
-              raise Exception.Create ('Mismatched parentheses')
+              raise Exception.Create('Mismatched parentheses')
             end;
        'A'..'Z', 'a'..'z', '_' :
               Result := CalcId;

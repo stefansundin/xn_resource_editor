@@ -39,7 +39,7 @@ type
     constructor Create;
 
     procedure SaveToStream (stream: TStream); override;
-    procedure LoadFromFile (const FileName: string); override;
+    procedure LoadFromFile(const FileName: string); override;
     procedure LoadFromStream (stream: TStream); override;
 
     property IncludePath: string read FIncludePath write FIncludePath;
@@ -137,7 +137,7 @@ type
   TKeywordDetails = class       // Per keyword details - used to populate FKeywords object list
     kw: Integer;               // The Keyword ID
     proc: TKeywordProc;        // Handler method
-    constructor Create (AKeyword: Integer; AProc: TKeywordProc);
+    constructor Create(AKeyword: Integer; AProc: TKeywordProc);
   end;
 
   TRCParser = class;
@@ -160,7 +160,7 @@ type
     FFontItalic: Integer;
     FFontCharset: Integer;
   public
-    constructor Create (Parser: TRCParser; SupportedKeywords: TSupportedKeywords);
+    constructor Create(Parser: TRCParser; SupportedKeywords: TSupportedKeywords);
     property Caption: string read FCaption;
     property Characteristics: DWORD read FCharacteristics;
     property _Class: TSzOrID read FClass;
@@ -210,7 +210,7 @@ type
 
     function GetControlParams (ex: Boolean; var text: TSzOrID; var id: DWORD; var x, y, cx, cy: Integer; var style, exStyle, helpId: DWORD; options: TControlParamsOptions): Boolean;
   public
-    constructor Create (stream: TStream; AParent: TResourceModule);
+    constructor Create(stream: TStream; AParent: TResourceModule);
     destructor Destroy; override;
     procedure Parse; override;
   end;
@@ -363,7 +363,7 @@ end;
 constructor TRCModule.Create;
 begin
   inherited;
-  FIncludePath := GetEnvironmentVariable ('include');
+  FIncludePath := GetEnvironmentVariable('include');
 end;
 
 procedure TRCModule.LoadFromFile(const FileName: string);
@@ -430,7 +430,7 @@ var
 begin
   FParent := AParent;
   FLangId := SysLocale.DefaultLCID;  // Check - maybe should be US LCID
-  inherited Create (stream);
+  inherited Create(stream);
 
   FKeywords := TStringList.Create;
   FKeywords.CaseSensitive := False;
@@ -494,14 +494,14 @@ begin
         kwCaption: begin       // Parse a CAPTION statement followed by
                                 // "captiontext" in double quotes.
                       Result.FCaption := NextString;
-                      Include (ValidKeywords, kwCaption)
+                      Include(ValidKeywords, kwCaption)
                     end;
 
         kwCharacteristics:     // Parse a CHARACTERISTICS statement followed
                                 // by a DWORD value.  Which is irrelevant
                     begin
                       Result.FCharacteristics := NextInteger;
-                      Include (ValidKeywords, kwCharacteristics)
+                      Include(ValidKeywords, kwCharacteristics)
                     end;
 
         kwStyle  : begin       // Parse a STYLE statement followed by a DWORD
@@ -512,8 +512,8 @@ begin
                       if v.tp = vInteger then
                         Result.FStyle := v.iVal
                       else
-                        raise Exception.Create ('Integer expected in STYLE');
-                      Include (ValidKeywords, kwStyle);
+                        raise Exception.Create('Integer expected in STYLE');
+                      Include(ValidKeywords, kwStyle);
                     end;
 
         kwExStyle: begin       // Parse an EXSTYLE statement followed by a DWORD
@@ -524,8 +524,8 @@ begin
                       if v.tp = vInteger then
                         Result.FExStyle := v.iVal
                       else
-                        raise Exception.Create ('Integer expected in EXSTYLE');
-                      Include (ValidKeywords, kwExStyle);
+                        raise Exception.Create('Integer expected in EXSTYLE');
+                      Include(ValidKeywords, kwExStyle);
                     end;
 
         kwFont   : begin       // Parse a FONT statement followed by the
@@ -545,7 +545,7 @@ begin
                         ExpectChar (',');
                         Result.FFontCharset := NextIntegerExpression;
                       end;
-                      Include (ValidKeywords, kwFont);
+                      Include(ValidKeywords, kwFont);
                     end;
 
         kwLanguage :begin       // Parse a LANGUAGE statement followed by the
@@ -563,21 +563,21 @@ begin
 
                        GetToken;
                        Result.FMenuId := ValToSzOrID (ResolveToken);
-                       Include (ValidKeywords, kwMenu);
+                       Include(ValidKeywords, kwMenu);
                      end;
 
         kwClass   : begin      // Parse a CLASS statement followed by an Sz or ID
                                 // window (dialog) class identifier.
                        GetToken;
                        Result.FClass := ValToSzOrID (ResolveToken);
-                       Include (ValidKeywords, kwClass);
+                       Include(ValidKeywords, kwClass);
                      end;
 
         kwVersion : begin      // VERSION statement followed by an ignored
                                 // version DWORD.  Not to be confused with a
                                 // VERSIONINFO resource type
                        Result.FVersion := NextInteger;
-                       Include (ValidKeywords, kwVersion)
+                       Include(ValidKeywords, kwVersion)
                      end
       end;
       if not HasToken then
@@ -596,7 +596,7 @@ var
   i: Integer;
 begin
   for i := FKeywords.Count - 1 downto 0 do
-    FKeywords.Objects [i].Free;
+    FKeywords.Objects[i].Free;
   FKeywords.Free;
 
   inherited;
@@ -662,7 +662,7 @@ begin
 
       flags := 0;
 
-                                // Now get the (optional) flags.  Technically
+                                // Now get the(optional) flags.  Technically
                                 // VIRTKEY or ASCII should be the first flag if
                                 // it's specified.  But no real need to enforce
                                 // this.
@@ -773,7 +773,7 @@ begin
       dlg := TDialogResourceDetails.CreateNew(FParent, FLangId, ValToStr (FName));
 
     // Initialize a blank resource template
-    p := PDlgTemplate (dlg.Data.Memory);
+    p := PDlgTemplate(dlg.Data.Memory);
     style := p^.style;
     exstyle := p^.dwExtendedStyle;
     ctlCount := 0;
@@ -834,7 +834,7 @@ begin
 
                 GetControlParams (False, title, id, x, y, cx, cy, style, exstyle, dummy, controlOptions);
                 dlg.InitAddControl(cls, id, title, x, y, cx, cy, style, exstyle, 0, id);
-                Inc (CtlCount)
+                Inc(CtlCount)
               end;
 
             kwListBox:         // Handle ListBox control
@@ -844,7 +844,7 @@ begin
                 style := WS_CHILD or WS_VISIBLE or WS_BORDER or LBS_NOTIFY;
                 GetControlParams (False, title, id, x, y, cx, cy, style, exstyle, dummy, [cpNeedsCXCY]);
                 dlg.InitAddControl(cls, id, title, x, y, cx, cy, style, exstyle, 0, id);
-                Inc (CtlCount)
+                Inc(CtlCount)
               end;
 
             kwComboBox:        // Handle ComboBox control
@@ -854,7 +854,7 @@ begin
                 style := WS_CHILD or WS_VISIBLE or CBS_SIMPLE or WS_TABSTOP;
                 GetControlParams (False, title, id, x, y, cx, cy, style, exstyle, dummy, [cpNeedsCXCY]);
                 dlg.InitAddControl(cls, id, title, x, y, cx, cy, style, exstyle, 0, id);
-                Inc (CtlCount)
+                Inc(CtlCount)
               end;
 
               kwPushButton,     // Handle Button-type control
@@ -887,7 +887,7 @@ begin
 
                   GetControlParams (False, title, id, x, y, cx, cy, style, exstyle, dummy, [cpHasText, cpNeedsCXCY]);
                   dlg.InitAddControl(cls, id, title, x, y, cx, cy, style, exstyle, 0, id);
-                  Inc (CtlCount)
+                  Inc(CtlCount)
                 end;
 
               kwEditText:              // Handle Edit control
@@ -897,7 +897,7 @@ begin
                   style := WS_CHILD or WS_VISIBLE or ES_LEFT or WS_BORDER or WS_TABSTOP;
                   GetControlParams (False, title, id, x, y, cx, cy, style, exstyle, dummy, [cpNeedsCXCY]);
                   dlg.InitAddControl(cls, id, title, x, y, cx, cy, style, exstyle, 0, id);
-                  Inc (CtlCount)
+                  Inc(CtlCount)
                 end;
 
               kwControl:               // Handle custom control
@@ -923,7 +923,7 @@ begin
                   if (TokenType = ttChar) and (TokenChar = ',') then
                     exStyle := NextIntegerExpression;
                   dlg.InitAddControl(cls, id, title, x, y, cx, cy, style, exstyle, 0, id);
-                  Inc (CtlCount)
+                  Inc(CtlCount)
                 end
               else
                 GetToken;
@@ -990,7 +990,7 @@ begin
     else
       dlg := TDialogResourceDetails.CreateNew(FParent, FLangId, ValToStr (FName));
 
-    p := PDlgTemplate (dlg.Data.Memory);
+    p := PDlgTemplate(dlg.Data.Memory);
     style := p^.style;
     exstyle := p^.dwExtendedStyle;
     ctlCount := 0;
@@ -1054,7 +1054,7 @@ begin
 
                 GetControlParams (true, title, id, x, y, cx, cy, style, exstyle, helpId, controlOptions);
                 dlg.InitAddControlEx(cls, id, title, x, y, cx, cy, style, exstyle, helpId, 0, id);
-                Inc (CtlCount)
+                Inc(CtlCount)
               end;
 
             kwListBox :
@@ -1064,7 +1064,7 @@ begin
                 style := WS_CHILD or WS_VISIBLE or WS_BORDER or LBS_NOTIFY;
                 GetControlParams (true, title, id, x, y, cx, cy, style, exstyle, helpId, [cpNeedsCXCY]);
                 dlg.InitAddControlEx(cls, id, title, x, y, cx, cy, style, exstyle, helpId, 0, id);
-                Inc (CtlCount)
+                Inc(CtlCount)
               end;
 
             kwComboBox :
@@ -1074,7 +1074,7 @@ begin
                 style := WS_CHILD or WS_VISIBLE or CBS_SIMPLE or WS_TABSTOP;
                 GetControlParams (true, title, id, x, y, cx, cy, style, exstyle, helpId, [cpNeedsCXCY]);
                 dlg.InitAddControlEx(cls, id, title, x, y, cx, cy, style, exstyle, helpId, 0, id);
-                Inc (CtlCount)
+                Inc(CtlCount)
               end;
 
               kwPushButton,
@@ -1107,7 +1107,7 @@ begin
 
                   GetControlParams (true, title, id, x, y, cx, cy, style, exstyle, helpId, [cpHasText, cpNeedsCXCY]);
                   dlg.InitAddControlEx(cls, id, title, x, y, cx, cy, style, exstyle, helpId, 0, id);
-                  Inc (CtlCount)
+                  Inc(CtlCount)
                 end;
 
               kwEditText :
@@ -1117,7 +1117,7 @@ begin
                   style := WS_CHILD or WS_VISIBLE or ES_LEFT or WS_BORDER or WS_TABSTOP;
                   GetControlParams (true, title, id, x, y, cx, cy, style, exstyle, helpId, [cpNeedsCXCY]);
                   dlg.InitAddControlEx(cls, id, title, x, y, cx, cy, style, exstyle, helpId, 0, id);
-                  Inc (CtlCount)
+                  Inc(CtlCount)
                 end;
 
               kwControl :
@@ -1145,7 +1145,7 @@ begin
                   if (TokenType = ttChar) and (TokenChar = ',') then
                     helpId := NextIntegerExpression;
                   dlg.InitAddControlEx(cls, id, title, x, y, cx, cy, style, exstyle, helpId, 0, id);
-                  Inc (CtlCount)
+                  Inc(CtlCount)
                 end
               else
                 GetToken;
@@ -1272,7 +1272,7 @@ var
                         if KeyID = kwBegin then
                           it := CreateMenuItem  // Recurse to create the popup menu's items
                         else
-                          it := TMenuItem.Create (nil);
+                          it := TMenuItem.Create(nil);
                         it.Caption := st;
                         Result.Add(it)
                      end;
@@ -1421,10 +1421,10 @@ begin
       break;
     if TokenType = ttIdentifier then
       if Token = 'BEGIN' then
-        Inc (beginendlevel)
+        Inc(beginendlevel)
       else
         if Token = 'END' then
-          Dec (beginendlevel)
+          Dec(beginendlevel)
   until beginendlevel = 0;
   GetToken;
 end;
@@ -1500,7 +1500,7 @@ var
 begin
   idx := FKeywords.IndexOf(st);
   if idx >= 0 then
-    Result := TKeywordDetails (FKeywords.Objects [idx])
+    Result := TKeywordDetails (FKeywords.Objects[idx])
   else
     Result := Nil;
 end;

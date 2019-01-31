@@ -22,9 +22,9 @@ type
     function GetKeyValue(const idx: string): string;
     procedure SetKeyValue(const idx, Value: string);
   public
-    constructor Create (AModule: THandle); overload;
-    constructor Create (AVersionInfo: PChar); overload;
-    constructor Create (const AFileName: string); overload;
+    constructor Create(AModule: THandle); overload;
+    constructor Create(AVersionInfo: PChar); overload;
+    constructor Create(const AFileName: string); overload;
     destructor Destroy; override;
     procedure SaveToStream (strm: TStream);
 
@@ -52,16 +52,16 @@ begin
   FModule := AModule;
   FChildStrings := TStringList.Create;
   FTranslations := TList.Create;
-  resHandle := FindResource (FModule, pointer (1), RT_VERSION);
+  resHandle := FindResource(FModule, pointer (1), RT_VERSION);
   if resHandle <> 0 then
   begin
-    FVersionResHandle := LoadResource (FModule, resHandle);
+    FVersionResHandle := LoadResource(FModule, resHandle);
     if FVersionResHandle <> 0 then
-      FVersionInfo := LockResource (FVersionResHandle)
+      FVersionInfo := LockResource(FVersionResHandle)
   end;
 
   if not Assigned(FVersionInfo) then
-    raise Exception.Create ('Unable to load version info resource');
+    raise Exception.Create('Unable to load version info resource');
 end;
 
 constructor TVersionInfo.Create(AVersionInfo: PChar);
@@ -78,7 +78,7 @@ begin
   handle := LoadLibraryEx (PChar (AFileName), 0, LOAD_LIBRARY_AS_DATAFILE);
   if handle <> 0 then
   begin
-    Create (handle);
+    Create(handle);
     FModuleLoaded := True
   end
   else
@@ -90,14 +90,14 @@ var
   i: Integer;
 begin
   for i := 0 to FChildStrings.Count - 1 do
-    FChildStrings.Objects [i].Free;
+    FChildStrings.Objects[i].Free;
 
   FChildStrings.Free;
   FTranslations.Free;
   if FVersionResHandle <> 0 then
-    FreeResource (FVersionResHandle);
+    FreeResource(FVersionResHandle);
   if FModuleLoaded then
-    FreeLibrary (FModule);
+    FreeLibrary(FModule);
   inherited;
 end;
 
@@ -117,15 +117,15 @@ var
   begin
     BaseP := p;
     wLength := PWord (p)^;
-    Inc (p, sizeof (word));
+    Inc(p, sizeof (word));
     wValueLength := PWord (p)^;
-    Inc (p, sizeof (word));
+    Inc(p, sizeof (word));
     wType := PWord (p)^;
-    Inc (p, sizeof (word));
+    Inc(p, sizeof (word));
     SzKey := PWideChar (p);
-    Inc (p, (lstrlenw (SzKey) + 1) * sizeof (WideChar));
+    Inc(p, (lstrlenw (SzKey) + 1) * sizeof (WideChar));
     while Integer (p) mod 4 <> 0 do
-      Inc (p);
+      Inc(p);
     Result := p - BaseP;
     Key := SzKey;
   end;
@@ -139,33 +139,33 @@ var
 
   begin
     p := base;
-    while (p - base) < len do
+    while(p - base) < len do
     begin
       t := GetVersionHeader (p, wLength, wValueLength, wType, Key);
-      Dec (wLength, t);
+      Dec(wLength, t);
 
-      langID := StrToInt ('$' + Copy (Key, 1, 4));
-      codePage := StrToInt ('$' + Copy (Key, 5, 4));
+      langID := StrToInt ('$' + Copy(Key, 1, 4));
+      codePage := StrToInt ('$' + Copy(Key, 5, 4));
 
       strBase := p;
       for i := 0 to FChildStrings.Count - 1 do
-        FChildStrings.Objects [i].Free;
+        FChildStrings.Objects[i].Free;
       FChildStrings.Clear;
 
-      while (p - strBase) < wLength do
+      while(p - strBase) < wLength do
       begin
         t := GetVersionHeader (p, wStrLength, wStrValueLength, wStrType, Key);
-        Dec (wStrLength, t);
+        Dec(wStrLength, t);
 
         if wStrValueLength = 0 then
           value := ''
         else
           value := PWideChar (p);
-        Inc (p, wStrLength);
+        Inc(p, wStrLength);
         while Integer (p) mod 4 <> 0 do
-          Inc (p);
+          Inc(p);
 
-        FChildStrings.AddObject (Key, TVersionStringValue.Create (value, langID, codePage))
+        FChildStrings.AddObject (Key, TVersionStringValue.Create(value, langID, codePage))
       end
     end;
     base := p
@@ -180,18 +180,18 @@ var
 
   begin
     p := base;
-    while (p - base) < len do
+    while(p - base) < len do
     begin
       t := GetVersionHeader (p, wLength, wValueLength, wType, Key);
-      Dec (wLength, t);
+      Dec(wLength, t);
 
       strBase := p;
       FTranslations.Clear;
 
-      while (p - strBase) < wLength do
+      while(p - strBase) < wLength do
       begin
         v := PDWORD (p)^;
-        Inc (p, sizeof (DWORD));
+        Inc(p, sizeof (DWORD));
         FTranslations.Add (pointer (v));
       end
     end;
@@ -209,11 +209,11 @@ begin
     begin
       FFixedInfo := PVSFixedFileInfo (p);
       if FFixedInfo^.dwSignature <> $feef04bd then
-        raise Exception.Create ('Invalid version resource');
+        raise Exception.Create('Invalid version resource');
 
-      Inc (p, wValueLength);
+      Inc(p, wValueLength);
       while Integer (p) mod 4 <> 0 do
-        Inc (p);
+        Inc(p);
     end
     else
       FFixedInfo := Nil;
@@ -221,7 +221,7 @@ begin
     while wLength > (p - FVersionInfo) do
     begin
       t := GetVersionHeader (p, varwLength, varwValueLength, varwType, varKey);
-      Dec (varwLength, t);
+      Dec(varwLength, t);
 
       if varKey = 'StringFileInfo' then
         GetStringChildren (p, varwLength)
@@ -250,9 +250,9 @@ end;
 function TVersionInfo.GetKeyName(idx: Integer): string;
 begin
   if idx >= KeyCount then
-    raise ERangeError.Create ('Index out of range')
+    raise ERangeError.Create('Index out of range')
   else
-    Result := FChildStrings [idx];
+    Result := FChildStrings[idx];
 end;
 
 function TVersionInfo.GetKeyValue(const idx: string): string;
@@ -263,12 +263,12 @@ begin
   begin
     i := FChildStrings.IndexOf (idx);
     if i <> -1 then
-      Result := TVersionStringValue (FChildStrings.Objects [i]).FValue
+      Result := TVersionStringValue(FChildStrings.Objects[i]).FValue
     else
-      raise Exception.Create ('Key not found')
+      raise Exception.Create('Key not found')
   end
   else
-    raise Exception.Create ('Key not found')
+    raise Exception.Create('Key not found')
 end;
 
 procedure TVersionInfo.SaveToStream(strm: TStream);
@@ -283,7 +283,7 @@ var
   procedure PadStream (strm: TStream);
   begin
     if strm.Position mod 4 <> 0 then
-      strm.Write (zeros, 4 - (strm.Position mod 4))
+      strm.Write(zeros, 4 - (strm.Position mod 4))
   end;
 
   procedure SaveVersionHeader (strm: TStream; wLength, wValueLength, wType: word; const Key: string; const value);
@@ -293,12 +293,12 @@ var
     keyLen: word;
   begin
     wKey := Key;
-    strm.Write (wLength, sizeof (wLength));
+    strm.Write(wLength, sizeof (wLength));
 
-    strm.Write (wValueLength, sizeof (wValueLength));
-    strm.Write (wType, sizeof (wType));
+    strm.Write(wValueLength, sizeof (wValueLength));
+    strm.Write(wType, sizeof (wType));
     keyLen := (Length (wKey) + 1) * sizeof (WideChar);
-    strm.Write (wKey [1], keyLen);
+    strm.Write(wKey [1], keyLen);
 
     PadStream (strm);
 
@@ -307,7 +307,7 @@ var
       valueLen := wValueLength;
       if wType = 1 then
         valueLen := valueLen * sizeof (WideChar);
-      strm.Write (value, valueLen)
+      strm.Write(value, valueLen)
     end;
   end;
 
@@ -322,7 +322,7 @@ begin { SaveToStream }
     begin
       stringInfoStream := TMemoryStream.Create;
       try
-        strg := TVersionStringValue (FChildStrings.Objects [0]);
+        strg := TVersionStringValue(FChildStrings.Objects[0]);
 
         SaveVersionHeader (stringInfoStream, 0, 0, 0, IntToHex (strg.FLangID, 4) + IntToHex (strg.FCodePage, 4), zeros);
 
@@ -331,31 +331,31 @@ begin { SaveToStream }
           PadStream (stringInfoStream);
 
           p := stringInfoStream.Position;
-          strg := TVersionStringValue (FChildStrings.Objects [i]);
+          strg := TVersionStringValue(FChildStrings.Objects[i]);
           wValue := strg.FValue;
-          SaveVersionHeader (stringInfoStream, 0, Length (strg.FValue) + 1, 1, FChildStrings [i], wValue [1]);
+          SaveVersionHeader (stringInfoStream, 0, Length (strg.FValue) + 1, 1, FChildStrings[i], wValue [1]);
           wSize := stringInfoStream.Size - p;
-          stringInfoStream.Seek (p, soFromBeginning);
-          stringInfoStream.Write (wSize, sizeof (wSize));
-          stringInfoStream.Seek (0, soFromEnd);
+          stringInfoStream.Seek(p, soFromBeginning);
+          stringInfoStream.Write(wSize, sizeof (wSize));
+          stringInfoStream.Seek(0, soFromEnd);
 
         end;
 
-        stringInfoStream.Seek (0, soFromBeginning);
+        stringInfoStream.Seek(0, soFromBeginning);
         wSize := stringInfoStream.Size;
-        stringInfoStream.Write (wSize, sizeof (wSize));
+        stringInfoStream.Write(wSize, sizeof (wSize));
 
         PadStream (strm);
         p := strm.Position;
         SaveVersionHeader (strm, 0, 0, 0, 'StringFileInfo', zeros);
-        strm.Write (stringInfoStream.Memory^, stringInfoStream.size);
+        strm.Write(stringInfoStream.Memory^, stringInfoStream.size);
         wSize := strm.Size - p;
       finally
         stringInfoStream.Free
       end;
-      strm.Seek (p, soFromBeginning);
-      strm.Write (wSize, sizeof (wSize));
-      strm.Seek (0, soFromEnd)
+      strm.Seek(p, soFromBeginning);
+      strm.Write(wSize, sizeof (wSize));
+      strm.Seek(0, soFromEnd)
     end;
 
     if FTranslations.Count > 0 then
@@ -370,28 +370,28 @@ begin { SaveToStream }
 
       for i := 0 to FTranslations.Count - 1 do
       begin
-        v := Integer (FTranslations [i]);
-        strm.Write (v, sizeof (v))
+        v := Integer (FTranslations[i]);
+        strm.Write(v, sizeof (v))
       end;
 
       wSize := strm.Size - p1;
-      strm.Seek (p1, soFromBeginning);
-      strm.Write (wSize, sizeof (wSize));
+      strm.Seek(p1, soFromBeginning);
+      strm.Write(wSize, sizeof (wSize));
       wSize := sizeof (Integer) * FTranslations.Count;
-      strm.Write (wSize, sizeof (wSize));
+      strm.Write(wSize, sizeof (wSize));
 
       wSize := strm.Size - p;
-      strm.Seek (p, soFromBeginning);
-      strm.Write (wSize, sizeof (wSize));
+      strm.Seek(p, soFromBeginning);
+      strm.Write(wSize, sizeof (wSize));
     end;
 
-    strm.Seek (0, soFromBeginning);
+    strm.Seek(0, soFromBeginning);
     wSize := strm.Size;
-    strm.Write (wSize, sizeof (wSize));
-    strm.Seek (0, soFromEnd);
+    strm.Write(wSize, sizeof (wSize));
+    strm.Seek(0, soFromEnd);
   end
   else
-    raise Exception.Create ('Invalid version resource');
+    raise Exception.Create('Invalid version resource');
 end;
 
 procedure TVersionInfo.SetKeyValue(const idx, Value: string);
@@ -402,12 +402,12 @@ begin
   begin
     i := FChildStrings.IndexOf (idx);
     if i = -1 then
-      i := FChildStrings.AddObject (idx, TVersionStringValue.Create (idx, 0, 0));
+      i := FChildStrings.AddObject (idx, TVersionStringValue.Create(idx, 0, 0));
 
-    TVersionStringValue (FChildStrings.Objects [i]).FValue := Value
+    TVersionStringValue(FChildStrings.Objects[i]).FValue := Value
   end
   else
-    raise Exception.Create ('Invalid version resource');
+    raise Exception.Create('Invalid version resource');
 end;
 
 { TVersionStringValue }

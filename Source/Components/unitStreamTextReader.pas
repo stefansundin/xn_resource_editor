@@ -21,11 +21,11 @@ type
     procedure SetStream(const Value: TStream);
 
   public
-    constructor Create (AStream: TStream; blockSize: Integer = 1024);
+    constructor Create(AStream: TStream; blockSize: Integer = 1024);
     destructor Destroy; override;
     function GetChar: Char;
     function ReadLn (var st: string; continuationChar: Char = #0): Boolean;
-    procedure ReadChunk (var chunk; offset, length: Integer);
+    procedure ReadChunk(var chunk; offset, length: Integer);
     property Position: Integer read GetPosition write SetPosition;
     function Search (const st: string): Integer;
     property Stream: TStream read FStream write SetStream;
@@ -46,7 +46,7 @@ type
     procedure SetStream(const Value: TStream);
 
   public
-    constructor Create (AStream: TStream; blockSize: Integer = 1024);
+    constructor Create(AStream: TStream; blockSize: Integer = 1024);
     destructor Destroy; override;
     function GetChar: WideChar;
     function ReadLn (var st: WideString; continuationChar: WideChar = #0): Boolean;
@@ -60,7 +60,7 @@ type
     FMemory: PChar;
     FFileHandle, FMappingHandle: THandle;
   public
-    constructor Create (const AFileName: string);
+    constructor Create(const AFileName: string);
     destructor Destroy; override;
 
     property Size: Integer read FSize;
@@ -82,9 +82,9 @@ type
     function GetPosition: Integer;
 
   public
-    constructor Create (const AFileName: string);
+    constructor Create(const AFileName: string);
     destructor Destroy; override;
-    procedure Write (const data; dataLen: Integer);
+    procedure Write(const data; dataLen: Integer);
 
     procedure FlushBuffer;
     property Position: Integer read GetPosition;
@@ -92,7 +92,7 @@ type
 
   TTextFileWriter = class (TBufferedFileWriter)
   public
-    procedure Write (const st: string);
+    procedure Write(const st: string);
     procedure WriteLn (const st: string);
   end;
 
@@ -155,7 +155,7 @@ begin
   if FBufPos < FBufSize then
   begin
     Result := FBuffer [FBufPos];
-    Inc (FBufPos)
+    Inc(FBufPos)
   end
   else
     Result := #0
@@ -205,21 +205,21 @@ begin
       break;
 
     pch := FBuffer;
-    Inc (pch, FBufPos);
+    Inc(pch, FBufPos);
     pch1 := StrScan (pch, #10);
 
     if pch1 <> nil then
     begin
       l := Integer (pch1) - Integer (pch);
-      Inc (FBufPos, l + 1);
+      Inc(FBufPos, l + 1);
       if FBufPos > FBufSize then
         FBufPos := FBufSize;
       if l > 0 then
       begin
         repeat
-          Dec (pch1);
+          Dec(pch1);
           if pch1^ = #13 then
-            Dec (l)
+            Dec(l)
           else
             break
         until pch1 = pch;
@@ -229,15 +229,15 @@ begin
         cont := scont;
       SetLength (st1, l);
       if l > 0 then
-        Move (pch^, PChar (st1)^, l);
+        Move(pch^, PChar (st1)^, l);
     end
     else
     begin
       st1 := pch;
       l := Length (st1);
 
-      while (l > 0) and (st1 [l] = #13) do
-        Dec (l);
+      while(l > 0) and (st1 [l] = #13) do
+        Dec(l);
 
       if l < Length (st1) then
         SetLength (st1, l);
@@ -271,7 +271,7 @@ begin
       Exit;
 
     p := FBuffer;
-    Inc (p, FBufPos);
+    Inc(p, FBufPos);
 
     p1 := StrPos (p, PChar (st));
 
@@ -309,18 +309,18 @@ end;
 
 constructor TMappedFile.Create(const AFileName: string);
 begin
-  FFileHandle := CreateFile (PChar (AFileName), GENERIC_READ, FILE_SHARE_READ, nil, OPEN_EXISTING, FILE_FLAG_SEQUENTIAL_SCAN, 0);
+  FFileHandle := CreateFile(PChar (AFileName), GENERIC_READ, FILE_SHARE_READ, nil, OPEN_EXISTING, FILE_FLAG_SEQUENTIAL_SCAN, 0);
   if FFileHandle = INVALID_HANDLE_VALUE then
     RaiseLastOSError;
 
-  FSize := GetFileSize (FFileHandle, nil);
+  FSize := GetFileSize(FFileHandle, nil);
   if FSize <> 0 then
   begin
     FMappingHandle := CreateFileMapping (FFileHandle, nil, PAGE_READONLY, 0, 0, nil);
     if FMappingHandle = 0 then
       RaiseLastOSError;
 
-    FMemory := MapViewOfFile (FMappingHandle, FILE_MAP_READ, 0, 0, 0);
+    FMemory := MapViewOfFile(FMappingHandle, FILE_MAP_READ, 0, 0, 0);
     if FMemory = Nil then
       RaiseLastOSError;
   end
@@ -329,13 +329,13 @@ end;
 destructor TMappedFile.Destroy;
 begin
   if FMemory <> Nil then
-    UnmapViewOfFile (FMemory);
+    UnmapViewOfFile(FMemory);
 
   if FMappingHandle <> 0 then
-    CloseHandle (FMappingHandle);
+    CloseHandle(FMappingHandle);
 
   if FFileHandle <> INVALID_HANDLE_VALUE then
-    CloseHandle (FFileHandle);
+    CloseHandle(FFileHandle);
 
   inherited;
 end;
@@ -357,13 +357,13 @@ begin
     if p <> Nil then
     begin
       l := Integer (p) - Integer (p1);
-      Inc (FPosition, l+1);
+      Inc(FPosition, l+1);
 
-      while (l > 0) and (p1 [l - 1] = #13) do
-        Dec (l)
+      while(l > 0) and (p1 [l - 1] = #13) do
+        Dec(l)
     end
     else
-      Inc (FPosition, l);
+      Inc(FPosition, l);
 
     SetString (st, p1, l)
   end
@@ -375,12 +375,12 @@ end;
 
 procedure TTextFileWriter.Write(const st: string);
 begin
-  inherited Write (st [1], Length (st));
+  inherited Write(st [1], Length (st));
 end;
 
 procedure TTextFileWriter.WriteLn(const st: string);
 begin
-  Write (st + #13#10)
+  Write(st + #13#10)
 end;
 
 { TStreamWideTextReader }
@@ -407,7 +407,7 @@ begin
   if FBufPos < FBufSize then
   begin
     Result := FBuffer [FBufPos];
-    Inc (FBufPos)
+    Inc(FBufPos)
   end
   else
     Result := #0
@@ -455,21 +455,21 @@ begin
       break;
 
     pch := FBuffer;
-    Inc (pch, FBufPos);
+    Inc(pch, FBufPos);
     pch1 := WideStrScan (pch, #10);
 
     if pch1 <> nil then
     begin
       l := (Integer (pch1) - Integer (pch)) div sizeof (WideChar);
-      Inc (FBufPos, l + 1);
+      Inc(FBufPos, l + 1);
       if FBufPos > FBufSize then
         FBufPos := FBufSize;
       if l > 0 then
       begin
         repeat
-          Dec (pch1);
+          Dec(pch1);
           if pch1^ = #13 then
-            Dec (l)
+            Dec(l)
           else
             break
         until pch1 = pch;
@@ -479,15 +479,15 @@ begin
         cont := scont;
       SetLength (st1, l);
       if l > 0 then
-        Move (pch^, PWideChar (st1)^, l * sizeof (WideChar));
+        Move(pch^, PWideChar (st1)^, l * sizeof (WideChar));
     end
     else
     begin
       st1 := pch;
       l := Length (st1);
 
-      while (l > 0) and (st1 [l] = #13) do
-        Dec (l);
+      while(l > 0) and (st1 [l] = #13) do
+        Dec(l);
 
       if l < Length (st1) then
         SetLength (st1, l);
@@ -549,10 +549,10 @@ begin
       chunkLen := dataLen - stPos;
 
     p := PChar (@data);
-    Inc (p, stPos);
-    Move (p^, (FBuffer + FBufPos)^, chunkLen);
-    Inc (stPos, chunkLen);
-    Inc (FBufPos, chunkLen)
+    Inc(p, stPos);
+    Move(p^, (FBuffer + FBufPos)^, chunkLen);
+    Inc(stPos, chunkLen);
+    Inc(FBufPos, chunkLen)
   end
 end;
 

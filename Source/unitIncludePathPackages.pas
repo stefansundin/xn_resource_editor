@@ -65,14 +65,14 @@ var
   reg : TRegistry;
 begin
   Result := '';
-  reg := TRegistry.Create (KEY_READ);
+  reg := TRegistry.Create(KEY_READ);
   try
     reg.RootKey := HKEY_LOCAL_MACHINE;
     if reg.OpenKey(key, false) then
     begin
       Result := reg.ReadString(value);
       if (Result <> '') and (Result [Length (Result)] = '\') then
-        Delete (Result, Length (Result), 1)
+        Delete(Result, Length (Result), 1)
     end
   finally
     reg.Free
@@ -144,8 +144,8 @@ begin
   rootDir := GetRootDirectory + '\';
   frameworkDir := ProgramFilesPath + '\Microsoft.net\sdk\';
 
-  Result := StringReplace (Result, '$(VCInstallDir)', rootDir, [rfReplaceAll, rfIgnoreCase]);
-  Result := StringReplace (Result, '$(FrameworkSDKDir)', frameworkDir, [rfReplaceAll, rfIgnoreCase]);
+  Result := StringReplace(Result, '$(VCInstallDir)', rootDir, [rfReplaceAll, rfIgnoreCase]);
+  Result := StringReplace(Result, '$(FrameworkSDKDir)', frameworkDir, [rfReplaceAll, rfIgnoreCase]);
 end;
 
 function TMSDotNetIncludePathPackage.GetName: string;
@@ -169,8 +169,8 @@ begin
   rootDir := GetRootDirectory + '\';
   frameworkDir := ProgramFilesPath + '\Microsoft.net\sdk\';
 
-  Result := StringReplace (Result, '$(VCInstallDir)', rootDir, [rfReplaceAll, rfIgnoreCase]);
-  Result := StringReplace (Result, '$(FrameworkSDKDir)', frameworkDir, [rfReplaceAll, rfIgnoreCase]);
+  Result := StringReplace(Result, '$(VCInstallDir)', rootDir, [rfReplaceAll, rfIgnoreCase]);
+  Result := StringReplace(Result, '$(FrameworkSDKDir)', frameworkDir, [rfReplaceAll, rfIgnoreCase]);
 end;
 
 function TMSDotNet2003IncludePathPackage.GetName: string;
@@ -184,10 +184,10 @@ begin
 end;
 
 begin
-  RegisterIncludePathPackage ('BCB5',   TBCB5IncludePathPackage);
-  RegisterIncludePathPackage ('BCB6',   TBCB6IncludePathPackage);
-  RegisterIncludePathPackage ('BDS4',   TBDS4IncludePathPackage);
-  RegisterIncludePathPackage ('MSVC6',  TVsIncludePathPackage);
-  RegisterIncludePathPackage ('MSVC7',  TMSDotNetIncludePathPackage);
-  RegisterIncludePathPackage ('MSVC71', TMSDotNet2003IncludePathPackage);
+  RegisterIncludePathPackage('BCB5',   TBCB5IncludePathPackage);
+  RegisterIncludePathPackage('BCB6',   TBCB6IncludePathPackage);
+  RegisterIncludePathPackage('BDS4',   TBDS4IncludePathPackage);
+  RegisterIncludePathPackage('MSVC6',  TVsIncludePathPackage);
+  RegisterIncludePathPackage('MSVC7',  TMSDotNetIncludePathPackage);
+  RegisterIncludePathPackage('MSVC71', TMSDotNet2003IncludePathPackage);
 end.

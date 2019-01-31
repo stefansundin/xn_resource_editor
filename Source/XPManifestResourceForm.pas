@@ -103,7 +103,7 @@ procedure TfmXPManifestResource.Memo1Exit(Sender: TObject);
 begin
   if Memo1.CanUndo then
   begin
-    AddUndoEntry (rstChangeManifest);
+    AddUndoEntry(rstChangeManifest);
     FDetails.Text := Memo1.Lines.Text
   end
 end;

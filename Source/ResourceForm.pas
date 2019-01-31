@@ -45,7 +45,7 @@ type
     function GetCanDelete: Boolean; virtual;
 
   public
-    procedure AddUndoEntry (const undoDetails: string);
+    procedure AddUndoEntry(const undoDetails: string);
     procedure Undo;
     procedure Redo;
     procedure Cut; virtual;
@@ -90,7 +90,7 @@ type
     FName: string;
     FData: TMemoryStream;
 
-    constructor Create (const Details: string; res: TResourceDetails);
+    constructor Create(const Details: string; res: TResourceDetails);
     destructor Destroy; override;
   end;
 
@@ -103,9 +103,9 @@ type
     FRedoStack: TObjectStack;
     FResourceDetails: TResourceDetails;
 
-    constructor Create (ResourceDetails: TResourceDetails);
+    constructor Create(ResourceDetails: TResourceDetails);
     destructor Destroy; override;
-    procedure AddUndoEntry (const Details: string);
+    procedure AddUndoEntry(const Details: string);
     procedure Undo;
     procedure Redo;
     procedure ClearRedoStack;
@@ -164,14 +164,14 @@ end;
  | TfmResource.AddUndoEntry                                             |
  |                                                                      |
  *----------------------------------------------------------------------*)
-procedure TfmResource.AddUndoEntry (const undoDetails: string);
+procedure TfmResource.AddUndoEntry(const undoDetails: string);
 var
   Details: TUndoDetails;
 begin
   if ResourceDetails.Tag = 0 then       // Any existing undo info?
   begin
                                          // No.  Create it
-    Details := TUndoDetails.Create (ResourceDetails);
+    Details := TUndoDetails.Create(ResourceDetails);
     ResourceDetails.Dirty := True;
     ResourceDetails.Tag := Integer (Details);
     gUndoDetails.Add (Details)
@@ -181,7 +181,7 @@ begin
 
   Details.ClearRedoStack;               // Clear the redo stack to prevent memory run-away
 
-  Details.AddUndoEntry (undoDetails);
+  Details.AddUndoEntry(undoDetails);
 end;
 
 procedure TfmResource.Copy;
@@ -290,7 +290,7 @@ begin
     Details := TUndoDetails (ResourceDetails.Tag);
     if Details.FRedoStack.Count > 0 then
     begin
-      entry := TUndoEntry (Details.FRedoStack.Peek);
+      entry := TUndoEntry(Details.FRedoStack.Peek);
 
       if Assigned (entry) then
         Result := entry.FDetails
@@ -326,7 +326,7 @@ begin
     Details := TUndoDetails (ResourceDetails.Tag);
     if Details.FUndoStack.Count > 0 then
     begin
-      entry := TUndoEntry (Details.FUndoStack.Peek);
+      entry := TUndoEntry(Details.FUndoStack.Peek);
 
       if Assigned (entry) then
         Result := entry.FDetails
@@ -382,7 +382,7 @@ begin
       if Details.FUndoStack.Count = 0 then
       begin
         ResourceDetails.Tag := 0;
-        gUndoDetails.Remove (Details)
+        gUndoDetails.Remove(Details)
       end
     end;
   inherited;  // Call inherited to set the 'obj' property
@@ -416,7 +416,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TUndoDetails.AddUndoEntry(const Details: string);
 begin
-  FUndoStack.Push (TUndoEntry.Create (Details, FResourceDetails));
+  FUndoStack.Push (TUndoEntry.Create(Details, FResourceDetails));
 end;
 
 (*----------------------------------------------------------------------*
@@ -435,7 +435,7 @@ end;
  |                                                                      |
  | Constructor for TUndoDetails.  Create the undo and redo stacks       |
  *----------------------------------------------------------------------*)
-constructor TUndoDetails.Create (ResourceDetails: TResourceDetails);
+constructor TUndoDetails.Create(ResourceDetails: TResourceDetails);
 begin
   FResourceDetails := ResourceDetails;
   FUndoStack := TObjectStack.Create;
@@ -469,11 +469,11 @@ var
 begin
   if FRedoStack.Count > 0 then
   begin
-    entry := TUndoEntry (FRedoStack.Pop);
-    FUndoStack.Push (TUndoEntry.Create (entry.FDetails, FResourceDetails));
+    entry := TUndoEntry(FRedoStack.Pop);
+    FUndoStack.Push (TUndoEntry.Create(entry.FDetails, FResourceDetails));
     FResourceDetails.ResourceName := entry.FName;
     FResourceDetails.ResourceLanguage := entry.FLanguage;
-    FResourceDetails.ChangeData (entry.FData);
+    FResourceDetails.ChangeData(entry.FData);
     entry.Free
   end
 end;
@@ -489,11 +489,11 @@ var
 begin
   if FUndoStack.Count > 0 then
   begin
-    entry := TUndoEntry (FUndoStack.Pop);
-    FRedoStack.Push (TUndoEntry.Create (entry.FDetails, FResourceDetails));
+    entry := TUndoEntry(FUndoStack.Pop);
+    FRedoStack.Push (TUndoEntry.Create(entry.FDetails, FResourceDetails));
     FResourceDetails.ResourceName := entry.FName;
     FResourceDetails.ResourceLanguage := entry.FLanguage;
-    FResourceDetails.ChangeData (entry.FData);
+    FResourceDetails.ChangeData(entry.FData);
     entry.Free
   end
 end;

@@ -70,10 +70,10 @@ type
     fHexMode : Boolean;
     fIsStrings : Boolean;
     fWorkStrings : TObjectList;
-    procedure SaveResource (const undoDetails : string);
+    procedure SaveResource(const undoDetails : string);
     function SelectedString : TStringInfo;
     function NodeString(node: PVirtualNode): TStringInfo;
-    procedure UpdateDisplay (selectedString : TStringInfo);
+    procedure UpdateDisplay(selectedString : TStringInfo);
     function NodeN (n : Integer) : PVirtualNode;
   public
     procedure TidyUp; override;
@@ -118,12 +118,12 @@ begin
       else
         newID := 1
     else
-      newId := TStringInfo (fWorkStrings [fWorkStrings.Count - 1]).Id + 1;
+      newId := TStringInfo (fWorkStrings[fWorkStrings.Count - 1]).Id + 1;
 
     si := TStringInfo.Create('', newId);
     fWorkStrings.Add(si);
-    UpdateDisplay (si);
-    actStringsModifyExecute (nil);
+    UpdateDisplay(si);
+    actStringsModifyExecute(nil);
   end
 end;
 
@@ -148,19 +148,19 @@ begin
   begin
     idx := vstStrings.FocusedNode^.Index;
     fWorkStrings.Delete(idx);
-    UpdateDisplay (Nil);
+    UpdateDisplay(Nil);
 
     while idx >= fWorkStrings.Count do
-      Dec (idx);
+      Dec(idx);
 
     p := NodeN (idx);
     if Assigned(p) then
       vstStrings.Selected [p] := True;
 
     if fDetails is TMessageResourceDetails then
-      SaveResource (rstDeleteMessage)
+      SaveResource(rstDeleteMessage)
     else
-      SaveResource (rstDeleteString)
+      SaveResource(rstDeleteString)
   end
 end;
 
@@ -253,7 +253,7 @@ begin
       else
         st := rstChangeString;
 
-    SaveResource (st);
+    SaveResource(st);
     mmoMessage.ClearUndoBuffer;
   end
 end;
@@ -263,10 +263,10 @@ begin
   if n >= 0 then
   begin
     Result := vstStrings.GetFirst;
-    while (Result <> Nil) and (n > 0) do
+    while(Result <> Nil) and (n > 0) do
     begin
       Result := vstStrings.GetNextSibling(Result);
-      Dec (n)
+      Dec(n)
     end
   end
   else
@@ -276,7 +276,7 @@ end;
 function TfmTextResource.NodeString(node : PVirtualNode) : TStringInfo;
 begin
   if Assigned(node) and (Integer (node^.Index) < fWorkStrings.Count) then
-    Result := TStringInfo (fWorkStrings [node^.Index])
+    Result := TStringInfo (fWorkStrings[node^.Index])
   else
     Result := Nil
 end;
@@ -291,15 +291,15 @@ var
   i : Integer;
   si : TStringInfo;
 begin
-  AddUndoEntry (undoDetails);
+  AddUndoEntry(undoDetails);
   fDetails.BeginUpdate;
   try
     for i := 0 to fWorkStrings.Count - 1 do
     begin
-      si := TStringInfo(fWorkStrings [i]);
+      si := TStringInfo(fWorkStrings[i]);
 
-      fDetails.Strings [i] := si.St;
-      fDetails.Ids [i] := si.Id
+      fDetails.Strings[i] := si.St;
+      fDetails.Ids[i] := si.Id
     end;
 
     i := fWorkStrings.Count;
@@ -333,9 +333,9 @@ begin
 
   fWorkStrings.Clear;
   for i := 0 to fDetails.Count - 1 do
-    fWorkStrings.Add(TStringInfo.Create(fDetails [i], fDetails.Ids [i]));
+    fWorkStrings.Add(TStringInfo.Create(fDetails[i], fDetails.Ids[i]));
 
-  UpdateDisplay (Nil);
+  UpdateDisplay(Nil);
 end;
 
 (*----------------------------------------------------------------------*
@@ -398,7 +398,7 @@ end;
 (*----------------------------------------------------------------------*
  | TfmTextResource.vstStringsDblClick                                    |
  |                                                                      |
- | Respond to double click.  Modify (or add) a string                   |
+ | Respond to double click.  Modify(or add) a string                   |
  *----------------------------------------------------------------------*)
 procedure TfmTextResource.vstStringsDblClick(Sender: TObject);
 var
@@ -408,7 +408,7 @@ begin
   begin
     p := Mouse.CursorPos;
     MapWindowPoints (0, vstStrings.Handle, p, 1);
-    if p.X <= vstStrings.Header.Columns [0].Width then
+    if p.X <= vstStrings.Header.Columns[0].Width then
       fChangeId := True
     else
       actStringsModify.Execute
@@ -451,11 +451,11 @@ begin
     if st.Id <> newID then
     begin
       for i := 0 to fDetails.Count - 1 do
-        if fDetails.Ids [i] = newID then
-          raise Exception.Create (rstDuplicateMessageID);
+        if fDetails.Ids[i] = newID then
+          raise Exception.Create(rstDuplicateMessageID);
 
       st.Id := NewId;
-      SaveResource (rstChangeID)
+      SaveResource(rstChangeID)
     end
   except
     raise

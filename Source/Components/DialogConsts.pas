@@ -75,15 +75,15 @@ begin
   if id.isID then
   begin
     w := $ffff;
-    stream.Write (w, SizeOf (w));
+    stream.Write(w, SizeOf (w));
 
     w := id.id;
-    stream.Write (w, SizeOf (w))
+    stream.Write(w, SizeOf (w))
   end
   else
   begin
     ws := id.sz;
-    stream.Write (ws [1], (Length (ws) + 1) * SizeOf (WideChar))
+    stream.Write(ws[1], (Length (ws) + 1) * SizeOf (WideChar))
   end
 end;
 
@@ -121,7 +121,7 @@ begin
   if stream.Position mod 4 <> 0 then
   begin
     padding := 0;
-    stream.Write (padding, 4 - (stream.Position mod 4))
+    stream.Write(padding, 4 - (stream.Position mod 4))
   end
 end;
 

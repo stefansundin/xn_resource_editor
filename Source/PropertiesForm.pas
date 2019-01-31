@@ -13,7 +13,7 @@ type
   private
   protected
   public
-    constructor Create (AOwner : TComponent); override;
+    constructor Create(AOwner : TComponent); override;
   end;
 
 var

@@ -4,7 +4,7 @@ interface
 
 uses Windows, Classes, SysUtils;
 
-function HHPreTranslateMessage (var Msg : TMsg) : Boolean;
+function HHPreTranslateMessage(var Msg : TMsg) : Boolean;
 procedure InitializeHTMLHelp;
 
 implementation
@@ -62,7 +62,7 @@ resourcestring
 
 { THTMLHelpViewer }
 
-function HHPreTranslateMessage (var Msg : TMsg) : Boolean;
+function HHPreTranslateMessage(var Msg : TMsg) : Boolean;
 begin
   Result := HtmlHelp (0, Nil, HH_PRETRANSLATEMESSAGE, DWORD (@Msg)) = 0
 end;
@@ -131,15 +131,15 @@ begin
   Result := 0;
   while Result < keywords.Count do
   begin
-    st := keywords [Result];
+    st := keywords[Result];
     p := Pos (':', st);
     if p >= 0 then
-      st := Copy (st, 1, p - 1);
+      st := Copy(st, 1, p - 1);
 
     if st = rstHTMLHelp then
       Exit
     else
-      Inc (Result);
+      Inc(Result);
   end;
   Result := -1
 end;
@@ -175,10 +175,10 @@ function THTMLHelpViewer.TableOfContents(Contents: TStrings): Integer;
 begin
   Result := 0;
   while Result < contents.Count do
-    if contents [result] = rstHTMLHelp then
+    if contents[result] = rstHTMLHelp then
       exit
     else
-      Inc (Result);
+      Inc(Result);
   Result := -1;
 end;
 
