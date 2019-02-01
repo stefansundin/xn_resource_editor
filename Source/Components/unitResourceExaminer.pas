@@ -46,45 +46,46 @@ type
     FOwner: TObject;
     FElements: TObjectList;
     function GetCount: Integer;
-    function GetDisplayName: WideString; virtual; abstract;
+    function GetDisplayName: UnicodeString; virtual; abstract;
   public
     constructor Create; overload;
     destructor Destroy; override;
     property Count: Integer read GetCount;
     property Element [idx: Integer]: TResExamElement read GetElement;
-    property DisplayName: WideString read GetDisplayName;
+    property DisplayName: UnicodeString read GetDisplayName;
   end;
 
   TUndoName = class
   private
-    FName: WideString;
+    FName: UnicodeString;
     FDesc: string;
   public
-    constructor Create(const ADesc: string; const AName: WideString);
-    property Name: WideString read FName;
+    constructor Create (const ADesc: string; const AName: UnicodeString);
+    property Name: UnicodeString read FName;
     property Description: string read FDesc;
   end;
 
   TResExamNamedElement = class (TResExamElement)
   private
-    FName: WideString;
+    FName: UnicodeString;
     function GetCanRedo: Boolean;
     function GetCanUndo: Boolean;
     function GetRedoDescription: string;
     function GetUndoDescription: string;
+
   protected
     FUndoNames: TObjectList;
     FRedoNames: TObjectList;
     FUndoing, FRedoing: Boolean;
 
-    constructor Create(AOwner: TObject; const AName: WideString);
-    procedure SetName(const value: WideString); virtual;
-    procedure AddNameToUndoList(const Desc: string; const nm: wideString = '');
+    constructor Create (AOwner: TObject; const AName: UnicodeString);
+    procedure SetName (const value: UnicodeString); virtual;
+    procedure AddNameToUndoList (const Desc: string; const nm: UnicodeString = '');
   public
     destructor Destroy; override;
     procedure Undo;
     procedure Redo;
-    property Name: WideString read FName write SetName;
+    property Name: UnicodeString read FName write SetName;
     property CanRedo: Boolean read GetCanRedo;
     property CanUndo: Boolean read GetCanUndo;
     property UndoDescription: string read GetUndoDescription;
@@ -98,25 +99,25 @@ type
   private
     FResource: TResourceDetails;
   public
-    constructor Create(AOwner: TObject; AResource: TResourceDetails);
+    constructor Create (AOwner: TObject; AResource: TResourceDetails);
     property ResourceDetails: TResourceDetails read FResource;
   end;
 
   TResExamImport = class (TResExamElement)
   private
-    FBaseAddr: PChar;
-    FImageImportDirectory: PImageImportDirectory;
-    function GetImportName: string;
+    FBaseAddr: PByte;
+    FImageImportDescriptor: PImageImportDescriptor;
+    function GetImportName: AnsiString;
     function GetExaminer: TResourceExaminer;
   protected
-    function GetDisplayName: WideString; override;
+    function GetDisplayName: UnicodeString; override;
   public
-    constructor Create(AOwner: TObject; ABaseAddr: PChar; AImageImportDirectory: PImageImportDirectory);
-    property ImportDirectory: PImageImportDirectory read FImageImportDirectory;
-    property ImportName: string read GetImportName;
+    constructor Create (AOwner: TObject; ABaseAddr: PByte; AImageImportDescriptor: PImageImportDescriptor);
+    property ImportDirectory: PImageImportDescriptor read FImageImportDescriptor;
+    property ImportName: AnsiString read GetImportName;
     property Examiner: TResourceExaminer read GetExaminer;
 
-    property BaseAddress: PChar read FBaseAddr;
+    property BaseAddress: PByte read FBaseAddr;
   end;
 
   //---------------------------------------------------------------------
@@ -125,7 +126,7 @@ type
   private
     function GetOwner: TResExamLang;
   protected
-    function GetDisplayName: WideString; override;
+    function GetDisplayName: UnicodeString; override;
   public
     property Owner: TResExamLang read GetOwner;
   end;
@@ -137,7 +138,7 @@ type
     function GetOwner: TResExamName;
     function GetName: LCID;
   protected
-    function GetDisplayName: WideString; override;
+    function GetDisplayName: UnicodeString; override;
   public
     property Name: LCID read GetName;
     property Owner: TResExamName read GetOwner;
@@ -150,10 +151,10 @@ type
     function GetResExamLang(idx: Integer): TResExamLang;
     function GetOwner: TResExamType;
   protected
-    procedure SetName(const Value: WideString); override;
-    function GetDisplayName: WideString; override;
+    procedure SetName(const Value: UnicodeString); override;
+    function GetDisplayName: UnicodeString; override;
   public
-    constructor Create(AOwner: TResExamType; const AName: WideString);
+    constructor Create (AOwner: TResExamType; const AName: UnicodeString);
 
     property Owner: TResExamType read GetOwner;
     property ResExamLang [idx: Integer]: TResExamLang read GetResExamLang;
@@ -166,36 +167,44 @@ type
     function GetResExamName(idx: Integer): TResExamName;
     function GetOwner: TResourceExaminer;
   protected
-    procedure SetName(const Value: WideString); override;
-    function GetDisplayName: WideString; override;
+    procedure SetName(const Value: UnicodeString); override;
+    function GetDisplayName: UnicodeString; override;
   public
-    constructor Create(AOwner: TResourceExaminer; const AName: WideString);
+    constructor Create (AOwner: TResourceExaminer; const AName: UnicodeString);
     property Owner: TResourceExaminer read GetOwner;
     property ResExamName [idx: Integer]: TResExamName read GetResExamName;
   end;
 
   TResExamSection = class (TResExamElement)
   private
-    FName: string;
+    FName: UnicodeString;
   protected
-    function GetDisplayName: WideString; override;
+    function GetDisplayName: UnicodeString; override;
   public
-    constructor Create(const AName: string);
-    property Name: string read FName write FName;
+    constructor Create (const AName: UnicodeString);
+    property Name: UnicodeString read FName write FName;
+  end;
+
+  TResExamSectionSection = class (TResExamSection)
+  private
+    FSection: TImageSection;
+  public
+    constructor Create (const AName: UnicodeString; ASection: TImageSection);
+    property Section: TImageSection read FSection;
   end;
 
   TExportResExamSection = class (TResExamSection)
   private
-    FBaseAddr: PChar;
+    FBaseAddr: PByte;
     function GetExaminer: TResourceExaminer;
     function GetExportCount: Integer;
-    function GetExportName(idx: Integer): string;
+    function GetExportName(idx: Integer): AnsiString;
     function GetExportOrdinal(idx: Integer): Integer;
   public
-    constructor Create(AOwner: TObject; BaseAddr: PChar);
+    constructor Create (AOwner: TObject; BaseAddr: PByte);
 
     property ExportCount: Integer read GetExportCount;
-    property ExportName [idx: Integer]: string read GetExportName;
+    property ExportName [idx: Integer]: AnsiString read GetExportName;
     property ExportOrdinal [idx: Integer]: Integer read GetExportOrdinal;
   end;
 
@@ -213,31 +222,31 @@ type
     function GetSectionCount: Integer;
     function GetExportCount: Integer;
     function GetImportCount: Integer;
-    function GetImport(idx: Integer): PImageImportDirectory;
-    function GetExportName(idx: Integer): string;
+    function GetImport (idx: Integer): PImageImportDescriptor;
+    function GetExportName(idx: Integer): AnsiString;
     function GetExportOrdinal(idx: Integer): Integer;
     function GetResourceSection: TResExamSection;
   protected
-    constructor Create(AResourceModule: TResourceModule; AOwnsModule: Boolean; DontExamine: Boolean); overload;
+    constructor Create (AResourceModule: TResourceModule; AOwnsModule: Boolean; DontExamine: Boolean); overload;
 
     property ResourceCount: Integer read GetResourceCount;
     property Resource [idx: Integer]: TResourceDetails read GetResource;
     property ResourceModule: TResourceModule read FResourceModule;
 
     property ExportCount: Integer read GetExportCount;
-    property ExportName [idx: Integer]: string read GetExportName;
+    property ExportName [idx: Integer]: AnsiString read GetExportName;
     property ExportOrdinal [idx: Integer]: Integer read GetExportOrdinal;
 
     property ImportCount: Integer read GetImportCount;
-    property Import [idx: Integer]: PImageImportDirectory read GetImport;
+    property Import [idx: Integer]: PImageImportDescriptor read GetImport;
   public
-    constructor Create(AResourceModule: TResourceModule); overload;
-    constructor Create(const FileName: string); overload;
+    constructor Create (AResourceModule: TResourceModule); overload;
+    constructor Create (const FileName: string); overload;
 
     destructor Destroy; override;
 
     procedure Examine;
-    procedure SetResourceModule(rm: TResourceModule; ownsModule: Boolean);
+    procedure SetResourceModule (rm: TResourceModule; ownsModule: Boolean);
 
     property ResourceSection: TResExamSection read GetResourceSection;
     property SectionCount: Integer read GetSectionCount;
@@ -245,16 +254,15 @@ type
   end;
 
 function PixelFormatToString (pf: TPixelFormat): string;
-function GetTypeName(const tp: string): string;
+function GetTypeName (const tp: string): string;
 
 implementation
 
-uses
-  Types, unitResourceGraphics, unitResourceToolbar;
+uses unitResourceGraphics, unitResourceToolbar;
 
 const
   RT_HTML = MakeIntResource(23);
-  RT_XPMANIFEST = MakeIntResource(24);
+  RT_XPMANIFEST = MakeIntResource (24);
 
 resourcestring
   rstLanguageNeutral = 'Language Neutral';
@@ -297,77 +305,77 @@ resourcestring
 function PixelFormatToString (pf: TPixelFormat): string;
 begin
   case pf of
-    pf1Bit: Result := rst1Bit;
-    pf4Bit: Result := rst4Bit;
-    pf8Bit: Result := rst8Bit;
-    pf15Bit: Result := rst15Bit;
-    pf16Bit: Result := rst16Bit;
-    pf24Bit: Result := rst24Bit;
-    pf32Bit: Result := rst32Bit
+    pf1Bit: result := rst1Bit;
+    pf4Bit: result := rst4Bit;
+    pf8Bit: result := rst8Bit;
+    pf15Bit: result := rst15Bit;
+    pf16Bit: result := rst16Bit;
+    pf24Bit: result := rst24Bit;
+    pf32Bit: result := rst32Bit
   end
 end;
 
 (*----------------------------------------------------------------------*
- | function GetTypeName(): string                                     |
+ | function GetTypeName (): string                                     |
  |                                                                      |
  | Return display name for a resource type                              |
  |                                                                      |
  | Parameters:                                                          |
  |   const tp: string          The resource type                       |
  *----------------------------------------------------------------------*)
-function GetTypeName(const tp: string): string;
+function GetTypeName (const tp: string): string;
 var
   i: Integer;
 begin
-  i := ResourceNameToInt(tp);
+  i := ResourceNameToInt (tp);
 
   case i of
-    Integer (RT_BITMAP)      : Result := rstBitmap;
-    Integer (RT_ICON)        : Result := rstIcon;
-    Integer (RT_CURSOR)      : Result := rstCursor;
-    Integer (RT_MENU)        : Result := rstMenu;
-    Integer (RT_DIALOG)      : Result := rstDialog;
-    Integer (RT_STRING)      : Result := rstString;
+    Integer (RT_BITMAP)      : result := rstBitmap;
+    Integer (RT_ICON)        : result := rstIcon;
+    Integer (RT_CURSOR)      : result := rstCursor;
+    Integer (RT_MENU)        : result := rstMenu;
+    Integer (RT_DIALOG)      : result := rstDialog;
+    Integer (RT_STRING)      : result := rstString;
     Integer (RT_ACCELERATOR) : Result := rstAccelerator;
-    Integer (RT_RCDATA)      : Result := rstRCData;
-    Integer (RT_MESSAGETABLE): Result := rstMessageTable;
-    Integer (RT_VERSION)     : Result := rstVersion;
-    Integer (RT_GROUP_CURSOR): Result := rstGroupCursor;
-    Integer (RT_GROUP_ICON)  : Result := rstGroupIcon;
-    Integer (RT_XPMANIFEST)  : Result := rstXPManifest;
-    Integer (RT_HTML)        : Result := rstHTML;
-    Integer (RT_TOOLBAR)     : Result := rstToolbar;
+    Integer (RT_RCDATA)      : result := rstRCData;
+    Integer (RT_MESSAGETABLE): result := rstMessageTable;
+    Integer (RT_VERSION)     : result := rstVersion;
+    Integer (RT_GROUP_CURSOR): result := rstGroupCursor;
+    Integer (RT_GROUP_ICON)  : result := rstGroupIcon;
+    Integer (RT_XPMANIFEST)  : result := rstXPManifest;
+    Integer (RT_HTML)        : result := rstHTML;
+    Integer (RT_TOOLBAR)     : result := rstToolbar;
     else
-      Result := tp
+      result := tp
   end
 end;
 
 (*----------------------------------------------------------------------*
- | function GetLangName(): string                                     |
+ | function GetLangName (): string                                     |
  |                                                                      |
  | Return display name for a language ID                                |
  |                                                                      |
  | Parameters:                                                          |
  |   language: Integer                 The language ID                 |
  *----------------------------------------------------------------------*)
-function GetLangName(language: Integer): string;
+function GetLangName (language: Integer): string;
 begin
   if language = 0 then
-    Result := rstLanguageNeutral
+    result := rstLanguageNeutral
   else
-    Result := Languages.NameFromLocaleID [language]
+    result := Languages.NameFromLocaleID [language]
 end;
 
 
-function FixResourceName(const st: WideString): WideString;
+function FixResourceName (const st: WideString): WideString;
 var
   i: Integer;
 begin
-  Result := WideUpperCase(st);
+  result := WideUpperCase (st);
 
-  for i := 1 to Length(Result) do
-    if Result [i] = ' ' then
-      Result [i] := '_';
+  for i := 1 to Length (result) do
+    if result [i] = ' ' then
+      result [i] := '_';
 end;
 
 { TResourceExaminer }
@@ -407,7 +415,7 @@ end;
  *----------------------------------------------------------------------*)
 constructor TResourceExaminer.Create(const FileName: string);
 begin
-  Create(TPEResourceModule.Create, True, True);
+  Create (TPEResourceModule.Create, True, True);
   FResourceModule.LoadFromFile(FileName);
   Examine;
 end;
@@ -423,7 +431,7 @@ end;
  *----------------------------------------------------------------------*)
 constructor TResourceExaminer.Create(AResourceModule: TResourceModule);
 begin
-  Create(AResourceModule, False, False);
+  Create (AResourceModule, False, False);
 end;
 
 destructor TResourceExaminer.Destroy;
@@ -443,59 +451,36 @@ type
   PImageImportByName = ^TImageImportByName;
 
 var
-  i, j: Integer;
-  currentType: TResExamType;
-  currentName: TResExamName;
-  currentLang: TResExamLang;
-  res: TResourceDetails;
-  grp: TIconCursorGroupResourceDetails;
-  Section: TResExamSection;
-  SectionData: PChar;
-  imp: PImageImportDirectory;
-  impSection: TResExamImport;
+  i: Integer;
+  section: TResExamSection;
+  pem: TPEBase;
+  imageSection: TImageSection;
+  offset: Integer;
+  resSectionIDx: Integer;
 
-begin
-  FSections.Clear;
+  procedure GetResourcesInto (section: TResExamSection);
+  var
+    i, j: Integer;
+    res: TResourceDetails;
+    currentType: TResExamType;
+    currentName: TResExamName;
+    currentLang: TResExamLang;
+    grp: TIconCursorGroupResourceDetails;
 
-  currentType := nil;
-  currentName := nil;
-
-  if ExportCount > 0 then
   begin
-    SectionData := TPEModule(FResourceModule).ExportSectionData;
-    Section := TExportResExamSection.Create(Self, SectionData);
-    FSections.Add(Section);
-  end;
-
-  if ImportCount > 0 then
-  begin
-    SectionData := TPEModule(FResourceModule).ImportSectionData;
-    Section := TResExamSection.Create('Imported Functions');
-    FSections.Add(Section);
-
-    for i := 0 to ImportCount - 1 do
-    begin
-      imp := Import [i];
-      impSection := TResExamImport.Create(Self, SectionData, imp);
-      Section.FElements.Add(impSection);
-    end
-  end;
-
-  if ResourceCount > 0 then
-  begin
-    Section := TResExamSection.Create('Resources');
-    FSections.Add(Section);
+    currentType := Nil;
+    currentName := Nil;
 
     for i := 0 to ResourceCount - 1 do
     begin
       res := Resource [i];
       if (currentType = Nil) or (currentType.Name <> res.ResourceType) then
       begin
-        currentName := nil;
+        currentName := Nil;
         if res is TIconCursorResourceDetails then
           Continue;
-        currentType := TResExamType.Create(Self, res.ResourceType);
-        Section.FElements.Add(currentType)
+        currentType := TResExamType.Create(self, res.ResourceType);
+        section.FElements.Add(currentType)
       end;
 
       if (currentName = Nil) or (currentName.Name <> res.ResourceName) then
@@ -513,113 +498,175 @@ begin
 
         currentLang.FElements := TObjectList.Create;
         for j := 0 to grp.ResourceCount - 1 do
-          currentLang.FElements.Add(TResExamIconCursor.Create(currentLang, grp.ResourceDetails[j]))
+          currentLang.FElements.Add(TResExamIconCursor.Create(currentLang, grp.ResourceDetails [j]))
       end
     end
+  end;
+
+
+begin
+  FSections.Clear;
+
+  if FResourceModule is TPeBase then
+  begin
+    pem := TPEBase (FResourceModule);
+
+    if pem is TPEModule then
+      resSectionIdx := TPEModule (pem).FindDirectoryEntrySection (IMAGE_DIRECTORY_ENTRY_RESOURCE, offset)
+    else
+      resSectionIdx := -1;
+
+    for i := 0 to pem.ImageSectionCount - 1 do
+    begin
+      imageSection := pem.ImageSection [i];
+
+      if i = resSectionIdx then
+        section := TResExamSectionSection.Create (Format ('Resources (%s)', [imageSection.SectionName]), imageSection)
+      else
+        section := TResExamSectionSection.Create(String (imageSection.SectionName), imageSection);
+
+      FSections.Add(section);
+
+      if i = resSectionIdx then
+        GetResourcesInto (section)
+    end
+  end
+  else
+
+
+(*
+  if ExportCount > 0 then
+  begin
+    sectionData := TPEModule (FResourceModule).ExportSectionData;
+    section := TExportResExamSection.Create (self, sectionData);
+    FSections.Add(section);
+  end;
+
+  if ImportCount > 0 then
+  begin
+    sectionData := TPEModule (FResourceModule).ImportSectionData;
+    section := TResExamSection.Create ('Imported Functions');
+    FSections.Add(section);
+
+    for i := 0 to ImportCount - 1 do
+    begin
+      imp := Import [i];
+      impSection := TResExamImport.Create(self, sectionData, imp);
+      section.FElements.Add(impSection);
+    end
+  end;
+*)
+  if ResourceCount > 0 then
+  begin
+    section := TResExamSection.Create ('Resources');
+    FSections.Add(section);
+
+    GetResourcesInto (section);
+
   end
 end;
 
 function TResourceExaminer.GetExportCount: Integer;
 begin
   if FResourceModule is TPEModule then
-    Result := TPEModule(FResourceModule).ExportCount
+    result := TPEModule (FResourceModule).ExportCount
   else
-    Result := 0
+    result := 0
 end;
 
-function TResourceExaminer.GetExportName(idx: Integer): string;
+function TResourceExaminer.GetExportName(idx: Integer): AnsiString;
 var
   ord: DWORD;
 begin
   if FResourceModule is TPEModule then
-    TPEModule(FResourceModule).GetExportDetails(idx, Result, ord)
+    TPEModule (FResourceModule).GetExportDetails(idx, result, ord)
   else
-    Result := ''
+    result := ''
 end;
 
 function TResourceExaminer.GetExportOrdinal(idx: Integer): Integer;
 var
-  nm: string;
+  nm: AnsiString;
   ord: DWORD;
 begin
   if FResourceModule is TPEModule then
   begin
-    TPEModule(FResourceModule).GetExportDetails(idx, nm, ord);
-    Result := ord
+    TPEModule (FResourceModule).GetExportDetails(idx, nm, ord);
+    result := ord
   end
   else
-    Result := 0
+    result := 0
 end;
 
-function TResourceExaminer.GetImport(idx: Integer): PImageImportDirectory;
+function TResourceExaminer.GetImport(idx: Integer): PImageImportDescriptor;
 begin
   if FResourceModule is TPEModule then
-    Result := TPEModule(FResourceModule).Import [idx]
+    result := TPEModule (FResourceModule).Import [idx]
   else
-    Result := Nil
+    result := Nil
 end;
 
 function TResourceExaminer.GetImportCount: Integer;
 begin
   if FResourceModule is TPEModule then
-    Result := TPEModule(FResourceModule).ImportCount
+    result := TPEModule (FResourceModule).ImportCount
   else
-    Result := 0
+    result := 0
 end;
 
 function TResourceExaminer.GetResource(idx: Integer): TResourceDetails;
 begin
-  Result := FResourceModule.ResourceDetails[idx]
+  result := FResourceModule.ResourceDetails [idx]
 end;
 
 function TResourceExaminer.GetResourceCount: Integer;
 begin
-  if Assigned(FResourceModule) then
-    Result := FResourceModule.ResourceCount
+  if Assigned (FResourceModule) then
+    result := FResourceModule.ResourceCount
   else
-    Result := 0
+    result := 0
 end;
 
 { TResExamLang }
 
-function TResExamLang.GetDisplayName: WideString;
+function TResExamLang.GetDisplayName: UnicodeString;
 begin
-  Result := GetLangName(Name);
+  result := GetLangName (Name);
 end;
 
 function TResExamLang.GetName: LCID;
 begin
-  Result := FResource.ResourceLanguage;
+  result := FResource.ResourceLanguage;
 end;
 
 function TResExamLang.GetOwner: TResExamName;
 begin
-  Result := FOwner as TResExamName;
+  result := FOwner as TResExamName;
 end;
 
 { TResExamName }
 
-constructor TResExamName.Create(AOwner: TResExamType; const AName: WideString);
+constructor TResExamName.Create(AOwner: TResExamType; const AName: UnicodeString);
 begin
-  inherited Create(AOwner, AName);
+  inherited Create (AOwner, AName);
 end;
 
-function TResExamName.GetDisplayName: WideString;
+function TResExamName.GetDisplayName: UnicodeString;
 begin
-  Result := Name;
+  result := Name;
 end;
 
 function TResExamName.GetOwner: TResExamType;
 begin
-  Result := TResExamType(FOwner);
+  result := TResExamType (FOwner);
 end;
 
 function TResExamName.GetResExamLang(idx: Integer): TResExamLang;
 begin
-  Result := TResExamLang (FElements[idx])
+  result := TResExamLang (FElements [idx])
 end;
 
-procedure TResExamName.SetName(const Value: WideString);
+procedure TResExamName.SetName(const Value: UnicodeString);
 var
   wst: WideString;
 
@@ -630,7 +677,7 @@ var
   begin
     if elem is TResExamResource then
     begin
-      res := TResExamResource(elem).ResourceDetails;
+      res := TResExamResource (elem).ResourceDetails;
 
       // nb.  Don't rename icon/cursor resources.  Rename the
       //      icon/cursor *group* resource instead.
@@ -644,36 +691,36 @@ var
 
 begin
   if FName = Value then Exit;
-  wst := FixResourceName(Value);
-  AddNameToUndoList(rstChangeResourceName);
+  wst := FixResourceName (Value);
+  AddNameToUndoList (rstChangeResourceName);
   FName := wst;
-  ReplaceChildResourceNames (Self);
+  ReplaceChildResourceNames (self);
 end;
 
 { TResExamType }
 
 constructor TResExamType.Create(AOwner: TResourceExaminer;
-  const AName: WideString);
+  const AName: UnicodeString);
 begin
-  inherited Create(AOwner, AName);
+  inherited Create (AOwner, AName);
 end;
 
-function TResExamType.GetDisplayName: WideString;
+function TResExamType.GetDisplayName: UnicodeString;
 begin
-  Result := GetTypeName(Name);
+  result := GetTypeName (Name);
 end;
 
 function TResExamType.GetOwner: TResourceExaminer;
 begin
-  Result := TResourceExaminer (FOwner);
+  result := TResourceExaminer (FOwner);
 end;
 
 function TResExamType.GetResExamName(idx: Integer): TResExamName;
 begin
-  Result := TResExamName(FElements[idx]);
+  result := TResExamName (FElements [idx]);
 end;
 
-procedure TResExamType.SetName(const Value: WideString);
+procedure TResExamType.SetName(const Value: UnicodeString);
 var
   wst: WideString;
 
@@ -682,7 +729,7 @@ var
     i: Integer;
   begin
     if elem is TResExamResource then
-      TResExamResource(elem).ResourceDetails.ResourceType := wst;
+      TResExamResource (elem).ResourceDetails.ResourceType := wst;
 
     for i := 0 to elem.Count - 1 do
       ReplaceChildResourceTypes (elem.Element [i])
@@ -690,10 +737,10 @@ var
 
 begin
   if FName = Value then Exit;
-  wst := FixResourceName(Value);
-  AddNameToUndoList(rstChangeCustomResourceType);
+  wst := FixResourceName (Value);
+  AddNameToUndoList (rstChangeCustomResourceType);
   FName := wst;
-  ReplaceChildResourceTypes (Self);
+  ReplaceChildResourceTypes (self);
 end;
 
 { TResExamElement }
@@ -711,12 +758,12 @@ end;
 
 function TResExamElement.GetCount: Integer;
 begin
-  if Assigned(FElements) then Result := FElements.Count else Result := 0
+  if Assigned (FElements) then result := FElements.Count else result := 0
 end;
 
 function TResExamElement.GetElement(idx: Integer): TResExamElement;
 begin
-  if Assigned(FElements) then Result := TResExamElement(FElements[idx]) else Result := Nil
+  if Assigned (FElements) then result := TResExamElement (FElements [idx]) else result := Nil
 end;
 
 { TResExamResource }
@@ -731,20 +778,25 @@ end;
 
 { TResExamIconCursor }
 
-function TResExamIconCursor.GetDisplayName: WideString;
+function TResExamIconCursor.GetDisplayName: UnicodeString;
 var
   res: TIconCursorResourceDetails;
   pf: string;
 begin
   res := TIconCursorResourceDetails (FResource);
 
-  pf := PixelFormatToString (res.PixelFormat);
-  Result := Format('%dx%d %s', [res.Width, res.Height, pf]);
+  try
+    pf := PixelFormatToString (res.PixelFormat);
+  except
+    pf := 'Unknown format';
+
+  end;
+  result := Format ('%dx%d %s', [res.Width, res.Height, pf]);
 end;
 
 function TResExamIconCursor.GetOwner: TResExamLang;
 begin
-  Result := FOwner as TResExamLang
+  result := FOwner as TResExamLang
 end;
 
 function TResourceExaminer.GetResourceSection: TResExamSection;
@@ -752,25 +804,25 @@ var
   i: Integer;
 begin
   i := 0;
-  Result := nil;
+  result := Nil;
   while i < SectionCount do
-    if Section [i].Name = 'Resources' then
+    if Copy (Section [i].Name, 1, 9) = 'Resources' then
     begin
-      Result := Section [i];
+      result := Section [i];
       break
     end
     else
-      Inc(i)
+      Inc (i)
 end;
 
 function TResourceExaminer.GetSection(idx: Integer): TResExamSection;
 begin
-  Result := TResExamSection (FSections[idx])
+  result := TResExamSection (FSections [idx])
 end;
 
 function TResourceExaminer.GetSectionCount: Integer;
 begin
-  Result := FSections.Count
+  result := FSections.Count
 end;
 
 { TResExamSection }
@@ -781,64 +833,64 @@ begin
   FName := AName;
 end;
 
-function TResExamSection.GetDisplayName: WideString;
+function TResExamSection.GetDisplayName: UnicodeString;
 begin
-  Result := Name
+  result := Name
 end;
 
 { TResExamImport }
 
-constructor TResExamImport.Create(AOwner: TObject;ABaseAddr: PChar;
-  AImageImportDirectory: PImageImportDirectory);
+constructor TResExamImport.Create(AOwner: TObject;ABaseAddr: PByte;
+  AImageImportDescriptor: PImageImportDescriptor);
 begin
   inherited Create;
   FOwner := AOwner;
   FBaseAddr := ABaseAddr;
-  FImageImportDirectory := AImageImportDirectory
+  FImageImportDescriptor := AImageImportDescriptor
 end;
 
-function TResExamImport.GetDisplayName: WideString;
+function TResExamImport.GetDisplayName: UnicodeString;
 begin
-  Result := ImportName
+  result := UnicodeString (ImportName)
 end;
 
 function TResExamImport.GetExaminer: TResourceExaminer;
 begin
-  Result := TResourceExaminer (FOwner);
+  result := TResourceExaminer (FOwner);
 end;
 
-function TResExamImport.GetImportName: string;
+function TResExamImport.GetImportName: AnsiString;
 begin
-  Result := PChar (FBaseAddr) + FImageImportDirectory^.Name
+  result := PAnsiChar (FBaseAddr) + FImageImportDescriptor^.Name
 end;
 
 { TExportResExamSection }
 
-constructor TExportResExamSection.Create(AOwner: TObject; BaseAddr: PChar);
+constructor TExportResExamSection.Create(AOwner: TObject; BaseAddr: PByte);
 begin
-  inherited Create('Exported Functions');
+  inherited Create ('Exported Functions');
   FOwner := AOwner;
   FBaseAddr := BaseAddr;
 end;
 
 function TExportResExamSection.GetExaminer: TResourceExaminer;
 begin
-  Result := FOwner as TResourceExaminer;
+  result := FOwner as TResourceExaminer;
 end;
 
 function TExportResExamSection.GetExportCount: Integer;
 begin
-  Result := GetExaminer.ExportCount
+  result := GetExaminer.ExportCount
 end;
 
-function TExportResExamSection.GetExportName(idx: Integer): string;
+function TExportResExamSection.GetExportName(idx: Integer): AnsiString;
 begin
-  Result := GetExaminer.ExportName [idx];
+  result := GetExaminer.ExportName [idx];
 end;
 
 function TExportResExamSection.GetExportOrdinal(idx: Integer): Integer;
 begin
-  Result := GetExaminer.ExportOrdinal [idx];
+  result := GetExaminer.ExportOrdinal [idx];
 end;
 
 procedure TResourceExaminer.SetResourceModule(rm: TResourceModule; ownsModule: Boolean);
@@ -855,24 +907,24 @@ end;
 
 { TResExamNamedElement }
 
-procedure TResExamNamedElement.AddNameToUndoList(const Desc: string; const nm: wideString);
+procedure TResExamNamedElement.AddNameToUndoList(const Desc: string; const nm: UnicodeString);
 begin
   if FUndoing then Exit;
-  if not Assigned(FUndoNames) then
+  if not Assigned (FUndoNames) then
     FUndoNames := TObjectList.Create;
 
   if nm = '' then
-    FUndoNames.Insert(0, TUndoName.Create(Desc, Name))
+    FUndoNames.Insert (0, TUndoName.Create(Desc, Name))
   else
-    FUndoNames.Insert(0, TUndoName.Create(Desc, nm));
+    FUndoNames.Insert (0, TUndoName.Create(Desc, nm));
 
   if not FRedoing then
-    if Assigned(FRedoNames) then
+    if Assigned (FRedoNames) then
       FRedoNames.Clear;
 end;
 
 constructor TResExamNamedElement.Create(AOwner: TObject;
-  const AName: WideString);
+  const AName: UnicodeString);
 begin
   inherited Create;
   FOwner := AOwner;
@@ -889,12 +941,12 @@ end;
 
 function TResExamNamedElement.GetCanUndo: Boolean;
 begin
-  Result := Assigned(FUndoNames) and (FUndoNames.Count > 0);
+  result := Assigned (FUndoNames) and (FUndoNames.Count > 0);
 end;
 
 function TResExamNamedElement.GetCanRedo: Boolean;
 begin
-  Result := Assigned(FRedoNames) and (FRedoNames.Count > 0);
+  result := Assigned (FRedoNames) and (FRedoNames.Count > 0);
 end;
 
 procedure TResExamNamedElement.Redo;
@@ -903,7 +955,7 @@ var
 begin
   if not CanRedo then Exit;
 
-  redoName := TUndoName(FRedoNames.Extract(FRedoNames[0]));
+  redoName := TUndoName (FRedoNames.Extract(FRedoNames [0]));
   try
     FRedoing := True;
     try
@@ -916,7 +968,7 @@ begin
   end
 end;
 
-procedure TResExamNamedElement.SetName(const value: WideString);
+procedure TResExamNamedElement.SetName(const value: UnicodeString);
 begin
   raise Exception.Create('Can''t rename element');
 end;
@@ -928,7 +980,7 @@ var
 begin
   if not CanUndo then Exit;
 
-  oldName := TUndoName(FUndoNames.Extract(FUndoNames[0]));
+  oldName := TUndoName (FUndoNames.Extract(FUndoNames [0]));
   try
     FUndoing := True;
     try
@@ -939,10 +991,10 @@ begin
     end;
 
     oldName.FName := ws;
-    if not Assigned(FRedoNames) then
+    if not Assigned (FRedoNames) then
       FRedoNames := TObjectList.Create;
-      
-    FRedoNames.Insert(0, oldName);
+
+    FRedoNames.Insert (0, oldName);
     oldName := Nil
   finally
     oldName.Free
@@ -952,25 +1004,34 @@ end;
 function TResExamNamedElement.GetUndoDescription: string;
 begin
   if CanUndo then
-    Result := TUndoName(FUndoNames[0]).Description
+    result := TUndoName (FUndoNames [0]).Description
   else
-    Result := '';
+    result := '';
 end;
 
 function TResExamNamedElement.GetRedoDescription: string;
 begin
   if CanRedo then
-    Result := TUndoName(FRedoNames[0]).Description
+    result := TUndoName (FRedoNames [0]).Description
   else
-    Result := '';
+    result := '';
 end;
 
 { TUndoName }
 
-constructor TUndoName.Create(const ADesc: string; const AName: WideString);
+constructor TUndoName.Create(const ADesc: string; const AName: UnicodeString);
 begin
   FName := AName;
   FDesc := ADesc;
+end;
+
+{ TResExamSectionSection }
+
+constructor TResExamSectionSection.Create(const AName: UnicodeString;
+  ASection: TImageSection);
+begin
+  inherited Create (AName);
+  FSection := ASection
 end;
 
 end.
