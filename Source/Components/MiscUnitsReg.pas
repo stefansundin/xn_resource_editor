@@ -16,7 +16,6 @@ uses
   cmpNTAboutBox,
   cmpHyperlinkButton,
   cmpExSplitter,
-  cmpTrayIcon,
   cmpMessageDisplay,
   cmpMRUList,
   cmpPropertyListBox,

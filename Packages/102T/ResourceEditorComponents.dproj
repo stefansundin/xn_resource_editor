@@ -133,7 +133,6 @@
         <DCCReference Include="..\..\Source\Components\cmpTextDisplay.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpTexturedPanel.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpThemedScrollBox.pas"/>
-        <DCCReference Include="..\..\Source\Components\cmpTrayIcon.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpUCtrls.pas"/>
         <DCCReference Include="..\..\Source\Components\DialogButtonControls.pas"/>
         <DCCReference Include="..\..\Source\Components\DialogComboBoxControls.pas"/>
