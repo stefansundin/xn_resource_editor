@@ -110,7 +110,6 @@
         <DCCReference Include="..\..\Source\Components\cmpExSplitter.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpExWebBrowser.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpFakeCombobox.pas"/>
-        <DCCReference Include="..\..\Source\Components\cmpFileCopier.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpGradientShape.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpHexDump.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpHyperlinkButton.pas"/>
@@ -127,7 +126,6 @@
         <DCCReference Include="..\..\Source\Components\cmpSizingPageControl.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpSpellChecker.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpStandardSystemMenu.pas"/>
-        <DCCReference Include="..\..\Source\Components\cmpThemedScrollBox.pas"/>
         <DCCReference Include="..\..\Source\Components\DialogButtonControls.pas"/>
         <DCCReference Include="..\..\Source\Components\DialogComboBoxControls.pas"/>
         <DCCReference Include="..\..\Source\Components\DialogConsts.pas"/>

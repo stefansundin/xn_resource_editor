@@ -19,7 +19,6 @@ uses
   cmpMRUList,
   cmpPropertyListBox,
   cmpFakeComboBox,
-  cmpThemedScrollBox,
   cmpCWRichEdit,
   cmpRuler,
   cmpHexDump,
@@ -28,8 +27,7 @@ uses
   cmpCWSpellChecker,
   cmpExWebBrowser,
   cmpColorSelector,
-  cmpPersistentOptions,
-  cmpFileCopier;
+  cmpPersistentOptions;
 
 procedure Register;
 begin
@@ -43,7 +41,6 @@ begin
     TMRUList,
     TPropertyListBox,
     TFakeComboBox,
-    TThemedScrollBox,
     TExRichEdit,
     TRuler,
     THexDump,
@@ -53,8 +50,7 @@ begin
     TExWebBrowser,
     TColorSelector,
     TRegistryPersistentOptions,
-    TIniFilePersistentOptions,
-    TFileCopier
+    TIniFilePersistentOptions
   ]);
 end;
 
