@@ -1,4 +1,4 @@
-(*======================================================================* 
+(*======================================================================*
  | GraphFlip unit                                                       | 
  |                                                                      | 
  | Simple functions to flip and rotate 24-bit bitmaps                   | 
@@ -26,10 +26,10 @@ interface
 uses
   Windows, Classes, Sysutils, Graphics;
  
-function RotateBitmap270 (const bitmap: TBitmap): TBitmap;
-function RotateBitmap90 (const bitmap: TBitmap): TBitmap;
-function ConvertToGrayscale(const bitmap: TBitmap): TBitmap;
-function ConvertToNegative(const bitmap: TBitmap): TBitmap;
+function RotateBitmap270 (const Bitmap: TBitmap): TBitmap;
+function RotateBitmap90 (const Bitmap: TBitmap): TBitmap;
+function ConvertToGrayscale(const Bitmap: TBitmap): TBitmap;
+function ConvertToNegative(const Bitmap: TBitmap): TBitmap;
 procedure DrawTextW(DC: HDC; lpString: PWideChar; nCount: Integer; var lpRect: TRect; uFormat: Cardinal; 
   AdjustRight: Boolean); 
  
@@ -43,31 +43,31 @@ begin
 end; 
  
  
-function RotateBitmap270 (const bitmap: TBitmap): TBitmap;
+function RotateBitmap270(const Bitmap: TBitmap): TBitmap;
 var 
   x, y: Integer;
   ps, ps1, pr, pr1: PRGBTriple;
   bpss, bpsr: Integer;
  
 begin 
-  if bitmap.PixelFormat <> pf24Bit then 
+  if Bitmap.PixelFormat <> pf24Bit then
     raise Exception.Create('Invalid pixel format'); 
   Result := TBitmap.Create;
-  Result.PixelFormat := bitmap.PixelFormat;
-  Result.Height := bitmap.Width;
-  Result.Width := bitmap.Height;
+  Result.PixelFormat := Bitmap.PixelFormat;
+  Result.Height := Bitmap.Width;
+  Result.Width := Bitmap.Height;
  
-  ps1 := bitmap.ScanLine [0]; 
-  pr1 := Result.ScanLine [bitmap.Width - 1];
+  ps1 := Bitmap.ScanLine [0];
+  pr1 := Result.ScanLine [Bitmap.Width - 1];
  
-  bpss := BytesPerScanLine(bitmap.Width, 24, 32); 
+  bpss := BytesPerScanLine(Bitmap.Width, 24, 32);
   bpsr := BytesPerScanLine(Result.Width, 24, 32);
  
-  for y := 0 to bitmap.Height - 1 do 
+  for y := 0 to Bitmap.Height - 1 do
   begin 
     ps := PRGBTriple(PChar (ps1) - bpss * y); 
  
-    for x := 0 to bitmap.Width - 1 do 
+    for x := 0 to Bitmap.Width - 1 do
     begin 
       pr := PRGBTriple(PChar (pr1) + bpsr * x); 
       Inc(pr, y); 
@@ -78,31 +78,31 @@ begin
   GDIFlush 
 end; 
  
-function RotateBitmap90 (const bitmap: TBitmap): TBitmap;
+function RotateBitmap90(const Bitmap: TBitmap): TBitmap;
 var 
   x, y: Integer;
   ps, ps1, pr, pr1: PRGBTriple;
   bpss, bpsr: Integer;
  
 begin 
-  if bitmap.PixelFormat <> pf24Bit then 
+  if Bitmap.PixelFormat <> pf24Bit then
     raise Exception.Create('Invalid pixel format'); 
   Result := TBitmap.Create;
-  Result.PixelFormat := bitmap.PixelFormat;
-  Result.Height := bitmap.Width;
-  Result.Width := bitmap.Height;
+  Result.PixelFormat := Bitmap.PixelFormat;
+  Result.Height := Bitmap.Width;
+  Result.Width := Bitmap.Height;
  
-  ps1 := bitmap.ScanLine [bitmap.Height - 1]; 
+  ps1 := Bitmap.ScanLine [Bitmap.Height - 1];
   pr1 := Result.ScanLine [0];
  
-  bpss := BytesPerScanLine(bitmap.Width, 24, 32); 
+  bpss := BytesPerScanLine(Bitmap.Width, 24, 32);
   bpsr := BytesPerScanLine(Result.Width, 24, 32);
  
-  for y := 0 to bitmap.Height - 1 do 
+  for y := 0 to Bitmap.Height - 1 do
   begin 
     ps := PRGBTriple(PChar (ps1) + bpss * y); 
  
-    for x := 0 to Bitmap.Width - 1 do 
+    for x := 0 to Bitmap.Width - 1 do
     begin 
       pr := PRGBTriple(PChar (pr1) - bpsr * x); 
       Inc(pr, y); 
@@ -113,8 +113,8 @@ begin
   GDIFlush 
 end; 
  
- 
-function ConvertToGrayscale(const bitmap: TBitmap): TBitmap;
+
+function ConvertToGrayscale(const Bitmap: TBitmap): TBitmap;
 var 
   x, y: Integer;
   ps, ps1, pr, pr1: PRGBTriple;
@@ -122,24 +122,24 @@ var
   n: Integer;
  
 begin 
-  if bitmap.PixelFormat <> pf24Bit then 
+  if Bitmap.PixelFormat <> pf24Bit then
     raise Exception.Create('Invalid pixel format'); 
   Result := TBitmap.Create;
-  Result.PixelFormat := bitmap.PixelFormat;
-  Result.Height := bitmap.Height;
-  Result.Width := bitmap.Width;
+  Result.PixelFormat := Bitmap.PixelFormat;
+  Result.Height := Bitmap.Height;
+  Result.Width := Bitmap.Width;
  
-  ps1 := bitmap.ScanLine [0]; 
+  ps1 := Bitmap.ScanLine [0];
   pr1 := Result.ScanLine [0];
  
-  bps := BytesPerScanLine(bitmap.Width, 24, 32); 
+  bps := BytesPerScanLine(Bitmap.Width, 24, 32);
  
-  for y := 0 to bitmap.Height - 1 do 
+  for y := 0 to Bitmap.Height - 1 do
   begin 
     ps := PRGBTriple(PChar (ps1) - bps * y); 
     pr := PRGBTriple(PChar (pr1) - bps * y); 
  
-    for x := 0 to Bitmap.Width - 1 do 
+    for x := 0 to Bitmap.Width - 1 do
     begin 
       n := (ps^.rgbtBlue + ps^.rgbtGreen + ps^.rgbtRed) div 3; 
       pr^.rgbtBlue := n; 
@@ -149,34 +149,34 @@ begin
       Inc(pr); 
       Inc(ps) 
     end 
-  end; 
+  end;
   GDIFlush 
 end; 
  
-function ConvertToNegative(const bitmap: TBitmap): TBitmap;
+function ConvertToNegative(const Bitmap: TBitmap): TBitmap;
 var 
   x, y: Integer;
   ps, ps1, pr, pr1: PRGBTriple;
   bps: Integer;
 begin 
-  if bitmap.PixelFormat <> pf24Bit then 
+  if Bitmap.PixelFormat <> pf24Bit then
     raise Exception.Create('Invalid pixel format'); 
   Result := TBitmap.Create;
-  Result.PixelFormat := bitmap.PixelFormat;
-  Result.Height := bitmap.Height;
-  Result.Width := bitmap.Width;
+  Result.PixelFormat := Bitmap.PixelFormat;
+  Result.Height := Bitmap.Height;
+  Result.Width := Bitmap.Width;
  
-  ps1 := bitmap.ScanLine [0]; 
+  ps1 := Bitmap.ScanLine [0];
   pr1 := Result.ScanLine [0];
  
-  bps := BytesPerScanLine(bitmap.Width, 24, 32); 
+  bps := BytesPerScanLine(Bitmap.Width, 24, 32);
  
-  for y := 0 to bitmap.Height - 1 do 
+  for y := 0 to Bitmap.Height - 1 do
   begin 
     ps := PRGBTriple(PChar (ps1) - bps * y); 
     pr := PRGBTriple(PChar (pr1) - bps * y); 
  
-    for x := 0 to Bitmap.Width - 1 do 
+    for x := 0 to Bitmap.Width - 1 do
     begin 
       pr^.rgbtBlue := 255 - ps^.rgbtBlue; 
       pr^.rgbtGreen := 255 - ps^.rgbtGreen; 
