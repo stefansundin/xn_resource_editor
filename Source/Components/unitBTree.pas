@@ -1768,7 +1768,7 @@ begin
       node := TIteratorNode.Create(pg.FIdx, 0);
 
                                                 // ... then Left, Left, Left!
-      while pg.PrevPage <> -1 do
+      while pg.PrevPage <> - 1 do
       begin
         FStack.Push(node);
         pg := BTree.Page [pg.PrevPage];

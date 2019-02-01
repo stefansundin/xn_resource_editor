@@ -6,23 +6,23 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, unitResourceDetails, cmpUCtrls;
+  StdCtrls, unitResourceDetails;
 
 type
   TdlgResourceProperties = class(TForm)
-    Label1: TLabel;
-    Label2: TLabel;
-    cbLanguage: TComboBox;
-    btnOK: TButton;
-    btnCancel: TButton;
-    ntedName: TEdit;
+    LabelName: TLabel;
+    LabelLanguage: TLabel;
+    ComboBoxLanguage: TComboBox;
+    ButtonOK: TButton;
+    ButtonCancel: TButton;
+    EditName: TEdit;
     procedure FormShow(Sender: TObject);
   private
     function GetLanguage: LCID;
   public
-    ResourceDetails : TResourceDetails;
+    ResourceDetails: TResourceDetails;
 
-    property Language : LCID read GetLanguage;
+    property Language: LCID read GetLanguage;
   end;
 
 implementation
@@ -37,44 +37,44 @@ resourcestring
 
 procedure TdlgResourceProperties.FormShow(Sender: TObject);
 var
-  i : Integer;
-  def : string;
+  i: Integer;
+  def: string;
 begin
-  UseInternationalFont(ntedName.Font);
+  UseInternationalFont(EditName.Font);
   if Assigned(ResourceDetails) then
   begin
-    if resourceDetails is TStringResourceDetails then
-      ntedName.Text := ResIdToStringsId (ResourceDetails.ResourceName)
+    if ResourceDetails is TStringResourceDetails then
+      EditName.Text := ResIdToStringsId (ResourceDetails.ResourceName)
     else
-      ntedName.Text := ResourceDetails.ResourceName;
+      EditName.Text := ResourceDetails.ResourceName;
   end;
 
-  cbLanguage.Items.Add ('- ' + rstNeutral);
+  ComboBoxLanguage.Items.Add ('- ' + rstNeutral);
   def := '-';
 
   for i := 0 to Languages.Count - 1 do
   begin
-    cbLanguage.Items.Add (Languages.Name [i]);
+    ComboBoxLanguage.Items.Add(Languages.Name[i]);
     if Assigned(ResourceDetails) and (ResourceDetails.ResourceLanguage <> 0) and (DWORD (ResourceDetails.ResourceLanguage) = Languages.LocaleID [i]) then
-      def := Languages.Name [i];
+      def := Languages.Name[i];
   end;
 
   if def = '-' then
-    cbLanguage.ItemIndex := 0
+    ComboBoxLanguage.ItemIndex := 0
   else
-    cbLanguage.Text := def;
+    ComboBoxLanguage.Text := def;
 end;
 
 function TdlgResourceProperties.GetLanguage: LCID;
 var
-  i : Integer;
+  i: Integer;
 begin
   Result := 0;
-  if cbLanguage.ItemIndex <> 0 then
-    for i := 0 to Languages.Count -1 do
-      if Languages.Name [i] = cbLanguage.Text then
+  if ComboBoxLanguage.ItemIndex <> 0 then
+    for i := 0 to Languages.Count - 1 do
+      if Languages.Name [i] = ComboBoxLanguage.Text then
       begin
-        Result := Languages.LocaleID [i];
+        Result := Languages.LocaleID[i];
         break
       end
 end;

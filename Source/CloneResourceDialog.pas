@@ -72,10 +72,10 @@ var
 begin
   Result := 0;
   if ComboBoxLanguage.ItemIndex <> 0 then
-    for i := 0 to Languages.Count -1 do
+    for i := 0 to Languages.Count - 1 do
       if Languages.Name [i] = ComboBoxLanguage.Text then
       begin
-        Result := Languages.LocaleID [i];
+        Result := Languages.LocaleID[i];
         Break
       end
 end;

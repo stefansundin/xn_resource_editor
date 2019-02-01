@@ -495,7 +495,7 @@ begin
         lpPal^.palNumEntries := NumColors;
 
   {$R-}
-        for i := 0 to NumColors -1 do
+        for i := 0 to NumColors - 1 do
         begin
           r := bmi.bmiColors[i];
           lpPal^.palPalEntry[i].peRed  := bmi.bmiColors[i].rgbRed;

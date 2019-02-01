@@ -1592,7 +1592,7 @@ begin
           FName := ResolveToken
         else
         begin
-          for i := 0 to NoKeywords -1 do
+          for i := 0 to NoKeywords - 1 do
             if Integer (KeywordTable [i].resID) = StrToInt(Token) then
             begin
               dets := Keyword (KeywordTable [i].kw);

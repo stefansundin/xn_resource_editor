@@ -19,12 +19,11 @@ interface
 uses
   Windows, Messages, SysUtils, SysConst, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, Menus, ToolWin, ExtCtrls, ImgList, StdActns, ActnList,
-  unitResourceDetails, cmpStandardSystemMenu, cmpPersistentPosition, cmpMRUList,
-  StdCtrls, shellapi, unitCREdProperties,
-  cmpNTAboutBox, ExtDlgs, ResourceForm, GifImage, JPeg, PngImage,
-  AppEvnts, unitHTMLHelpViewer, ActnMan, ActnCtrls, ActnMenus, XPStyleActnCtrls,
-  VirtualTrees, unitResourceExaminer, XPMan, System.Actions, System.ImageList,
-  ExVirtualStringTree;
+  XPMan, Actions, ImageList, StdCtrls, ShellApi, AppEvnts, ActnMan, ActnCtrls,
+  ActnMenus, XPStyleActnCtrls, ExtDlgs, Jpeg, PngImage, unitResourceDetails,
+  cmpStandardSystemMenu, cmpPersistentPosition, cmpMRUList, cmpNTAboutBox,
+  ResourceForm, GifImage, unitCREdProperties, unitHTMLHelpViewer,
+  unitResourceExaminer, VirtualTrees, ExVirtualStringTree;
 {$endregion}
 
 {$region 'Constant Definitions'}
@@ -1023,10 +1022,10 @@ begin
       if Dialog.ShowModal = mrOK then
       begin
         NewLanguage := Dialog.Language;
-        NewName := Dialog.ntedName.Text;
+        NewName := Dialog.EditName.Text;
 
         if ResourceDetails is TStringResourceDetails then
-          NewName := StringsIDToResID (NewName);
+          NewName := StringsIDToResID(NewName);
 
         if (NewLanguage <> ResourceDetails.ResourceLanguage) or (NewName <> ResourceDetails.ResourceName) then
         begin

@@ -10,7 +10,6 @@ implementation
 
 uses
   Classes,
-  cmpRunOnce,
   cmpStandardSystemMenu,
   cmpPersistentPosition,
   cmpNTAboutBox,
@@ -22,25 +21,19 @@ uses
   cmpFakeComboBox,
   cmpThemedScrollBox,
   cmpCWRichEdit,
-  cmpNewsRichEdit,
   cmpRuler,
   cmpHexDump,
   cmpSizingPageControl,
   cmpSpellChecker,
   cmpCWSpellChecker,
   cmpExWebBrowser,
-  cmpTexturedPanel,
   cmpColorSelector,
   cmpPersistentOptions,
-  cmpFileCopier,
-  cmpSplitterPanel,
-  cmpTextDisplay,
-  cmpUCtrls;
+  cmpFileCopier;
 
 procedure Register;
 begin
   RegisterComponents ('Colin Wilson''s Components', [
-    TRunOnce,
     TStandardSystemMenu,
     TPersistentPosition,
     TNTAboutBox,
@@ -52,22 +45,16 @@ begin
     TFakeComboBox,
     TThemedScrollBox,
     TExRichEdit,
-    TNewsRichEdit,
     TRuler,
     THexDump,
     TSizingPageControl,
     TSpellChecker,
     TCWSpellChecker,
     TExWebBrowser,
-    TTexturedPanel,
     TColorSelector,
     TRegistryPersistentOptions,
     TIniFilePersistentOptions,
-    TFileCopier,
-    TSplitterPanel,
-    TTextDisplay,
-    TUEdit,
-    TUComboBox
+    TFileCopier
   ]);
 end;
 

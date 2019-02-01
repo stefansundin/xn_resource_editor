@@ -1686,7 +1686,7 @@ var
   size: Integer;
   s: string;
 begin
-  for i := 0 to Text.Count-1 do
+  for i := 0 to Text.Count - 1 do
   begin
     s := Text[i];
     size := length(s);
@@ -2804,10 +2804,10 @@ begin
 
   // Premap palette colors
   if (FColors > 0) then
-    for i := 0 to FColors-1 do
+    for i := 0 to FColors - 1 do
       with FPaletteEntries^[i] do
       begin
-        InverseIndex := (peRed SHR 3) OR ((peGreen AND $F8) SHL 2) OR ((peBlue AND $F8) SHL 7);
+        InverseIndex := (peRed shr 3) or ((peGreen and $F8) shl 2) or ((peBlue and $F8) shl 7);
         if (FInverseLookup^[InverseIndex] = -1) then
           FInverseLookup^[InverseIndex] := i;
       end;
@@ -2833,7 +2833,7 @@ var
   MinColor: Integer;
 begin
   // Reduce color space with 3 bits in each dimension
-  InverseIndex := (Red SHR 3) OR ((Green AND $F8) SHL 2) OR ((Blue AND $F8) SHL 7);
+  InverseIndex := (Red shr 3) or ((Green and $F8) shl 2) or ((Blue and $F8) shl 7);
 
   if (FInverseLookup^[InverseIndex] <> -1) then
     Result := char(FInverseLookup^[InverseIndex])
@@ -2842,7 +2842,7 @@ begin
     // Sequential scan for nearest color to minimize euclidian distance
     MinDelta := 3 * (256 * 256);
     MinColor := 0;
-    for i := 0 to FColors-1 do
+    for i := 0 to FColors - 1 do
       with FPaletteEntries[i] do
       begin
         Delta := ABS(peRed - Red) + ABS(peGreen - Green) + ABS(peBlue - Blue);
@@ -4242,11 +4242,11 @@ var
 begin
   Result := True;
 
-  for j := 0 to DIB.Bitmap.Height-1 do
+  for j := 0 to DIB.Bitmap.Height - 1 do
   begin
     Scanline := DIB.Scanline[j];
     Pixel := ScanLine;
-    for i := 0 to DIB.Bitmap.Width-1 do
+    for i := 0 to DIB.Bitmap.Width - 1 do
     begin
       with Pixel^ do
         AddColor(FTree, rgbtRed, rgbtGreen, rgbtBlue,
@@ -4420,7 +4420,7 @@ begin
     ColorQuantizer.Free;
   end;
 
-  for i := 0 to Colors-1 do
+  for i := 0 to Colors - 1 do
     with LogicalPalette.palPalEntry[i+Offset] do
     begin
       peRed   := RGBQuadArray[i].rgbRed;
@@ -4477,7 +4477,7 @@ begin
   // use ColorBits = 8.
   ColorQuantizer := TColorQuantizer.Create(Colors, ColorBits);
   try
-    for i := 0 to Bitmaps.Count-1 do
+    for i := 0 to Bitmaps.Count - 1 do
     begin
       DIB := TDIBReader.Create(TBitmap(Bitmaps[i]), pf24bit);
       try
@@ -4492,7 +4492,7 @@ begin
     ColorQuantizer.Free;
   end;
 
-  for i := 0 to Colors-1 do
+  for i := 0 to Colors - 1 do
     with LogicalPalette.palPalEntry[i+Offset] do
     begin
       peRed   := RGBQuadArray[i].rgbRed;
@@ -4906,7 +4906,7 @@ begin
   if (NewCount = 0) then
     exit;
   SetCapacity(NewCount);
-  for i := 0 to NewCount-1 do
+  for i := 0 to NewCount - 1 do
     with FColorMap[i], Pal[i] do
     begin
       Red := peRed;
@@ -4940,7 +4940,7 @@ begin
   if (Count = 0) then
     exit;
   SetCapacity(Count);
-  for i := 0 to Count-1 do
+  for i := 0 to Count - 1 do
     with FColorMap[i], PRGBQuadArray(Pal)[i] do
     begin
       Red := rgbRed;
@@ -4981,7 +4981,7 @@ begin
   end;
   Pal.palVersion := $300;
   Pal.palNumEntries := Count;
-  for i := 0 to Count-1 do
+  for i := 0 to Count - 1 do
     with FColorMap[i], Pal.palPalEntry[i] do
     begin
       peRed := Red;
@@ -5113,7 +5113,7 @@ begin
   (*
   ** Test for table already sorted
   *)
-  for i := 0 to FCount-1 do
+  for i := 0 to FCount - 1 do
     if (Usage[i].Index <> i) then
       break;
   if (i = FCount) then
@@ -5122,7 +5122,7 @@ begin
   (*
   ** Build old to new map
   *)
-  for i := 0 to FCount-1 do
+  for i := 0 to FCount - 1 do
     ReverseMap[Usage[i].Index] := i;
 
 
@@ -5134,7 +5134,7 @@ begin
   LastFound := False;
   NewCount := FCount;
   Move(FColorMap^, TempMap, FCount * sizeof(TGIFColor));
-  for i := 0 to FCount-1 do
+  for i := 0 to FCount - 1 do
   begin
     FColorMap^[ReverseMap[i]] := TempMap[i];
     // Find last used color index
@@ -5312,7 +5312,7 @@ procedure TGIFList.SaveToStream(Stream: TStream);
 var
   i: Integer;
 begin
-  for i := 0 to FItems.Count-1 do
+  for i := 0 to FItems.Count - 1 do
     TGIFItem(FItems[i]).SaveToStream(Stream);
 end;
 
@@ -5360,13 +5360,13 @@ begin
   (*
   ** Init histogram
   *)
-  for i := 0 to Count-1 do
+  for i := 0 to Count - 1 do
   begin
     Histogram[i].Index := i;
     Histogram[i].Count := 0;
   end;
 
-  for i := 0 to FHeader.Image.Images.Count-1 do
+  for i := 0 to FHeader.Image.Images.Count - 1 do
     if (FHeader.Image.Images[i].ActiveColorMap = Self) then
     begin
       Pixel := FHeader.Image.Images[i].Data;
@@ -5389,7 +5389,7 @@ var
   LastPixel: PChar;
   i: Integer;
 begin
-  for i := 0 to FHeader.Image.Images.Count-1 do
+  for i := 0 to FHeader.Image.Images.Count - 1 do
     if (FHeader.Image.Images[i].ActiveColorMap = Self) then
     begin
       Pixel := FHeader.Image.Images[i].Data;
@@ -5492,11 +5492,11 @@ begin
   begin
     Pack := lsdGlobalColorTable;
     if (ColorMap.Optimized) then
-      Pack := Pack OR lsdSort;
+      Pack := Pack or lsdSort;
   end;
   // Note: The SHL below was SHL 5 in the original source, but that looks wrong
-  Pack := Pack OR ((Image.ColorResolution SHL 4) AND lsdColorResolution);
-  Pack := Pack OR ((Image.BitsPerPixel-1) AND lsdColorTableSize);
+  Pack := Pack or ((Image.ColorResolution shl 4) and lsdColorResolution);
+  Pack := Pack or ((Image.BitsPerPixel-1) and lsdColorTableSize);
   FLogicalScreenDescriptor.PackedFields := Pack;
 end;
 
@@ -5515,7 +5515,7 @@ begin
   Prepare;
   Stream.Write(GifHeader, sizeof(GifHeader));
   Stream.Write(FLogicalScreenDescriptor, sizeof(FLogicalScreenDescriptor));
-  if (FLogicalScreenDescriptor.PackedFields AND lsdGlobalColorTable = lsdGlobalColorTable) then
+  if (FLogicalScreenDescriptor.PackedFields and lsdGlobalColorTable = lsdGlobalColorTable) then
     ColorMap.SaveToStream(Stream);
 end;
 
@@ -5542,9 +5542,9 @@ begin
 
   ReadCheck(Stream, FLogicalScreenDescriptor, sizeof(FLogicalScreenDescriptor));
 
-  if (FLogicalScreenDescriptor.PackedFields AND lsdGlobalColorTable = lsdGlobalColorTable) then
+  if (FLogicalScreenDescriptor.PackedFields and lsdGlobalColorTable = lsdGlobalColorTable) then
   begin
-    ColorCount := 2 SHL (FLogicalScreenDescriptor.PackedFields AND lsdColorTableSize);
+    ColorCount := 2 shl (FLogicalScreenDescriptor.PackedFields and lsdColorTableSize);
     if (ColorCount < 2) or (ColorCount > 256) then
       Error(sScreenBadColorSize);
     ColorMap.LoadFromStream(Stream, ColorCount)
@@ -5632,7 +5632,7 @@ begin
   (*
   ** Init histogram
   *)
-  for i := 0 to Count-1 do
+  for i := 0 to Count - 1 do
   begin
     Histogram[i].Index := i;
     Histogram[i].Count := 0;
@@ -5802,11 +5802,11 @@ var
       ret := buf[StartIndex]
     else
       if (StartIndex + 1 = EndIndex) then
-        ret := buf[StartIndex] OR (buf[StartIndex+1] SHL 8)
+        ret := buf[StartIndex] or (buf[StartIndex+1] shl 8)
       else
-        ret := buf[StartIndex] OR (buf[StartIndex+1] SHL 8) OR (buf[StartIndex+2] SHL 16);
+        ret := buf[StartIndex] or (buf[StartIndex+1] shl 8) or (buf[StartIndex+2] shl 16);
 
-    ret := (ret SHR (StartBit AND $0007)) AND masks[BitsPerCode];
+    ret := (ret shr (StartBit and $0007)) and masks[BitsPerCode];
 
     Inc(StartBit, BitsPerCode);
 
@@ -5825,12 +5825,12 @@ var
       if (code = ClearCode) then
       begin
         ASSERT(ClearCode < TableSize, 'ClearCode too large');
-        for i := 0 to ClearCode-1 do
+        for i := 0 to ClearCode - 1 do
         begin
           table0[i] := 0;
           table1[i] := i;
         end;
-        for i := ClearCode to TableSize-1 do
+        for i := ClearCode to TableSize - 1 do
         begin
           table0[i] := 0;
           table1[i] := 0;
@@ -5972,10 +5972,10 @@ begin
       pass := 0;
       step := 8;
 
-      for i := 0 to Height-1 do
+      for i := 0 to Height - 1 do
       begin
         Dest := FData + Width * ypos;
-        for xpos := 0 to width-1 do
+        for xpos := 0 to width - 1 do
         begin
           v := readLZW;
           if (v < 0) then
@@ -5995,7 +5995,7 @@ begin
     end else
     begin
       Dest := FData;
-      for ypos := 0 to (height * width)-1 do
+      for ypos := 0 to (height * width) - 1 do
       begin
         v := readLZW;
         if (v < 0) then
@@ -6131,8 +6131,8 @@ var
 begin
 {$ifdef DEBUG_HASHFILLFACTOR}
   Count := 0;
-  for i := 0 to HashSize-1 do
-    if (HashTable[i] SHR GIFCodeBits <> HashEmpty) then
+  for i := 0 to HashSize - 1 do
+    if (HashTable[i] shr GIFCodeBits <> HashEmpty) then
       inc(Count);
   ShowMessage(format('Size: %d, Filled: %d, Rate %.4f',
     [HashSize, Count, Count/HashSize]));
@@ -6151,10 +6151,10 @@ begin
 
   // Scan for empty slot
   // while(HashTable[HKey] SHR GIFCodeBits <> HashEmpty) do { Unoptimized }
-  while(HashTable[HKey] AND (HashEmpty SHL GIFCodeBits) <> (HashEmpty SHL GIFCodeBits)) do { Optimized }
+  while(HashTable[HKey] and (HashEmpty shl GIFCodeBits) <> (HashEmpty shl GIFCodeBits)) do { Optimized }
     HKey := NextHashKey(HKey);
   // Fill slot with key/value pair
-  HashTable[HKey] := (Key SHL GIFCodeBits) OR (Code AND GIFCodeMask);
+  HashTable[HKey] := (Key shl GIFCodeBits) or (Code and GIFCodeMask);
 end;
 
 // Search for key in hash table.
@@ -6175,15 +6175,15 @@ begin
 {$endif}
   // Scan table for key
   // HTKey := HashTable[HKey] SHR GIFCodeBits; { Unoptimized }
-  Key := Key SHL GIFCodeBits; { Optimized }
-  HTKey := HashTable[HKey] AND (HashEmpty SHL GIFCodeBits); { Optimized }
+  Key := Key shl GIFCodeBits; { Optimized }
+  HTKey := HashTable[HKey] and (HashEmpty shl GIFCodeBits); { Optimized }
   // while(HTKey <> HashEmpty) do { Unoptimized }
-  while(HTKey <> HashEmpty SHL GIFCodeBits) do { Optimized }
+  while(HTKey <> HashEmpty shl GIFCodeBits) do { Optimized }
   begin
     if (Key = HTKey) then
     begin
       // Extract and return value
-      Result := HashTable[HKey] AND GIFCodeMask;
+      Result := HashTable[HKey] and GIFCodeMask;
 {$ifdef DEBUG_HASHPERFORMANCE}
       inc(CountLookupFound);
       inc(CountMissFound, n);
@@ -6196,7 +6196,7 @@ begin
     // Try next slot
     HKey := NextHashKey(HKey);
     // HTKey := HashTable[HKey] SHR GIFCodeBits; { Unoptimized }
-    HTKey := HashTable[HKey] AND (HashEmpty SHL GIFCodeBits); { Optimized }
+    HTKey := HashTable[HKey] and (HashEmpty shl GIFCodeBits); { Optimized }
   end;
   // Found empty slot - key doesn't exist
   Result := -1;
@@ -6366,7 +6366,7 @@ begin
   if (FBufferCount <= 0) then
     exit;
 
-  FBuffer[0] := char(FBufferCount-1); // Block size excluding the count
+  FBuffer[0] := char(FBufferCount - 1); // Block size excluding the count
   FStream.WriteBuffer(FBuffer, FBufferCount);
   FBufferCount := 1; // Reserve first Byte of buffer for length
   FOutputDirty := False;
@@ -6470,7 +6470,7 @@ const
 begin
   if (OutputBits > 0) then
     OutputBucket :=
-      (OutputBucket AND BitBucketMask[OutputBits]) OR (longInt(Value) SHL OutputBits)
+      (OutputBucket and BitBucketMask[OutputBits]) or (longInt(Value) shl OutputBits)
   else
     OutputBucket := Value;
 
@@ -6478,8 +6478,8 @@ begin
 
   while(OutputBits >= 8) do
   begin
-    GIFStream.WriteByte(OutputBucket AND $FF);
-    OutputBucket := OutputBucket SHR 8;
+    GIFStream.WriteByte(OutputBucket and $FF);
+    OutputBucket := OutputBucket shr 8;
     dec(OutputBits, 8);
   end;
 
@@ -6488,8 +6488,8 @@ begin
     // At EOF, write the rest of the buffer.
     while(OutputBits > 0) do
     begin
-      GIFStream.WriteByte(OutputBucket AND $FF);
-      OutputBucket := OutputBucket SHR 8;
+      GIFStream.WriteByte(OutputBucket and $FF);
+      OutputBucket := OutputBucket shr 8;
       dec(OutputBits, 8);
     end;
   end;
@@ -7429,9 +7429,9 @@ begin
       Bit := $00;
       if (IsTransparent) then
       begin
-        MaskRowWidth := ((Width+15) DIV 16) * 2;
-        MaskRowBitWidth := (Width+7) DIV 8;
-        RightBit := $01 SHL ((8 - (Width AND $0007)) AND $0007);
+        MaskRowWidth := ((Width+15) div 16) * 2;
+        MaskRowBitWidth := (Width+7) div 8;
+        RightBit := $01 shl ((8 - (Width and $0007)) and $0007);
         GetMem(MaskBits, MaskRowWidth * Height);
         FillChar(MaskBits^, MaskRowWidth * Height, 0);
       end else
@@ -7449,9 +7449,9 @@ begin
         Src := FData;
         while(Row < Height) do
         begin
-          if ((Row AND $1F) = 0) then
+          if ((Row and $1F) = 0) then
             Image.Progress(Self, psRunning, MulDiv(Row, 100, Height),
-              False, Rect(0,0,0,0), sProgressRendering);
+              False, Rect(0, 0, 0, 0), sProgressRendering);
 
           Dst := DIBResult.ScanLine[Row];
           if (IsTransparent) then
@@ -7617,9 +7617,9 @@ begin
         begin
           DestScanline := DIBResult.ScanLine[ScanLineRow];
 
-          if ((ScanLineRow AND $1F) = 0) then
+          if ((ScanLineRow and $1F) = 0) then
             Image.Progress(Self, psRunning, MulDiv(ScanLineRow, 100, Height),
-              False, Rect(0,0,0,0), sProgressRendering);
+              False, Rect(0, 0, 0, 0), sProgressRendering);
 
           Move(Src^, DestScanline^, Width);
           Inc(ScanLineRow);
@@ -7629,7 +7629,7 @@ begin
             Bit := $80;
             MaskDest := MaskRow;
             MaskByte := 0;
-            for Col := 0 to Width-1 do
+            for Col := 0 to Width - 1 do
             begin
               // Set a bit in the mask if the pixel is transparent
               if (Src^ = char(TransparentIndex)) then
@@ -7753,15 +7753,15 @@ end;
 
 function TGIFSubImage.GetInterlaced: Boolean;
 begin
-  Result := (FImageDescriptor.PackedFields AND idInterlaced) <> 0;
+  Result := (FImageDescriptor.PackedFields and idInterlaced) <> 0;
 end;
 
 procedure TGIFSubImage.SetInterlaced(Value: Boolean);
 begin
   if (Value) then
-    FImageDescriptor.PackedFields := FImageDescriptor.PackedFields OR idInterlaced
+    FImageDescriptor.PackedFields := FImageDescriptor.PackedFields or idInterlaced
   else
-    FImageDescriptor.PackedFields := FImageDescriptor.PackedFields AND not (idInterlaced);
+    FImageDescriptor.PackedFields := FImageDescriptor.PackedFields and not (idInterlaced);
 end;
 
 function TGIFSubImage.GetVersion: TGIFVersion;
@@ -7894,10 +7894,10 @@ begin
   begin
     Pack := idLocalColorTable;
     if (ColorMap.Optimized) then
-      Pack := Pack OR idSort;
-    Pack := (Pack AND not (idColorTableSize)) OR (ColorResolution AND idColorTableSize);
+      Pack := Pack or idSort;
+    Pack := (Pack and not (idColorTableSize)) or (ColorResolution and idColorTableSize);
   end else
-    Pack := Pack AND not (idLocalColorTable OR idSort OR idColorTableSize);
+    Pack := Pack and not (idLocalColorTable or idSort or idColorTableSize);
   FImageDescriptor.PackedFields := Pack;
 end;
 
@@ -7938,9 +7938,9 @@ begin
     Warning(gsWarning, sScreenSizeExceeded);
   end;
 
-  if (FImageDescriptor.PackedFields AND idLocalColorTable = idLocalColorTable) then
+  if (FImageDescriptor.PackedFields and idLocalColorTable = idLocalColorTable) then
   begin
-    ColorCount := 2 SHL (FImageDescriptor.PackedFields AND idColorTableSize);
+    ColorCount := 2 shl (FImageDescriptor.PackedFields and idColorTableSize);
     if (ColorCount < 2) or (ColorCount > 256) then
       Error(sImageBadColorSize);
     ColorMap.LoadFromStream(Stream, ColorCount);
@@ -7982,9 +7982,9 @@ var
 {$ENDIF}
       FColorMap.ImportPalette(FBitmap.Palette);
     // Copy pixels
-    for y := 0 to Height-1 do
+    for y := 0 to Height - 1 do
     begin
-      if ((y AND $1F) = 0) then
+      if ((y and $1F) = 0) then
         Image.Progress(Self, psRunning, MulDiv(y, 100, Height), False, Rect(0,0,0,0), sProgressConverting);
       Move(DIBSource.Scanline[y]^, Dest^, Width);
       inc(Dest, Width);
@@ -7999,18 +7999,18 @@ var
     // Copy colormap
     FColorMap.ImportPalette(FBitmap.Palette);
     // Copy pixels
-    for y := 0 to Height-1 do
+    for y := 0 to Height - 1 do
     begin
-      if ((y AND $1F) = 0) then
+      if ((y and $1F) = 0) then
         Image.Progress(Self, psRunning, MulDiv(y, 100, Height), False, Rect(0,0,0,0), sProgressConverting);
       ScanLine := DIBSource.Scanline[y];
-      for x := 0 to Width-1 do
+      for x := 0 to Width - 1 do
       begin
-        if (x AND $01 = 0) then
-          Dest^ := chr(ord(ScanLine^) SHR 4)
+        if (x and $01 = 0) then
+          Dest^ := chr(ord(ScanLine^) shr 4)
         else
         begin
-          Dest^ := chr(ord(ScanLine^) AND $0F);
+          Dest^ := chr(ord(ScanLine^) and $0F);
           inc(ScanLine);
         end;
         inc(Dest);
@@ -8028,9 +8028,9 @@ var
     // Copy colormap
     FColorMap.ImportPalette(FBitmap.Palette);
     // Copy pixels
-    for y := 0 to Height-1 do
+    for y := 0 to Height - 1 do
     begin
-      if ((y AND $1F) = 0) then
+      if ((y and $1F) = 0) then
         Image.Progress(Self, psRunning, MulDiv(y, 100, Height), False, Rect(0,0,0,0), sProgressConverting);
       ScanLine := DIBSource.Scanline[y];
       x := Width;
@@ -8044,8 +8044,8 @@ var
           Byte := ord(ScanLine^);
           inc(Scanline);
         end;
-        Dest^ := chr((Byte AND $80) SHR 7);
-        Byte := Byte SHL 1;
+        Dest^ := chr((Byte and $80) SHR 7);
+        Byte := Byte shl 1;
         inc(Dest);
         dec(Bit);
         dec(x);
@@ -8080,17 +8080,17 @@ var
   label
     NextPixel;
   begin
-    for i := 0 to CacheSize-1 do
+    for i := 0 to CacheSize - 1 do
       Cache[i].Index := -1;
     LastEntry := 0;
 
     // Copy all pixels and build colormap
-    for y := 0 to Height-1 do
+    for y := 0 to Height - 1 do
     begin
-      if ((y AND $1F) = 0) then
+      if ((y and $1F) = 0) then
         Image.Progress(Self, psRunning, MulDiv(y, 100, Height), False, Rect(0,0,0,0), sProgressConverting);
       ScanLine := DIBSource.Scanline[y];
-      for x := 0 to Width-1 do
+      for x := 0 to Width - 1 do
       begin
         Pixel := 0;
         RGBTriple := Scanline^;
@@ -8114,7 +8114,7 @@ var
         // Color not found in cache, do it the slow way instead
         Dest^ := chr(FColorMap.AddUnique(Pixel));
         // Add color and index to cache
-        LastEntry := (LastEntry + 1) AND (CacheSize-1);
+        LastEntry := (LastEntry + 1) and (CacheSize-1);
         Cache[LastEntry].Color := Pixel;
         Cache[LastEntry].Index := ord(Dest^);
 
@@ -8180,11 +8180,11 @@ var
 
     DIBReader := TDIBReader.Create(Mask, pf8bit);
     try
-      for i := 0 to Height-1 do
+      for i := 0 to Height - 1 do
       begin
         MaskPixel := DIBReader.Scanline[i];
         GIFPixel := Scanline[i];
-        for j := 0 to Width-1 do
+        for j := 0 to Width - 1 do
         begin
           // Change all unmasked pixels to transparent
           if (MaskPixel^ <> #0) then
@@ -8800,7 +8800,7 @@ begin
     GetMem(NewData, NewSize);
     pSource := PChar(Integer(FData) + CropTop * Width + CropLeft);
     pDest := NewData;
-    for i := 0 to NewHeight-1 do
+    for i := 0 to NewHeight - 1 do
     begin
       Move(pSource^, pDest^, NewWidth);
       inc(pSource, Width);
@@ -8861,7 +8861,7 @@ var
     end else
     begin
       // Are any other frames using the global color map for transparency
-      for i := 0 to Image.Images.Count-1 do
+      for i := 0 to Image.Images.Count - 1 do
         if (Image.Images[i] <> Self) and (Image.Images[i].Transparent) and
           (Image.Images[i].ColorMap.Count = 0) then
         begin
@@ -8913,12 +8913,12 @@ begin
   pSourceMap := Previous.ActiveColorMap.Data;
   pDestMap := ActiveColorMap.Data;
 
-  for Y := MergeRect.Top - Top to MergeRect.Bottom - Top-1 do
+  for Y := MergeRect.Top - Top to MergeRect.Bottom - Top - 1 do
   begin
     pSource := PChar(Integer(Previous.Scanline[PreviousY]) + MergeRect.Left - Previous.Left);
     pDest := PChar(Integer(Scanline[Y]) + MergeRect.Left - Left);
 
-    for X := MergeRect.Left to MergeRect.Right-1 do
+    for X := MergeRect.Left to MergeRect.Right - 1 do
     begin
       // Ignore pixels if either this frame's or the previous frame's pixel is transparent
       if (
@@ -9024,7 +9024,7 @@ destructor TExtensionList.Destroy;
 var
   I: Integer;
 begin
-  for I := 0 to Count-1 do
+  for I := 0 to Count - 1 do
     Dispose(PExtRec(Items[I]));
   inherited Destroy;
 end;
@@ -9046,7 +9046,7 @@ function TExtensionList.FindExt(eLabel: Byte): TGIFExtensionClass;
 var
   I: Integer;
 begin
-  for I := Count-1 downto 0 do
+  for I := Count - 1 downto 0 do
     with PExtRec(Items[I])^ do
       if ExtLabel = eLabel then
       begin
@@ -9061,7 +9061,7 @@ var
   I: Integer;
   P: PExtRec;
 begin
-  for I := Count-1 downto 0 do
+  for I := Count - 1 downto 0 do
   begin
     P := PExtRec(Items[I]);
     if P^.ExtClass.InheritsFrom(eClass) then
@@ -9209,7 +9209,7 @@ end;
 
 function TGIFGraphicControlExtension.GetTransparent: Boolean;
 begin
-  Result := (FGCExtension.PackedFields AND efTransparent) <> 0;
+  Result := (FGCExtension.PackedFields and efTransparent) <> 0;
 end;
 
 procedure TGIFGraphicControlExtension.SetTransparent(Value: Boolean);
@@ -9217,9 +9217,9 @@ begin
   // Set transparent flag in sub image
   SubImage.FTransparent := Value;
   if (Value) then
-    FGCExtension.PackedFields := FGCExtension.PackedFields OR efTransparent
+    FGCExtension.PackedFields := FGCExtension.PackedFields or efTransparent
   else
-    FGCExtension.PackedFields := FGCExtension.PackedFields AND not (efTransparent);
+    FGCExtension.PackedFields := FGCExtension.PackedFields and not (efTransparent);
 end;
 
 function TGIFGraphicControlExtension.GetTransparentColor: TColor;
@@ -9258,26 +9258,26 @@ end;
 
 function TGIFGraphicControlExtension.GetUserInput: Boolean;
 begin
-  Result := (FGCExtension.PackedFields AND efInputFlag) <> 0;
+  Result := (FGCExtension.PackedFields and efInputFlag) <> 0;
 end;
 
 procedure TGIFGraphicControlExtension.SetUserInput(Value: Boolean);
 begin
   if (Value) then
-    FGCExtension.PackedFields := FGCExtension.PackedFields OR efInputFlag
+    FGCExtension.PackedFields := FGCExtension.PackedFields or efInputFlag
   else
-    FGCExtension.PackedFields := FGCExtension.PackedFields AND not (efInputFlag);
+    FGCExtension.PackedFields := FGCExtension.PackedFields and not (efInputFlag);
 end;
 
 function TGIFGraphicControlExtension.GetDisposal: TDisposalMethod;
 begin
-  Result := TDisposalMethod((FGCExtension.PackedFields AND efDisposal) SHR 2);
+  Result := TDisposalMethod((FGCExtension.PackedFields and efDisposal) shr 2);
 end;
 
 procedure TGIFGraphicControlExtension.SetDisposal(Value: TDisposalMethod);
 begin
-  FGCExtension.PackedFields := FGCExtension.PackedFields AND not (efDisposal)
-    OR ((ord(Value) SHL 2) AND efDisposal);
+  FGCExtension.PackedFields := FGCExtension.PackedFields and not (efDisposal)
+    or ((ord(Value) shl 2) and efDisposal);
 end;
 
 procedure TGIFGraphicControlExtension.SaveToStream(Stream: TStream);
@@ -9492,7 +9492,7 @@ destructor TAppExtensionList.Destroy;
 var
   I: Integer;
 begin
-  for I := 0 to Count-1 do
+  for I := 0 to Count - 1 do
     Dispose(PAppExtRec(Items[I]));
   inherited Destroy;
 end;
@@ -9511,7 +9511,7 @@ function TAppExtensionList.FindExt(eIdent: TGIFApplicationRec): TGIFAppExtension
 var
   I: Integer;
 begin
-  for I := Count-1 downto 0 do
+  for I := Count - 1 downto 0 do
     with PAppExtRec(Items[I])^ do
       if CompareMem(@Ident, @eIdent, sizeof(TGIFApplicationRec)) then
       begin
@@ -9526,7 +9526,7 @@ var
   I: Integer;
   P: PAppExtRec;
 begin
-  for I := Count-1 downto 0 do
+  for I := Count - 1 downto 0 do
   begin
     P := PAppExtRec(Items[I]);
     if P^.AppClass.InheritsFrom(eClass) then
@@ -9705,7 +9705,7 @@ destructor TGIFUnknownAppExtension.Destroy;
 var
   i: Integer;
 begin
-  for i := 0 to FBlocks.Count-1 do
+  for i := 0 to FBlocks.Count - 1 do
     TGIFBlock(FBlocks[i]).Free;
   FBlocks.Free;
   inherited Destroy;
@@ -9716,7 +9716,7 @@ procedure TGIFUnknownAppExtension.SaveData(Stream: TStream);
 var
   i: Integer;
 begin
-  for i := 0 to FBlocks.Count-1 do
+  for i := 0 to FBlocks.Count - 1 do
     TGIFBlock(FBlocks[i]).SaveToStream(Stream);
   // Terminating zero
   WriteByte(Stream, 0);
@@ -9729,7 +9729,7 @@ var
   i: Integer;
 begin
   // Zap old blocks
-  for i := 0 to FBlocks.Count-1 do
+  for i := 0 to FBlocks.Count - 1 do
     TGIFBlock(FBlocks[i]).Free;
   FBlocks.Clear;
 
@@ -9799,7 +9799,7 @@ begin
     BlockType := ReadByte(Stream);
     dec(BlockSize);
 
-    case(BlockType AND $07) of
+    case(BlockType and $07) of
       nbLoopExtension:
         begin
           if (BlockSize < sizeof(FLoops)) then
@@ -9886,7 +9886,7 @@ procedure TGIFImageList.SaveToStream(Stream: TStream);
 var
   i: Integer;
 begin
-  for i := 0 to Count-1 do
+  for i := 0 to Count - 1 do
   begin
     TGIFItem(Items[i]).SaveToStream(Stream);
     Image.Progress(Self, psRunning, MulDiv((i+1), 100, Count), False, Rect(0,0,0,0), sProgressSaving);
@@ -9950,7 +9950,7 @@ begin
   if (goClearOnLoop in FDrawOptions) then
     Include(Disposals, dmBackground);
 
-  for i := 0 to FImage.Images.Count-1 do
+  for i := 0 to FImage.Images.Count - 1 do
     if (FImage.Images[i].GraphicControlExtension <> nil) then
       with(FImage.Images[i].GraphicControlExtension) do
         Include(Disposals, Disposal);
@@ -10098,21 +10098,14 @@ procedure TGIFPainter.DoPaintFrame;
 var
   DrawDestination: TCanvas;
   DrawRect: TRect;
-  DoStep2    ,
-  DoStep3    ,
-  DoStep5    ,
-  DoStep6: Boolean;
-  SavePal    ,
-  SourcePal: HPALETTE;
+  DoStep2, DoStep3, DoStep5, DoStep6: Boolean;
+  SavePal, SourcePal: HPALETTE;
 
   procedure ClearBackup;
   var
-    r      ,
-    Tile: TRect;
-    FrameTop    ,
-    FrameHeight: Integer;
-    ImageWidth    ,
-    ImageHeight: Integer;
+    r, Tile: TRect;
+    FrameTop, FrameHeight: Integer;
+    ImageWidth, ImageHeight: Integer;
   begin
 
     if (goTransparent in FDrawOptions) then
@@ -10312,16 +10305,13 @@ end;
 procedure TGIFPainter.Execute;
 var
   i: Integer;
-  LoopCount    ,
+  LoopCount,
   LoopPoint: Integer;
   Looping: Boolean;
   Ext: TGIFExtension;
   Msg: TMsg;
-  Delay      ,
-  OldDelay    ,
-  DelayUsed: longInt;
-  DelayStart    ,
-  NewDelayStart: DWORD;
+  Delay, OldDelay, DelayUsed: LongInt;
+  DelayStart, NewDelayStart: DWORD;
 
   procedure FireEvent(Event: TNotifyEvent);
   begin
@@ -10493,7 +10483,7 @@ begin
 
             // Pre-draw processing of extensions
             Disposal := dmNoDisposal;
-            for i := 0 to FImage.Images[ActiveImage].Extensions.Count-1 do
+            for i := 0 to FImage.Images[ActiveImage].Extensions.Count - 1 do
             begin
               Ext := FImage.Images[ActiveImage].Extensions[i];
               if (Ext is TGIFAppExtNSLoop) then
@@ -10715,7 +10705,7 @@ begin
   FList.Capacity := FCount;
 
   // Move data to histogram and initialize
-  for i := 0 to FCount-1 do
+  for i := 0 to FCount - 1 do
     with PHistogram^[i] do
     begin
       FList.Add(@PHistogram^[i]);
@@ -10814,12 +10804,12 @@ begin
   (*
   **  Determine number of used colors
   *)
-  for i := 0 to FCount-1 do
+  for i := 0 to FCount - 1 do
     // Find first unused color entry
     if (POptimizeEntry(FList[i])^.Count = 0) then
     begin
       // Zap unused colors
-      for j := i to FCount-1 do
+      for j := i to FCount - 1 do
         POptimizeEntry(FList[j])^.Count := -1; // Use -1 to signal unused entry
       // Remove unused entries
       FCount := i;
@@ -10843,13 +10833,13 @@ begin
   (*
   ** Build NewIndex map
   *)
-  for i := 0 to List.Count-1 do
+  for i := 0 to List.Count - 1 do
     ReverseMap[POptimizeEntry(List[i])^.OldIndex] := POptimizeEntry(List[i])^.NewIndex;
 
   (*
   **  Reorder all images using this color map
   *)
-  for i := 0 to FImages.Count-1 do
+  for i := 0 to FImages.Count - 1 do
     with TGIFSubImage(FImages[i]) do
     begin
       Pixel := Data;
@@ -10894,7 +10884,7 @@ var
 begin
   FHistogram.Free;
 
-  for i := FHistogramList.Count-1 downto 0 do
+  for i := FHistogramList.Count - 1 downto 0 do
     THistogram(FHistogramList[i]).Free;
   FHistogramList.Free;
 
@@ -10916,7 +10906,7 @@ begin
     Hist := THistogram.Create(FImage.GlobalColorMap);
     ProcessedImage := False;
     // Process all images that are using the global color map
-    for i := 0 to FImage.Images.Count-1 do
+    for i := 0 to FImage.Images.Count - 1 do
       if (FImage.Images[i].ColorMap.Count = 0) and (not FImage.Images[i].Empty) then
       begin
         ProcessedImage := True;
@@ -10933,7 +10923,7 @@ begin
   (*
   ** Next process images that have a local color map
   *)
-  for i := 0 to FImage.Images.Count-1 do
+  for i := 0 to FImage.Images.Count - 1 do
     if (FImage.Images[i].ColorMap.Count > 0) and (not FImage.Images[i].Empty) then
     begin
       Hist := THistogram.Create(FImage.Images[i].ColorMap);
@@ -10957,7 +10947,7 @@ begin
   **  Merge same colors
   *)
   SameEntry := POptimizeEntry(FHistogram[0]);
-  for i := 1 to FHistogram.Count-1 do
+  for i := 1 to FHistogram.Count - 1 do
   begin
     Entry := POptimizeEntry(FHistogram[i]);
     ASSERT(Entry^.Count > 0, 'Unused entry exported from THistogram');
@@ -10996,7 +10986,7 @@ begin
   **  Determine number of colors used (max 256)
   *)
   FFinalCount := FHistogram.Count;
-  for i := 0 to FFinalCount-1 do
+  for i := 0 to FFinalCount - 1 do
     if (i >= MaxColors) or (POptimizeEntry(FHistogram[i])^.Count = 0) then
     begin
       FFinalCount := i;
@@ -11006,7 +10996,7 @@ begin
   (*
   **  Build color map and reverse map for final entries
   *)
-  for i := 0 to FFinalCount-1 do
+  for i := 0 to FFinalCount - 1 do
   begin
     POptimizeEntry(FHistogram[i])^.NewIndex := i;
     FColorMap[i] := POptimizeEntry(FHistogram[i])^.Color.Color;
@@ -11015,7 +11005,7 @@ begin
   (*
   **  Map colors > 256 to colors <= 256 and build NewIndex color map
   *)
-  for i := FFinalCount to FHistogram.Count-1 do
+  for i := FFinalCount to FHistogram.Count - 1 do
     with POptimizeEntry(FHistogram[i])^ do
     begin
       // Entries with a usage count of -1 is unused
@@ -11031,7 +11021,7 @@ begin
         // Search for entry with nearest color value
         BestIndex := 0;
         BestDelta := 255*3;
-        for j := 0 to FFinalCount-1 do
+        for j := 0 to FFinalCount - 1 do
         begin
           Delta := ABS((POptimizeEntry(FHistogram[j])^.Color.Color.Red - Color.Color.Red) +
             (POptimizeEntry(FHistogram[j])^.Color.Color.Green - Color.Color.Green) +
@@ -11064,7 +11054,7 @@ var
   i: Integer;
 begin
   // Zap all local color maps
-  for i := 0 to FImage.Images.Count-1 do
+  for i := 0 to FImage.Images.Count - 1 do
     if (FImage.Images[i].ColorMap <> nil) then
       FImage.Images[i].ColorMap.Clear;
   // Store optimized global color map
@@ -11090,7 +11080,7 @@ begin
 
     // Prune histograms and calculate total number of colors
     Total := 0;
-    for i := 0 to FHistogramList.Count-1 do
+    for i := 0 to FHistogramList.Count - 1 do
       inc(Total, THistogram(FHistogramList[i]).Prune);
 
     // Allocate global histogram
@@ -11098,9 +11088,9 @@ begin
     FHistogram.Capacity := Total;
 
     // Move data pointers from local histograms to global histogram
-    for i := 0 to FHistogramList.Count-1 do
+    for i := 0 to FHistogramList.Count - 1 do
       with THistogram(FHistogramList[i]) do
-        for j := 0 to Count-1 do
+        for j := 0 to Count - 1 do
         begin
           ASSERT(POptimizeEntry(List[j])^.Count > 0, 'Unused entry exported from THistogram');
           FHistogram.Add(List[j]);
@@ -11124,13 +11114,13 @@ begin
     (*
     **  Process images for each color map
     *)
-    for i := 0 to FHistogramList.Count-1 do
+    for i := 0 to FHistogramList.Count - 1 do
       THistogram(FHistogramList[i]).MapImages(FUseTransparency, FNewTransparentColorIndex);
 
     (*
     **  Delete the frame's old bitmaps and palettes
     *)
-    for i := 0 to FImage.Images.Count-1 do
+    for i := 0 to FImage.Images.Count - 1 do
     begin
       FImage.Images[i].HasBitmap := False;
       FImage.Images[i].Palette := 0;
@@ -11175,7 +11165,7 @@ begin
   PaintStop;
   with FPainters.LockList do
     try
-      for i := Count-1 downto 0 do
+      for i := Count - 1 downto 0 do
         TGIFPainter(Items[i]).FImage := nil;
     finally
       FPainters.UnLockList;
@@ -11211,7 +11201,7 @@ var
   i: Integer;
 begin
   Result := gvUnknown;
-  for i := 0 to FImages.Count-1 do
+  for i := 0 to FImages.Count - 1 do
   begin
     v := FImages[i].Version;
     if (v > Result) then
@@ -11226,7 +11216,7 @@ var
   i: Integer;
 begin
   Result := FHeader.ColorResolution;
-  for i := 0 to FImages.Count-1 do
+  for i := 0 to FImages.Count - 1 do
     if (FImages[i].ColorResolution > Result) then
       Result := FImages[i].ColorResolution;
 end;
@@ -11236,7 +11226,7 @@ var
   i: Integer;
 begin
   Result := FHeader.BitsPerPixel;
-  for i := 0 to FImages.Count-1 do
+  for i := 0 to FImages.Count - 1 do
     if (FImages[i].BitsPerPixel > Result) then
       Result := FImages[i].BitsPerPixel;
 end;
@@ -11374,7 +11364,7 @@ begin
         if (GlobalColorMap.Count > 0) then
           GlobalColorMap.Optimize;
         // Optimize local color maps
-        for i := 0 to Images.Count-1 do
+        for i := 0 to Images.Count - 1 do
         begin
           inc(Prog);
           if (Images[i].ColorMap.Count > 0) then
@@ -11390,7 +11380,7 @@ begin
       if (ooCleanup in Options) then
       begin
         // Check for transparency flag without any transparent pixels
-        for i := 0 to Images.Count-1 do
+        for i := 0 to Images.Count - 1 do
         begin
           inc(Prog);
           if (Images[i].Transparent) then
@@ -11433,7 +11423,7 @@ begin
       if (ooMerge in Options) then
       begin
         // Merge from last to first to avoid intefering with merge
-        for i := Images.Count-1 downto 1 do
+        for i := Images.Count - 1 downto 1 do
         begin
           inc(Prog);
           j := i-1;
@@ -11454,7 +11444,7 @@ begin
       // Crop transparent areas
       if (ooCrop in Options) then
       begin
-        for i := Images.Count-1 downto 0 do
+        for i := Images.Count - 1 downto 0 do
         begin
           inc(Prog);
           if (not Images[i].Empty) and (Images[i].Transparent) then
@@ -11483,10 +11473,10 @@ begin
       inc(Prog, Images.Count);
       if (ooCleanup in Options) then
       begin
-        for i := Images.Count-1 downto 0 do
+        for i := Images.Count - 1 downto 0 do
         begin
           // Remove comments and application extensions
-          for j := Images[i].Extensions.Count-1 downto 0 do
+          for j := Images[i].Extensions.Count - 1 downto 0 do
             if (Images[i].Extensions[j] is TGIFCommentExtension) or
               (Images[i].Extensions[j] is TGIFTextExtension) or
               (Images[i].Extensions[j] is TGIFUnknownAppExtension) or
@@ -11544,7 +11534,7 @@ begin
   // Zap bitmaps and palettes
   FreeBitmap;
   Palette := 0;
-  for i := 0 to FImages.Count-1 do
+  for i := 0 to FImages.Count - 1 do
   begin
     FImages[i].Bitmap := nil;
     FImages[i].Palette := 0;
@@ -11729,7 +11719,7 @@ var
   i: Integer;
 begin
   Result := False;
-  for i := 0 to Images.Count-1 do
+  for i := 0 to Images.Count - 1 do
     if (Images[i].GraphicControlExtension <> nil) and
       (Images[i].GraphicControlExtension.Transparent) then
     begin
@@ -11815,7 +11805,7 @@ procedure TGIFImage.SetHeight(Value: Integer);
 var
   i: Integer;
 begin
-  for i := 0 to Images.Count-1 do
+  for i := 0 to Images.Count - 1 do
     if (Images[i].Top + Images[i].Height > Value) then
       Error(sBadHeight);
   if (Value <> Header.Height) then
@@ -11830,7 +11820,7 @@ procedure TGIFImage.SetWidth(Value: Integer);
 var
   i: Integer;
 begin
-  for i := 0 to Images.Count-1 do
+  for i := 0 to Images.Count - 1 do
     if (Images[i].Left + Images[i].Width > Value) then
       Error(sBadWidth);
   if (Value <> Header.Width) then
@@ -11889,7 +11879,7 @@ begin
         FColorReduction := TGIFImage(Source).ColorReduction;
         FDitherMode := TGIFImage(Source).DitherMode;
 
-        for i := 0 to TGIFImage(Source).Images.Count-1 do
+        for i := 0 to TGIFImage(Source).Images.Count - 1 do
         begin
           Image := TGIFSubImage.Create(Self);
           Image.Assign(TGIFImage(Source).Images[i]);
@@ -12286,7 +12276,7 @@ var
 begin
   with FPainters.LockList do
     try
-      for i := 0 to Count-1 do
+      for i := 0 to Count - 1 do
         TGIFPainter(Items[i]).Start;
     finally
       FPainters.UnLockList;
@@ -12309,7 +12299,7 @@ var
   begin
     with FPainters.LockList do
       try
-        for i := Count-1 downto 0 do
+        for i := Count - 1 downto 0 do
           if (goAsync in TGIFPainter(Items[i]).DrawOptions) then
           begin
             TerminateThread(TGIFPainter(Items[i]).Handle, 0);
@@ -12334,7 +12324,7 @@ begin
           // Painters will attempt to remove them Self from the
           // painter list when they die
           Ghosts := Count;
-          for i := Ghosts-1 downto 0 do
+          for i := Ghosts - 1 downto 0 do
           begin
             if not (goAsync in TGIFPainter(Items[i]).DrawOptions) then
               dec(Ghosts);
@@ -12386,7 +12376,7 @@ var
 begin
   with FPainters.LockList do
     try
-      for i := 0 to Count-1 do
+      for i := 0 to Count - 1 do
         TGIFPainter(Items[i]).Suspend;
     finally
       FPainters.UnLockList;
@@ -12401,7 +12391,7 @@ begin
   // in case its implementation changes
   with FPainters.LockList do
     try
-      for i := 0 to Count-1 do
+      for i := 0 to Count - 1 do
         TGIFPainter(Items[i]).Start;
     finally
       FPainters.UnLockList;
@@ -12414,7 +12404,7 @@ var
 begin
   with FPainters.LockList do
     try
-      for i := 0 to Count-1 do
+      for i := 0 to Count - 1 do
         TGIFPainter(Items[i]).Restart;
     finally
       FPainters.UnLockList;

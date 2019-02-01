@@ -117,7 +117,6 @@
         <DCCReference Include="..\..\Source\Components\cmpMenuDesigner.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpMessageDisplay.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpMRUList.pas"/>
-        <DCCReference Include="..\..\Source\Components\cmpNewsRichEdit.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpNTAboutBox.pas">
             <Form>fmNTAboutBox</Form>
         </DCCReference>
@@ -125,15 +124,10 @@
         <DCCReference Include="..\..\Source\Components\cmpPersistentPosition.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpPropertyListBox.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpRuler.pas"/>
-        <DCCReference Include="..\..\Source\Components\cmpRunOnce.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpSizingPageControl.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpSpellChecker.pas"/>
-        <DCCReference Include="..\..\Source\Components\cmpSplitterPanel.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpStandardSystemMenu.pas"/>
-        <DCCReference Include="..\..\Source\Components\cmpTextDisplay.pas"/>
-        <DCCReference Include="..\..\Source\Components\cmpTexturedPanel.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpThemedScrollBox.pas"/>
-        <DCCReference Include="..\..\Source\Components\cmpUCtrls.pas"/>
         <DCCReference Include="..\..\Source\Components\DialogButtonControls.pas"/>
         <DCCReference Include="..\..\Source\Components\DialogComboBoxControls.pas"/>
         <DCCReference Include="..\..\Source\Components\DialogConsts.pas"/>
@@ -170,7 +164,6 @@
         <DCCReference Include="..\..\Source\Components\unitHTMLStringsDisplayObject.pas"/>
         <DCCReference Include="..\..\Source\Components\unitMidiGlobals.pas"/>
         <DCCReference Include="..\..\Source\Components\unitMidiTrackStream.pas"/>
-        <DCCReference Include="..\..\Source\Components\unitNewsStringsDisplayObject.pas"/>
         <DCCReference Include="..\..\Source\Components\unitObjectCache.pas"/>
         <DCCReference Include="..\..\Source\Components\unitParser.pas"/>
         <DCCReference Include="..\..\Source\Components\unitPEFile.pas"/>

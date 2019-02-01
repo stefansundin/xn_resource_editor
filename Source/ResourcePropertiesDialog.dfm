@@ -21,22 +21,22 @@ object dlgResourceProperties: TdlgResourceProperties
     134)
   PixelsPerInch = 96
   TextHeight = 13
-  object Label1: TLabel
+  object LabelName: TLabel
     Left = 16
     Top = 16
     Width = 28
     Height = 13
     Caption = '&Name'
   end
-  object Label2: TLabel
+  object LabelLanguage: TLabel
     Left = 16
     Top = 56
     Width = 48
     Height = 13
     Caption = '&Language'
-    FocusControl = cbLanguage
+    FocusControl = ComboBoxLanguage
   end
-  object cbLanguage: TComboBox
+  object ComboBoxLanguage: TComboBox
     Left = 80
     Top = 52
     Width = 213
@@ -45,7 +45,7 @@ object dlgResourceProperties: TdlgResourceProperties
     Sorted = True
     TabOrder = 1
   end
-  object btnOK: TButton
+  object ButtonOK: TButton
     Left = 140
     Top = 94
     Width = 75
@@ -56,7 +56,7 @@ object dlgResourceProperties: TdlgResourceProperties
     ModalResult = 1
     TabOrder = 2
   end
-  object btnCancel: TButton
+  object ButtonCancel: TButton
     Left = 218
     Top = 94
     Width = 75
@@ -67,7 +67,7 @@ object dlgResourceProperties: TdlgResourceProperties
     ModalResult = 2
     TabOrder = 3
   end
-  object ntedName: TEdit
+  object EditName: TEdit
     Left = 80
     Top = 12
     Width = 209
