@@ -25,7 +25,8 @@ unit unitEXGraphics;
 
 interface
 
-uses Windows, Sysutils, Classes, Graphics, clipbrd, commctrl, controls;
+uses
+  Windows, Sysutils, Classes, Graphics, Clipbrd, CommCtrl, Controls;
 
 const
   HLSMAX = 240;
@@ -213,7 +214,7 @@ var
   i, c : Integer;
 
 begin
-  GetMem (logPalette, sizeof (logPalette) + 2 * sizeof (PALETTEENTRY));
+  GetMem (logPalette, SizeOf(logPalette) + 2 * SizeOf(PALETTEENTRY));
 
   try
     logPalette^.palVersion := $300;
@@ -239,6 +240,6 @@ initialization
   SystemPalette256 := WebPalette;
   SystemPalette2 := Create2ColorPalette;
 finalization
-  DeleteObject (SystemPalette2);
-  DeleteObject (SystemPalette256);
+  DeleteObject(SystemPalette2);
+  DeleteObject(SystemPalette256);
 end.

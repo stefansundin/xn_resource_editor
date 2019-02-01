@@ -133,7 +133,7 @@ type
     FPropertyListBox: TPropertyListBox;
     FDetails : TGraphicsResourceDetails;
 
-    procedure SetPaletteForPixelFormat (reset : Boolean);
+    procedure SetPaletteForPixelFormat(reset : Boolean);
   protected
     procedure SetObject(const Value: TObject); override;
     function GetMenuItem : TMenuItem; override;
@@ -191,7 +191,7 @@ const
   taHeight = 1;
   taPixelFormat = 2;
 
-function GetPixelFormat (graphic : TGraphic) : TPixelFormat;
+function GetPixelFormat(graphic : TGraphic) : TPixelFormat;
 begin
   if graphic is TGifImage then
   begin
@@ -202,7 +202,7 @@ begin
     end
   end
   else
-    Result := unitExIcon.GetPixelFormat (graphic)
+    Result := unitExIcon.GetPixelFormat(graphic)
 end;
 
 (*----------------------------------------------------------------------*
@@ -226,7 +226,7 @@ begin
       b.Width := newWidth;
       b.Height := newHeight;
       b.PixelFormat := pf24Bit;
-      b.Canvas.StretchDraw(Rect (0, 0, newWidth, newHeight), p.Graphic);
+      b.Canvas.StretchDraw(Rect(0, 0, newWidth, newHeight), p.Graphic);
       p.Graphic.Assign(b)
     finally
       b.Free
@@ -307,7 +307,7 @@ begin
     begin
       Tag := taPixelFormat;
 
-      case GetPixelFormat (Image1.Picture.Graphic) of
+      case GetPixelFormat(Image1.Picture.Graphic) of
         pf1Bit : PropertyValue := 0;
         pf4Bit : PropertyValue := 1;
         pf8Bit : PropertyValue := 2;
@@ -319,7 +319,7 @@ begin
     end
   end;
 
-  SetPaletteForPixelFormat (NewImage)
+  SetPaletteForPixelFormat(NewImage)
 end;
 
 (*----------------------------------------------------------------------*
@@ -654,7 +654,7 @@ var
   paletteEntries : array [0..255] of TPaletteEntry;
   pal : HPalette;
 begin
-  Result := Nil;
+  Result := nil;
   case pf of
     pf1Bit : pal := SystemPalette2;
     pf4Bit : pal := SystemPalette16;
@@ -664,12 +664,12 @@ begin
   end;
 
   colorCount := 0;
-  if GetObject (pal, sizeof (colorCount), @colorCount) = 0 then
+  if GetObject(pal, SizeOf(colorCount), @colorCount) = 0 then
     RaiseLastOSError;
 
   if ColorCount = 0 then
   begin
-    Result := Nil;
+    Result := nil;
     exit
   end;
 
@@ -726,7 +726,7 @@ begin
 
     taPixelFormat :
                begin
-                 oldPf := GetPixelFormat (Image1.Picture.Graphic);
+                 oldPf := GetPixelFormat(Image1.Picture.Graphic);
                  case prop.PropertyValue of
                    0 : newPf := pf1Bit;
                    1 : newPf := pf4Bit;
@@ -744,12 +744,12 @@ begin
 
                      if newPf in [pf1Bit..pf8Bit] then
                      begin
-                       b1 := Nil;
-                       b2 := Nil;
+                       b1 := nil;
+                       b2 := nil;
                        try
                          if (newPf = pf8Bit) and (oldPf > pf8Bit) and not bmp.Empty then
                          begin
-                           b1:= ReduceColors (bmp, rmQuantizeWindows, dmFloydSteinberg, GetPixelFormatBitCount (newPf), 0);
+                           b1:= ReduceColors (bmp, rmQuantizeWindows, dmFloydSteinberg, GetPixelFormatBitCount(newPf), 0);
                          end
                          else
                          begin
@@ -792,18 +792,18 @@ begin
                            bmp.Assign(Image1.Picture.Graphic);
                            l.Add (bmp);
                            l.Add (CreatePaletteBitmap (newPF));
-                           pal := CreateOptimizedPaletteFromManyBitmaps (l, GetPixelFormatNumColors (newPf), GetPixelFormatBitCount (newPF), False);
+                           pal := CreateOptimizedPaletteFromManyBitmaps (l, GetPixelFormatNumColors (newPf), GetPixelFormatBitCount(newPF), False);
                            TExIconCursor (Image1.Picture.Graphic).Palette := pal;
                          finally
                            l.Free;
                            bmp.Free;
                            if pal <> 0 then
-                             DeleteObject (pal)
+                             DeleteObject(pal)
                          end
                        end
                  end;
 
-                 SetPaletteForPixelFormat (newPf < oldPf);
+                 SetPaletteForPixelFormat(newPf < oldPf);
                end
   end;
 
@@ -831,7 +831,7 @@ var
 begin
   fc := clWhite;
   bc := clBlack;
-  pf := GetPixelFormat (Image1.Picture.Graphic);
+  pf := GetPixelFormat(Image1.Picture.Graphic);
   if pf in [pf1Bit..pf8Bit] then
   begin
     ColorSelector1.Palette := Image1.Picture.Graphic.Palette;
@@ -880,7 +880,7 @@ end;
 
 function TfmGraphicsResource.GetCanPaste: Boolean;
 begin
-  Result := Clipboard.HasFormat (CF_METAFILEPICT) or Clipboard.HasFormat (CF_BITMAP) or Clipboard.HasFormat (CF_PICTURE)
+  Result := Clipboard.HasFormat(CF_METAFILEPICT) or Clipboard.HasFormat(CF_BITMAP) or Clipboard.HasFormat(CF_PICTURE)
 end;
 
 function TfmGraphicsResource.GetCanSelectAll: Boolean;
@@ -967,7 +967,7 @@ var
 begin
   if BitmapEditor1.SelectionValid then
     with BitmapEditor1.SelectionRect do
-      Msg := Format ('%d,%d %dx%d', [Left, Top, Right - Left + 1, Bottom - Top + 1])
+      Msg := Format('%d,%d %dx%d', [Left, Top, Right - Left + 1, Bottom - Top + 1])
   else
     Msg := '';
 

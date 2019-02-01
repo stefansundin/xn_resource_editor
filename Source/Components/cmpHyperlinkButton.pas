@@ -64,7 +64,8 @@ type
 
 implementation
 
-uses shellapi, urlmon;
+uses
+  ShellApi, urlmon;
 
 { THyperlinkButton }
 
@@ -88,14 +89,14 @@ begin
     if FInPlace then
     begin
       param := AnsiDequotedStr (Link, '"');
-      ext := ExtractFileExt (param);
+      ext := ExtractFileExt(param);
 
-      if (CompareText (ext, '.URL') = 0) or (CompareText (ext, '.HTML') = 0) or (CompareText (ext, '.HTM') = 0) then
+      if (CompareText(ext, '.URL') = 0) or (CompareText(ext, '.HTML') = 0) or (CompareText(ext, '.HTM') = 0) then
       begin
-        if CompareText (ext, '.URL') = 0 then
+        if CompareText(ext, '.URL') = 0 then
         begin
           AssignFile(f, param);
-          Reset (f);
+          Reset(f);
           try
             ReadLn (f, url)
           finally
@@ -118,7 +119,7 @@ begin
     begin
       p := 1;
       InQuote := False;
-      while p <= Length (Link) do
+      while p <= Length(Link) do
       begin
         ch := Link [p];
         if ch = '"' then
@@ -129,7 +130,7 @@ begin
               break;
         Inc(p)
       end;
-      if p > Length (link) then
+      if p > Length(link) then
         p := 0;
 
       if p > 0 then

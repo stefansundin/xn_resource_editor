@@ -82,9 +82,9 @@ begin
     bit      meaning
     -----------------------------------------------------------------------------------------
     0      | main unit
-    1      | package unit (dpk source)
+    1      | package unit(dpk source)
     2      | $WEAKPACKAGEUNIT unit
-    3      | original containment of $WEAKPACKAGEUNIT (package into which it was compiled)
+    3      | original containment of $WEAKPACKAGEUNIt(package into which it was compiled)
     4      | implicitly imported
     5..7   | reserved
   }

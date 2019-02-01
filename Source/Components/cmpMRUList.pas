@@ -54,7 +54,8 @@ type
 
 implementation
 
-uses Registry;
+uses
+  Registry;
 
 { TMRUList }
 
@@ -71,7 +72,7 @@ begin
   while FMRU.Count >= Capacity do
     FMRU.Delete(FMRU.Count - 1);
 
-  FMRU.Insert (0, fileName);
+  FMRU.Insert(0, fileName);
   PopulateMenu
 end;
 
@@ -98,14 +99,14 @@ begin
     app := Forms.Application.Title
   else
     app := Application;
-  Result := Format ('SOFTWARE\%s\%s\Recent Files', [Manufacturer, Application]);
+  Result := Format('SOFTWARE\%s\%s\Recent Files', [Manufacturer, Application]);
   if FAppSection <> '' then
     Result := Result + '\' + FAppSection
 end;
 
 function TMRUList.GetMRUDirectory: string;
 begin
-  Result := ExtractFilePath (MRUFile)
+  Result := ExtractFilePath(MRUFile)
 end;
 
 function TMRUList.GetMRUFile: string;
@@ -188,7 +189,7 @@ begin
       try
         if OpenKey(GetKeyName, True) then
           for i := 0 to FMRU.Count - 1 do
-            WriteString (Format ('File %d', [i]), FMRU [i])
+            WriteString (Format('File %d', [i]), FMRU [i])
       finally
         Free
       end

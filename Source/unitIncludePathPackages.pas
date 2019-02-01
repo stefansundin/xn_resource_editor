@@ -2,7 +2,8 @@ unit unitIncludePathPackages;
 
 interface
 
-uses Windows, Classes, SysUtils, unitIncludePaths, ShFolder;
+uses
+  Windows, Classes, SysUtils, ShFolder, unitIncludePaths;
 
 type
 
@@ -46,15 +47,16 @@ end;
 
 implementation
 
-uses Registry;
+uses
+  Registry;
 
 function ProgramFilesPath : string;
 const
   SHGFP_TYPE_CURRENT = 0;
   SHGFP_TYPE_DEFAULT = 1;
 begin
-  SetLength (Result, MAX_PATH + 1);
-  if Succeeded (ShGetFolderPath (0, CSIDL_PROGRAM_FILES, 0, SHGFP_TYPE_CURRENT, PChar (Result))) then
+  SetLength(Result, MAX_PATH + 1);
+  if Succeeded (ShGetFolderPath(0, CSIDL_PROGRAM_FILES, 0, SHGFP_TYPE_CURRENT, PChar (Result))) then
     Result := PChar (Result)
   else
     Result := 'c:\Program Files'
@@ -71,8 +73,8 @@ begin
     if reg.OpenKey(key, false) then
     begin
       Result := reg.ReadString(value);
-      if (Result <> '') and (Result [Length (Result)] = '\') then
-        Delete(Result, Length (Result), 1)
+      if (Result <> '') and (Result [Length(Result)] = '\') then
+        Delete(Result, Length(Result), 1)
     end
   finally
     reg.Free

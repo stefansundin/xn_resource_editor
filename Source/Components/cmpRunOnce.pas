@@ -46,7 +46,7 @@ begin
   if hwnd <> TForm (Owner).Handle then
   begin
     if GetWindowLong (hwnd, GWL_USERDATA) = $badf00d then
-      if (SendMessageTimeout (hwnd, FUniqueMessage, 0, 0, SMTO_BLOCK or SMTO_ABORTIFHUNG, 1000, msgResult) <> 0) and (msgResult = FUniqueMessage) then
+      if (SendMessageTimeout(hwnd, FUniqueMessage, 0, 0, SMTO_BLOCK or SMTO_ABORTIFHUNG, 1000, msgResult) <> 0) and (msgResult = FUniqueMessage) then
       begin
         FOtherWindowHandle := hwnd;
         Result := True
@@ -126,7 +126,7 @@ begin
       begin
         paramSize := 1;
         for i := 0 to ParamCount do
-          Inc(paramSize, 1 + Length (ParamStr (i)));
+          Inc(paramSize, 1 + Length(ParamStr (i)));
         mapHandle := CreateFileMapping ($ffffffff, Nil, PAGE_READWRITE, 0, 65536, Nil);
         if mapHandle <> 0 then
         try
@@ -137,7 +137,7 @@ begin
             for i := 0 to ParamCount do
             begin
               lstrcpy(p, PChar (ParamStr (i)));
-              Inc(p, Length (ParamStr (i)) + 1)
+              Inc(p, Length(ParamStr (i)) + 1)
             end;
             p^ := #0;
           finally
@@ -189,7 +189,7 @@ begin
             Inc(paramCount);
             Inc(p, lstrlen (p) + 1)
           end;
-          SetLength (params, paramCount);
+          SetLength(params, paramCount);
           p := paramPtr;
           i := 0;
           while p^ <> #0 do

@@ -12,7 +12,9 @@ unit unitResourceJPEG;
 
 interface
 
-uses Windows, Classes, SysUtils, graphics, jpeg, unitResourceDetails, unitResourceGraphics;
+uses
+  Windows, Classes, SysUtils, Graphics, jpeg, unitResourceDetails,
+  unitResourceGraphics;
 
 type
 //------------------------------------------------------------------------
@@ -34,7 +36,7 @@ type
 
 implementation
 
-function FindJPegSegment (var data : PChar; segment : byte) : Boolean;
+function FindJPegSegment(var data : PChar; segment : byte) : Boolean;
 const
   ParameterlessSegments = #$01#$d0#$d1#$d2#$d3#$d4#$d5#$d6#$d7#$d8#$d9;
 var
@@ -80,7 +82,7 @@ procedure GetJPegSize(data : PChar; var Width, Height : Integer);
 var
   len : Integer;
 begin
-  if FindJPegSegment (data, $c0) then
+  if FindJPegSegment(data, $c0) then
   begin
     len := 256 * Byte(data^) + Byte((data + 1)^);
 
@@ -164,7 +166,7 @@ var
 begin
   Result := False;
   if PWORD (data)^ = $d8ff then
-    if FindJPegSegment (PChar (data), $e0) then
+    if FindJPegSegment(PChar (data), $e0) then
     begin
       len := 256 * Byte(PChar (data)^) + Byte((PChar (data) + 1)^);
 

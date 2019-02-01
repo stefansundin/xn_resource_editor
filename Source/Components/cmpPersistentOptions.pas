@@ -161,7 +161,7 @@ type
     procedure SetApplication(const Value: string);
     procedure SetManufacturer(const Value: string);
     procedure SetVersion(const Value: string);
-    procedure RemoveLeadingSlash (var path: string);
+    procedure RemoveLeadingSlash(var path: string);
 
     property Designing: Boolean read GetDesigning;
     property Loading: Boolean read GetLoading;
@@ -390,10 +390,10 @@ var
   s: TSection;
   secName : string;
 begin
-  RemoveLeadingSlash (path);
+  RemoveLeadingSlash(path);
   p := StrRScan (PChar (path), '\');
 
-  s := Nil;
+  s := nil;
   if Assigned (p) then
   begin
     n := Integer (p) - Integer (PChar (path)) + 1;
@@ -412,7 +412,7 @@ begin
       secName := s.Name
     else
       secName := '[Default]';
-    raise EOptionError.CreateFmt (rstOptionNotFound, [path, secName])
+    raise EOptionError.CreateFmt(rstOptionNotFound, [path, secName])
   end
 end;
 
@@ -447,7 +447,7 @@ end;
  *----------------------------------------------------------------------*)
 function TPersistentOptions.GetSection(name: string): TSection;
 begin
-  RemoveLeadingSlash (name);
+  RemoveLeadingSlash(name);
   Result := Sections.SectionByName [name]
 end;
 
@@ -470,7 +470,7 @@ end;
  | Remove the leading slash from a path.                                |
  *----------------------------------------------------------------------*)
 
-procedure TPersistentOptions.RemoveLeadingSlash (var path: string);
+procedure TPersistentOptions.RemoveLeadingSlash(var path: string);
 begin
   if Copy(path, 1, 1) = '\' then
     path := Copy(path, 2, MaxInt);
@@ -614,7 +614,7 @@ begin
     if (Copy(fileName, 1, 1) = '\') or (Pos (':', fileName) <> 0) then
       Result := FFileName
     else
-      Result := ExtractFilePath (ParamStr (0)) + FFileName
+      Result := ExtractFilePath(ParamStr (0)) + FFileName
   end
   else                          // Otherwise derive the file name from the
   begin                         // application name
@@ -628,7 +628,7 @@ begin
     else
       st := Application;
 
-    Result := ExtractFilePath (ParamStr (0)) + st + '.ini'
+    Result := ExtractFilePath(ParamStr (0)) + st + '.ini'
   end
 end;
 
@@ -997,7 +997,7 @@ begin
   if not forceDefaults then
     reg1 := TRegistry.Create(KEY_READ)
   else
-    reg1 := Nil;
+    reg1 := nil;
 
   try
     for i := 0 to Sections.Count - 1 do
@@ -1120,7 +1120,7 @@ var
   reg1: TRegistry;
   deleteSections: TStringList;
 begin
-  reg1 := Nil;
+  reg1 := nil;
   deleteSections := TStringList.Create;
   try
   // Build list of obsolete sections to delete.
@@ -1191,11 +1191,11 @@ var
   o: TOption;
   i: Integer;
 begin
-  Result := Nil;
+  Result := nil;
   for i := 0 to Count - 1 do
   begin
     o := Option [i];
-    if AnsiSameText (Name, o.Name) then
+    if AnsiSameText(Name, o.Name) then
     begin
       Result := o;
       break
@@ -1253,7 +1253,7 @@ begin
   if OptionType = otBoolean then
     Result := FBoolVal
   else
-    raise EOptionTypeMismatch (self)
+    raise EOptionTypeMismatch(self)
 end;
 
 (*----------------------------------------------------------------------*
@@ -1267,7 +1267,7 @@ begin
   if OptionType = otEnum then
     Result := EnumValues[FIntVal]
   else
-    raise EOptionTypeMismatch (self)
+    raise EOptionTypeMismatch(self)
 end;
 
 (*----------------------------------------------------------------------*
@@ -1281,7 +1281,7 @@ begin
   if OptionType = otInteger then
     Result := FIntVal
   else
-    raise EOptionTypeMismatch (self)
+    raise EOptionTypeMismatch(self)
 end;
 
 (*----------------------------------------------------------------------*
@@ -1295,7 +1295,7 @@ begin
   if OptionType = otString then
     Result := FStrVal
   else
-    raise EOptionTypeMismatch (self)
+    raise EOptionTypeMismatch(self)
 end;
 
 (*----------------------------------------------------------------------*
@@ -1360,7 +1360,7 @@ end;
 procedure TOption.SetAsBoolean(const Value: Boolean);
 begin
   if OptionType <> otBoolean then
-    raise EOptionTypeMismatch (self);
+    raise EOptionTypeMismatch(self);
 
   if Value <> FBoolVal then
   begin
@@ -1395,7 +1395,7 @@ end;
 procedure TOption.SetAsInteger(const Value: Integer);
 begin
   if OptionType <> otInteger then
-    raise EOptionTypeMismatch (self);
+    raise EOptionTypeMismatch(self);
 
   if Value <> FIntVal then
   begin
@@ -1414,7 +1414,7 @@ end;
 procedure TOption.SetAsString(const Value: string);
 begin
   if OptionType <> otString then
-    raise EOptionTypeMismatch (self);
+    raise EOptionTypeMismatch(self);
 
   if Value <> FStrVal then
   begin
@@ -1522,7 +1522,7 @@ end;
 
 constructor EOptionTypeMismatch.Create(Option: TOption);
 begin
-  inherited CreateFmt (rstTypeMismatch, [Option.Name, OptionTypeNames[Option.OptionType]])
+  inherited CreateFmt(rstTypeMismatch, [Option.Name, OptionTypeNames[Option.OptionType]])
 end;
 
 { TSections }
@@ -1547,7 +1547,7 @@ var
   i, p: Integer;
   s: TSection;
 begin
-  Result := Nil;
+  Result := nil;
 
   p := Pos ('\', name);
   if p > 0 then
@@ -1562,7 +1562,7 @@ begin
   for i := 0 to Count - 1 do
   begin
     s := Section [i];
-    if AnsiSameText (name, s.Name) then
+    if AnsiSameText(name, s.Name) then
     begin
       Result := s;
       break
@@ -1570,7 +1570,7 @@ begin
   end;
 
   if not Assigned (Result) then
-    raise EOptionError.CreateFmt (rstSectionNotFound, [name])
+    raise EOptionError.CreateFmt(rstSectionNotFound, [name])
 end;
 
 end.

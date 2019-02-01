@@ -2,60 +2,60 @@ unit cmpGradientShape;
 
 interface
 
-uses Windows, Messages, Classes, SysUtils, Controls, Graphics;
+uses
+  Windows, Messages, Classes, SysUtils, Controls, Graphics;
 
 type
+  TCustomGradientShape = class (TGraphicControl)
+  private
+    FPen: TPen;
+    FStartColor: TColor;
+    procedure SetPen(const Value: TPen);
+    procedure SetStartColor(const Value: TColor);
+    procedure WMEraseBkgnd(var Message: TWmEraseBkgnd); message WM_ERASEBKGND;
+  protected
+    procedure StyleChanged(Sender: TObject); virtual;
+    property Pen: TPen read FPen write SetPen;
+    property StartColor: TColor read FStartColor write SetStartColor;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+  end;
 
-TCustomGradientShape = class (TGraphicControl)
-private
-  fPen: TPen;
-  fStartColor: TColor;
-  procedure SetPen(const Value: TPen);
-  procedure SetStartColor(const Value: TColor);
-  procedure WMEraseBkgnd(var Message: TWmEraseBkgnd); message WM_ERASEBKGND;
-protected
-  procedure StyleChanged(Sender: TObject); virtual;
-  property Pen : TPen read fPen write SetPen;
-  property StartColor : TColor read fStartColor write SetStartColor;
-public
-  constructor Create(AOwner: TComponent); override;
-  destructor Destroy; override;
-end;
+  TGradientShapeRectType = (gsrLR, gsrTB, gsrTLBR, gsrBLTR);
 
-TGradientShapeRectType = (gsrLR, gsrTB, gsrTLBR, gsrBLTR);
+  TCustomGradientShapeRect = class (TCustomGradientShape)
+  private
+    FRectType: TGradientShapeRectType;
+    procedure SetRectType(const Value: TGradientShapeRectType);
+  protected
+    procedure Paint; override;
 
-TCustomGradientShapeRect = class (TCustomGradientShape)
-private
-  fRectType: TGradientShapeRectType;
-  procedure SetRectType(const Value: TGradientShapeRectType);
-protected
-  procedure Paint; override;
+    property RectType: TGradientShapeRectType read FRectType write SetRectType;
+  end;
 
-  property RectType : TGradientShapeRectType read fRectType write SetRectType;
-end;
+  TGradientShapeRect = class (TCustomGradientShapeRect)
+  published
+    property Color;
+    property RectType;
+    property StartColor;
+  end;
 
-TGradientShapeRect = class (TCustomGradientShapeRect)
-published
-  property Color;
-  property RectType;
-  property StartColor;
-end;
-
-procedure GradientRect (dc : HDC; rectType : TGradientShapeRectType; l, t, r, b : Integer; startColor, endColor : DWORD);
+procedure GradientRect(dc: HDC; rectType: TGradientShapeRectType; l, t, r, b: Integer; startColor, endColor: DWORD);
 
 implementation
 
-procedure GradientRect (dc : HDC; rectType : TGradientShapeRectType; l, t, r, b : Integer; startColor, endColor : DWORD);
+procedure GradientRect(dc: HDC; rectType: TGradientShapeRectType; l, t, r, b: Integer; startColor, endColor: DWORD);
 var
-  vert : array [0..3] of TriVertex;
-  gRect : GRADIENT_RECT;
-  mode : DWORD;
-  nVertices, nElements : Integer;
-  gTria : array [0..1] of GRADIENT_TRIANGLE;
-  p : Pointer;
-  sr, sg, sb, er, eg, eb, ar, ag, ab : Integer;
+  Vertex: array [0..3] of TriVertex;
+  gRect: GRADIENT_RECT;
+  mode: DWORD;
+  nVertices, nElements: Integer;
+  gTria: array [0..1] of GRADIENT_TRIANGLE;
+  p: Pointer;
+  sr, sg, sb, er, eg, eb, ar, ag, ab: Integer;
 begin
-  FillChar (vert, SizeOf (vert), 0);
+  FillChar (Vertex, SizeOf(Vertex), 0);
 
   sr := GetRValue(ColorToRGB (startColor));
   sg := GetGValue(ColorToRGB (startColor));
@@ -85,31 +85,31 @@ begin
   eg := eg shl 8;
   eb := eb shl 8;
 
-  vert [0].x := l;
-  vert [0].y := t;
+  Vertex [0].x := l;
+  Vertex [0].y := t;
 
-  vert [1].x := r;
-  vert [1].y := b;
+  Vertex [1].x := r;
+  Vertex [1].y := b;
 
   if RectType = gsrBLTR then
   begin
-    vert [0].Red := ar;
-    vert [0].Green := ag;
-    vert [0].Blue := ab;
+    Vertex [0].Red := ar;
+    Vertex [0].Green := ag;
+    Vertex [0].Blue := ab;
 
-    vert [1].Red := ar;
-    vert [1].Green := ag;
-    vert [1].Blue := ab;
+    Vertex [1].Red := ar;
+    Vertex [1].Green := ag;
+    Vertex [1].Blue := ab;
   end
   else
   begin
-    vert [0].Red := sr;
-    vert [0].Green := sg;
-    vert [0].Blue  := sb;
+    Vertex [0].Red := sr;
+    Vertex [0].Green := sg;
+    Vertex [0].Blue  := sb;
 
-    vert [1].Red := er;
-    vert [1].Green := eg;
-    vert [1].Blue  := eb
+    Vertex [1].Red := er;
+    Vertex [1].Green := eg;
+    Vertex [1].Blue  := eb
   end;
 
   if RectType in [gsrLR, gsrTB] then
@@ -132,10 +132,10 @@ begin
 
     p := @gTria [0];
 
-    vert [2].x := r;
-    vert [2].y := t;
-    vert [3].x := l;
-    vert [3].y := b;
+    Vertex [2].x := r;
+    Vertex [2].y := t;
+    Vertex [3].x := l;
+    Vertex [3].y := b;
 
     if RectType = gsrTLBR then
     begin
@@ -146,13 +146,13 @@ begin
       gTria [1].Vertex2 := 2;
       gTria [1].Vertex3 := 1;
 
-      vert [2].Red := ar;
-      vert [2].Green := ag;
-      vert [2].Blue := ab;
+      Vertex [2].Red := ar;
+      Vertex [2].Green := ag;
+      Vertex [2].Blue := ab;
 
-      vert [3].Red := ar;
-      vert [3].Green := ag;
-      vert [3].Blue := ab;
+      Vertex [3].Red := ar;
+      Vertex [3].Green := ag;
+      Vertex [3].Blue := ab;
     end
     else
     begin
@@ -163,17 +163,17 @@ begin
       gTria [1].Vertex2 := 1;
       gTria [1].Vertex3 := 2;
 
-      vert [2].Red := er;
-      vert [2].Green := eg;
-      vert [2].Blue := eb;
+      Vertex [2].Red := er;
+      Vertex [2].Green := eg;
+      Vertex [2].Blue := eb;
 
-      vert [3].Red := sr;
-      vert [3].Green := sg;
-      vert [3].Blue := sb;
+      Vertex [3].Red := sr;
+      Vertex [3].Green := sg;
+      Vertex [3].Blue := sb;
     end
   end;
 
-  GradientFill (dc, @vert [0], nVertices, p, nElements, mode);
+  GradientFill (dc, @Vertex [0], nVertices, p, nElements, mode);
 end;
 
 { TCustomGradientShape }
@@ -193,45 +193,44 @@ begin
   inherited;
 end;
 
-procedure TCustomGradientShape.SetPen(const value : TPen);
+procedure TCustomGradientShape.SetPen(const value: TPen);
 begin
-  fPen.Assign(Value);
+  FPen.Assign(Value);
 end;
 
-procedure TCustomGradientShape.SetStartColor(const value : TColor);
+procedure TCustomGradientShape.SetStartColor(const value: TColor);
 begin
-  if fStartColor <> value then
+  if FStartColor <> value then
   begin
-    fStartColor := Value;
-    Invalidate
+    FStartColor := Value;
+    Invalidate;
   end
 end;
 
 procedure TCustomGradientShape.StyleChanged(Sender: TObject);
 begin
-  Invalidate
+  Invalidate;
 end;
 
 procedure TCustomGradientShape.WMEraseBkgnd(var Message: TWmEraseBkgnd);
 begin
-  Message.Result := 1
-
+  Message.Result := 1;
 end;
 
 { TCustomGradientShapeRect }
 
 procedure TCustomGradientShapeRect.Paint;
 begin
-  GradientRect (Canvas.Handle, RectType, left, top, left + width, top + height, StartColor, color);
+  GradientRect(Canvas.Handle, RectType, left, top, left + width, top + height, StartColor, color);
 end;
 
 procedure TCustomGradientShapeRect.SetRectType(const Value: TGradientShapeRectType);
 begin
-  if Value <> fRectType then
+  if Value <> FRectType then
   begin
-    fRectType := Value;
-    Invalidate
-  end
+    FRectType := Value;
+    Invalidate;
+  end;
 end;
 
 end.

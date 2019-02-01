@@ -10,20 +10,17 @@ uses
 type
   TfmProperties = class(TfmPropertyBase)
     procedure FormDestroy(Sender: TObject);
-  private
-  protected
   public
     constructor Create(AOwner : TComponent); override;
   end;
 
-var
-  fmProperties: TfmProperties;
-
 implementation
 
-uses unitCredProperties, PropertyPageProgramSettings, PropertyPageRCSettings;
+uses
+  unitCredProperties, PropertyPageProgramSettings, PropertyPageRCSettings;
 
 {$R *.DFM}
+
 { TfmProperties }
 
 constructor TfmProperties.Create(AOwner: TComponent);

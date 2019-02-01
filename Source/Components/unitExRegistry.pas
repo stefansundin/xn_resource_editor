@@ -69,7 +69,7 @@ type
 
   public
     destructor Destroy; override;
-    procedure SetRoot (root: HKey; const server: string);
+    procedure SetRoot(root: HKey; const server: string);
     procedure CopyValueFromReg (const valueName: string; otherReg: TExRegistry; deleteSource: Boolean);
     procedure CopyKeyFromReg (const keyName: string; otherReg: TExRegistry; deleteSource: Boolean);
     function GetValueType(const valueName: string): DWORD;
@@ -81,8 +81,8 @@ type
     procedure ImportFromStream (stream: TStream);
     procedure WriteTypedBinaryData(const valueName: string; tp: Integer; var data; size: Integer);
     procedure Walk(walkProc: TWalkProc; valuesRequired: Boolean);
-    function FindFirst (const data: string; params: TSearchParams; MatchWholeString: Boolean; var retPath, retValue: string): Boolean;
-    function FindNext (var retPath, retValue: string): Boolean;
+    function FindFirst(const data: string; params: TSearchParams; MatchWholeString: Boolean; var retPath, retValue: string): Boolean;
+    function FindNext(var retPath, retValue: string): Boolean;
     procedure CancelSearch;
     procedure GetValuesSize(var size: Integer);
 
@@ -103,13 +103,13 @@ type
 
 implementation
 
-function MakeCStringConst (const s: string; len: Integer = -1): string;
+function MakeCStringConst(const s: string; len: Integer = -1): string;
 var
   i: Integer;
 begin
   Result := '';
   if len = -1 then
-    len := Length (s);
+    len := Length(s);
   for i := 1 to len do
   begin
     if s[i] in ['\', '"'] then
@@ -308,7 +308,7 @@ begin
   if FLastExportKey <> keyName then
   begin
     FExportStrings.Add ('');
-// TODO    FExportStrings.Add (Format ('[%s\%s]', [rootKeyName(localRoot), keyName]));
+// TODO    FExportStrings.Add (Format('[%s\%s]', [rootKeyName(localRoot), keyName]));
 
     FLastExportKey := keyName;
   end;
@@ -318,31 +318,31 @@ begin
     if valueName = '' then
       st := '@='
     else
-      st := Format ('"%s"=', [MakeCStringConst (valueName)]);
+      st := Format('"%s"=', [MakeCStringConst(valueName)]);
 
     case dataType of
       REG_DWORD :
       begin
-        st1 := LowerCase(Format ('%8.8x', [PDWORD (data)^]));
-        st := st + format ('dword:%s', [st1])
+        st1 := LowerCase(Format('%8.8x', [PDWORD (data)^]));
+        st := st + format('dword:%s', [st1])
       end;
 
       REG_SZ    :
-          st := st + format ('"%s"', [MakeCStringConst (PChar (data), dataLen - 1)]);
+          st := st + format('"%s"', [MakeCStringConst(PChar (data), dataLen - 1)]);
 
       else
       begin
         if dataType = REG_BINARY then
           st := st + 'hex:'
         else
-          st := st + format ('hex(%d):', [dataType]);
+          st := st + format('hex(%d):', [dataType]);
         for j := 0 to dataLen - 1 do
         begin
-          st1 := LowerCase(format ('%02.2x', [Byte(PChar (data) [j])]));
+          st1 := LowerCase(format('%02.2x', [Byte(PChar (data) [j])]));
           if j < dataLen - 1 then
             st1 := st1 + ',';
 
-          if Length (st) + Length (st1) >= 77 then
+          if Length(st) + Length(st1) >= 77 then
           begin
             FExportStrings.Add (st + st1 + '\');
             st := '  ';
@@ -368,7 +368,7 @@ begin
   finally
     FExportStrings.SaveToStream (strm);
     FExportStrings.Free;
-    FExportExcludeKeys := Nil;
+    FExportExcludeKeys := nil;
   end
 end;
 
@@ -412,7 +412,7 @@ begin
   FSearchString := UpperCase(data);
   FSearchParams := params;
   FMatchWholeString := MatchWholeString;
-  Result := FindNext (retPath, retValue);
+  Result := FindNext(retPath, retValue);
 end;
 
 function TExRegistry.FindNext(var retPath, retValue: string): Boolean;
@@ -533,7 +533,7 @@ var
 
   procedure SyntaxError;
   begin
-    raise Exception.CreateFmt ('Syntax error in reg stream at line %d', [i])
+    raise Exception.CreateFmt('Syntax error in reg stream at line %d', [i])
   end;
 
   procedure CreateNewKey;
@@ -543,10 +543,10 @@ var
     r: HKEY;
   begin
     Delete(st, 1, 1);
-    if st [Length (st)] <> ']' then
+    if st [Length(st)] <> ']' then
       SyntaxError;
 
-    Delete(st, Length (st), 1);
+    Delete(st, Length(st), 1);
 
     p := pos ('\', st);
     if p = 0 then
@@ -561,7 +561,7 @@ var
     if r = $ffffffff then
       SyntaxError;
 
-    SetRoot (r, FSaveServer);
+    SetRoot(r, FSaveServer);
     OpenKey('\' + st, True)
   end;
 
@@ -574,7 +574,7 @@ var
     i := 2;
     repeat
       eos := False;
-      while i <= Length (st) do
+      while i <= Length(st) do
       begin
         if st [i] = '"' then
         begin
@@ -585,7 +585,7 @@ var
         if st [i] = '\' then
           Inc(i);
 
-        if i <= Length (st) then
+        if i <= Length(st) then
           Result := Result + st [i];
 
         Inc(i)
@@ -608,7 +608,7 @@ var
   begin
     i := 1;
     Result := '';
-    while i <= Length (st) do
+    while i <= Length(st) do
     begin
       if st [i] in ['0'..'9', 'a'..'f', 'A'..'F'] then
         val := val + st [i]
@@ -616,7 +616,7 @@ var
       begin
         if val <> '' then
         begin
-          Result := Result + chr (StrToInt ('$' + val));
+          Result := Result + chr (StrToInt('$' + val));
           val := ''
         end
       end;
@@ -649,7 +649,7 @@ var
       s := ''
     end;
 
-    st := TrimLeft (st);
+    st := TrimLeft(st);
 
     if st = '' then
       SyntaxError;
@@ -659,21 +659,21 @@ var
 
     Delete(st, 1, 1);
 
-    st := TrimLeft (st);
+    st := TrimLeft(st);
 
     if st [1] = '"' then
       WriteString (s, GetCString (st, i))
     else
     begin
       p := 1;
-      while(p <= Length (st)) and not (st [p] in [':', '(', ' ']) do
+      while(p <= Length(st)) and not (st [p] in [':', '(', ' ']) do
         Inc(p);
 
       fn := Copy(st, 1, p - 1);
 
-      st := TrimLeft (Copy(st, p, MaxInt));
+      st := TrimLeft(Copy(st, p, MaxInt));
 
-      if CompareText (fn, 'hex') = 0 then
+      if CompareText(fn, 'hex') = 0 then
       begin
         tp := 3;
         if st [1] = '(' then
@@ -681,13 +681,13 @@ var
           Delete(st, 1, 1);
           fn := '';
           p := 1;
-          while(p <= Length (st)) and (st [p] <> ')') do
+          while(p <= Length(st)) and (st [p] <> ')') do
           begin
             fn := fn + st [p];
             Inc(p)
           end;
 
-          tp := StrToInt (fn);
+          tp := StrToInt(fn);
           st := Trim (Copy(st, p + 1, MaxInt));
         end;
 
@@ -698,16 +698,16 @@ var
 
         buf := GetBinaryBuffer (st);
 
-        WriteTypedBinaryData(s, tp, PChar (buf)^, Length (buf));
+        WriteTypedBinaryData(s, tp, PChar (buf)^, Length(buf));
       end
       else
-        if CompareText (fn, 'dword') = 0 then
+        if CompareText(fn, 'dword') = 0 then
         begin
           if st [1] <> ':' then
             SyntaxError;
 
           Delete(st, 1, 1);
-          WriteInteger (s, StrToInt ('$' + TrimLeft (st)))
+          WriteInteger (s, StrToInt('$' + TrimLeft(st)))
         end
         else
           SyntaxError
@@ -737,17 +737,17 @@ begin
       st := Trim (strings[i]);
 
       if st <> '' then
-        while st [Length (st)] = '\' do
+        while st [Length(st)] = '\' do
         begin
           Inc(i);
-          Delete(st, Length (st), 1);
+          Delete(st, Length(st), 1);
           if i < strings.Count then
             st := st + strings[i]
           else
             break
         end;
 
-      if (Length (st) > 0) and (st [1] <> ';') then
+      if (Length(st) > 0) and (st [1] <> ';') then
       begin
         case st [1] of
           '[': CreateNewKey;
@@ -814,8 +814,8 @@ begin
   RootKey := root;
   FLocalRoot := root;
   if server <> '' then
-    if not RegistryConnect ('\\' + server) then
-      Raise Exception.CreateFmt (errUnableToConnect, [server, GetLastError])
+    if not RegistryConnect('\\' + server) then
+      Raise Exception.CreateFmt(errUnableToConnect, [server, GetLastError])
 end;
 
 procedure TExRegistry.StartExport;
@@ -862,7 +862,7 @@ var
     if err = ERROR_SUCCESS then
     try
       Inc(level);
-      defaultValueLen := sizeof (defaultValue);
+      defaultValueLen := SizeOf(defaultValue);
 
       err := RegQueryInfoKey(k, defaultValue, @defaultValueLen, Nil, @cSubkeys, Nil, Nil, @cValues, nil, @maxValueLen, nil, nil);
       if (err <> ERROR_SUCCESS) and (err <> ERROR_ACCESS_DENIED) then
@@ -880,7 +880,7 @@ var
 
           for i := 0 to cValues - 1 do
           begin
-            valueNameLen := sizeof (valueName);
+            valueNameLen := SizeOf(valueName);
             valueLen := maxValueLen;
             if valuesRequired then
               err := RegEnumValue(k, i, valueName, valueNameLen, Nil, @tp, PByte(buffer), @valueLen)
@@ -897,7 +897,7 @@ var
 
         for i := 0 to cSubkeys - 1 do
         begin
-          keyLen := sizeof (keyName);
+          keyLen := SizeOf(keyName);
           RegEnumKey(k, i, keyName, keyLen);
 
           if not ((level = 1) and Assigned (FExportExcludeKeys) and (FExportExcludeKeys.IndexOf(keyName) >= 0)) then
@@ -935,7 +935,7 @@ var
 begin
   size := 0;
   for i := 0 to strings.Count - 1 do
-    Inc(size, Length (strings[i]) + 1);
+    Inc(size, Length(strings[i]) + 1);
   Inc(size);
   GetMem (buffer, size);
   try
@@ -1021,9 +1021,9 @@ var
 begin
   msg := GetErrorMessage(FCode);
   if msg = '' then
-    Result := Format ('Error %d', [FCode])
+    Result := Format('Error %d', [FCode])
   else
-    Result := Format ('Error %d: %s', [FCode, msg])
+    Result := Format('Error %d: %s', [FCode, msg])
 end;
 
 { TSearchNode }

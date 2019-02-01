@@ -79,7 +79,7 @@ type
 
     constructor Create(AOwner : TObject; const AName : WideString);
     procedure SetName(const value : WideString); virtual;
-    procedure AddNameToUndoList (const Desc : string; const nm : wideString = '');
+    procedure AddNameToUndoList(const Desc : string; const nm : wideString = '');
   public
     destructor Destroy; override;
     procedure Undo;
@@ -213,7 +213,7 @@ type
     function GetSectionCount: Integer;
     function GetExportCount: Integer;
     function GetImportCount: Integer;
-    function GetImport (idx : Integer) : PImageImportDirectory;
+    function GetImport(idx : Integer) : PImageImportDirectory;
     function GetExportName(idx: Integer): string;
     function GetExportOrdinal(idx: Integer): Integer;
     function GetResourceSection: TResExamSection;
@@ -249,7 +249,8 @@ function GetTypeName(const tp : string) : string;
 
 implementation
 
-uses unitResourceGraphics, unitResourceToolbar;
+uses
+  Types, unitResourceGraphics, unitResourceToolbar;
 
 const
   RT_HTML = MakeIntResource(23);
@@ -318,7 +319,7 @@ function GetTypeName(const tp : string) : string;
 var
   i : Integer;
 begin
-  i := ResourceNameToInt (tp);
+  i := ResourceNameToInt(tp);
 
   case i of
     Integer (RT_BITMAP)       : Result := rstBitmap;
@@ -364,7 +365,7 @@ var
 begin
   Result := WideUpperCase(st);
 
-  for i := 1 to Length (Result) do
+  for i := 1 to Length(Result) do
     if Result [i] = ' ' then
       Result [i] := '_';
 end;
@@ -456,8 +457,8 @@ var
 begin
   FSections.Clear;
 
-  currentType := Nil;
-  currentName := Nil;
+  currentType := nil;
+  currentName := nil;
 
   if ExportCount > 0 then
   begin
@@ -490,7 +491,7 @@ begin
       res := Resource [i];
       if (currentType = Nil) or (currentType.Name <> res.ResourceType) then
       begin
-        currentName := Nil;
+        currentName := nil;
         if res is TIconCursorResourceDetails then
           Continue;
         currentType := TResExamType.Create(self, res.ResourceType);
@@ -644,7 +645,7 @@ var
 begin
   if FName = Value then Exit;
   wst := FixResourceName(Value);
-  AddNameToUndoList (rstChangeResourceName);
+  AddNameToUndoList(rstChangeResourceName);
   FName := wst;
   ReplaceChildResourceNames (self);
 end;
@@ -690,7 +691,7 @@ var
 begin
   if FName = Value then Exit;
   wst := FixResourceName(Value);
-  AddNameToUndoList (rstChangeCustomResourceType);
+  AddNameToUndoList(rstChangeCustomResourceType);
   FName := wst;
   ReplaceChildResourceTypes (self);
 end;
@@ -715,7 +716,7 @@ end;
 
 function TResExamElement.GetElement(idx: Integer): TResExamElement;
 begin
-  if Assigned(FElements) then Result := TResExamElement (FElements[idx]) else Result := Nil
+  if Assigned(FElements) then Result := TResExamElement(FElements[idx]) else Result := Nil
 end;
 
 { TResExamResource }
@@ -738,7 +739,7 @@ begin
   res := TIconCursorResourceDetails (FResource);
 
   pf := PixelFormatToString (res.PixelFormat);
-  Result := Format ('%dx%d %s', [res.Width, res.Height, pf]);
+  Result := Format('%dx%d %s', [res.Width, res.Height, pf]);
 end;
 
 function TResExamIconCursor.GetOwner: TResExamLang;
@@ -751,7 +752,7 @@ var
   i : Integer;
 begin
   i := 0;
-  Result := Nil;
+  Result := nil;
   while i < SectionCount do
     if Section [i].Name = 'Resources' then
     begin
@@ -861,9 +862,9 @@ begin
     FUndoNames := TObjectList.Create;
 
   if nm = '' then
-    FUndoNames.Insert (0, TUndoName.Create(Desc, Name))
+    FUndoNames.Insert(0, TUndoName.Create(Desc, Name))
   else
-    FUndoNames.Insert (0, TUndoName.Create(Desc, nm));
+    FUndoNames.Insert(0, TUndoName.Create(Desc, nm));
 
   if not FRedoing then
     if Assigned(FRedoNames) then
@@ -941,7 +942,7 @@ begin
     if not Assigned(FRedoNames) then
       FRedoNames := TObjectList.Create;
       
-    FRedoNames.Insert (0, oldName);
+    FRedoNames.Insert(0, oldName);
     oldName := Nil
   finally
     oldName.Free

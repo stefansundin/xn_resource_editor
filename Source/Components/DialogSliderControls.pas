@@ -2,7 +2,8 @@ unit DialogSliderControls;
 
 interface
 
-uses Windows, Classes, SysUtils, cmpDialogEditor, DialogConsts, CommCtrl;
+uses
+  Windows, Classes, SysUtils, cmpDialogEditor, DialogConsts, CommCtrl;
 
 type
 TSliderControlInfo = class (TStandardControlInfo)
@@ -22,7 +23,8 @@ end;
 
 implementation
 
-uses DialogStrings;
+uses
+  DialogStrings;
 
 const
   SliderControlPropertyGeneralCount = 0;
@@ -53,17 +55,17 @@ end;
 function TSliderControlInfo.GetPropertyCount(
   kind: TPropertyKind): Integer;
 begin
-  Result := inherited GetPropertyCount (kind) + SliderControlPropertyCount [kind]
+  Result := inherited GetPropertyCount(kind) + SliderControlPropertyCount [kind]
 end;
 
 function TSliderControlInfo.GetPropertyEnumCount(kind: TPropertyKind;
   idx: Integer): Integer;
 begin
-  if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumCount (kind, idx)
+  if idx < inherited GetPropertyCount(kind) then
+    Result := inherited GetPropertyEnumCount(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     if idx = 1 then
       Result := 3
     else
@@ -74,11 +76,11 @@ end;
 function TSliderControlInfo.GetPropertyEnumName(kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     if idx = 1 then
       case enum of
         0 : Result := rstBoth;
@@ -95,11 +97,11 @@ end;
 function TSliderControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyName(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := '';
      case kind of
 //      pkGeneral : Result := StaticControlPropertyGeneralName [idx];
@@ -112,11 +114,11 @@ end;
 function TSliderControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyType(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := ptInteger;
     case kind of
 //      pkGeneral : Result := StaticControlPropertyGeneralType [idx];
@@ -129,11 +131,11 @@ end;
 function TSliderControlInfo.GetPropertyValue(kind: TPropertyKind;
   idx: Integer): Variant;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
 
     case kind of
       pkStyle :
@@ -167,11 +169,11 @@ procedure TSliderControlInfo.SetPropertyValue(kind: TPropertyKind;
 var
   recreateRequired : Boolean;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     recreateRequired := True;
 
     case kind of

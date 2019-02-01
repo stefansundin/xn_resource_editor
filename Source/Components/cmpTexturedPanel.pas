@@ -15,7 +15,7 @@ type
     FTextureKind: TTextureKind;
     procedure PictureChanged(Sender: TObject);
     procedure SetPicture(const Value: TPicture);
-    procedure TileRect (rect : TRect);
+    procedure TileRect(rect : TRect);
     procedure SetTextureKind(const Value: TTextureKind);
   protected
     procedure Paint; override;
@@ -78,10 +78,10 @@ begin
     if TExtureKind <> tkTile then
     begin
       Canvas.Brush.Color := Color;
-      Canvas.FillRect (Rect)
+      Canvas.FillRect(Rect)
     end;
-    TileRect (rect);
-    InflateRect (rect, -BorderWidth, -BorderWidth)
+    TileRect(rect);
+    InflateRect(rect, -BorderWidth, -BorderWidth)
   end
   else
     Frame3D(Canvas, Rect, Color, Color, BorderWidth);
@@ -134,9 +134,9 @@ end;
 procedure TTexturedPanel.TileRect(rect: TRect);
 var
   r : TRect;
-  procedure BltRect (rect : TRect);
+  procedure BltRect(rect : TRect);
   begin
-    BitBlt (Canvas.Handle, rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top, FBitmap.Canvas.Handle, 0, 0, SRCCOPY)
+    BitBlt(Canvas.Handle, rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top, FBitmap.Canvas.Handle, 0, 0, SRCCOPY)
   end;
 begin
   r.Top := rect.Top;
@@ -153,7 +153,7 @@ begin
       if r.Bottom > rect.Bottom then
         r.Bottom := rect.Bottom;
 
-      BltRect (r);
+      BltRect(r);
 
       r.Left := r.Right;
       if textureKind = tkTileLeft then

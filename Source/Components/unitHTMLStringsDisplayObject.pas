@@ -2,7 +2,9 @@ unit unitHTMLStringsDisplayObject;
 
 interface
 
-uses Windows, Classes, SysUtils, Graphics, Forms, cmpMessageDisplay, OleCtrls, SHDocVw, ComObj, ActiveX, ShlObj, MSHTML, ShellAPI;
+uses
+  Windows, Classes, SysUtils, Graphics, Forms, OleCtrls, SHDocVw, ComObj,
+  ActiveX, ShlObj, MSHTML, ShellAPI, cmpMessageDisplay;
 
 type                                                     
   THTMLStringsDisplayObjectLink = class (TWinControlObjectLink)
@@ -20,7 +22,7 @@ type
     procedure RecalcHeight;
     procedure LoadFromString (const st: string);
   protected
-    class function DisplaysObject (obj: TObject): Boolean; override;
+    class function DisplaysObject(obj: TObject): Boolean; override;
     procedure SetHeight(const Value: Integer); override;
     procedure SetWidth(const Value: Integer); override;
     procedure SetObj (const Value: TObject); override;

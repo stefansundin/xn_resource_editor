@@ -1,7 +1,7 @@
 (*======================================================================*
  | unit TextResourceForm                                                |
  |                                                                      |
- | Display / edit text (string and message) resources                   |
+ | Display / edit text(string and message) resources                   |
  |                                                                      |
  | Beware - string table ids must be numeric, consecutive, etc.         |
  |                                                                      |
@@ -391,8 +391,8 @@ end;
 
 procedure TfmTextResource.UpdateFonts;
 begin
-  UseInternationalFont (mmoMessage.Font);
-  UseInternationalFont (vstStrings.Font);
+  UseInternationalFont(mmoMessage.Font);
+  UseInternationalFont(vstStrings.Font);
 end;
 
 (*----------------------------------------------------------------------*
@@ -444,9 +444,9 @@ begin
 
   try
     if fHexMode then
-      newId := StrToInt ('$' + NewText)
+      newId := StrToInt('$' + NewText)
     else
-      newID := StrToInt (NewText);
+      newID := StrToInt(NewText);
 
     if st.Id <> newID then
     begin
@@ -489,7 +489,7 @@ end;
 procedure TfmTextResource.TidyUp;
 begin
  if mmoMessage.Visible then
-   mmoMessageExit (nil);
+   mmoMessageExit(nil);
 end;
 
 end.

@@ -2,7 +2,8 @@ unit DialogConsts;
 
 interface
 
-uses Windows, Classes, SysUTils;
+uses
+  Windows, Classes, SysUtils;
 
 const
   BUTTON_ID    = $80;
@@ -75,15 +76,15 @@ begin
   if id.isID then
   begin
     w := $ffff;
-    stream.Write(w, SizeOf (w));
+    stream.Write(w, SizeOf(w));
 
     w := id.id;
-    stream.Write(w, SizeOf (w))
+    stream.Write(w, SizeOf(w))
   end
   else
   begin
     ws := id.sz;
-    stream.Write(ws[1], (Length (ws) + 1) * SizeOf (WideChar))
+    stream.Write(ws[1], (Length(ws) + 1) * SizeOf(WideChar))
   end
 end;
 
@@ -94,7 +95,7 @@ begin
   result.isID := True;
   result.sz := st;
 
-  for i := 1 to Length (st) do
+  for i := 1 to Length(st) do
     if not (st [i] in ['0'..'9']) then
     begin
       result.isID := False;
@@ -103,7 +104,7 @@ begin
 
   if result.isID then
   begin
-    result.id := StrToInt (st);
+    result.id := StrToInt(st);
     if result.id > $ffff then
       result.isID := False
   end;

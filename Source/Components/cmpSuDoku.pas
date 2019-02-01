@@ -2,7 +2,8 @@ unit cmpSuDoku;
 
 interface
 
-uses Windows, Messages, Classes, SysUtils, Controls, Graphics, StdCtrls;
+uses
+  Windows, Messages, Classes, SysUtils, Controls, Graphics, StdCtrls;
 
 type
   TSuDokuData = array [0..8, 0..8] of Integer;
@@ -286,9 +287,9 @@ begin
   begin
     if (i = 3) or (i = 6) then
     begin
-      r1 := Rect (FGridXCoords[i] - 2, r.Top - 1, FGridXCoords[i] + 2, r.Bottom + 2);
+      r1 := Rect(FGridXCoords[i] - 2, r.Top - 1, FGridXCoords[i] + 2, r.Bottom + 2);
       DrawEdge(Canvas.Handle, r1, EDGE_SUNKEN, BF_RECT);
-      r1 := Rect (r.Left - 2, FGridYCoords[i] - 1, r.Right + 2, FGridYCoords[i] + 2);
+      r1 := Rect(r.Left - 2, FGridYCoords[i] - 1, r.Right + 2, FGridYCoords[i] + 2);
       DrawEdge(Canvas.Handle, r1, EDGE_SUNKEN, BF_RECT)
     end
   end;
@@ -307,7 +308,7 @@ begin
         clr := FCellColors[x, y];
         if clr <> -1 then
           Canvas.Font.Color := clr;
-        DrawText (canvas.Handle, PChar (IntToStr (i)), 1, r, DT_CENTER or DT_VCENTER or DT_SINGLELINE);
+        DrawText(canvas.Handle, PChar (IntToStr (i)), 1, r, DT_CENTER or DT_VCENTER or DT_SINGLELINE);
         if clr <> -1 then
           Canvas.Font.Color := Font.Color
       end;
@@ -318,7 +319,7 @@ begin
         r.Top := FGridYCoords[y];
         r.Right := r.Left + FGridXCoords[1];
         r.Bottom := r.Top + FGridYCoords[1];
-        InflateRect (r, -1, -1);
+        InflateRect(r, -1, -1);
         Inc(r.Bottom);
         Inc(r.Right);
         DrawEdge(Canvas.Handle, r, EDGE_ETCHED, BF_RECT);

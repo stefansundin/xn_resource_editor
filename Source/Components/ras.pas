@@ -694,7 +694,7 @@ const
   ET_RequireMax   = 2;  // Require max encryption
   ET_Optional     = 3;  // Do encryption if possible. None Ok.
 
-  VS_Default      = 0;   // default (PPTP for now)
+  VS_Default      = 0;   // default(PPTP for now)
   VS_PptpOnly     = 1;	// Only PPTP is attempted.
   VS_PptpFirst	  = 2;   // PPTP is tried first.
   VS_L2tpOnly 	  = 3;	// Only L2TP is attempted.
@@ -1168,113 +1168,113 @@ TfnRasSetAutodialParamW = function ( dwDiallingLocation : DWORD; param : pointer
 TfnRasSetAutodialParam = function ( dwDiallingLocation : DWORD; param : pointer; cb : DWORD) : DWORD; stdcall;
 
 var
-RasDialA : TfnRasDialA = Nil;
-RasDialW : TfnRasDialW = Nil;
-RasDial  : TfnRasDial  = Nil;
+RasDialA : TfnRasDialA = nil;
+RasDialW : TfnRasDialW = nil;
+RasDial  : TfnRasDial  = nil;
 
-RasEnumConnectionsA : TfnRasEnumConnectionsA = Nil;
-RasEnumConnectionsW : TfnRasEnumConnectionsW = Nil;
-RasEnumConnections : TfnRasEnumConnections = Nil;
+RasEnumConnectionsA : TfnRasEnumConnectionsA = nil;
+RasEnumConnectionsW : TfnRasEnumConnectionsW = nil;
+RasEnumConnections : TfnRasEnumConnections = nil;
 
-RasEnumEntriesA : TfnRasEnumEntriesA = Nil;
-RasEnumEntriesW : TfnRasEnumEntriesW = Nil;
-RasEnumEntries : TfnRasEnumEntries = Nil;
+RasEnumEntriesA : TfnRasEnumEntriesA = nil;
+RasEnumEntriesW : TfnRasEnumEntriesW = nil;
+RasEnumEntries : TfnRasEnumEntries = nil;
 
-RasGetConnectStatusA : TfnRasGetConnectStatusA = Nil;
-RasGetConnectStatusW : TfnRasGetConnectStatusW = Nil;
-RasGetConnectStatus : TfnRasGetConnectStatus = Nil;
+RasGetConnectStatusA : TfnRasGetConnectStatusA = nil;
+RasGetConnectStatusW : TfnRasGetConnectStatusW = nil;
+RasGetConnectStatus : TfnRasGetConnectStatus = nil;
 
-RasGetErrorStringA : TfnRasGetErrorStringA = Nil;
-RasGetErrorStringW : TfnRasGetErrorStringW = Nil;
-RasGetErrorString : TfnRasGetErrorString = Nil;
+RasGetErrorStringA : TfnRasGetErrorStringA = nil;
+RasGetErrorStringW : TfnRasGetErrorStringW = nil;
+RasGetErrorString : TfnRasGetErrorString = nil;
 
-RASHangUpA : TfnRASHangUpA = Nil;
-RASHangUpW : TfnRASHangUpW = Nil;
-RASHangUp : TfnRASHangUp = Nil;
+RASHangUpA : TfnRASHangUpA = nil;
+RASHangUpW : TfnRASHangUpW = nil;
+RASHangUp : TfnRASHangUp = nil;
 
-RasGetProjectionInfoA : TfnRasGetProjectionInfoA = Nil;
-RasGetProjectionInfoW : TfnRasGetProjectionInfoW = Nil;
-RasGetProjectionInfo : TfnRasGetProjectionInfo = Nil;
-RasCreatePhonebookEntryA : TfnRasCreatePhonebookEntryA = Nil;
-RasCreatePhonebookEntryW : TfnRasCreatePhonebookEntryW = Nil;
-RasCreatePhonebookEntry : TfnRasCreatePhonebookEntry = Nil;
+RasGetProjectionInfoA : TfnRasGetProjectionInfoA = nil;
+RasGetProjectionInfoW : TfnRasGetProjectionInfoW = nil;
+RasGetProjectionInfo : TfnRasGetProjectionInfo = nil;
+RasCreatePhonebookEntryA : TfnRasCreatePhonebookEntryA = nil;
+RasCreatePhonebookEntryW : TfnRasCreatePhonebookEntryW = nil;
+RasCreatePhonebookEntry : TfnRasCreatePhonebookEntry = nil;
 
-RasEditPhonebookEntryA : TfnRasEditPhonebookEntryA = Nil;
-RasEditPhonebookEntryW : TfnRasEditPhonebookEntryW = Nil;
-RasEditPhonebookEntry : TfnRasEditPhonebookEntry = Nil;
+RasEditPhonebookEntryA : TfnRasEditPhonebookEntryA = nil;
+RasEditPhonebookEntryW : TfnRasEditPhonebookEntryW = nil;
+RasEditPhonebookEntry : TfnRasEditPhonebookEntry = nil;
 
-RasSetEntryDialParamsA : TfnRasSetEntryDialParamsA = Nil;
-RasSetEntryDialParamsW : TfnRasSetEntryDialParamsW = Nil;
-RasSetEntryDialParams : TfnRasSetEntryDialParams = Nil;
+RasSetEntryDialParamsA : TfnRasSetEntryDialParamsA = nil;
+RasSetEntryDialParamsW : TfnRasSetEntryDialParamsW = nil;
+RasSetEntryDialParams : TfnRasSetEntryDialParams = nil;
 
-RasGetEntryDialParamsA : TfnRasGetEntryDialParamsA = Nil;
-RasGetEntryDialParamsW : TfnRasGetEntryDialParamsW = Nil;
-RasGetEntryDialParams : TfnRasGetEntryDialParams = Nil;
+RasGetEntryDialParamsA : TfnRasGetEntryDialParamsA = nil;
+RasGetEntryDialParamsW : TfnRasGetEntryDialParamsW = nil;
+RasGetEntryDialParams : TfnRasGetEntryDialParams = nil;
 
-RasEnumDevicesA : TfnRasEnumDevicesA = Nil;
-RasEnumDevicesW : TfnRasEnumDevicesW = Nil;
-RasEnumDevices : TfnRasEnumDevices = Nil;
+RasEnumDevicesA : TfnRasEnumDevicesA = nil;
+RasEnumDevicesW : TfnRasEnumDevicesW = nil;
+RasEnumDevices : TfnRasEnumDevices = nil;
 
-RasGetCountryInfoA : TfnRasGetCountryInfoA = Nil;
-RasGetCountryInfoW : TfnRasGetCountryInfoW = Nil;
-RasGetCountryInfo : TfnRasGetCountryInfo = Nil;
+RasGetCountryInfoA : TfnRasGetCountryInfoA = nil;
+RasGetCountryInfoW : TfnRasGetCountryInfoW = nil;
+RasGetCountryInfo : TfnRasGetCountryInfo = nil;
 
-RasGetEntryPropertiesA : TfnRasGetEntryPropertiesA = Nil;
-RasGetEntryPropertiesW : TfnRasGetEntryPropertiesW = Nil;
-RasGetEntryProperties : TfnRasGetEntryProperties = Nil;
-RasSetEntryPropertiesA : TfnRasSetEntryPropertiesA = Nil;
-RasSetEntryPropertiesW : TfnRasSetEntryPropertiesW = Nil;
-RasSetEntryProperties : TfnRasSetEntryProperties = Nil;
-RasRenameEntryA : TfnRasRenameEntryA = Nil;
-RasRenameEntryW : TfnRasRenameEntryW = Nil;
-RasRenameEntry : TfnRasRenameEntry = Nil;
-RasDeleteEntryA : TfnRasDeleteEntryA = Nil;
-RasDeleteEntryW : TfnRasDeleteEntryW = Nil;
-RasDeleteEntry : TfnRasDeleteEntry = Nil;
+RasGetEntryPropertiesA : TfnRasGetEntryPropertiesA = nil;
+RasGetEntryPropertiesW : TfnRasGetEntryPropertiesW = nil;
+RasGetEntryProperties : TfnRasGetEntryProperties = nil;
+RasSetEntryPropertiesA : TfnRasSetEntryPropertiesA = nil;
+RasSetEntryPropertiesW : TfnRasSetEntryPropertiesW = nil;
+RasSetEntryProperties : TfnRasSetEntryProperties = nil;
+RasRenameEntryA : TfnRasRenameEntryA = nil;
+RasRenameEntryW : TfnRasRenameEntryW = nil;
+RasRenameEntry : TfnRasRenameEntry = nil;
+RasDeleteEntryA : TfnRasDeleteEntryA = nil;
+RasDeleteEntryW : TfnRasDeleteEntryW = nil;
+RasDeleteEntry : TfnRasDeleteEntry = nil;
 
-RasValidateEntryNameA : TfnRasValidateEntryNameA = Nil;
-RasValidateEntryNameW : TfnRasValidateEntryNameW = Nil;
-RasValidateEntryName : TfnRasValidateEntryName = Nil;
+RasValidateEntryNameA : TfnRasValidateEntryNameA = nil;
+RasValidateEntryNameW : TfnRasValidateEntryNameW = nil;
+RasValidateEntryName : TfnRasValidateEntryName = nil;
 
-RasGetSubEntryHandleA : TfnRasGetSubEntryHandleA = Nil;
-RasGetSubEntryHandleW : TfnRasGetSubEntryHandleW = Nil;
-RasGetSubEntryHandle : TfnRasGetSubEntryHandle = Nil;
-RasGetCredentialsA : TfnRasGetCredentialsA = Nil;
-RasGetCredentialsW : TfnRasGetCredentialsW = Nil;
-RasGetCredentials : TfnRasGetCredentials = Nil;
-RasSetCredentialsA : TfnRasSetCredentialsA = Nil;
-RasSetCredentialsW : TfnRasSetCredentialsW = Nil;
-RasSetCredentials : TfnRasSetCredentials = Nil;
-RasConnectionNotificationA : TfnRasConnectionNotificationA = Nil;
-RasConnectionNotificationW : TfnRasConnectionNotificationW = Nil;
-RasConnectionNotification : TfnRasConnectionNotification = Nil;
-RasGetSubEntryPropertiesA : TfnRasGetSubEntryPropertiesA = Nil;
-RasGetSubEntryPropertiesW : TfnRasGetSubEntryPropertiesW = Nil;
-RasGetSubEntryProperties : TfnRasGetSubEntryProperties = Nil;
-RasSetSubEntryPropertiesA : TfnRasSetSubEntryPropertiesA = Nil;
-RasSetSubEntryPropertiesW : TfnRasSetSubEntryPropertiesW = Nil;
-RasSetSubEntryProperties : TfnRasSetSubEntryProperties = Nil;
-RasGetAutodialAddressA : TfnRasGetAutodialAddressA = Nil;
-RasGetAutodialAddressW : TfnRasGetAutodialAddressW = Nil;
-RasGetAutodialAddress : TfnRasGetAutodialAddress = Nil;
-RasSetAutodialAddressA : TfnRasSetAutodialAddressA = Nil;
-RasSetAutodialAddressW : TfnRasSetAutodialAddressW = Nil;
-RasSetAutodialAddress : TfnRasSetAutodialAddress = Nil;
-RasEnumAutodialAddressesA : TfnRasEnumAutodialAddressesA = Nil;
-RasEnumAutodialAddressesW : TfnRasEnumAutodialAddressesW = Nil;
-RasEnumAutodialAddresses : TfnRasEnumAutodialAddresses = Nil;
-RasGetAutodialEnableA : TfnRasGetAutodialEnableA = Nil;
-RasGetAutodialEnableW : TfnRasGetAutodialEnableW = Nil;
-RasGetAutodialEnable : TfnRasGetAutodialEnable = Nil;
-RasSetAutodialEnableA : TfnRasSetAutodialEnableA = Nil;
-RasSetAutodialEnableW : TfnRasSetAutodialEnableW = Nil;
-RasSetAutodialEnable : TfnRasSetAutodialEnable = Nil;
-RasGetAutodialParamA : TfnRasGetAutodialParamA = Nil;
-RasGetAutodialParamW : TfnRasGetAutodialParamW = Nil;
-RasGetAutodialParam : TfnRasGetAutodialParam = Nil;
-RasSetAutodialParamA : TfnRasSetAutodialParamA = Nil;
-RasSetAutodialParamW : TfnRasSetAutodialParamW = Nil;
-RasSetAutodialParam : TfnRasSetAutodialParam = Nil;
+RasGetSubEntryHandleA : TfnRasGetSubEntryHandleA = nil;
+RasGetSubEntryHandleW : TfnRasGetSubEntryHandleW = nil;
+RasGetSubEntryHandle : TfnRasGetSubEntryHandle = nil;
+RasGetCredentialsA : TfnRasGetCredentialsA = nil;
+RasGetCredentialsW : TfnRasGetCredentialsW = nil;
+RasGetCredentials : TfnRasGetCredentials = nil;
+RasSetCredentialsA : TfnRasSetCredentialsA = nil;
+RasSetCredentialsW : TfnRasSetCredentialsW = nil;
+RasSetCredentials : TfnRasSetCredentials = nil;
+RasConnectionNotificationA : TfnRasConnectionNotificationA = nil;
+RasConnectionNotificationW : TfnRasConnectionNotificationW = nil;
+RasConnectionNotification : TfnRasConnectionNotification = nil;
+RasGetSubEntryPropertiesA : TfnRasGetSubEntryPropertiesA = nil;
+RasGetSubEntryPropertiesW : TfnRasGetSubEntryPropertiesW = nil;
+RasGetSubEntryProperties : TfnRasGetSubEntryProperties = nil;
+RasSetSubEntryPropertiesA : TfnRasSetSubEntryPropertiesA = nil;
+RasSetSubEntryPropertiesW : TfnRasSetSubEntryPropertiesW = nil;
+RasSetSubEntryProperties : TfnRasSetSubEntryProperties = nil;
+RasGetAutodialAddressA : TfnRasGetAutodialAddressA = nil;
+RasGetAutodialAddressW : TfnRasGetAutodialAddressW = nil;
+RasGetAutodialAddress : TfnRasGetAutodialAddress = nil;
+RasSetAutodialAddressA : TfnRasSetAutodialAddressA = nil;
+RasSetAutodialAddressW : TfnRasSetAutodialAddressW = nil;
+RasSetAutodialAddress : TfnRasSetAutodialAddress = nil;
+RasEnumAutodialAddressesA : TfnRasEnumAutodialAddressesA = nil;
+RasEnumAutodialAddressesW : TfnRasEnumAutodialAddressesW = nil;
+RasEnumAutodialAddresses : TfnRasEnumAutodialAddresses = nil;
+RasGetAutodialEnableA : TfnRasGetAutodialEnableA = nil;
+RasGetAutodialEnableW : TfnRasGetAutodialEnableW = nil;
+RasGetAutodialEnable : TfnRasGetAutodialEnable = nil;
+RasSetAutodialEnableA : TfnRasSetAutodialEnableA = nil;
+RasSetAutodialEnableW : TfnRasSetAutodialEnableW = nil;
+RasSetAutodialEnable : TfnRasSetAutodialEnable = nil;
+RasGetAutodialParamA : TfnRasGetAutodialParamA = nil;
+RasGetAutodialParamW : TfnRasGetAutodialParamW = nil;
+RasGetAutodialParam : TfnRasGetAutodialParam = nil;
+RasSetAutodialParamA : TfnRasSetAutodialParamA = nil;
+RasSetAutodialParamW : TfnRasSetAutodialParamW = nil;
+RasSetAutodialParam : TfnRasSetAutodialParam = nil;
 
 function RasGetStatusString (status : Integer) : string;
 function InitRasLibrary : boolean;

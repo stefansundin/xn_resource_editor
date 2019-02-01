@@ -423,7 +423,7 @@ var
   ByteCnt: Integer;
 begin
   if Focused then
-    HideCaret (handle);
+    HideCaret(handle);
   try
     inherited Paint;
     Canvas.Brush.Color := Self.Color;
@@ -462,7 +462,7 @@ begin
     end;
   finally
     if Focused then
-      ShowCaret (handle)
+      ShowCaret(handle)
   end
 end;
 
@@ -628,15 +628,15 @@ end;
 procedure THexDump.WMSetFocus(var Message: TWMSetFocus);
 begin
   inherited;
-  CreateCaret (handle, 0, 1, FItemHeight);
+  CreateCaret(handle, 0, 1, FItemHeight);
   SetCaretPos;
-  ShowCaret (Handle)
+  ShowCaret(Handle)
 end;
 
 procedure THexDump.WMKillFocus(var Message: TWMKillFocus);
 begin
   inherited;
-  HideCaret (Handle);
+  HideCaret(Handle);
   DestroyCaret
 end;
 
@@ -735,7 +735,7 @@ begin
       begin
         data := Byte(PChar (Address) [Offset]);
         changes := True;
-        b := StrToInt ('$' + ch);
+        b := StrToInt('$' + ch);
         if LowNibble then
           ch := Char (data and $f0 + b)
         else

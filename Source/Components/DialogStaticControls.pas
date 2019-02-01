@@ -2,7 +2,8 @@ unit DialogStaticControls;
 
 interface
 
-uses Windows, Classes, SysUtils, cmpDialogEditor, DialogConsts;
+uses
+  Windows, Classes, SysUtils, cmpDialogEditor, DialogConsts;
 
 type
   TStaticControlInfo = class (TStandardControlInfo)
@@ -106,17 +107,17 @@ end;
 
 function TStaticControlInfo.GetPropertyCount(Kind: TPropertyKind): Integer;
 begin
-  Result := inherited GetPropertyCount (Kind) + StaticControlPropertyCount [Kind]
+  Result := inherited GetPropertyCount(Kind) + StaticControlPropertyCount [Kind]
 end;
 
 function TStaticControlInfo.GetPropertyEnumCount(Kind: TPropertyKind;
   idx: Integer): Integer;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
-    Result := inherited GetPropertyEnumCount (Kind, idx)
+  if idx < inherited GetPropertyCount(Kind) then
+    Result := inherited GetPropertyEnumCount(Kind, idx)
   else
   begin
-//    Dec(idx, inherited GetPropertyCount (Kind));
+//    Dec(idx, inherited GetPropertyCount(Kind));
     Result := 0;
   end
 end;
@@ -124,11 +125,11 @@ end;
 function TStaticControlInfo.GetPropertyEnumName(Kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyEnumName(Kind, idx, enum)
   else
   begin
-//    Dec(idx, inherited GetPropertyCount (Kind));
+//    Dec(idx, inherited GetPropertyCount(Kind));
     Result := '';
   end
 end;
@@ -136,11 +137,11 @@ end;
 function TStaticControlInfo.GetPropertyName(Kind: TPropertyKind;
   idx: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyName(Kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
     Result := '';
     case Kind of
 //      pkGeneral: Result := StaticControlPropertyGeneralName [idx];
@@ -153,11 +154,11 @@ end;
 function TStaticControlInfo.GetPropertyType(Kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyType(Kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
     Result := ptInteger;
     case Kind of
 //      pkGeneral: Result := StaticControlPropertyGeneralType [idx];
@@ -170,11 +171,11 @@ end;
 function TStaticControlInfo.GetPropertyValue(Kind: TPropertyKind;
   idx: Integer): Variant;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyValue(Kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
 
     case Kind of
       pkStyle :
@@ -190,11 +191,11 @@ end;
 procedure TStaticControlInfo.SetPropertyValue(Kind: TPropertyKind;
   idx: Integer; const Value: Variant);
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     inherited SetPropertyValue(Kind, idx, Value)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
 
     case Kind of
       pkStyle :
@@ -225,23 +226,23 @@ end;
 function TPictureControlInfo.GetPropertyCount(
   Kind: TPropertyKind): Integer;
 begin
-  Result := inherited GetPropertyCount (Kind) + PictureControlPropertyCount [Kind];
+  Result := inherited GetPropertyCount(Kind) + PictureControlPropertyCount [Kind];
 end;
 
 function TPictureControlInfo.GetPropertyEnumCount(Kind: TPropertyKind;
   idx: Integer): Integer;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
-    Result := inherited GetPropertyEnumCount (Kind, idx)
+  if idx < inherited GetPropertyCount(Kind) then
+    Result := inherited GetPropertyEnumCount(Kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
     Result := 0;
 
     case Kind of
       pkGeneral :
         case idx of
-          0: if GetPropertyValue(Kind, inherited GetPropertyCount (Kind) + 2) = 0 then
+          0: if GetPropertyValue(Kind, inherited GetPropertyCount(Kind) + 2) = 0 then
                 Result := 4
               else
                 Result := 3;
@@ -259,11 +260,11 @@ end;
 function TPictureControlInfo.GetPropertyEnumName(Kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyEnumName(Kind, idx, enum)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
     Result := '';
 
     case Kind of
@@ -303,11 +304,11 @@ end;
 function TPictureControlInfo.GetPropertyName(Kind: TPropertyKind;
   idx: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyName(Kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
     Result := '';
     case Kind of
       pkGeneral: Result := PictureControlPropertyGeneralName [idx];
@@ -320,11 +321,11 @@ end;
 function TPictureControlInfo.GetPropertyType(Kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyType(Kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
     Result := ptInteger;
     case Kind of
       pkGeneral: Result := PictureControlPropertyGeneralType [idx];
@@ -340,11 +341,11 @@ var
   tp: Integer;
   s: Integer;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyValue(Kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
 
     case Kind of
       pkGeneral:
@@ -389,7 +390,7 @@ begin
 
       pkStyle :
         case idx of
-          0: if GetPropertyValue(pkGeneral, inherited GetPropertyCount (pkGeneral) + 2) < 2 then
+          0: if GetPropertyValue(pkGeneral, inherited GetPropertyCount(pkGeneral) + 2) < 2 then
                 Result := Unassigned
               else
               begin
@@ -406,7 +407,7 @@ begin
                       Result := 0
               end;
 
-          1: if GetPropertyValue(pkGeneral, inherited GetPropertyCount (pkGeneral) + 2) < 2 then
+          1: if GetPropertyValue(pkGeneral, inherited GetPropertyCount(pkGeneral) + 2) < 2 then
                 Result := Unassigned
               else
                 Result := HasStyle [SS_RIGHTJUST];
@@ -427,11 +428,11 @@ var
 begin
   FrameChanged := False;
   RecreateRequired := False;
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     inherited SetPropertyValue(Kind, idx, Value)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
 
     case Kind of
       pkGeneral :
@@ -461,7 +462,7 @@ begin
                 end;
 
             1: begin
-                  fTitleSzOrID := StringtoSzOrID (value);
+                  FTitleSzOrID := StringtoSzOrID (value);
                   RecreateRequired := True
                 end;
 
@@ -527,17 +528,17 @@ end;
 function TCaptionedStaticControlInfo.GetPropertyCount(
   Kind: TPropertyKind): Integer;
 begin
-  Result := inherited GetPropertyCount (Kind) + CaptionedStaticControlPropertyCount [Kind]
+  Result := inherited GetPropertyCount(Kind) + CaptionedStaticControlPropertyCount [Kind]
 end;
 
 function TCaptionedStaticControlInfo.GetPropertyEnumCount(
   Kind: TPropertyKind; idx: Integer): Integer;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
-    Result := inherited GetPropertyEnumCount (Kind, idx)
+  if idx < inherited GetPropertyCount(Kind) then
+    Result := inherited GetPropertyEnumCount(Kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
     Result := 0;
 
     case Kind of
@@ -553,11 +554,11 @@ end;
 function TCaptionedStaticControlInfo.GetPropertyEnumName(
   Kind: TPropertyKind; idx, enum: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyEnumName(Kind, idx, enum)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
     Result := '';
 
     case Kind of
@@ -584,11 +585,11 @@ end;
 function TCaptionedStaticControlInfo.GetPropertyName(Kind: TPropertyKind;
   idx: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyName(Kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
     Result := '';
     case Kind of
       pkGeneral: Result := CaptionedStaticControlPropertyGeneralName [idx];
@@ -601,11 +602,11 @@ end;
 function TCaptionedStaticControlInfo.GetPropertyType(Kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyType(Kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
     Result := ptInteger;
     case Kind of
       pkGeneral: Result := CaptionedStaticControlPropertyGeneralType [idx];
@@ -618,11 +619,11 @@ end;
 function TCaptionedStaticControlInfo.GetPropertyValue(Kind: TPropertyKind;
   idx: Integer): Variant;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyValue(Kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
 
     case Kind of
       pkGeneral :
@@ -660,11 +661,11 @@ var
   RecreateRequired: Boolean;
 begin
   RecreateRequired := False;
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     inherited SetPropertyValue(Kind, idx, Value)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
 
     case Kind of
       pkGeneral :

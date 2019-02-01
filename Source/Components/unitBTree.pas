@@ -40,7 +40,7 @@ unit unitBTree;
 interface
 
 uses
-  Windows, Classes, SysUtils, ConTnrs, unitObjectCache;
+  Windows, Classes, SysUtils, Contnrs, unitObjectCache;
 
 type
   //----------------------------------------------------------------
@@ -72,9 +72,9 @@ const
 
   PAGE_SIZE = 4096;
 //  PAGE_SIZE = 256;
-  PAGE_DATA_SIZE = PAGE_SIZE - sizeof (TPageHeader);
+  PAGE_DATA_SIZE = PAGE_SIZE - SizeOf(TPageHeader);
 
-  MAX_KEY_LEN = (PAGE_DATA_SIZE div 2) - SizeOf (TNodeHeader);
+  MAX_KEY_LEN = (PAGE_DATA_SIZE div 2) - SizeOf(TNodeHeader);
 
   NO_CACHED_PAGES = 64;
 
@@ -91,7 +91,7 @@ type
                                   // Let the user use the otherwise unused
                                   // space in the file header.
     ExtraDataSize: word;
-    ExtraData: array [0..PAGE_SIZE - 5 * SizeOf (Integer) - 8 - 1 - sizeof (word)] of byte;
+    ExtraData: array [0..PAGE_SIZE - 5 * SizeOf(Integer) - 8 - 1 - SizeOf(word)] of byte;
   end;
 
   //----------------------------------------------------------------
@@ -176,7 +176,7 @@ type
 
     procedure Open;
     procedure Close;
-    procedure Flush (clearPageCache: Boolean);
+    procedure Flush(clearPageCache: Boolean);
     procedure SaveFileInfo;
 
     function GetPage(pageNo: Integer): TPage;
@@ -196,7 +196,7 @@ type
     procedure SetDuplicates(const Value: TBTreeDuplicates);
     function GetDuplicates: TBTreeDuplicates;
     function GetExtraData: string;
-    procedure ResetNodeHeight (pg: TPage; idx: Integer);
+    procedure ResetNodeHeight(pg: TPage; idx: Integer);
     procedure SetExtraData(Value: string);
     function GetIndexOfKey(var key: string): Integer;
   protected
@@ -205,7 +205,7 @@ type
 
     function AddKey(const key: string): Boolean;
     function DeleteKey(const key: string): Boolean;
-    procedure ForEach (proc: TRawBTreeForEachProc; param: Integer);
+    procedure ForEach(proc: TRawBTreeForEachProc; param: Integer);
     function Find (key: string; var fKey: string): Boolean;
 
     property Key [idx: Integer]: string read GetKey;
@@ -255,9 +255,9 @@ type
     constructor Create(ABTree: TRawBTree);
     destructor Destroy; override;
 
-    function First (var key: string): Boolean;
-    function Last (var key: string): Boolean;
-    function Next (var key: string): Boolean;
+    function First(var key: string): Boolean;
+    function Last(var key: string): Boolean;
+    function Next(var key: string): Boolean;
     function Prev (var key: string): Boolean;
     function Find (var key: string): Boolean;
 
@@ -277,7 +277,7 @@ type
   public
     function AddKey(const key: string; DataRec: Integer): Boolean;
     function DeleteKey(const key: string): Boolean;
-    procedure ForEach (proc: TBTreeForEachProc);
+    procedure ForEach(proc: TBTreeForEachProc);
     function Find (key: string; var dataRec: Integer): Boolean;
 
     function GetKey(idx: Integer; var dataRec: Integer): string;
@@ -291,13 +291,13 @@ type
   TDataTree = class (TRawBTree)
   private
     function IntToBin (i: Integer): string;
-    function BinToInt (const st: string): Integer;
+    function BinToInt(const st: string): Integer;
   protected
     function CompareKeys (const k1, k2: string): Integer; override;
   public
     function AddKey(n: Integer; const st: string): Boolean;
     function DeleteKey(n: Integer): Boolean;
-    procedure ForEach (proc: TDataTreeForEachProc);
+    procedure ForEach(proc: TDataTreeForEachProc);
     function Find (n: Integer; var st: string): Boolean;
     function GetKey(idx: Integer; var dataRec: Integer): string;
   end;
@@ -307,9 +307,9 @@ type
     procedure SplitKey(var key: string; var dataRec: Integer);
   public
     constructor Create(ABTree: TBTree);
-    function First (var key: string; var dataRec: Integer): Boolean;
-    function Last (var key: string; var dataRec: Integer): Boolean;
-    function Next (var key: string; var dataRec: Integer): Boolean;
+    function First(var key: string; var dataRec: Integer): Boolean;
+    function Last(var key: string; var dataRec: Integer): Boolean;
+    function Next(var key: string; var dataRec: Integer): Boolean;
     function Prev (var key: string; var dataRec: Integer): Boolean;
     function Find (var key: string; var dataRec: Integer): Boolean;
   end;
@@ -319,9 +319,9 @@ type
     procedure SplitKey(var n: Integer; var key: string);
   public
     constructor Create(ADataTree: TDataTree);
-    function First (var n: Integer; var st: string): Boolean;
-    function Last (var n: Integer; var st: string): Boolean;
-    function Next (var n: Integer; var st: string): Boolean;
+    function First(var n: Integer; var st: string): Boolean;
+    function Last(var n: Integer; var st: string): Boolean;
+    function Next(var n: Integer; var st: string): Boolean;
     function Prev (var n: Integer; var st: string): Boolean;
     function Find (n: Integer; var st: string): Boolean;
   end;
@@ -331,7 +331,7 @@ type
   private
     FBinBuffer: string;
     procedure IntToBinBuffer (i: Integer);
-    function BinToInt (const st: string): Integer;
+    function BinToInt(const st: string): Integer;
     function GetValue(n: Integer): Integer;
     function GetIndexOf(i: Integer): Integer;
   protected
@@ -340,7 +340,7 @@ type
     constructor Create(const AFileName: string); override;
     function AddKey(i: Integer): Boolean;
     function DeleteKey(i: Integer): Boolean;
-    procedure ForEach (proc: TIndexTreeForEachProc);
+    procedure ForEach(proc: TIndexTreeForEachProc);
     function Find (i: Integer): Boolean;
 
     function Delete(n: Integer): Boolean;
@@ -373,7 +373,7 @@ var
   passout: TNode;
   newPage0: TPage;
 begin
-  if Length (key) > MAX_KEY_LEN then
+  if Length(key) > MAX_KEY_LEN then
     raise EBTree.Create(rstKeyTooLong);
 
   BeginUpdate;
@@ -388,8 +388,8 @@ begin
       FFileInfo.RootPage := newPage0.FIdx;
       PutKeyOnPage(newPage0, 0, passout);
 
-      ResetNodeHeight (newPage0, -1);
-      ResetNodeHeight (newPage0, 0);
+      ResetNodeHeight(newPage0, -1);
+      ResetNodeHeight(newPage0, 0);
     end;
     if FOK then
       Inc(FFileInfo.RecordCount)
@@ -424,7 +424,7 @@ end;
 (*----------------------------------------------------------------------*
  | procedure TRawBTree.CacheSaveProc                                    |
  |                                                                      |
- | Callback for cache ForEach function - called to save each (dirty)    |
+ | Callback for cache ForEach function - called to save each(dirty)    |
  | page when flushing the cache                                         |
  *----------------------------------------------------------------------*)
 procedure TRawBTree.CacheSaveProc(obj: TObject; idx, param: Integer;
@@ -441,7 +441,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TRawBTree.Close;
 begin
-  Flush (True);         // Flush and clear cached pages
+  Flush(True);         // Flush and clear cached pages
   FreeAndNil (FFileStream)        // Close the index file
 end;
 
@@ -458,7 +458,7 @@ begin
   if CaseSensitive then
     Result := CompareStr (k1, k2)
   else
-    Result := CompareText (k1, k2)
+    Result := CompareText(k1, k2)
 end;
 
 constructor TRawBTree.Create(const AFileName: string);
@@ -512,7 +512,7 @@ begin
         if page0.PrevPage <> -1 then
         begin
           FFileInfo.RootPage := page0.PrevPage;
-          ResetNodeHeight (RootPage, -1);
+          ResetNodeHeight(RootPage, -1);
           DeleteOldPage(page0)
         end
       end;
@@ -542,14 +542,14 @@ function TRawBTree.DeleteKeyFromPage(page: TPage; idx: Integer): Integer;
 var
   dl: Integer;
 begin
-  dl := SizeOf (TNodeHeader) + Length (page.FNodes[idx].key);
+  dl := SizeOf(TNodeHeader) + Length(page.FNodes[idx].key);
   finalize(page.FNodes[idx]);
-  FillChar (page.FNodes[idx], SizeOf (TNode), 0);
+  FillChar (page.FNodes[idx], SizeOf(TNode), 0);
 
   if idx < page.FNodeCount - 1 then
   begin
-    Move(page.FNodes[idx + 1], page.FNodes[idx], (page.FNodeCount - idx - 1) * sizeof (TNode));
-    FillChar (page.FNodes[page.FNodeCount - 1], Sizeof (TNode), 0)
+    Move(page.FNodes[idx + 1], page.FNodes[idx], (page.FNodeCount - idx - 1) * SizeOf(TNode));
+    FillChar (page.FNodes[page.FNodeCount - 1], SizeOf(TNode), 0)
   end;
 
   Dec(page.FTotalDataLen, dl);
@@ -631,8 +631,8 @@ begin
           pg.FNodes[idx].NextPage := tp.PrevPage;
 
         PutKeyOnPage(br, mp, pg.Node [idx]);
-        ResetNodeHeight (br, mp);
-        ResetNodeHeight (br, -1);
+        ResetNodeHeight(br, mp);
+        ResetNodeHeight(br, -1);
         DeleteKeyFromPage(pg, idx);
         DeleteOldPage(tp);
       end
@@ -654,22 +654,22 @@ begin
         pg.FNodes[idx].key := br.Node [mp].key;
         DeleteKeyFromPage(br, mp);
 
-        ResetNodeHeight (tp, -1);
-        ResetNodeHeight (tp, 0)
+        ResetNodeHeight(tp, -1);
+        ResetNodeHeight(tp, 0)
       end;
       pg.Flags[flgDirty] := True;
       br.Flags[flgDirty] := True;
 
       if idx < pg.NodeCount then
-        ResetNodeHeight (pg, idx);
+        ResetNodeHeight(pg, idx);
       if idx > 0 then
-        ResetNodeHeight (pg, idx - 1);
-      ResetNodeHeight (pg, -1);
+        ResetNodeHeight(pg, idx - 1);
+      ResetNodeHeight(pg, -1);
     end
     else
     begin
       pg := Page [pidx];
-      ResetNodeHeight (pg, nidx - 1);
+      ResetNodeHeight(pg, nidx - 1);
     end
   end
   else
@@ -703,7 +703,7 @@ begin
   FFileInfo.FirstDeletedPage := page.FIdx;
   page.Flags[flgDirty] := True;
   page.FNodeCount := 0;
-  SetLength (page.FNodes, 0);
+  SetLength(page.FNodes, 0);
   FPageCache.Remove(page);
 end;
 
@@ -725,7 +725,7 @@ begin
   begin
     Dec(FUpdateCount);
     if FUpdateCount = 0 then
-      Flush (False)
+      Flush(False)
   end
 end;
 
@@ -773,7 +773,7 @@ end;
  |                                                                      |
  | Flush the cached pages, and optionally clear the cache.              |
  *----------------------------------------------------------------------*)
-procedure TRawBTree.Flush (clearPageCache: Boolean);
+procedure TRawBTree.Flush(clearPageCache: Boolean);
 begin
   if FUpdateCount > 0 then Exit;
 
@@ -800,7 +800,7 @@ var
 
 //----------------------------------------------------------
 // Recursively call 'proc' for all the keys and children.
-  procedure DoForEach (pageNo: Integer);
+  procedure DoForEach(pageNo: Integer);
   var
     i: Integer;
     node: TNode;
@@ -812,7 +812,7 @@ var
     pg := Page [pageNo];
     if pg.PrevPage <> -1 then
     begin                               // Do subkeys on pg left
-      DoForEach (pg.PrevPage);
+      DoForEach(pg.PrevPage);
       pg := Page [pageNo]               // Original 'pg' may no have been
                                         // deleted from the cache.  So make sure
                                         // it's reloaded
@@ -828,7 +828,7 @@ var
                                         // Do subkeys on node right
         if continue and (node.NextPage <> -1) then
         begin
-          DoForEach (node.NextPage);
+          DoForEach(node.NextPage);
           pg := Page [pageNo]
         end
       end
@@ -836,7 +836,7 @@ var
 
 begin
   continue := True;
-  DoForEach (FFileInfo.RootPage)
+  DoForEach(FFileInfo.RootPage)
 end;
 
 (*----------------------------------------------------------------------*
@@ -875,7 +875,7 @@ end;
  *----------------------------------------------------------------------*)
 function TRawBTree.GetExtraData: string;
 begin
-  SetLength (Result, FFileInfo.ExtraDataSize);
+  SetLength(Result, FFileInfo.ExtraDataSize);
   Move(FFileInfo.ExtraData [0], Result [1], FFileInfo.ExtraDataSize)
 end;
 
@@ -973,7 +973,7 @@ begin
 
   if idx >= 0 then
   begin
-    Result := TPage(FPageCache.ObjectAt (idx));
+    Result := TPage(FPageCache.ObjectAt(idx));
     FPageCache.BringToFrontObject(idx)
   end
   else
@@ -1040,7 +1040,7 @@ begin
                                         // Open existing file
   FFileStream := TFileStream.Create(FileName, fmOpenReadWrite or fmShareDenyWrite);
                                         // Read file info page.
-  FFileStream.Read(FFileInfo, sizeof (FFileInfo));
+  FFileStream.Read(FFileInfo, SizeOf(FFileInfo));
 end;
 
 (*----------------------------------------------------------------------*
@@ -1078,7 +1078,7 @@ begin
         end;
       dupAccept :;
       dupError:
-        raise EBTree.Create(Format (rstDuplicateKey, [key]));
+        raise EBTree.Create(Format(rstDuplicateKey, [key]));
     end;
 
   if pg.PrevPage = -1 then            // We're at the leaves.
@@ -1093,12 +1093,12 @@ begin
     if idx > 0 then                     // or node right
     begin
       Result := PutKeyInTree(Page [pg.Node [idx - 1].NextPage], key);
-      ResetNodeHeight (pg, idx - 1);
+      ResetNodeHeight(pg, idx - 1);
     end
     else
     begin
       Result := PutKeyInTree(Page [pg.PrevPage], key);
-      ResetNodeHeight (pg, -1)
+      ResetNodeHeight(pg, -1)
     end;
 
                                         // If a node was passed out by inserting to
@@ -1141,7 +1141,7 @@ var
   i, iidx, ts: Integer;
   newPage: TPage;
 begin
-  if pg.FTotalDataLen + SizeOf (TNodeHeader) + Length (memNode.key) > PAGE_DATA_SIZE then
+  if pg.FTotalDataLen + SizeOf(TNodeHeader) + Length(memNode.key) > PAGE_DATA_SIZE then
 
   begin                 // Key doesn't fit on the pg.
                         // Split the pg into pg & newPage, and
@@ -1151,7 +1151,7 @@ begin
     iidx := 0;          // Find mid point - iidx
     while(ts <= PAGE_DATA_SIZE div 2) and (iidx < pg.NodeCount) do
     begin
-      Inc(ts, Length (pg.Node [iidx].key) + SizeOf (TNodeHeader));
+      Inc(ts, Length(pg.Node [iidx].key) + SizeOf(TNodeHeader));
       Inc(iidx)
     end;
 
@@ -1182,14 +1182,14 @@ begin
                         // Move keys above midpoint to new pg.
 
     newPage.FNodeCount := pg.NodeCount - ts;
-    if Length (newPage.FNodes) < newPage.FNodeCount then
-      SetLength (newPage.FNodes, newPage.FNodeCount);
+    if Length(newPage.FNodes) < newPage.FNodeCount then
+      SetLength(newPage.FNodes, newPage.FNodeCount);
 
     for i := ts to pg.NodeCount - 1 do
     begin
       newPage.FNodes[i - ts] := pg.Node [i];
 //      newPage.InsertNode(i - ts, pg.Node [i]);
-      Inc(newPage.FTotalDataLen, SizeOf (TNodeHeader) + Length (pg.Node [i].key));
+      Inc(newPage.FTotalDataLen, SizeOf(TNodeHeader) + Length(pg.Node [i].key));
     end;
 
                         // Truncate current pg
@@ -1200,7 +1200,7 @@ begin
                         // Recalc TotalDataLen for truncated pg
     pg.FTotalDataLen := 0;
     for i := 0 to iidx - 1 do
-      Inc(pg.FTotalDataLen, SizeOf (TNodeHeader) + Length (pg.Node [i].key));
+      Inc(pg.FTotalDataLen, SizeOf(TNodeHeader) + Length(pg.Node [i].key));
 
     if ts <> iidx then
       if idx <= iidx then // Put the new key on the old or new pg.
@@ -1208,13 +1208,13 @@ begin
       else
         PutKeyOnPage(newPage, idx - pg.NodeCount - 1, memNode);
 
-    ResetNodeHeight (newPage, -1);
+    ResetNodeHeight(newPage, -1);
     Result.NextPageHeight := newPage.Height;
   end
   else                  // pg not full - just add the node
   begin
     pg.InsertNode(idx, memNode);
-    Inc(pg.FTotalDataLen, SizeOf (TNodeHeader) + Length (memNode.key));
+    Inc(pg.FTotalDataLen, SizeOf(TNodeHeader) + Length(memNode.key));
     pg.Flags[flgDirty] := True;
     Result.NextPage := -1;  // Don't pass out anything.
   end
@@ -1264,7 +1264,7 @@ begin
   if Assigned (FFileStream) then
   begin
     FFileStream.Seek(0, soFromBeginning);
-    FFileStream.Write(FFileInfo, SizeOf (FFileInfo))
+    FFileStream.Write(FFileInfo, SizeOf(FFileInfo))
   end
 end;
 
@@ -1326,12 +1326,12 @@ end;
  *----------------------------------------------------------------------*)
 procedure TRawBTree.SetExtraData(Value: string);
 begin
-  if Length (value) > SizeOf (FFileInfo.ExtraData) then
-    SetLength (value, SizeOf (FFileInfo.ExtraData));
+  if Length(value) > SizeOf(FFileInfo.ExtraData) then
+    SetLength(value, SizeOf(FFileInfo.ExtraData));
 
-  FFileInfo.ExtraDataSize := Length (Value);
-  if Length (Value) > 0 then
-    Move(Value [1], FFileInfo.ExtraData [0], Length (value));
+  FFileInfo.ExtraDataSize := Length(Value);
+  if Length(Value) > 0 then
+    Move(Value [1], FFileInfo.ExtraData [0], Length(value));
 
   SaveFileInfo
 end;
@@ -1348,7 +1348,7 @@ begin
   FOwner := AOwner;
   FPrevPage := -1;
   FIdx := AIdx;
-  SetLength (FNodes, 384);
+  SetLength(FNodes, 384);
 end;
 
 (*----------------------------------------------------------------------*
@@ -1383,7 +1383,7 @@ function TPage.FindNode(const st: string; var idx: Integer): Boolean;
 
 //------------------------------------------------------
 // Binary search the page
-  function bsearch (s, e: Integer): Boolean;
+  function bsearch(s, e: Integer): Boolean;
   var
     cmp: Integer;
   begin
@@ -1394,10 +1394,10 @@ function TPage.FindNode(const st: string; var idx: Integer): Boolean;
       cmp := Owner.CompareKeys (st, Node [idx].key);
 
       if cmp < 0 then
-        Result := bsearch (s, idx - 1)
+        Result := bsearch(s, idx - 1)
       else
         if cmp > 0 then
-          Result := bsearch (idx + 1, e)
+          Result := bsearch(idx + 1, e)
         else
           Result := True
     end
@@ -1407,7 +1407,7 @@ function TPage.FindNode(const st: string; var idx: Integer): Boolean;
 
 begin
   idx := 0;
-  Result := bsearch (0, NodeCount - 1);
+  Result := bsearch(0, NodeCount - 1);
 
   if (not Result) and (idx < NodeCount) then
   // Adjust 'idx' so that it contains the correct insertion point
@@ -1462,16 +1462,16 @@ begin
 
                                         // Grow the dynamic array if there's
                                         // no room
-  if NodeCount = Length (FNodes) then
-    SetLength (FNodes, Length (FNodes) + 64);
+  if NodeCount = Length(FNodes) then
+    SetLength(FNodes, Length(FNodes) + 64);
 
   if idx < NodeCount then               // If we're inserting within the existing
                                         // nodes, create a space by moving nodes.
   begin
-    Move(FNodes[idx], FNodes[idx + 1], (NodeCount - idx) * sizeof (TNode));
+    Move(FNodes[idx], FNodes[idx + 1], (NodeCount - idx) * SizeOf(TNode));
                                         // Very important to clear the space -
                                         // otherwise stings will go mad.
-    FillChar (FNodes[idx], SizeOf (TNode), 0);
+    FillChar (FNodes[idx], SizeOf(TNode), 0);
   end;
 
   FNodes[idx] := node;
@@ -1492,8 +1492,8 @@ var
   st: string;
 begin
         // Read the page
-  Owner.FFileStream.Seek(SizeOf (TFileInfo) + FIdx * sizeof (TPageRec), soFromBeginning);
-  Owner.FFileStream.Read(pr, sizeof (pr));
+  Owner.FFileStream.Seek(SizeOf(TFileInfo) + FIdx * SizeOf(TPageRec), soFromBeginning);
+  Owner.FFileStream.Read(pr, SizeOf(pr));
 
         // Get headeer info
   self.FFlags := pr.Header.Flags;
@@ -1501,16 +1501,16 @@ begin
   self.FPrevPageHeight := pr.Header.PrevPageHeight;
 
   p := @pr.Data [0];
-  if pr.Header.KeysOnPage > Length (FNodes) then
-    SetLength (FNodes, pr.Header.KeysOnPage);
+  if pr.Header.KeysOnPage > Length(FNodes) then
+    SetLength(FNodes, pr.Header.KeysOnPage);
 
   FNodeCount := 0;
         // Decode the nodes.
   for i := 0 to Integer (pr.Header.KeysOnPage) - 1 do
   begin
     pnh := PNodeHeader (p);
-    Inc(p, SizeOf (TNodeHeader));
-    Inc(FTotalDataLen, sizeof (TNodeHeader) + pnh^.KeyLen);
+    Inc(p, SizeOf(TNodeHeader));
+    Inc(FTotalDataLen, SizeOf(TNodeHeader) + pnh^.KeyLen);
 
     SetString (st, p, pnh^.KeyLen);
     Inc(p, pnh^.KeyLen);
@@ -1545,7 +1545,7 @@ begin
   pr.Header.KeysOnPage := NodeCount;
   pr.Header.PrevPage := PrevPage;
   pr.Header.PrevPageHeight := PrevPageHeight;
-  FillChar (pr.Data, SizeOf (pr.Data), 0);
+  FillChar (pr.Data, SizeOf(pr.Data), 0);
 
   p := @pr.Data [0];
                                         // Encode the nodes
@@ -1556,15 +1556,15 @@ begin
     pnh^.NextPage := nd.NextPage;
     pnh^.NextPageHeight := nd.NextPageHeight;
     st := nd.key;
-    pnh^.KeyLen := Length (st);
+    pnh^.KeyLen := Length(st);
 
-    Inc(p, SizeOf (TNodeHeader));
+    Inc(p, SizeOf(TNodeHeader));
     Move(st [1], p^, pnh^.KeyLen);
     Inc(p, pnh^.KeyLen)
   end;
                                         // Write the data
-  Owner.FFileStream.Seek(SizeOf (TFileInfo) + FIdx * sizeof (TPageRec), soFromBeginning);
-  Owner.FFileStream.Write(pr, sizeof (pr));
+  Owner.FFileStream.Seek(SizeOf(TFileInfo) + FIdx * SizeOf(TPageRec), soFromBeginning);
+  Owner.FFileStream.Write(pr, SizeOf(pr));
 
   Flags[flgDirty] := False
 end;
@@ -1752,8 +1752,8 @@ var
   tmp, tmp1: Integer;
 
 begin
-  pg := Nil;
-  node := Nil;
+  pg := nil;
+  node := nil;
   if FStack.Count > 0 then
   begin
     node := TIteratorNode(FStack.Pop);         // Pop previously returned node
@@ -1854,26 +1854,26 @@ end;
 function TBTree.CompareKeys(const k1, k2: string): Integer;
 begin
   if CaseSensitive then
-    Result := CompareStr (Copy(k1, 1, Length (k1) - SizeOf (Integer)), Copy(k2, 1, Length (k2) - SizeOf (Integer)))
+    Result := CompareStr (Copy(k1, 1, Length(k1) - SizeOf(Integer)), Copy(k2, 1, Length(k2) - SizeOf(Integer)))
   else
-    Result := CompareText (Copy(k1, 1, Length (k1) - SizeOf (Integer)), Copy(k2, 1, Length (k2) - SizeOf (Integer)))
+    Result := CompareText(Copy(k1, 1, Length(k1) - SizeOf(Integer)), Copy(k2, 1, Length(k2) - SizeOf(Integer)))
 end;
 
 function TBTree.DeleteKey(const key: string): Boolean;
 begin
-  Result := inherited DeleteKey(key + StringOfChar (#0, SizeOf (Integer)));
+  Result := inherited DeleteKey(key + StringOfChar (#0, SizeOf(Integer)));
 end;
 
 function TBTree.ExtractDataRec(const key: string): Integer;
 begin
-  Move((PChar (key) + Length (key) - 4)^, Result, SizeOf (Result))
+  Move((PChar (key) + Length(key) - 4)^, Result, SizeOf(Result))
 end;
 
 function TBTree.Find(key: string; var dataRec: Integer): Boolean;
 var
   k: string;
 begin
-  Result := inherited Find (key + StringOfChar (#0, SizeOf (Integer)), k);
+  Result := inherited Find (key + StringOfChar (#0, SizeOf(Integer)), k);
   if Result then
     dataRec := ExtractDataRec (k)
 end;
@@ -1885,7 +1885,7 @@ var
 
 //----------------------------------------------------------
 // Recursively call 'proc' for all the keys and children.
-  procedure DoForEach (pageNo: Integer);
+  procedure DoForEach(pageNo: Integer);
   var
     i: Integer;
     node: TNode;
@@ -1897,7 +1897,7 @@ var
     pg := Page [pageNo];
     if pg.PrevPage <> -1 then
     begin                               // Do subkeys on pg left
-      DoForEach (pg.PrevPage);
+      DoForEach(pg.PrevPage);
       pg := Page [pageNo]               // Original 'pg' may no have been
                                         // deleted from the cache.  So make sure
                                         // it's reloaded
@@ -1908,14 +1908,14 @@ var
       begin
                                         // Call the callback for the node
         node := pg.Node [i];
-        k := Copy(node.key, 1, Length (node.key) - 4);
+        k := Copy(node.key, 1, Length(node.key) - 4);
 
         Proc (k, ExtractDataRec (node.key), continue);
 
                                         // Do subkeys on node right
         if continue and (node.NextPage <> -1) then
         begin
-          DoForEach (node.NextPage);
+          DoForEach(node.NextPage);
           pg := Page [pageNo]
         end
       end
@@ -1923,7 +1923,7 @@ var
 
 begin
   continue := True;
-  DoForEach (FFileInfo.RootPage)
+  DoForEach(FFileInfo.RootPage)
 end;
 
 function TBTree.GetDataRec(const key: string): Integer;
@@ -1942,7 +1942,7 @@ begin
   if Result > -1 then
   begin
     dataRec := ExtractDataRec (k);
-    key := Copy(k, 1, Length (k) - SizeOf (Integer))
+    key := Copy(k, 1, Length(k) - SizeOf(Integer))
   end
 end;
 
@@ -1952,7 +1952,7 @@ begin
   if Result <> '' then
   begin
     dataRec := ExtractDataRec (Result);
-    SetLength (Result, Length (Result) - sizeof (Integer))
+    SetLength(Result, Length(Result) - SizeOf(Integer))
   end
 end;
 
@@ -1965,8 +1965,8 @@ end;
 
 function TBTree.IntToBin(i: Integer): string;
 begin
-  SetLength (Result, SizeOf (Integer));
-  Move(i, Result [1], SizeOf (Integer));
+  SetLength(Result, SizeOf(Integer));
+  Move(i, Result [1], SizeOf(Integer));
 end;
 
 procedure TBTree.SetDataRec(const key: string; const Value: Integer);
@@ -1976,7 +1976,7 @@ var
   k: string;
 begin
   pg := RootPage;
-  k := key + StringOfChar (#0, SizeOf (Integer));
+  k := key + StringOfChar (#0, SizeOf(Integer));
 
   BeginUpdate;
   try
@@ -2016,7 +2016,7 @@ function TBTreeIterator.Find(var key: string;
 var
   k: string;
 begin
-  k := key + StringOfChar (#0, SizeOf (Integer));
+  k := key + StringOfChar (#0, SizeOf(Integer));
 
   Result := inherited Find (k);
   if Result then
@@ -2028,7 +2028,7 @@ end;
 
 function TBTreeIterator.First(var key: string; var dataRec: Integer): Boolean;
 begin
-  Result := inherited First (key);
+  Result := inherited First(key);
   if Result then
     SplitKey(key, dataRec)
 end;
@@ -2036,7 +2036,7 @@ end;
 function TBTreeIterator.Last(var key: string;
   var dataRec: Integer): Boolean;
 begin
-  Result := inherited Last (key);
+  Result := inherited Last(key);
   if Result then
     SplitKey(key, dataRec)
 end;
@@ -2044,7 +2044,7 @@ end;
 function TBTreeIterator.Next(var key: string;
   var dataRec: Integer): Boolean;
 begin
-  Result := inherited Next (key);
+  Result := inherited Next(key);
   if Result then
     SplitKey(key, dataRec)
 end;
@@ -2060,7 +2060,7 @@ end;
 procedure TBTreeIterator.SplitKey(var key: string; var dataRec: Integer);
 begin
   dataRec := TBTree(BTree).ExtractDataRec(key);
-  key := Copy(key, 1, Length (key) - SizeOf (Integer))
+  key := Copy(key, 1, Length(key) - SizeOf(Integer))
 end;
 
 { TDataTree }
@@ -2072,12 +2072,12 @@ end;
 
 function TDataTree.BinToInt(const st: string): Integer;
 begin
-  move(st [1], Result, SizeOf (Integer))
+  move(st [1], Result, SizeOf(Integer))
 end;
 
 function TDataTree.CompareKeys(const k1, k2: string): Integer;
 begin
-  Result := BinToInt (k1) - BinToInt (k2)
+  Result := BinToInt(k1) - BinToInt(k2)
 end;
 
 function TDataTree.DeleteKey(n: Integer): Boolean;
@@ -2101,7 +2101,7 @@ var
 
 //----------------------------------------------------------
 // Recursively call 'proc' for all the keys and children.
-  procedure DoForEach (pageNo: Integer);
+  procedure DoForEach(pageNo: Integer);
   var
     i: Integer;
     node: TNode;
@@ -2113,7 +2113,7 @@ var
     pg := Page [pageNo];
     if pg.PrevPage <> -1 then
     begin                               // Do subkeys on pg left
-      DoForEach (pg.PrevPage);
+      DoForEach(pg.PrevPage);
       pg := Page [pageNo]               // Original 'pg' may no have been
                                         // deleted from the cache.  So make sure
                                         // it's reloaded
@@ -2125,12 +2125,12 @@ var
                                         // Call the callback for the node
         node := pg.Node [i];
         k := node.key;
-        Proc (BinToInt (k), Copy(k, SizeOf (Integer) + 1, MaxInt), continue);
+        Proc (BinToInt(k), Copy(k, SizeOf(Integer) + 1, MaxInt), continue);
 
                                         // Do subkeys on node right
         if continue and (node.NextPage <> -1) then
         begin
-          DoForEach (node.NextPage);
+          DoForEach(node.NextPage);
           pg := Page [pageNo]
         end
       end
@@ -2138,20 +2138,20 @@ var
 
 begin
   continue := True;
-  DoForEach (FFileInfo.RootPage)
+  DoForEach(FFileInfo.RootPage)
 end;
 
 function TDataTree.GetKey(idx: Integer; var DataRec: Integer): string;
 begin
   Result := inherited GetKey(idx);
-  DataRec := BinToInt (Result);
-  Result := Copy(Result, SizeOf (Integer) + 1, MaxInt);
+  DataRec := BinToInt(Result);
+  Result := Copy(Result, SizeOf(Integer) + 1, MaxInt);
 end;
 
 function TDataTree.IntToBin(i: Integer): string;
 begin
-  SetLength (Result, SizeOf (Integer));
-  Move(i, Result [1], SizeOf (Integer));
+  SetLength(Result, SizeOf(Integer));
+  Move(i, Result [1], SizeOf(Integer));
 end;
 
 { TDataTreeIterator }
@@ -2165,8 +2165,8 @@ function TDataTreeIterator.Find(n: Integer; var st: string): Boolean;
 var
   k: string;
 begin
-  SetLength (k, Sizeof (Integer));
-  Move(n, k [1], SizeOf (Integer));
+  SetLength(k, SizeOf(Integer));
+  Move(n, k [1], SizeOf(Integer));
   Result := inherited Find (k);
   if Result then
   begin
@@ -2177,21 +2177,21 @@ end;
 
 function TDataTreeIterator.First(var n: Integer; var st: string): Boolean;
 begin
-  Result := inherited First (st);
+  Result := inherited First(st);
   if Result then
     SplitKey(n, st)
 end;
 
-function TDataTreeIterator.Last (var n: Integer; var st: string): Boolean;
+function TDataTreeIterator.Last(var n: Integer; var st: string): Boolean;
 begin
-  Result := inherited Last (st);
+  Result := inherited Last(st);
   if Result then
     SplitKey(n, st)
 end;
 
-function TDataTreeIterator.Next (var n: Integer; var st: string): Boolean;
+function TDataTreeIterator.Next(var n: Integer; var st: string): Boolean;
 begin
-  Result := inherited Next (st);
+  Result := inherited Next(st);
   if Result then
     SplitKey(n, st)
 end;
@@ -2205,8 +2205,8 @@ end;
 
 procedure TDataTreeIterator.SplitKey(var n: Integer; var key: string);
 begin
-  Move(key [1], n, SizeOf (Integer));
-  key := Copy(key, SizeOf (Integer) + 1, MaxInt)
+  Move(key [1], n, SizeOf(Integer));
+  key := Copy(key, SizeOf(Integer) + 1, MaxInt)
 end;
 
 { TIndexTree }
@@ -2219,12 +2219,12 @@ end;
 
 function TIndexTree.BinToInt(const st: string): Integer;
 begin
-  move(st [1], Result, SizeOf (Integer))
+  move(st [1], Result, SizeOf(Integer))
 end;
 
 function TIndexTree.CompareKeys(const k1, k2: string): Integer;
 begin
-  Result := BinToInt (k1) - BinToInt (k2)
+  Result := BinToInt(k1) - BinToInt(k2)
 end;
 
 constructor TIndexTree.Create(const AFileName: string);
@@ -2237,7 +2237,7 @@ function TIndexTree.Delete(n: Integer): Boolean;
 var
   i: Integer;
 begin
-  i := BinToInt (GetKey(n));
+  i := BinToInt(GetKey(n));
   Result := DeleteKey(i)
 end;
 
@@ -2262,7 +2262,7 @@ var
 
 //----------------------------------------------------------
 // Recursively call 'proc' for all the keys and children.
-  procedure DoForEach (pageNo: Integer);
+  procedure DoForEach(pageNo: Integer);
   var
     i: Integer;
     node: TNode;
@@ -2274,7 +2274,7 @@ var
     pg := Page [pageNo];
     if pg.PrevPage <> -1 then
     begin                               // Do subkeys on pg left
-      DoForEach (pg.PrevPage);
+      DoForEach(pg.PrevPage);
       pg := Page [pageNo]               // Original 'pg' may no have been
                                         // deleted from the cache.  So make sure
                                         // it's reloaded
@@ -2286,12 +2286,12 @@ var
                                         // Call the callback for the node
         node := pg.Node [i];
         k := node.key;
-        Proc (BinToInt (k), continue);
+        Proc (BinToInt(k), continue);
 
                                         // Do subkeys on node right
         if continue and (node.NextPage <> -1) then
         begin
-          DoForEach (node.NextPage);
+          DoForEach(node.NextPage);
           pg := Page [pageNo]
         end
       end
@@ -2299,7 +2299,7 @@ var
 
 begin
   continue := True;
-  DoForEach (FFileInfo.RootPage)
+  DoForEach(FFileInfo.RootPage)
 end;
 
 function TIndexTree.GetIndexOf(i: Integer): Integer;
@@ -2310,12 +2310,12 @@ end;
 
 function TIndexTree.GetValue(n: Integer): Integer;
 begin
-  Result := BinToInt (GetKey(n))
+  Result := BinToInt(GetKey(n))
 end;
 
 procedure TIndexTree.IntToBinBuffer(i: Integer);
 begin
-  Move(i, FBinBuffer [1], SizeOf (Integer));
+  Move(i, FBinBuffer [1], SizeOf(Integer));
 end;
 
 end.

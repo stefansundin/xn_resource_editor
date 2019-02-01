@@ -2,7 +2,8 @@ unit unitResourceXPManifests;
 
 interface
 
-uses Windows, Classes, SysUtils, Contnrs, unitResourceDetails, AxCtrls;
+uses
+  Windows, Classes, SysUtils, Contnrs, unitResourceDetails, AxCtrls;
 
 type
 TXPManifestResourceDetails = class (TAnsiResourceDetails)
@@ -53,7 +54,7 @@ end;
 procedure TXPManifestResourceDetails.InitNew;
 begin
   Data.Clear;
-  Data.Write(PChar (manifest)^, Length (manifest))
+  Data.Write(PChar (manifest)^, Length(manifest))
 end;
 
 initialization

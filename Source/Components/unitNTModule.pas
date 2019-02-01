@@ -35,7 +35,7 @@ type
     FTag: Integer;
     FOrigFileName: string;
 
-    procedure AddResourceToList (AType, AName: PWideChar; ADataLen:  Integer; AData: pointer; ALang: Word);
+    procedure AddResourceToList(AType, AName: PWideChar; ADataLen:  Integer; AData: pointer; ALang: Word);
     function LoadResourceFromModule(hModule: Integer; const ResType, ResName: PWideChar; language: Word): Boolean;
   protected
     function GetResourceCount: Integer; override;
@@ -66,9 +66,9 @@ type
   TfnEndUpdateResource = function (hUpdate: THandle; fDiscard: BOOL): BOOL; stdcall;
 
 var
-  fnBeginUpdateResource: TfnBeginUpdateResource = Nil;
-  fnEndUpdateResource: TfnEndUpdateResource = Nil;
-  fnUpdateResource: TfnUpdateResource = Nil;
+  fnBeginUpdateResource: TfnBeginUpdateResource = nil;
+  fnEndUpdateResource: TfnEndUpdateResource = nil;
+  fnUpdateResource: TfnUpdateResource = nil;
 
 (*----------------------------------------------------------------------------*
  | function EnumResLangProc ()                                                |
@@ -264,7 +264,7 @@ begin
         pn := PWideChar (wName)
       end;
 
-      AddResourceToList (pt, pn, Size, p, language);
+      AddResourceToList(pt, pn, Size, p, language);
     finally
       FreeResource(InfoHandle)
     end
@@ -325,11 +325,11 @@ var
   Namest, tpst: Widestring;
   fn1, fn2: string;
 
-  function ResourceNameInt (const name: WideString): PWideChar;
+  function ResourceNameInt(const name: WideString): PWideChar;
   var
     n: Integer;
   begin
-    n := WideResourceNameToInt (name);
+    n := WideResourceNameToInt(name);
     if n = -1 then
       Result := PWideChar (name)
     else
@@ -345,7 +345,7 @@ begin
     fn1 := ExpandFileName(FOrigFileName);
     fn2 := ExpandFileName(FileName);
 
-    if not SameText (fn1, fn2) then
+    if not SameText(fn1, fn2) then
       CopyFile(PChar (fn1), PChar (fn2), false);
   end;
 
@@ -361,8 +361,8 @@ begin
       tpst   := Details.ResourceType;
 
       if not fnUpdateResource(UpdateHandle,
-                      ResourceNameInt (tpst),
-                      ResourceNameInt (Namest),
+                      ResourceNameInt(tpst),
+                      ResourceNameInt(Namest),
                       Details.ResourceLanguage,
                       Details.Data.Memory,
                       Details.Data.Size) then
@@ -390,7 +390,7 @@ end;
 
 procedure TNTModule.SortResources;
 begin
-  FDetailList.Sort (compareDetails);
+  FDetailList.Sort(compareDetails);
 end;
 
 begin

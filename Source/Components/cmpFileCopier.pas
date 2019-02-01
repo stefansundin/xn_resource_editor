@@ -45,7 +45,7 @@ type
     procedure AnalyzeFile(const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean);
     procedure CopyFile(const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean);
     procedure TidyDir (const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean);
-    function ForEach (const Mask, destPath: string; proc, proc1: TForEachProc): Boolean;
+    function ForEach(const Mask, destPath: string; proc, proc1: TForEachProc): Boolean;
     procedure AnalyzeFiles (const sourceFiles: string);
     procedure CopyFiles (const sourceFiles: string);
     procedure DoOnException;
@@ -167,10 +167,10 @@ var
   available, a1: Int64;
   a2: TLargeInteger;
 begin
-  if Length (sourceFiles) = 0 then
+  if Length(sourceFiles) = 0 then
     raise EFileCopier.Create(rstNoSource);
 
-  if Length (FDestFiles) = 0 then
+  if Length(FDestFiles) = 0 then
     raise EFileCopier.Create(rstNoDest);
 
   FSourceMask := '';
@@ -178,7 +178,7 @@ begin
     FSourceMask := sourceFiles
   else
   begin
-    st := Copy(sourceFiles, Length (sourceFiles), 1);
+    st := Copy(sourceFiles, Length(sourceFiles), 1);
     if (st = '\') or (st = ':') then
       FSourceMask := sourceFiles + '*.*'
   end;
@@ -188,7 +188,7 @@ begin
   if (err <> -1) and ((err and faDirectory) = 0) then
     raise EFileCopier.Create('Destination must be a directory');
 
-  st := Copy(FDestDir, Length (FDestDir), 1);
+  st := Copy(FDestDir, Length(FDestDir), 1);
   if (st = '\') or (st = ':') then
     FDestDir := FDestDir
   else
@@ -208,17 +208,17 @@ begin
 
 
   if FSourceMask <> '' then
-    ForEach (FSourceMask, FDestDir, AnalyzeFile, Nil)
+    ForEach(FSourceMask, FDestDir, AnalyzeFile, Nil)
   else
-    if FindFirst (sourceFiles, faAnyFile, sr) = 0 then
+    if FindFirst(sourceFiles, faAnyFile, sr) = 0 then
     try
       Continue := True;
-      AnalyzeFile(ExtractFilePath (sourceFiles), FDestDir, sr, Continue)
+      AnalyzeFile(ExtractFilePath(sourceFiles), FDestDir, sr, Continue)
     finally
       FindClose(sr)
     end
     else
-      raise EFOpenError.CreateFmt (rstFileNotFound, [sourceFiles]);
+      raise EFOpenError.CreateFmt(rstFileNotFound, [sourceFiles]);
 
   if (CopyMode = cmCopy) or (ExtractFileDrive(sourceFiles) <> ExtractFileDrive(FDestDir)) then
   begin
@@ -268,7 +268,7 @@ begin
     FSourceMask := sourceFiles
   else
   begin
-    st := Copy(sourceFiles, Length (sourceFiles), 1);
+    st := Copy(sourceFiles, Length(sourceFiles), 1);
     if (st = '\') or (st = ':') then
       FSourceMask := sourceFiles + '*.*'
   end;
@@ -278,7 +278,7 @@ begin
   if (err <> -1) and ((err and faDirectory) = 0) then
     raise EFileCopier.Create('Destination must be a directory');
 
-  st := Copy(FDestDir, Length (FDestDir), 1);
+  st := Copy(FDestDir, Length(FDestDir), 1);
   if (st = '\') or (st = ':') then
     FDestDir := FDestDir
   else
@@ -297,12 +297,12 @@ begin
   end;
 
   if FSourceMask <> '' then
-    ForEach (FSourceMask, FDestDir, CopyFile, TidyDir)
+    ForEach(FSourceMask, FDestDir, CopyFile, TidyDir)
   else
-    if FindFirst (sourceFiles, faAnyFile, sr) = 0 then
+    if FindFirst(sourceFiles, faAnyFile, sr) = 0 then
     try
       Continue := True;
-      CopyFile(ExtractFilePath (sourceFiles), FDestDir, sr, Continue)
+      CopyFile(ExtractFilePath(sourceFiles), FDestDir, sr, Continue)
     finally
       FindClose(sr)
     end
@@ -334,7 +334,7 @@ end;
 
 procedure TFileCopier.DoMoveFile;
 begin
-  if not SameText (ExtractFileDrive(FCurrentFileName), ExtractFileDrive(FDestFileName)) then
+  if not SameText(ExtractFileDrive(FCurrentFileName), ExtractFileDrive(FDestFileName)) then
   begin
     if not Windows.CopyFile(PChar (FCurrentFileName), PChar (FDestFileName), False) then
       RaiseLastOSError;
@@ -402,7 +402,7 @@ var
 begin
   Result := True;
   begin
-    if FindFirst (Mask, faAnyFile, sr) = 0 then
+    if FindFirst(Mask, faAnyFile, sr) = 0 then
     try
       repeat
         if (sr.Attr and faDirectory) <> 0 then
@@ -411,18 +411,18 @@ begin
           begin
             st := destPath + sr.Name + '\';
 
-            Result := ForEach (ExtractFilePath (Mask) + sr.Name + '\' + ExtractFileName(Mask), st, proc, proc1)
+            Result := ForEach(ExtractFilePath(Mask) + sr.Name + '\' + ExtractFileName(Mask), st, proc, proc1)
           end
         end
         else
-          proc (ExtractFilePath (Mask), destPath, sr, Result);
+          proc (ExtractFilePath(Mask), destPath, sr, Result);
         if FCancelled then
           Result := False;
-      until not Result or (FindNext (sr) <> 0)
+      until not Result or (FindNext(sr) <> 0)
     finally
       FindClose(sr);
       if Assigned(proc1) then
-        proc1 (ExtractFilePath (Mask), '', sr, Result)
+        proc1 (ExtractFilePath(Mask), '', sr, Result)
     end
     else
       RaiseLastOSError
@@ -452,9 +452,9 @@ var
   st: string;
 begin
   st := Directory;
-  if Copy(st, Length (st), 1) = '\' then
+  if Copy(st, Length(st), 1) = '\' then
   begin
-    Delete(st, Length (st), 1);
+    Delete(st, Length(st), 1);
     RemoveDirectory(PChar (st)) // Don't error check this.  It may be open in a
                                  // command window or something...
   end

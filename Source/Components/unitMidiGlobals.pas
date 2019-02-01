@@ -118,7 +118,8 @@ function GetNoteName(note : Integer) : string;
 
 implementation
 
-uses sysutils;
+uses
+  SysUtils;
 
 (*---------------------------------------------------------------------*
  | function SwapLong () : LongInt;                                     |

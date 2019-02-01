@@ -2,27 +2,29 @@ unit DialogListboxControls;
 
 interface
 
-uses Windows, Classes, SysUtils, cmpDialogEditor, DialogConsts;
+uses
+  Windows, Classes, SysUtils, cmpDialogEditor, DialogConsts;
 
 type
-TListboxControlInfo = class (TStandardControlInfo)
-protected
-  function GetClassSzOrID : TszOrID; override;
-public
-  class procedure CreateControlParams (var params : TCreateControlParams); override;
-  class function GetDescription : string; override;
-  function GetPropertyCount(kind: TPropertyKind): Integer; override;
-  function GetPropertyEnumCount(kind: TPropertyKind; idx: Integer): Integer; override;
-  function GetPropertyEnumName(kind: TPropertyKind; idx, enum: Integer): string; override;
-  function GetPropertyName(kind: TPropertyKind; idx: Integer): string; override;
-  function GetPropertyValue(kind: TPropertyKind; idx: Integer): Variant; override;
-  function GetPropertyType(kind: TPropertyKind; idx: Integer): TPropertyType; override;
-  procedure SetPropertyValue(kind: TPropertyKind; idx: Integer;const Value: Variant); override;
-end;
+  TListboxControlInfo = class (TStandardControlInfo)
+  protected
+    function GetClassSzOrID : TszOrID; override;
+  public
+    class procedure CreateControlParams (var params : TCreateControlParams); override;
+    class function GetDescription : string; override;
+    function GetPropertyCount(kind: TPropertyKind): Integer; override;
+    function GetPropertyEnumCount(kind: TPropertyKind; idx: Integer): Integer; override;
+    function GetPropertyEnumName(kind: TPropertyKind; idx, enum: Integer): string; override;
+    function GetPropertyName(kind: TPropertyKind; idx: Integer): string; override;
+    function GetPropertyValue(kind: TPropertyKind; idx: Integer): Variant; override;
+    function GetPropertyType(kind: TPropertyKind; idx: Integer): TPropertyType; override;
+    procedure SetPropertyValue(kind: TPropertyKind; idx: Integer;const Value: Variant); override;
+  end;
 
 implementation
 
-uses DialogStrings;
+uses
+  DialogStrings;
 
 const
   ListboxControlPropertyGeneralCount = 0;
@@ -61,17 +63,17 @@ end;
 function TListboxControlInfo.GetPropertyCount(
   kind: TPropertyKind): Integer;
 begin
-  Result := inherited GetPropertyCount (kind) + ListboxControlPropertyCount [kind]
+  Result := inherited GetPropertyCount(kind) + ListboxControlPropertyCount [kind]
 end;
 
 function TListboxControlInfo.GetPropertyEnumCount(kind: TPropertyKind;
   idx: Integer): Integer;
 begin
-  if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumCount (kind, idx)
+  if idx < inherited GetPropertyCount(kind) then
+    Result := inherited GetPropertyEnumCount(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := 0;
     case kind of
       pkStyle :
@@ -86,11 +88,11 @@ end;
 function TListboxControlInfo.GetPropertyEnumName(kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := '';
     case kind of
       pkStyle :
@@ -115,11 +117,11 @@ end;
 function TListboxControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyName(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := '';
      case kind of
 //      pkGeneral : Result := StaticControlPropertyGeneralName [idx];
@@ -132,11 +134,11 @@ end;
 function TListboxControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyType(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := ptInteger;
     case kind of
 //      pkGeneral : Result := StaticControlPropertyGeneralType [idx];
@@ -153,11 +155,11 @@ const
 function TListboxControlInfo.GetPropertyValue(kind: TPropertyKind;
   idx: Integer): Variant;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
 
     case kind of
       pkStyle :
@@ -194,11 +196,11 @@ procedure TListboxControlInfo.SetPropertyValue(kind: TPropertyKind;
 var
   recreateRequired : Boolean;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     recreateRequired := False;
 
     case kind of

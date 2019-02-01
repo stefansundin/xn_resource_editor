@@ -49,7 +49,7 @@ unit GIFImage;
 // { TODO -oanme -cFeature: Visual GIF component. }
 // { TODO -oanme -cImprovement: Easier method to determine DrawPainter status. }
 // { TODO -oanme -cFeature: Import to 256+ color GIF. }
-// { TODO -oanme -cFeature: Make some of TGIFImage's properties persistent (DrawOptions etc). }
+// { TODO -oanme -cFeature: Make some of TGIFImage's properties persistent(DrawOptions etc). }
 // { TODO -oanme -cFeature: Add TGIFImage.Persistent property. Should save published properties in application extension when this options is set. }
 // { TODO -oanme -cBugFix: Solution for background buffering in scrollbox. }
 //
@@ -1301,7 +1301,7 @@ var
 
   //: Default color reduction methods for bitmap import.
   // These are the fastest settings, but also the ones that gives the
-  // worst result (in most cases).
+  // worst result(in most cases).
   GIFImageDefaultColorReduction: TColorReduction = rmNetscape;
   GIFImageDefaultColorReductionBits: Integer = 8; // Range 3 - 8
   GIFImageDefaultDitherMode: TDitherMode = dmNearest;
@@ -1916,7 +1916,7 @@ end;
 // DIBHeader  A Pointer to the DIB's TBitmapInfo (or TBitmapInfoHeader)
 //    structure in the memory stream.
 //    The size of the structure can either be deduced from the
-//    pixel format (i.e. number of colors) or calculated by
+//    pixel format(i.e. number of colors) or calculated by
 //    subtracting the DIBHeader Pointer from the DIBBits Pointer.
 // DIBBits  A Pointer to the DIB's pixel data in the memory stream.
 //
@@ -1987,7 +1987,7 @@ begin
     if (Bytes = 0) then
       Error(sInvalidBitmap);
 
-    with (DIBSection) do
+    with(DIBSection) do
     begin
       // Check for NT bitmap
       if (Bytes < (SizeOf(dsbm) + SizeOf(dsbmih))) or (dsbmih.biSize < SizeOf(dsbmih)) then
@@ -2050,7 +2050,7 @@ begin
     Error(sInvalidBitmap);
 
   // Only convert to supported formats
-  if not(PixelFormat in SupportedPixelformats) then
+  if not (PixelFormat in SupportedPixelformats) then
     Error(sInvalidPixelFormat);
 
   // No need to convert to same format
@@ -2431,7 +2431,7 @@ begin
   inherited Create(ABitmap, APixelFormat);
 
   // DIB writer only supports 8 or 24 bit bitmaps
-  if not(APixelFormat in [pf8bit, pf24bit]) then
+  if not (APixelFormat in [pf8bit, pf24bit]) then
     Error(sInvalidPixelFormat);
   if (AWidth = 0) or (AHeight = 0) then
     Error(sBadDimension);
@@ -4486,7 +4486,7 @@ begin
         DIB.Free;
       end;
     end;
-    FillChar (RGBQuadArray, SizeOf (RGBQuadArray), 0);
+    FillChar (RGBQuadArray, SizeOf(RGBQuadArray), 0);
     ColorQuantizer.GetColorTable(RGBQuadArray);
   finally
     ColorQuantizer.Free;
@@ -4857,7 +4857,7 @@ begin
     Result := 0;
     // Reverse search to (hopefully) check latest colors first
     while(Result < FCount) do
-      with (FColorMap^[Result]) do
+      with(FColorMap^[Result]) do
       begin
         if (RGB.Red = Red) and (RGB.Green = Green) and (RGB.Blue = Blue) then
           exit;
@@ -4869,7 +4869,7 @@ begin
     Result := FCount-1;
     // Reverse search to (hopefully) check latest colors first
     while(Result >= 0) do
-      with (FColorMap^[Result]) do
+      with(FColorMap^[Result]) do
       begin
         if (RGB.Red = Red) and (RGB.Green = Green) and (RGB.Blue = Blue) then
           exit;
@@ -5138,7 +5138,7 @@ begin
   begin
     FColorMap^[ReverseMap[i]] := TempMap[i];
     // Find last used color index
-    if (Usage[i].Count = 0) and not(LastFound) then
+    if (Usage[i].Count = 0) and not (LastFound) then
     begin
       LastFound := True;
       NewCount := i;
@@ -6079,7 +6079,7 @@ var
   disp: CodeInt;
 begin
   (*
-  ** secondary hash (after G. Knott)
+  ** secondary hash(after G. Knott)
   *)
   disp := HashSize - HKey;
   if (HKey = 0) then
@@ -6514,7 +6514,7 @@ begin
   if (cX <= 0) then
   begin
 
-    if not(Interlace) then
+    if not (Interlace) then
     begin
       // Done - no more data
       Result := False;
@@ -6941,7 +6941,7 @@ begin
       Prefix := Color;
       RunLengthCount := 1;
     end;
-  until not(BumpPixel);
+  until not (BumpPixel);
   Flush(RunLengthCount);
 end;
 
@@ -7107,7 +7107,7 @@ begin
   // Peek ahead to determine block type
   if (Stream.Read(b, 1) <> 1) then
     exit;
-  while not(b in [bsTrailer, bsImageDescriptor]) do
+  while not (b in [bsTrailer, bsImageDescriptor]) do
   begin
     if (b = bsExtensionIntroducer) then
     begin
@@ -7761,7 +7761,7 @@ begin
   if (Value) then
     FImageDescriptor.PackedFields := FImageDescriptor.PackedFields OR idInterlaced
   else
-    FImageDescriptor.PackedFields := FImageDescriptor.PackedFields AND NOT(idInterlaced);
+    FImageDescriptor.PackedFields := FImageDescriptor.PackedFields AND not (idInterlaced);
 end;
 
 function TGIFSubImage.GetVersion: TGIFVersion;
@@ -7895,9 +7895,9 @@ begin
     Pack := idLocalColorTable;
     if (ColorMap.Optimized) then
       Pack := Pack OR idSort;
-    Pack := (Pack AND NOT(idColorTableSize)) OR (ColorResolution AND idColorTableSize);
+    Pack := (Pack AND not (idColorTableSize)) OR (ColorResolution AND idColorTableSize);
   end else
-    Pack := Pack AND NOT(idLocalColorTable OR idSort OR idColorTableSize);
+    Pack := Pack AND not (idLocalColorTable OR idSort OR idColorTableSize);
   FImageDescriptor.PackedFields := Pack;
 end;
 
@@ -8143,7 +8143,7 @@ var
 
     // Note: Disable the call to SafeSetPixelFormat below to import
     // in max number of colors with the risk of having to use
-    // TCanvas.Pixels to do it (very slow).
+    // TCanvas.Pixels to do it(very slow).
 
     // Make things a little easier for TGIFSubImage.Assign by converting
     // pfDevice to a more import friendly format
@@ -8369,7 +8369,7 @@ begin
       if (FBitmap.Palette = 0) then
         PixelFormat := pf24bit;
 {$endif}
-      if (not(PixelFormat in [pf1bit, pf4bit, pf8bit, pf24bit])) then
+      if (not (PixelFormat in [pf1bit, pf4bit, pf8bit, pf24bit])) then
         PixelFormat := pf24bit;
       DIBSource := TDIBReader.Create(FBitmap, PixelFormat);
       try
@@ -8688,7 +8688,7 @@ begin
 {$endif}
 end;
 
-// Given a destination rect (DestRect) calculates the
+// Given a destination rect(DestRect) calculates the
 // area covered by this sub image
 function TGIFSubImage.ScaleRect(DestRect: TRect): TRect;
 var
@@ -8922,7 +8922,7 @@ begin
     begin
       // Ignore pixels if either this frame's or the previous frame's pixel is transparent
       if (
-            not(
+            not (
               ((not NeedTransparentColorIndex) and (pDest^ = char(DestIndex))) or
               ((SourceTransparent) and (pSource^ = char(SourceIndex)))
             )
@@ -9219,7 +9219,7 @@ begin
   if (Value) then
     FGCExtension.PackedFields := FGCExtension.PackedFields OR efTransparent
   else
-    FGCExtension.PackedFields := FGCExtension.PackedFields AND NOT(efTransparent);
+    FGCExtension.PackedFields := FGCExtension.PackedFields AND not (efTransparent);
 end;
 
 function TGIFGraphicControlExtension.GetTransparentColor: TColor;
@@ -9266,7 +9266,7 @@ begin
   if (Value) then
     FGCExtension.PackedFields := FGCExtension.PackedFields OR efInputFlag
   else
-    FGCExtension.PackedFields := FGCExtension.PackedFields AND NOT(efInputFlag);
+    FGCExtension.PackedFields := FGCExtension.PackedFields AND not (efInputFlag);
 end;
 
 function TGIFGraphicControlExtension.GetDisposal: TDisposalMethod;
@@ -9276,7 +9276,7 @@ end;
 
 procedure TGIFGraphicControlExtension.SetDisposal(Value: TDisposalMethod);
 begin
-  FGCExtension.PackedFields := FGCExtension.PackedFields AND NOT(efDisposal)
+  FGCExtension.PackedFields := FGCExtension.PackedFields AND not (efDisposal)
     OR ((ord(Value) SHL 2) AND efDisposal);
 end;
 
@@ -9952,7 +9952,7 @@ begin
 
   for i := 0 to FImage.Images.Count-1 do
     if (FImage.Images[i].GraphicControlExtension <> nil) then
-      with (FImage.Images[i].GraphicControlExtension) do
+      with(FImage.Images[i].GraphicControlExtension) do
         Include(Disposals, Disposal);
 
   // Need background buffer to draw transparent on background
@@ -9998,7 +9998,7 @@ destructor TGIFPainter.Destroy;
 begin
   // OnTerminate isn't called if we are running in main thread, so we must call
   // it manually
-  if not(goAsync in DrawOptions) then
+  if not (goAsync in DrawOptions) then
     DoOnTerminate(self);
   // Reraise any exptions that were eaten in the Execute method
   if (ExceptObject <> nil) then
@@ -10303,7 +10303,7 @@ end;
 procedure TGIFPainter.PrefetchBitmap;
 begin
   // Touch current bitmap to force bitmap to be rendered
-  if not((FImage.Images[ActiveImage].Empty) or (FImage.Images[ActiveImage].HasBitmap)) then
+  if not ((FImage.Images[ActiveImage].Empty) or (FImage.Images[ActiveImage].HasBitmap)) then
     FImage.Images[ActiveImage].Bitmap;
 end;
 {$endif}
@@ -10325,7 +10325,7 @@ var
 
   procedure FireEvent(Event: TNotifyEvent);
   begin
-    if not(Assigned(Event)) then
+    if not (Assigned(Event)) then
       exit;
     FEvent := Event;
     try
@@ -10353,7 +10353,7 @@ begin
       DoRestart := True;
 
       // Loop to restart paint
-      while(DoRestart) and not(Terminated) do
+      while(DoRestart) and not (Terminated) do
       begin
         FActiveImage := 0;
         // Fire OnStartPaint event
@@ -10376,7 +10376,7 @@ begin
 
         // Loop to loop - duh!
         while((LoopCount <> 0) or (goLoopContinously in DrawOptions)) and
-          not(Terminated or DoRestart) do
+          not (Terminated or DoRestart) do
         begin
           FActiveImage := LoopPoint;
 
@@ -10386,7 +10386,7 @@ begin
             FireEvent(FOnLoop);
 
           // Loop to animate
-          while(ActiveImage < FImage.Images.Count) and not(Terminated or DoRestart) do
+          while(ActiveImage < FImage.Images.Count) and not (Terminated or DoRestart) do
           begin
             // Ignore empty images
             if (FImage.Images[ActiveImage].Empty) then
@@ -10452,7 +10452,7 @@ begin
                 NewDelayStart := timeGetTime;
                 // If we are not running in a thread we Sleep in small chunks
                 // and give the user a chance to abort
-                while(Delay > 0) and not(Terminated or DoRestart) do
+                while(Delay > 0) and not (Terminated or DoRestart) do
                 begin
                   if (Delay < 100) then
                     Sleep(Delay)
@@ -10464,7 +10464,7 @@ begin
                   // Reset start time for chunk
                   NewDelaySTart := timeGetTime;
                   // Application.ProcessMessages wannabe
-                  while(not(Terminated or DoRestart)) and
+                  while(not (Terminated or DoRestart)) and
                     (PeekMessage(Msg, 0, 0, 0, PM_REMOVE)) do
                   begin
                     if (Msg.Message <> WM_QUIT) then
@@ -10538,7 +10538,7 @@ begin
                   Delay := GIFMinimumDelay;
 
                 // Do not delay more than 10 seconds if running in main thread
-                if (Delay > GIFMaximumDelay) and not(goAsync in DrawOptions) then
+                if (Delay > GIFMaximumDelay) and not (goAsync in DrawOptions) then
                   Delay := GIFMaximumDelay; // Max 10 seconds
               end;
             // Fire OnAfterPaint event
@@ -10552,7 +10552,7 @@ begin
             if (FActiveImage = i) then
               Inc(FActiveImage);
             // Nothing more to do unless we are animating
-            if not(goAnimate in DrawOptions) then
+            if not (goAnimate in DrawOptions) then
               break;
           end;
 
@@ -10569,7 +10569,7 @@ begin
       FireEvent(FOnEndPaint);
     finally
       // If we are running in the main thread we will have to zap our self
-      if not(goAsync in DrawOptions) then
+      if not (goAsync in DrawOptions) then
         Free;
     end;
   except
@@ -11042,7 +11042,7 @@ begin
             BestIndex := j;
           end;
         end;
-        NewIndex := POptimizeEntry(FHistogram[BestIndex])^.NewIndex;;
+        NewIndex := POptimizeEntry(FHistogram[BestIndex])^.NewIndex;
       end;
     end;
 
@@ -11395,7 +11395,7 @@ begin
           inc(Prog);
           if (Images[i].Transparent) then
           begin
-            if not(Scan(Images[i].Data,
+            if not (Scan(Images[i].Data,
                         Images[i].GraphicControlExtension.TransparentColorIndex,
                         Images[i].DataSize)) then
             begin
@@ -11625,7 +11625,7 @@ end;
 
 function TGIFImage.GetBitmap: TBitmap;
 begin
-  if not(Empty) then
+  if not (Empty) then
   begin
     Result := FBitmap;
     if (Result <> nil) then
@@ -12041,7 +12041,7 @@ function TGIFImage.GetDoDither: Boolean;
 begin
   Result := (goDither in DrawOptions) and
     (((goAutoDither in DrawOptions) and DoAutoDither) or
-      not(goAutoDither in DrawOptions));
+      not (goAutoDither in DrawOptions));
 end;
 
 {$IFDEF VER9x}
@@ -12072,7 +12072,7 @@ begin
         FDrawPainter.Stop;
 
         // No need to wait for "thread" to terminate if running in main thread
-        if not(goAsync in FDrawPainter.DrawOptions) then
+        if not (goAsync in FDrawPainter.DrawOptions) then
           break;
 
       finally
@@ -12156,7 +12156,7 @@ begin
         (goTile in FDrawOptions));
       exit;
     end else
-    if (FBitmap <> nil) and not(goDirectDraw in FDrawOptions) then
+    if (FBitmap <> nil) and not (goDirectDraw in FDrawOptions) then
     begin
       DrawTile(Rect, Bitmap);
       exit;
@@ -12176,7 +12176,7 @@ begin
       // Kill the current paint thread
       StopDraw;
 
-      if not(goDirectDraw in FDrawOptions) then
+      if not (goDirectDraw in FDrawOptions) then
       begin
         // Create a bitmap to draw on
         NewBitmap;
@@ -12198,7 +12198,7 @@ begin
         // Launch thread
         FDrawPainter.Start;
 
-        if not(goDirectDraw in FDrawOptions) then
+        if not (goDirectDraw in FDrawOptions) then
         begin
 {$IFNDEF VER14_PLUS}  // 2001.07.23
           ThreadWindow := FindWindow('TThreadWindow', nil);
@@ -12258,7 +12258,7 @@ begin
   Result.OnLoop := FOnLoop;
   Result.OnEndPaint := FOnEndPaint;
 
-  if not(goAsync in Options) then
+  if not (goAsync in Options) then
   begin
     // Run in main thread
     Result.Execute;
@@ -12336,7 +12336,7 @@ begin
           Ghosts := Count;
           for i := Ghosts-1 downto 0 do
           begin
-            if not(goAsync in TGIFPainter(Items[i]).DrawOptions) then
+            if not (goAsync in TGIFPainter(Items[i]).DrawOptions) then
               dec(Ghosts);
             TGIFPainter(Items[i]).Stop;
           end;

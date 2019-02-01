@@ -53,12 +53,12 @@ type
     FPositionSnapshot: TList;
     procedure PaintItems (x, y: Integer; items: TMenuItem);
     procedure CalcItemsSize(items: TMenuItem; var stW, shortcutW, h: Integer);
-    function DrawTextWidth (lm, rm: Integer; const st: WideString): Integer;
+    function DrawTextWidth(lm, rm: Integer; const st: WideString): Integer;
     procedure SetSelectedItem(const Value: TMenuItem);
     procedure WmGetDLGCode(var msg: TwmGetDlgCode); message WM_GETDLGCODE;
     procedure DoChangeSelectedItem (value: TMenuItem);
 
-    function AddChildItemAt (parent: TMenuItem; index: Integer): TMenuItem;
+    function AddChildItemAt(parent: TMenuItem; index: Integer): TMenuItem;
     procedure TakeSnapshot;
     function GetSnapshotItem: TMenuItem;
     function GetSelectedItem: TMenuItem;
@@ -69,8 +69,8 @@ type
       X, Y: Integer); override;
     function CanAutoSize(var NewWidth, NewHeight: Integer): Boolean; override;
 
-    function ItemAt (X, Y: Integer): TMenuItem; virtual;
-    function ItemAtOffset (items: TMenuItem; XOffset, YOffset, X, Y: Integer): TMenuItem;
+    function ItemAt(X, Y: Integer): TMenuItem; virtual;
+    function ItemAtOffset(items: TMenuItem; XOffset, YOffset, X, Y: Integer): TMenuItem;
     procedure CalcSize(var w, h: Integer); virtual;
     procedure KeyDown(var Key: Word; Shift: TShiftState); override;
     procedure DoExit; override;
@@ -145,7 +145,7 @@ type
   TMenuDesigner = class(TBaseMenuDesigner)
   protected
     procedure Paint; override;
-    function ItemAt (X, Y: Integer): TMenuItem; override;
+    function ItemAt(X, Y: Integer): TMenuItem; override;
     procedure CalcSize(var w, h: Integer); override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -155,7 +155,7 @@ type
   TPopupMenuDesigner = class (TBaseMenuDesigner)
   protected
     procedure Paint; override;
-    function ItemAt (X, Y: Integer): TMenuItem; override;
+    function ItemAt(X, Y: Integer): TMenuItem; override;
     procedure CalcSize(var w, h: Integer); override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -165,7 +165,7 @@ type
   end;
 
 function ExtractCaption (const st: WideString): WideString;
-function ExtractShortcut (const st: WideString): WideString;
+function ExtractShortcut(const st: WideString): WideString;
 function MergeCaption (const st, shortcut: WideString): WideString;
 
 implementation
@@ -191,7 +191,7 @@ begin
     Result := Copy(Result, 1, p - 1)
 end;
 
-function ExtractShortcut (const st: WideString): WideString;
+function ExtractShortcut(const st: WideString): WideString;
 var
   p: Integer;
 begin
@@ -221,11 +221,11 @@ end;
  *----------------------------------------------------------------------*)
 function TBaseMenuDesigner.AddChildItem(parentItem: TMenuItem): TMenuItem;
 begin
-  Result := AddChildItemAt (parentItem, parentItem.Count);
+  Result := AddChildItemAt(parentItem, parentItem.Count);
 end;
 
 (*----------------------------------------------------------------------*
- | TBaseMenuDesigner.AddChildItemAt ()                                  |
+ | TBaseMenuDesigner.AddChildItemAt()                                  |
  |                                                                      |
  | Add a child item at the specified position.  Private                 |
  |                                                                      |
@@ -238,7 +238,7 @@ begin
   if Assigned (parent) then
   begin
     Result := TDesignerMenuItem.Create(self);
-    parent.Insert (index, Result);
+    parent.Insert(index, Result);
     SelectedItem := Result;
     Invalidate
   end
@@ -261,7 +261,7 @@ begin
   if Assigned (afterItem) and Assigned (afterItem.Parent) then
   begin
     idx := afterItem.Parent.IndexOf (afterItem);
-    Result := AddChildItemAt (afterItem.parent, idx + 1)
+    Result := AddChildItemAt(afterItem.parent, idx + 1)
   end
   else
     Result := Nil
@@ -302,19 +302,19 @@ begin
   for i := 0 to Items.Count - 1 do
   begin
     st := ExtractCaption (Utf8Decode(items.Items[i].Caption));
-    s1 := ExtractShortcut (Utf8Decode(items.Items[i].Caption));
+    s1 := ExtractShortcut(Utf8Decode(items.Items[i].Caption));
 
     if st <> '-' then
     begin
       if s1 <> '' then  // Calculate the shortcut width
       begin
-        w1 := DrawTextWidth (menuLeftMargin, menuRightMargin, s1);
+        w1 := DrawTextWidth(menuLeftMargin, menuRightMargin, s1);
         if w1 > shortcutW then
           shortcutW := w1
       end;
 
                         // Calculate the text width
-      w0 := DrawTextWidth (menuLeftMargin, menuRightMargin, st);
+      w0 := DrawTextWidth(menuLeftMargin, menuRightMargin, st);
     end
     else                // Nominal width for empty item
       w0 := 50 + menuLeftMargin + menuRightMargin;
@@ -405,7 +405,7 @@ begin
         selIdx := parent.IndexOf (item)
     end
     else
-      parent := Nil;
+      parent := nil;
 
     item.Free;
 
@@ -420,7 +420,7 @@ begin
         SelectedItem := Parent
     end
     else
-      SelectedItem := Nil;
+      SelectedItem := nil;
 
     Invalidate
   end
@@ -505,11 +505,11 @@ var
     oldMode := SetBkMode(Canvas.Handle, TRANSPARENT);
     defFColor := Canvas.Font.Color;
     try
-      r := Rect (left, y, extent, y + sth);
+      r := Rect(left, y, extent, y + sth);
       if not Item.Enabled then                  // Get the correct font color
       begin
         Canvas.Font.Color := clBtnHighlight;    // Disabled item.  Draw highlight then
-        OffsetRect (r, 1, 1)                    // shadow below
+        OffsetRect(r, 1, 1)                    // shadow below
       end
       else
         if TDesignerMenuItem (Item).Selected and Focused then
@@ -525,7 +525,7 @@ var
         try
           b.Height := sth - 2;
           b.Width := b.Height;
-          DrawFrameControl (b.Canvas.Handle, RECT (0, 2, sth - 2, sth), DFC_MENU, DFCS_MENUCHECK);
+          DrawFrameControl (b.Canvas.Handle, RECt(0, 2, sth - 2, sth), DFC_MENU, DFCS_MENUCHECK);
           b.TransparentColor := clWhite;
           b.Transparent := True;
 
@@ -538,7 +538,7 @@ var
       if not Item.Enabled then
       begin
         Canvas.Font.Color := clBtnShadow;       // Draw shadow if not enabled
-        r := Rect (left, y, extent, y + sth);
+        r := Rect(left, y, extent, y + sth);
         DrawTextExW (Canvas.Handle, PWideChar (st), -1, r, DT_LEFT or DT_SINGLELINE or DT_EXPANDTABS or DT_VCENTER, @params);
       end
     finally
@@ -548,17 +548,17 @@ var
   end;
 
 begin
-  FillChar (params, sizeof (params), 0);        // Set up DrawTextEx params
-  params.cbSize := sizeof (params);
+  FillChar (params, SizeOf(params), 0);        // Set up DrawTextEx params
+  params.cbSize := SizeOf(params);
   params.iLeftMargin := leftMargin;
   params.iRightMargin := rightMargin;
   params.iTabLength := 0;
 
   st := ExtractCaption (Utf8Decode(item.Caption));          // Extract caption & shortcut
-  s1 := ExtractShortcut (Utf8Decode(item.Caption));
+  s1 := ExtractShortcut(Utf8Decode(item.Caption));
 
   if stw = -1 then                              // Calculate string width if required (horiz menus)
-    stw := DrawTextWidth (leftMargin, RightMargin, st);
+    stw := DrawTextWidth(leftMargin, RightMargin, st);
 
   if vert then                                  // Adjust x for popup/droppdown borders
     Inc(x, GetSystemMetrics (SM_CXEDGE));
@@ -568,7 +568,7 @@ begin
   if vert then                                  // Adjust width for popup/dropdown menus
     Dec(extent, 2 * GetSystemMetrics (SM_CXEDGE));
 
-  r := Rect (x, y, extent, y + sth);            // Get highlight rectangle
+  r := Rect(x, y, extent, y + sth);            // Get highlight rectangle
 
   if TDesignerMenuItem (Item).Selected then
     if Focused then    // Get correct brush color...
@@ -578,7 +578,7 @@ begin
   else
     Canvas.Brush.Color := Color;
 
-  Canvas.FillRect (r);                          // .. and fill the background
+  Canvas.FillRect(r);                          // .. and fill the background
 
   if st <> '-' then                             // Draw the main caption
     DrawStr (x, st);
@@ -611,16 +611,16 @@ begin
     Result := lm + rm
   else
   begin
-    r := Rect (0, 0, 0, 0);
+    r := Rect(0, 0, 0, 0);
 
-    FillChar (params, sizeof (params), 0);
-    params.cbSize := sizeof (params);
+    FillChar (params, SizeOf(params), 0);
+    params.cbSize := SizeOf(params);
     params.iLeftMargin := lm;
     params.iRightMargin := rm;
     params.iTabLength := 0;
 
     // nb.  DT_CALCRECT ensures that the text isn't actually drawn - just the rect is returned.
-    DrawTextExW (Canvas.Handle, PWideChar (st), Length (st), r, DT_LEFT or DT_SINGLELINE or DT_CALCRECT, @params);
+    DrawTextExW (Canvas.Handle, PWideChar (st), Length(st), r, DT_LEFT or DT_SINGLELINE or DT_CALCRECT, @params);
     Result := r.Right
   end
 end;
@@ -657,7 +657,7 @@ begin
   if Assigned (beforeItem) and Assigned (beforeItem.Parent) then
   begin
     idx := beforeItem.Parent.IndexOf (beforeItem);
-    Result := AddChildItemAt (beforeItem.parent, idx);
+    Result := AddChildItemAt(beforeItem.parent, idx);
     SelectedItem := Result
   end
   else
@@ -678,7 +678,7 @@ var
   item: TMenuItem;
 
 begin
-  Result := Nil;
+  Result := nil;
   CalcItemsSize(items, w, m, h);
 
   r.Left := XOffset;
@@ -700,14 +700,14 @@ begin
     r.Left := XOffset + ew;
     r.Right := XOffset + w + m - ew;
 
-    if PtInRect (r, Point (X, Y)) then
+    if PtInRect(r, Point(X, Y)) then
     begin
       Result := item;
       break
     end;
 
     if (item.Count > 0) and TDesignerMenuItem (Item).Selected then
-      Result := ItemAtOffset (item, XOffset + w + m, YOffset, X, Y);
+      Result := ItemAtOffset(item, XOffset + w + m, YOffset, X, Y);
 
     YOffset := YOffset + lh;
   end
@@ -791,7 +791,7 @@ var
   i: TMenuItem;
 begin
   SetFocus;
-  i := ItemAt (X, Y);
+  i := ItemAt(X, Y);
   if i <> Nil then
     SelectedItem := i;
   inherited;
@@ -812,7 +812,7 @@ begin
   r.bottom := y + h;
 
   Canvas.Brush.Color := clBtnFace;
-  Canvas.FillRect (r);
+  Canvas.FillRect(r);
   Canvas.Font := Font;
 
   DrawEdge(Canvas.Handle, r, EDGE_RAISED, BF_RECT);
@@ -872,7 +872,7 @@ var
 
 begin
   Items.Clear;
-  FSelectedItem := Nil;
+  FSelectedItem := nil;
   AssignItem (value, items);
 
   if KeepPosition then
@@ -934,17 +934,17 @@ begin
 end;
 
 procedure TBaseMenuDesigner.TakeSnapshot;
-  procedure Snapshot (item: TMenuItem);
+  procedure Snapshot(item: TMenuItem);
   begin
     if Assigned (item) then
     begin
-      Snapshot (item.Parent);
+      Snapshot(item.Parent);
       FPositionSnapshot.Add (pointer (item.MenuIndex))
     end
   end;
 begin
   FPositionSnapshot.Clear;
-  Snapshot (FSelectedItem);
+  Snapshot(FSelectedItem);
 end;
 
 procedure TBaseMenuDesigner.WmGetDLGCode(var msg: TwmGetDlgCode);
@@ -959,7 +959,7 @@ var
   i: Integer;
   w1, h1, y: Integer;
 
-  procedure CalcSubmenuExtent (item: TMenuItem; x, y: Integer; var w, h: Integer);
+  procedure CalcSubmenuExtent(item: TMenuItem; x, y: Integer; var w, h: Integer);
   var
     i, wST, wShortCut, w1, h1: Integer;
   begin
@@ -971,7 +971,7 @@ var
 
       for i := 0 to item.Count - 1 do
       begin
-        CalcSubmenuExtent (item.Items[i], x + w, y + GetSystemMetrics (SM_CYMENU) * i, w1, h1);
+        CalcSubmenuExtent(item.Items[i], x + w, y + GetSystemMetrics (SM_CYMENU) * i, w1, h1);
 
         if h1 > h then h := h1;
         if w1 > w then w := w1
@@ -991,7 +991,7 @@ begin
 
   for i := 0 to items.Count - 1 do
   begin
-    CalcSubmenuExtent (items.items[i], 0, y, w1, h1);
+    CalcSubmenuExtent(items.items[i], 0, y, w1, h1);
 
     if w1 > w then w := w1;
     if h1 > h then h := h1
@@ -1015,24 +1015,24 @@ var
 begin
   tm := 3;
   xp := 0;
-  Result := Nil;
+  Result := nil;
   for i := 0 to Items.Count - 1 do
   begin
     item := Items.Items[i];
     st := Utf8Decode(item.Caption);
     r.Left := xp;
-    r.Right := xp + DrawTextWidth (mainMenuLeftMargin, mainMenuRightMargin, st);
+    r.Right := xp + DrawTextWidth(mainMenuLeftMargin, mainMenuRightMargin, st);
     r.Top := tm;
     r.Bottom := tm + GetSystemMetrics (SM_CYMENU);
 
-    if PtInRect (r, Point (X, Y)) then
+    if PtInRect(r, Point(X, Y)) then
     begin
       Result := Item;
       break
     end;
 
     if (item.Count > 0) and TDesignerMenuItem (item).Selected then
-      Result := ItemAtOffset (item, xp + 1, r.Bottom, X, Y);
+      Result := ItemAtOffset(item, xp + 1, r.Bottom, X, Y);
     xp := r.right;
   end
 end;
@@ -1048,7 +1048,7 @@ begin
   tm := 3;
   x := 0;
 
-  r := Rect (0, 0, ClientWidth, GetSystemMetrics (SM_CYMENU) + 7);
+  r := Rect(0, 0, ClientWidth, GetSystemMetrics (SM_CYMENU) + 7);
   DrawEdge(Canvas.Handle, r, EDGE_ETCHED, BF_BOTTOM);
 
   for i := 0 to Items.Count - 1 do
@@ -1080,7 +1080,7 @@ end;
 
 function TPopupMenuDesigner.ItemAt(X, Y: Integer): TMenuItem;
 begin
-  Result := Nil;
+  Result := nil;
 end;
 
 procedure TPopupMenuDesigner.Paint;

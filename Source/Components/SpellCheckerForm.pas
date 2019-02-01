@@ -40,7 +40,7 @@ type
     FIgnoreWords: TStringList;
     FSS, FSE: Integer;
     FQuoteChars: string;
-    procedure ErrorFoundAt (ss, se: Integer; suggestions: TStrings);
+    procedure ErrorFoundAt(ss, se: Integer; suggestions: TStrings);
     procedure NextWord;
     function GetChangedWord: WideString;
     procedure WmSetup (var message: TMessage); message WM_SETUP;
@@ -85,7 +85,7 @@ begin
   reText.SetRawSelection (ss, se);
   FBadWord := FChecker.ExRichEdit.SelText;
 
-  ErrorFoundAt (ss, se, suggestions);
+  ErrorFoundAt(ss, se, suggestions);
 end;
 
 
@@ -161,7 +161,7 @@ begin
         FBadWord := FChecker.ExRichEdit.SelText;
         if not Assigned(FIgnoreWords) or (FIgnoreWords.IndexOf(FBadWord) = -1) then
         begin
-          ErrorFoundAt (ss, se, suggestions);
+          ErrorFoundAt(ss, se, suggestions);
           break
         end
       end
@@ -208,7 +208,7 @@ begin
   FChecker.ExRichEdit.Text := FText;
   reText.Text := FText;
 
-  reText.SetRawSelection(ss + 1, ss + 1 + Length (newWord));
+  reText.SetRawSelection(ss + 1, ss + 1 + Length(newWord));
 
   NextWord;
 end;
@@ -225,7 +225,7 @@ var
   ch: WideChar;
 begin
   changedText := reText.Text;
-  l := Length (changedText);
+  l := Length(changedText);
   p := FBadSS;
 
   ew := -1;

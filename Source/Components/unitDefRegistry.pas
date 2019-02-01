@@ -159,7 +159,7 @@ begin
   end;
   size := 0;
   for i := 0 to Strings.Count - 1 do
-    Inc(size, Length (Strings[i]) + 1);
+    Inc(size, Length(Strings[i]) + 1);
   Inc(size);
   GetMem (buffer, size);
   try

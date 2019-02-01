@@ -193,9 +193,9 @@ begin
     idx := Info.FindProperty(pkGeneral, 'Caption');
 
   if idx = -1 then
-    Result := Format ('%d %s', [info.ItemID, info.GetDescription])
+    Result := Format('%d %s', [info.ItemID, info.GetDescription])
   else
-    Result := Format ('%d %s "%s"', [info.ItemID, info.GetDescription, info.PropertyValue [pkGeneral, idx]])
+    Result := Format('%d %s "%s"', [info.ItemID, info.GetDescription, info.PropertyValue [pkGeneral, idx]])
 end;
 
 (*----------------------------------------------------------------------*
@@ -218,12 +218,12 @@ begin
   cbControls.Items.BeginUpdate;
   try
     info := DialogEditor1.DialogInfo;
-    cbControls.Items.AddObject (GetInfoDescription (info), info);
+    cbControls.Items.AddObject(GetInfoDescription (info), info);
 
     for i := 0 to DialogEditor1.ControlInfoCount - 1 do
     begin
       info := DialogEditor1.ControlInfo [i];
-      cbControls.Items.AddObject (GetInfoDescription (info), info);
+      cbControls.Items.AddObject(GetInfoDescription (info), info);
     end
   finally
     cbControls.Items.EndUpdate
@@ -278,7 +278,7 @@ begin
   idx := info.FindProperty(kind, st);
   info.PropertyValue [kind, idx] := prop.PropertyValue;  // nb. May make 'prop' invalid!!
 
-  st := Format (rstChangeProperty, [st]);
+  st := Format(rstChangeProperty, [st]);
 
   idx := cbControls.ItemIndex;
   cbControls.Items[idx] := GetInfoDescription (info);
@@ -476,7 +476,7 @@ end;
 
 procedure TfmDialogResource.UpdateFonts;
 begin
-  UseInternationalFont (PropertyListBox1.Font);
+  UseInternationalFont(PropertyListBox1.Font);
 end;
 
 procedure TfmDialogResource.DialogEditor1DesignModeDropControl(
@@ -484,7 +484,7 @@ procedure TfmDialogResource.DialogEditor1DesignModeDropControl(
 var
   idx : Integer;
 begin
-  idx := cbControls.Items.AddObject (GetInfoDescription (ctrl), ctrl);
+  idx := cbControls.Items.AddObject(GetInfoDescription (ctrl), ctrl);
   cbControls.ItemIndex := idx;
   SaveResource(rstAddControl);
   ToolButton1.Down := True;
@@ -572,7 +572,7 @@ begin
     FontDialog1.Font.Handle := DialogEditor1.FontHandle;
     if FontDialog1.Execute then
     begin
-      DialogEditor1.SetTemplateFont (FontDialog1.Font);
+      DialogEditor1.SetTemplateFont(FontDialog1.Font);
       SaveResource(rstSetFont);
       DialogEditor1.ResourceTemplate := FDetails.Data.Memory;
     end

@@ -2,7 +2,8 @@ unit DialogStrings;
 
 interface
 
-uses SysUtils;
+uses
+  SysUtils;
 
 resourcestring
   rstDialog = 'Dialog';

@@ -2,7 +2,8 @@ unit unitCREdProperties;
 
 interface
 
-uses Windows, Messages, Classes, SysUtils, Forms;
+uses
+  Windows, Messages, Classes, SysUtils, Forms;
 
 const
   WM_PROPERTIES_CHANGED = WM_USER + $30E;
@@ -75,7 +76,7 @@ type
     procedure SetLStringPropertyValue(const idx: TPropertyEnum; const Value: string);
 
     function GetIncludePath: string;
-    procedure SetIncludePath (const Value: string);
+    procedure SetIncludePath(const Value: string);
 
     property CustomIncludePath: string index peRCCustomInclude read GetLStringPropertyValue write SetLStringPropertyValue;
   public
@@ -116,7 +117,7 @@ var
 begin
   FNotifyWindow := ANotifyWindow;
 
-  for i := Low (TPropertyEnum) to High (TPropertyEnum) do
+  for i := Low (TPropertyEnum) to High(TPropertyEnum) do
   begin
     FValues[i] := Properties[i].value;
     if FValues[i].tp = ptLString then
@@ -180,7 +181,7 @@ begin
     begin
       BeginUpdate;
       try
-        for i := Low (TPropertyEnum) to High (TPropertyEnum) do
+        for i := Low (TPropertyEnum) to High(TPropertyEnum) do
           if reg.ValueExists (Properties[i].Name) then
             case Properties[i].value.tp of
               ptBool: FValues[i].boolVal := reg.ReadBool (Properties[i].Name);
@@ -218,7 +219,7 @@ begin
   try
     if reg.OpenKey('Software\Woozle\' + Application.Title + '\Properties', True) then
     begin
-      for i := Low (TPropertyEnum) to High (TPropertyEnum) do
+      for i := Low (TPropertyEnum) to High(TPropertyEnum) do
          case Properties[i].value.tp of
            ptBool: reg.WriteBool (Properties[i].Name, FValues[i].boolVal);
            ptInteger: reg.WriteInteger (Properties[i].Name, FValues[i].intVal);

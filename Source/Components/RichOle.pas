@@ -2,7 +2,8 @@ unit RichOle;
 
 interface
 
-uses Windows, Classes, ActiveX, RichEdit, Clipbrd;
+uses
+  Windows, Classes, ActiveX, RichEdit, Clipbrd;
 
 type
 
@@ -13,7 +14,7 @@ TReObject = record
   poleobj : IOleObject;			// OLE object interface
   pstg : IStorage;			// Associated storage interface
   polesite : IOleClientSite;		// Associated client site interface
-  sizel : TSize;                        // Size of object (may be 0,0)
+  sizel : TSize;                        // Size of object(may be 0,0)
   dvaspect : DWORD;			// Display aspect to use
   dwFlags : DWORD;                      // Object status flags
   dwUser : DWORD;      			// Dword for user's use
@@ -79,33 +80,33 @@ type
     function GetClientSite(out clientSite: IOleClientSite): HResult; stdcall;
     function GetObjectCount : Longint; stdcall;
     function GetLinkCount : Longint; stdcall;
-    function GetObject (iob : Longint; var lpreobject : TReObject; dwFlags : DWORD) : HRESULT; stdcall;
-    function InsertObject (const obj : TReObject) : HRESULT; stdcall;
-    function ConvertObject (iob : Longint; const rclsidNew : TCLSID; lpstrUserTypeNew : PChar) : HRESULT; stdcall;
+    function GetObject(iob : Longint; var lpreobject : TReObject; dwFlags : DWORD) : HRESULT; stdcall;
+    function InsertObject(const obj : TReObject) : HRESULT; stdcall;
+    function ConvertObject(iob : Longint; const rclsidNew : TCLSID; lpstrUserTypeNew : PChar) : HRESULT; stdcall;
     function ActivateAs (const clsid : TCLSID; const clsidAs : TCLSID) : HRESULT; stdcall;
     function SetHostNames (lpstrContainerApp : PChar; lpstrContainerObj : PChar) : HRESULT; stdcall;
     function SetLinkAvailable(iob : Longint; fAvailable : BOOL) : HRESULT; stdcall;
-    function SetDvaspect (iob : Longint; dvAspect : DWORD) : HRESULT; stdcall;
+    function SetDvaspect(iob : Longint; dvAspect : DWORD) : HRESULT; stdcall;
     function HandsOffStorage(iob : Longint) : HRESULT; stdcall;
     function SaveComplete(iob : Longint; lpstg : IStorage) : HRESULT; stdcall;
     function InPlaceDeactivate : HRESULT; stdcall;
     function ContextSensitiveHelp (fEnterMode : BOOL) : HRESULT; stdcall;
     function GetClipboardData(const lpchrg : TCharRange; reco : DWORD; out lplpDataObj : IDataObject) : HRESULT; stdcall;
-    function ImportDataObject (lpDataObj : IDataObject; cf : TClipFormat; hMetaPict : HGLOBAL) : HRESULT; stdcall;
+    function ImportDataObject(lpDataObj : IDataObject; cf : TClipFormat; hMetaPict : HGLOBAL) : HRESULT; stdcall;
   end;
 
   IRichEditOleCallback = interface(IUnknown)
     ['{00020d03-0000-0000-00c0-000000000046}']
 
     function GetNewStorage(out lplpstg : IStorage) : HRESULT; stdcall;
-    function GetInPlaceContext (out lplpFrame : IOleInplaceFrame; out lplpDoc : IOleInplaceUIWindow; const lpFrameInfo : TOleInplaceFrameInfo) : HRESULT; stdcall;
+    function GetInPlaceContext(out lplpFrame : IOleInplaceFrame; out lplpDoc : IOleInplaceUIWindow; const lpFrameInfo : TOleInplaceFrameInfo) : HRESULT; stdcall;
     function ShowContainerUI (fShow : BOOL) : HRESULT; stdcall;
-    function QueryInsertObject (const lpclsid : TCLSID; lpstg : IStorage; cp : Longint) : HRESULT; stdcall;
-    function DeleteObject (lpOleObj : IOleObject) : HRESULT; stdcall;
+    function QueryInsertObject(const lpclsid : TCLSID; lpstg : IStorage; cp : Longint) : HRESULT; stdcall;
+    function DeleteObject(lpOleObj : IOleObject) : HRESULT; stdcall;
     function QueryAcceptData(lpDataObj : IDataObject; var lpcfFormat : TClipFormat; reco : DWORD; fReallity : BOOL; hMetaPict : HGLOBAL) : HRESULT; stdcall;
     function ContextSensitiveHelp (fEnterMode : BOOL) : HRESULT; stdcall;
     function GetClipboardData(var lpchrg : TCharRange; reco : DWORD; out lplpDataObj : IDataObject) : HRESULT; stdcall;
-    function GetDragDropEffect (fDrag : BOOL; grfKeyState : DWORD; var pdwEffect : DWORD) : HRESULT; stdcall;
+    function GetDragDropEffect(fDrag : BOOL; grfKeyState : DWORD; var pdwEffect : DWORD) : HRESULT; stdcall;
     function GetContextMenu(selType : Word; lpOleObj : IOleObject; var lpchrg : TCharRange; var lphMenu : HMENU) : HRESULT; stdcall;
   end;
 implementation

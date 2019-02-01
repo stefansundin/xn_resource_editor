@@ -41,30 +41,16 @@ implementation
 
 type
 // nb.  The token strings below *must* be in alphabetical order
-  TRTFTokens = (rtAnsi, rtAnsiCPG,
-                rtBold, rtBoldNone,
-                rtCf, rtColorTbl,
-                rtDeff, rtDefLang,
-                RTF, rtFontTbl, rtFs,
-                rtItalic, rtItalicNone,
-                rtPar, rtPard, rtPlain,
-                rtRtf,
-                rtUc,
-                rtUnderline,
-                rtUnderlineNone,
-                rtViewkind, rtUnknown);
+  TRTFTokens = (
+    rtAnsi, rtAnsiCPG, rtBold, rtBoldNone, rtCf, rtColorTbl,
+    rtDeff, rtDefLang, RTF, rtFontTbl, rtFs, rtItalic, rtItalicNone,
+    rtPar, rtPard, rtPlain, rtRtf, rtUc, rtUnderline, rtUnderlineNone,
+    rtViewkind, rtUnknown);
 var
   RTFTokens: array [Low (TRTFTokens)..Pred (rtUnknown)] of string =
-    ('ansi', 'ansicpg',
-     'b', 'bnone',
-     'cf', 'colortbl',
-     'deff', 'deflang',
-     'f', 'fonttbl', 'fs',
-     'i', 'inone',
-     'par', 'pard', 'plain',
-     'rtf',
-     'uc', 'ul', 'ulnone',
-     'viewkind');
+    ('ansi', 'ansicpg', 'b', 'bnone', 'cf', 'colortbl', 'deff', 'deflang',
+     'f', 'fonttbl', 'fs', 'i', 'inone', 'par', 'pard', 'plain', 'rtf',
+     'uc', 'ul', 'ulnone', 'viewkind');
 
 {*----------------------------------------------------------------------*
  | function FindToken                                                   |
@@ -73,7 +59,7 @@ var
  *----------------------------------------------------------------------*}
 function FindToken (const token: string): TRTFTokens;
 
-  function bsearch (s, e: TRTFTokens): TRTFTokens;
+  function bsearch(s, e: TRTFTokens): TRTFTokens;
   var
     m: TRTFTokens;
     c: Integer;
@@ -86,12 +72,12 @@ function FindToken (const token: string): TRTFTokens;
     if si <= ei then
     begin
       m := TRTFTokens (si + (ei - si) div 2);
-      c := AnsiCompareText (token, RTFTokens[m]);
+      c := AnsiCompareText(token, RTFTokens[m]);
       if c > 0 then
-        Result := bsearch (Succ (m), e)
+        Result := bsearch(Succ (m), e)
       else
         if c < 0 then
-          Result := bsearch (s, Pred (m))
+          Result := bsearch(s, Pred (m))
         else
           Result := m
     end
@@ -100,7 +86,7 @@ function FindToken (const token: string): TRTFTokens;
   end;
 
 begin
-  Result := bsearch (Low (TRTFTokens), Pred (rtUnknown))
+  Result := bsearch(Low(TRTFTokens), Pred(rtUnknown))
 end;
 
 {*----------------------------------------------------------------------*
@@ -111,7 +97,7 @@ end;
 function RTF2HTML (const RTF: string; RawFragment: Boolean = False): string;
 var
   p: PChar;
-  ch: char;
+  ch: Char;
   value: string;
   token: TRTFTokens;
   HTMLTagStack: TStringList;
@@ -119,7 +105,7 @@ var
   colors: TList;
   inTags: Boolean;
 
-  procedure Error (const st: string);
+  procedure Error(const st: string);
   begin
     raise Exception.Create(st);
   end;
@@ -127,7 +113,7 @@ var
   procedure CheckInBody; forward;
 
 // ------ Basic HTML generation routines...
-  procedure EmitChar (ch: char);
+  procedure EmitChar(ch: Char);
   begin
     CheckInBody;
     Result := Result + ch;
@@ -139,7 +125,7 @@ var
     Result := Result + st
   end;
 
-  procedure EmitText (const st: string);
+  procedure EmitText(const st: string);
   begin
     if inTags then
     begin
@@ -149,7 +135,7 @@ var
     EmitStr (st)
   end;
 
-  procedure EmitTextChar (ch: char);
+  procedure EmitTextChar (ch: Char);
   begin
     if inTags then
     begin
@@ -234,7 +220,7 @@ var
 
 // -----  Basic parsing routines
 
-  function GetChar: char;
+  function GetChar: Char;
   begin
     ch := p^;
     Result := ch;
@@ -317,13 +303,13 @@ var
                 st := GetTokenValue;
                 GetValue;
 
-                if SameText (st, 'red') then
+                if SameText(st, 'red') then
                   rVal := StrToIntDef (value, 0)
                 else
-                  if SameText (st, 'green') then
+                  if SameText(st, 'green') then
                     gVal := StrToIntDef (value, 0)
                   else
-                    if SameText (st, 'blue') then
+                    if SameText(st, 'blue') then
                       bVal := StrToIntDef (value, 0);
                 while GetChar = ' ' do;
               end;
@@ -393,7 +379,7 @@ var
             EmitTag ('P', '');
           end;
         rtPar:
-          EmitText ('<BR>'+#13#10);
+          EmitText('<BR>'+#13#10);
 
         rtPlain:
           begin
@@ -409,7 +395,7 @@ var
             begin
               intVal := Integer (colors[intVal]);
               PopTag ('FONT');
-              EmitTag ('FONT', Format ('Color=#%2.2x%2.2x%2.2x', [
+              EmitTag ('FONT', Format('Color=#%2.2x%2.2x%2.2x', [
                 getRValue(intVal),
                 getGValue(intVal),
                 getBValue(intVal)]));
@@ -420,7 +406,7 @@ var
 
   begin { GetGroup }
     HTMLTagStack.Insert(0, '{');
-    while not (GetChar in [#0, '}']) do
+    while not (CharInSet(GetChar, [#0, '}'])) do
       case ch of
         #10, #13 :;
         '\' :
@@ -429,7 +415,7 @@ var
               begin // Hex literal
                 Value := p [1] + p [2];
                 Inc(p, 3);
-                EmitTextChar (Char (StrToInt ('$' + Value)));
+                EmitTextChar (Char (StrToInt('$' + Value)));
               end;
             '{', '}', '/' :
               EmitTextChar (GetChar);
@@ -463,8 +449,8 @@ begin { RTF2HTML }
         '}': Error ('Mismatched curly brackets')
       end
   finally
-                        // The HTML tag stack should be empty - but
-                        // make sure...
+    // The HTML tag stack should be empty - but
+    // make sure...
     while HTMLTagStack.Count > 0 do
       PopTag (HTMLTagStack [HTMLTagStack.Count - 1]);
 

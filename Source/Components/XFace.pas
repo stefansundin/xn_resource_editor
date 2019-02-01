@@ -3,7 +3,7 @@ unit XFace;
 {$HINTS OFF}
 
 {   XFace decoding and encoding Delphi interface
-    Copyright (C) 2002 Matthijs Laan
+    Copyright(C) 2002 Matthijs Laan
     This file licensed as in license.txt
     http://www.xs4all.nl/~walterln/winface/
 

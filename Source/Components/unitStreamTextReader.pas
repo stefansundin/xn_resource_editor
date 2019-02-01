@@ -27,7 +27,7 @@ type
     function ReadLn (var st: string; continuationChar: Char = #0): Boolean;
     procedure ReadChunk(var chunk; offset, length: Integer);
     property Position: Integer read GetPosition write SetPosition;
-    function Search (const st: string): Integer;
+    function Search(const st: string): Integer;
     property Stream: TStream read FStream write SetStream;
   end;
 
@@ -227,20 +227,20 @@ begin
       end
       else
         cont := scont;
-      SetLength (st1, l);
+      SetLength(st1, l);
       if l > 0 then
         Move(pch^, PChar (st1)^, l);
     end
     else
     begin
       st1 := pch;
-      l := Length (st1);
+      l := Length(st1);
 
       while(l > 0) and (st1 [l] = #13) do
         Dec(l);
 
-      if l < Length (st1) then
-        SetLength (st1, l);
+      if l < Length(st1) then
+        SetLength(st1, l);
 
       scont := (l > 0) and (st1 [l] = continuationChar);
 
@@ -264,10 +264,10 @@ var
   p, p1: PChar;
 begin
   Result := -1;
-  if Length (st) <> 0 then
+  if Length(st) <> 0 then
   repeat
     GetChunk;
-    if FBufSize < Length (st) then
+    if FBufSize < Length(st) then
       Exit;
 
     p := FBuffer;
@@ -278,11 +278,11 @@ begin
     if p1 <> Nil then
     begin
       Result := (FStream.Position - FBufSize) + Integer (p1) - Integer (FBuffer);
-      FBufPos := Integer (p1) - Integer (FBuffer) + Length (st);
+      FBufPos := Integer (p1) - Integer (FBuffer) + Length(st);
       break
     end;
 
-    FStream.Position := FStream.Position - (Length (st) - 1);
+    FStream.Position := FStream.Position - (Length(st) - 1);
     FBufPos := 0;
     FBufSize := 0;
   until False
@@ -375,7 +375,7 @@ end;
 
 procedure TTextFileWriter.Write(const st: string);
 begin
-  inherited Write(st [1], Length (st));
+  inherited Write(st [1], Length(st));
 end;
 
 procedure TTextFileWriter.WriteLn(const st: string);
@@ -390,7 +390,7 @@ constructor TStreamWideTextReader.Create(AStream: TStream;
 begin
   FStream := AStream;
   FBlockSize := blockSize;
-  GetMem (FBuffer, (FBlockSize + 1) * sizeof (WideChar));
+  GetMem (FBuffer, (FBlockSize + 1) * SizeOf(WideChar));
   FBuffer [blockSize] := #0;
   Position := 0;
 end;
@@ -419,13 +419,13 @@ var
 begin
   if FBufPos = FBufSize then
   begin
-    ps := (FStream.Size - FStream.Position) div sizeof (WideChar);
+    ps := (FStream.Size - FStream.Position) div SizeOf(WideChar);
     FBufPos := 0;
     FBufSize := FBlockSize;
     if FBufSize > ps then
       FBufSize := ps;
 
-    FBufSize := FStream.Read(FBuffer^, FBufSize * sizeof (WideChar)) div sizeof (WideChar);
+    FBufSize := FStream.Read(FBuffer^, FBufSize * SizeOf(WideChar)) div SizeOf(WideChar);
     if FBufSize < FBlockSize then
       FBuffer [FBufSize] := #10
   end;
@@ -433,7 +433,7 @@ end;
 
 function TStreamWideTextReader.GetPosition: Integer;
 begin
-  Result := ((FStream.Position - 2) div sizeof (WideChar)) - FBufSize + FBufPos;
+  Result := ((FStream.Position - 2) div SizeOf(WideChar)) - FBufSize + FBufPos;
 end;
 
 function TStreamWideTextReader.ReadLn(var st: WideString;
@@ -460,7 +460,7 @@ begin
 
     if pch1 <> nil then
     begin
-      l := (Integer (pch1) - Integer (pch)) div sizeof (WideChar);
+      l := (Integer (pch1) - Integer (pch)) div SizeOf(WideChar);
       Inc(FBufPos, l + 1);
       if FBufPos > FBufSize then
         FBufPos := FBufSize;
@@ -477,20 +477,20 @@ begin
       end
       else
         cont := scont;
-      SetLength (st1, l);
+      SetLength(st1, l);
       if l > 0 then
-        Move(pch^, PWideChar (st1)^, l * sizeof (WideChar));
+        Move(pch^, PWideChar (st1)^, l * SizeOf(WideChar));
     end
     else
     begin
       st1 := pch;
-      l := Length (st1);
+      l := Length(st1);
 
       while(l > 0) and (st1 [l] = #13) do
         Dec(l);
 
-      if l < Length (st1) then
-        SetLength (st1, l);
+      if l < Length(st1) then
+        SetLength(st1, l);
 
       scont := (l > 0) and (st1 [l] = continuationChar);
 
@@ -515,7 +515,7 @@ begin
   begin
     FBufSize := 0;
     FBufPos := 0;
-    FStream.Position := Value * sizeof (WideChar) + 2;
+    FStream.Position := Value * SizeOf(WideChar) + 2;
   end
 end;
 

@@ -47,7 +47,8 @@ type
 
 implementation
 
-uses unitCharsetMap, ClipBrd;
+uses
+  unitCharsetMap, ClipBrd;
 
 const
   CF_UNICODETEXT = 13;
@@ -90,7 +91,7 @@ procedure TuEdit.SetCodePage(const Value: Integer);
 begin
   if FCodePage <> Value then
   begin
-    Font.Charset := CodePageToCharset (Value);
+    Font.Charset := CodePageToCharset(Value);
     FCodePage := Value;
   end
 end;
@@ -134,7 +135,7 @@ end;
 
 procedure TuComboBox.DestroyWindowHandle;
 begin
-  SetWindowLong (FEditHandle, GWL_WNDPROC, LongInt (FuDefEditProc));
+  SetWindowLong (FEditHandle, GWL_WNDPROC, LongInt(FuDefEditProc));
   inherited;
 end;
 
@@ -153,7 +154,7 @@ begin
   begin
     st := WideStringToString (WideStringFromClipboard (CodePage), CodePage);
     SendMessage(FEditHandle, WM_SETFONT, Font.Handle, 1);
-    SetWindowText (FEditHandle, PChar (st));
+    SetWindowText(FEditHandle, PChar (st));
     Message.Result := 0;
   end
   else
@@ -172,7 +173,7 @@ begin
   case message.Msg of
     WM_DESTROY :
       begin
-        SetWindowLong (FListHandle, GWL_WNDPROC, LongInt (FuDefListProc));
+        SetWindowLong (FListHandle, GWL_WNDPROC, LongInt(FuDefListProc));
         callDefProc := True
       end
     else
@@ -188,7 +189,7 @@ procedure TuComboBox.SetCodePage(const Value: Integer);
 begin
   if FCodePage <> Value then
   begin
-    Font.Charset := CodePageToCharset (Value);
+    Font.Charset := CodePageToCharset(Value);
     FCodePage := Value;
     if FListHandle <> 0 then
       SendMessage(FListHandle, WM_SETFONT, SendMessage(FEditHandle, WM_GETFONT, 0, 0), 0);
@@ -205,7 +206,7 @@ begin
   if fListHandle <> 0 then
   begin
     FuDefListProc := Pointer (GetWindowLong (FListHandle, GWL_WNDPROC));
-    SetWindowLong (FListHandle, GWL_WNDPROC, LongInt (FuListInstance));
+    SetWindowLong (FListHandle, GWL_WNDPROC, LongInt(FuListInstance));
     SendMessage(FListHandle, WM_SETFONT, SendMessage(FEditHandle, WM_GETFONT, 0, 0), 0);
   end;
 end;

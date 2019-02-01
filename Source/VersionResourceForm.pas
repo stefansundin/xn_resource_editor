@@ -113,7 +113,7 @@ const
 function VersionToString(version: _ULARGE_INTEGER): string;
 begin
   with version do
-    Result := Format ('%d.%d.%d.%d', [HiWord (HighPart), LoWord (HighPart), HiWord (LowPart), LoWord (LowPart)]);
+    Result := Format('%d.%d.%d.%d', [HiWord (HighPart), LoWord (HighPart), HiWord (LowPart), LoWord (LowPart)]);
 end;
 
 (*----------------------------------------------------------------------------*
@@ -143,18 +143,18 @@ begin
   ok := False;
   if p > 0 then
   begin
-    hh := StrToInt (Copy(s, 1, p - 1));
+    hh := StrToInt(Copy(s, 1, p - 1));
     s := Copy(s, p + 1, MaxInt);
     p := Pos ('.', s);
     if p > 0 then
     begin
-      h := StrToInt (Copy(s, 1, p - 1));
+      h := StrToInt(Copy(s, 1, p - 1));
       s := Copy(s, p + 1, MaxInt);
       p := Pos ('.', s);
       if p > 0 then
       begin
-        l := StrToInt (Copy(s, 1, p - 1));
-        ll := StrToInt (Copy(s, p + 1, MaxInt));
+        l := StrToInt(Copy(s, 1, p - 1));
+        ll := StrToInt(Copy(s, p + 1, MaxInt));
         ok := True;
       end
     end
@@ -332,7 +332,7 @@ begin
     if idx > -1 then
     begin
       mmoMessage.Width := lvVersionStrings.Width - 2;
-      mmoMessage.Top := lvVersionStrings.Selected.DisplayRect (drLabel).Bottom + 1;
+      mmoMessage.Top := lvVersionStrings.Selected.DisplayRect(drLabel).Bottom + 1;
       mmoMessage.Left := lvVersionStrings.Left + 1;
       mmoMessage.Text := FDetails.Key [idx].Value;
       mmoMessage.Visible := True;
@@ -473,7 +473,7 @@ var
 begin
   m := 1;
   repeat
-    Result := Format (rstNewString, [m]);
+    Result := Format(rstNewString, [m]);
 
     if lvVersionStrings.FindCaption (0, Result, False, True, False) = nil then
       break;

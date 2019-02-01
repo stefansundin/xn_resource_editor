@@ -2,7 +2,9 @@ unit unitResourceGIF;
 
 interface
 
-uses Windows, Classes, SysUtils, graphics, gifimage, unitResourceDetails, unitResourceGraphics;
+uses
+  Windows, Classes, SysUtils, Graphics, GIFImage, unitResourceDetails,
+  unitResourceGraphics;
 
 type
 //------------------------------------------------------------------------
@@ -32,7 +34,7 @@ end;
 
 function TGifResourceDetails.GetHeight: Integer;
 begin
-  Result := PWORD (PChar (data) + 6 + SizeOf (Word))^;
+  Result := PWORD (PChar (data) + 6 + SizeOf(Word))^;
 end;
 
 procedure TGifResourceDetails.GetImage(picture: TPicture);

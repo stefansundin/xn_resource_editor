@@ -186,7 +186,7 @@ begin
     Inc(r.Right);
     Inc(r.Bottom);
 
-    b.Canvas.CopyRect(Rect (0, 0, b.Width, b.Height), DrawBmp.Canvas, r);
+    b.Canvas.CopyRect(Rect(0, 0, b.Width, b.Height), DrawBmp.Canvas, r);
 
     b.SaveToStream(s);
     Size := s.Size - SizeOf(TBitmapFileHeader);
@@ -443,7 +443,7 @@ begin
           FDrawPen.Color := FDrawBmp.Canvas.Pixels[p.x, p.y];
           DrawingTool := FLastDrawingTool;
           ReleaseCapture;
-          if Assigned(FOnDrawToolChange) and not(csDestroying in ComponentState) then
+          if Assigned(FOnDrawToolChange) and not (csDestroying in ComponentState) then
             OnDrawToolChange(self);
         end;
 
@@ -486,7 +486,7 @@ begin
             FDrawBrush.Color := FDrawBmp.Canvas.Pixels[p.x, p.y];
             DrawingTool := FLastDrawingTool;
             ReleaseCapture;
-            if Assigned(FOnDrawToolChange) and not(csDestroying in ComponentState) then
+            if Assigned(FOnDrawToolChange) and not (csDestroying in ComponentState) then
               OnDrawToolChange(self);
           end
         end
@@ -629,7 +629,7 @@ begin
               end;
           end;
 
-          if not(DrawingTool in [dtSelectRect, dtSelectArea]) then
+          if not (DrawingTool in [dtSelectRect, dtSelectArea]) then
             RedrawBitmap
           else
             Invalidate
@@ -822,7 +822,7 @@ end;
 procedure TBitmapEditor.RedrawBitmap;
 begin
   Invalidate;
-  if not(csDestroying in ComponentState) and Assigned(OnChange) then
+  if not (csDestroying in ComponentState) and Assigned(OnChange) then
     OnChange(self);
 end;
 

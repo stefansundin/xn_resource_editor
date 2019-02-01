@@ -65,7 +65,7 @@ var
   rs: TResourceStream;
 begin
   Result := False;
-  g := Nil;
+  g := nil;
   if FindResource(hInstance, PChar(ResName), 'GIF') <> 0 then
   try
     rs := TResourceStream.Create(HInstance, ResName, 'GIF');

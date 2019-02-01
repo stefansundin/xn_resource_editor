@@ -2,7 +2,9 @@ unit DialogListViewControls;
 
 interface
 
-uses Windows, Classes, SysUtils, cmpDialogEditor, Graphics, DialogConsts, CommCtrl, Controls;
+uses
+  Windows, Classes, SysUtils, cmpDialogEditor, Graphics, CommCtrl, Controls,
+  DialogConsts;
 
 type
   TListviewControlInfo = class (TStandardControlInfo)
@@ -61,8 +63,8 @@ begin
 // Restore the old image list.  If the ShareImageList style was not set
 // this ensures that the original image list gets destroyed.
 
-  ListView_SetImageList (ControlHandle, FOldImageList, LVSIL_NORMAL);
-  ListView_SetImageList (ControlHandle, FOldSmallImageList, LVSIL_SMALL);
+  ListView_SetImageList(ControlHandle, FOldImageList, LVSIL_NORMAL);
+  ListView_SetImageList(ControlHandle, FOldSmallImageList, LVSIL_SMALL);
 
   FImages.Free;
   FSmallImages.Free;
@@ -77,17 +79,17 @@ end;
 
 function TListviewControlInfo.GetPropertyCount(kind: TPropertyKind): Integer;
 begin
-  Result := inherited GetPropertyCount (kind) + ListviewControlPropertyCount [kind]
+  Result := inherited GetPropertyCount(kind) + ListviewControlPropertyCount [kind]
 end;
 
 function TListviewControlInfo.GetPropertyEnumCount(kind: TPropertyKind;
   idx: Integer): Integer;
 begin
-  if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumCount (kind, idx)
+  if idx < inherited GetPropertyCount(kind) then
+    Result := inherited GetPropertyEnumCount(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := 0;
     case kind of
       pkStyle :
@@ -103,11 +105,11 @@ end;
 function TListviewControlInfo.GetPropertyEnumName(kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := '';
     case kind of
       pkStyle :
@@ -136,11 +138,11 @@ end;
 function TListviewControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyName(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := '';
      case kind of
 //      pkGeneral: Result := StaticControlPropertyGeneralName [idx];
@@ -153,11 +155,11 @@ end;
 function TListviewControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyType(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := ptInteger;
     case kind of
 //      pkGeneral: Result := StaticControlPropertyGeneralType [idx];
@@ -170,11 +172,11 @@ end;
 function TListviewControlInfo.GetPropertyValue(kind: TPropertyKind;
   idx: Integer): Variant;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
 
     case kind of
       pkStyle :
@@ -228,20 +230,20 @@ begin
   finally
     ico.Free
   end;
-  FOldImageList := ListView_SetImageList (ControlHandle, FImages.Handle, LVSIL_NORMAL);
-  FOldSmallImageList := ListView_SetImageList (ControlHandle, FSmallImages.Handle, LVSIL_SMALL);
+  FOldImageList := ListView_SetImageList(ControlHandle, FImages.Handle, LVSIL_NORMAL);
+  FOldSmallImageList := ListView_SetImageList(ControlHandle, FSmallImages.Handle, LVSIL_SMALL);
   count := 7;
-  SetLength (FItemText, count);
-  ListView_SetItemCount (ControlHandle, count);
+  SetLength(FItemText, count);
+  ListView_SetItemCount(ControlHandle, count);
 
   for i := 0 to count - 1 do
   begin
-    FillChar (itm, sizeof (itm), 0);
+    FillChar (itm, SizeOf(itm), 0);
     itm.mask := LVIF_TEXT;
     itm.iItem := i;
     itm.iImage := 0;
 
-    FItemText [i] := Format ('Item %d', [i]);
+    FItemText [i] := Format('Item %d', [i]);
     itm.pszText := PChar (FItemText [i]);
     ListView_InsertItem (ControlHandle, itm)
   end;
@@ -258,11 +260,11 @@ procedure TListviewControlInfo.SetPropertyValue(kind: TPropertyKind;
 var
   recreateRequired: Boolean;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     recreateRequired := False;
 
     case kind of

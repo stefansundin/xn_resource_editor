@@ -122,7 +122,7 @@ type
     FChangingActualValueWidth : Boolean;
     FOnBeginPropertyEdit: TPropertyEditEvent;
     FOnEndPropertyEdit: TPropertyEditEvent;
-    procedure WmPaint (var Message : TWMPaint); message WM_PAINT;
+    procedure WmPaint(var Message : TWMPaint); message WM_PAINT;
     procedure WMSize(var Message: TWMSize); message WM_SIZE;
     procedure RecalcScrollbars;
     procedure SetNameColWidth(const Value: Integer);
@@ -130,15 +130,15 @@ type
     procedure SetSelectedPropertyNo(Value: Integer);
     procedure SetPropertyEdit;
 
-    procedure DoOnPropertyEditExit (Sender : TObject);
+    procedure DoOnPropertyEditExit(Sender : TObject);
     procedure DoOnPropertyEditKeyDown (Sender : TObject; var Key: Word; Shift: TShiftState);
     procedure DoOnPropertyEditDblClick(Sender : TObject);
     procedure DoOnPropertyEditSpecialButtonClick(Sender : TObject);
     procedure PropertyChanged;
-    procedure WmInit (var Msg : TMessage); message WM_INIT;
+    procedure WmInit(var Msg : TMessage); message WM_INIT;
 
     function GetPropertyEditText : string;
-    procedure SetPropertyEditText (const Value : string);
+    procedure SetPropertyEditText(const Value : string);
 
     property PropertyEditText : string read GetPropertyEditText write SetPropertyEditText;
     procedure SetActualValueColWidth(const Value: Integer);
@@ -213,7 +213,8 @@ type
 
 implementation
 
-uses Variants;
+uses
+  Variants;
 
 const
   rstTrue = 'True';
@@ -370,7 +371,7 @@ begin
     st := GetPropertyEditText;
 
     if Assigned (OnEndPropertyEdit) then
-      OnEndPropertyEdit (Self, prop);
+      OnEndPropertyEdit(Self, prop);
 
     if prop.ValueAsStr <> st then
     begin
@@ -408,7 +409,7 @@ begin
     else
     begin
       if Assigned (OnBeginPropertyEdit) then
-        OnBeginPropertyEdit (Self, nil);
+        OnBeginPropertyEdit(Self, nil);
       key := saveKey
     end
   end
@@ -450,7 +451,7 @@ var
 begin
   Result := nil;
   for i := 0 to FProperties.Count - 1 do
-    if CompareText (FProperties[i].PropertyName, propName) = 0 then
+    if CompareText(FProperties[i].PropertyName, propName) = 0 then
     begin
       Result := FProperties[i];
       break
@@ -517,7 +518,7 @@ begin
   r.Left := NameColWidth - 1;
   r.Right := r.Left + 3;
 
-  if PtInRect (r, pt) then      // Clicked on divider
+  if PtInRect(r, pt) then      // Clicked on divider
   begin
     FChangingWidth := True;
     SetCapture(Handle);
@@ -532,7 +533,7 @@ begin
     r.Left := NameColWidth + 4 + ActualValueColWidth - 1;
     r.Right := r.Left + 3;
 
-    if PtInRect (r, pt) then
+    if PtInRect(r, pt) then
     begin
       FChangingActualValueWidth := True;
       SetCapture(Handle);
@@ -584,14 +585,14 @@ begin
   r := ClientRect;            // Otherwise just ensure that the correct cursor
   r.Left := NameColWidth - 1; // is being displayed.
   r.Right := r.Left + 3;
-  if PtInRect (r, pt) then
+  if PtInRect(r, pt) then
     Cursor := crHSplit
   else
   begin
     r := ClientRect;
     r.Left := NameColWidth + 4 + ActualValueColWidth - 1;
     r.Right := r.Left + 3;
-    if ptINRect (r, pt) then
+    if ptINRect(r, pt) then
       Cursor := crHSplit
     else
       Cursor := crDefault
@@ -669,7 +670,7 @@ begin
             Canvas.Font.Color := clGrayText
           else
             Canvas.Font.Color := oldFontColor;
-          Canvas.TextRect (r, indent, y - offset + 2, prop.PropertyName);
+          Canvas.TextRect(r, indent, y - offset + 2, prop.PropertyName);
 
           if ActualValueColWidth > 0 then
           begin
@@ -679,7 +680,7 @@ begin
           else
             x := NameColWidth + Indent;
 
-          Canvas.TextOut (x, y - offset, prop.ValueAsStr);
+          Canvas.TextOut(x, y - offset, prop.ValueAsStr);
         finally
           Canvas.Font.Color := oldFontColor
         end;
@@ -761,7 +762,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TPropertyListBox.RecalcScrollbars;
 begin
-  FLineHeight := Canvas.TextHeight ('M') + 4;
+  FLineHeight := Canvas.TextHeight('M') + 4;
   VertScrollBar.Range := FLineHeight * FProperties.Count;
   VertScrollBar.Increment := FLineHeight
 end;
@@ -967,7 +968,7 @@ begin
     begin
       if FSelectedPropertyNo <> -1 then         // Remove old property editor
       begin
-        DoOnPropertyEditExit (FPropertyEdit);
+        DoOnPropertyEditExit(FPropertyEdit);
         SetFocus
       end;
 
@@ -1203,7 +1204,7 @@ begin
   if (PropertyType = ptEnum) and (VarType(Value) = varString) then
   begin
     for i := 0 to EnumValues.Count - 1 do
-      if CompareText (EnumValues[i], Value) = 0 then
+      if CompareText(EnumValues[i], Value) = 0 then
       begin
         Value := i;
         break
@@ -1311,7 +1312,7 @@ begin
   if (PropertyType = ptEnum) and (VarType(Value) = varString) then
   begin
     for i := 0 to EnumValues.Count - 1 do
-      if CompareText (EnumValues[i], Value) = 0 then
+      if CompareText(EnumValues[i], Value) = 0 then
       begin
         Value := i;
         break

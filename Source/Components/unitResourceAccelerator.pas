@@ -2,7 +2,8 @@ unit unitResourceAccelerator;
 
 interface
 
-uses Windows, Classes, SysUtils, Contnrs, Menus, unitResourceDetails;
+uses
+  Windows, Classes, SysUtils, Contnrs, Menus, unitResourceDetails;
 
 type
   TAccelerator = packed record
@@ -42,7 +43,7 @@ var
   p : PAccelerator;
 begin
   ct := Count;
-  Data.Size := Data.Size + sizeof (TAccelerator);
+  Data.Size := Data.Size + SizeOf(TAccelerator);
   Inc(FCount);
   p := GetAccelPointer (ct);
   p^.flags := flags or $80;
@@ -77,11 +78,11 @@ begin
   begin
     p := GetAccelPointer (idx);
     p1 := GetAccelPointer (idx + 1);
-    Move(p1^, p^, sizeof (TAccelerator) * (Count - idx - 1));
+    Move(p1^, p^, SizeOf(TAccelerator) * (Count - idx - 1));
   end;
 
   Dec(FCount);
-  Data.Size := Data.Size - sizeof (TAccelerator);
+  Data.Size := Data.Size - SizeOf(TAccelerator);
 
   if Count > 0 then
   begin
@@ -123,13 +124,13 @@ begin
     p := PAccelerator (Data.Memory);
     FCount := 0;
     sz := 0;
-    while sz + sizeof (TAccelerator) <= Data.Size do
+    while sz + SizeOf(TAccelerator) <= Data.Size do
     begin
       Inc(FCount);
       if (p^.flags and $80) <> 0 then
         Break;
       Inc(p);
-      Inc(sz, sizeof (TAccelerator))
+      Inc(sz, SizeOf(TAccelerator))
     end
   end;
   Result := FCount;

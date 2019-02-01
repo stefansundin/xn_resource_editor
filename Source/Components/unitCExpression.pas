@@ -2,7 +2,8 @@ unit unitCExpression;
 
 interface
 
-uses Classes, SysUtils;
+uses
+  Classes, SysUtils;
 
 type
   TValueType = (vInteger, vString, vReal);
@@ -158,7 +159,7 @@ var
 
   function GetChar: char;
   begin
-    if pos < Length (st) then
+    if pos < Length(st) then
     begin
       ch := st [pos + 1];
       Inc(pos)
@@ -248,7 +249,7 @@ var
       if GetChar = '.' then
         if (dotPos = 0) and not hexFlag then
         begin
-          dotPos := Length (n);
+          dotPos := Length(n);
           n := n + ch;
           GetChar
         end
@@ -257,9 +258,9 @@ var
     end;
     SkipWhitespace;
 
-    if dotPos = Length (n) then
+    if dotPos = Length(n) then
     begin
-      Delete(n, Length (n), 1);
+      Delete(n, Length(n), 1);
       ch := '.';
       Dec(pos);
       dotPos := 0;
@@ -268,18 +269,18 @@ var
     if hexFlag then
     begin
       Result.tp := vInteger;
-      Result.iVal := StrToInt ('$' + n)
+      Result.iVal := StrToInt('$' + n)
     end
     else
       if dotPos = 0 then
       begin
         Result.tp := vInteger;
-        Result.iVal := StrToInt (n)
+        Result.iVal := StrToInt(n)
       end
       else
       begin
         Result.tp := vReal;
-        Result.rVal := StrToFloat (n)
+        Result.rVal := StrToFloat(n)
       end
   end;
 

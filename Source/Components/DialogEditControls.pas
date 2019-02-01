@@ -2,7 +2,8 @@ unit DialogEditControls;
 
 interface
 
-uses Windows, Messages, Classes, SysUtils, cmpDialogEditor, DialogConsts;
+uses
+  Windows, Messages, Classes, SysUtils, cmpDialogEditor, DialogConsts;
 
 type
 
@@ -23,7 +24,8 @@ end;
 
 implementation
 
-uses DialogStrings;
+uses
+  DialogStrings;
 
 const
   EditControlPropertyGeneralCount = 0;
@@ -59,17 +61,17 @@ end;
 
 function TEditControlInfo.GetPropertyCount(kind: TPropertyKind): Integer;
 begin
-  Result := inherited GetPropertyCount (kind) + EditControlPropertyCount [kind]
+  Result := inherited GetPropertyCount(kind) + EditControlPropertyCount [kind]
 end;
 
 function TEditControlInfo.GetPropertyEnumCount(kind: TPropertyKind;
   idx: Integer): Integer;
 begin
-  if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumCount (kind, idx)
+  if idx < inherited GetPropertyCount(kind) then
+    Result := inherited GetPropertyEnumCount(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
 
     Result := 0;
     if kind = pkStyle then
@@ -83,11 +85,11 @@ end;
 function TEditControlInfo.GetPropertyEnumName(kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := '';
 
     if kind = pkStyle then
@@ -112,11 +114,11 @@ end;
 function TEditControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyName(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := '';
     case kind of
 //      pkGeneral : Result := EditControlPropertyGeneralName [idx];
@@ -129,11 +131,11 @@ end;
 function TEditControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyType(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := ptInteger;
     case kind of
 //      pkGeneral : Result := EditControlPropertyGeneralType [idx];
@@ -148,11 +150,11 @@ function TEditControlInfo.GetPropertyValue(kind: TPropertyKind;
 var
   s : Integer;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
 
     case kind of
       pkStyle :
@@ -192,11 +194,11 @@ var
   recreateRequired : Boolean;
 begin
   recreateRequired := False;
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
 
     case kind of
       pkStyle :
@@ -220,9 +222,9 @@ begin
                 end;
 
                 if value = 3 then
-                  SetWindowText (ControlHandle, '1234')
+                  SetWindowText(ControlHandle, '1234')
                 else
-                  SetWindowText (ControlHandle, PChar (rstText))
+                  SetWindowText(ControlHandle, PChar (rstText))
               end;
           10 : begin HasStyle [ES_PASSWORD] := Value; recreateRequired := True end;
         end

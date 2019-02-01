@@ -3,7 +3,7 @@ unit cmpTrayIcon;
 (*======================================================================*
  | cmpTrayIcon                                                          |
  |                                                                      |
- |   Tray icon component.  Copyright (c) Colin Wilson 1997-2002         |
+ |   Tray icon component.  Copyright(c) Colin Wilson 1997-2002         |
  |                                                                      |
  | NB.  To prevent your main form displaying at startup, select         |
  |      View / Project source from the menu and insert the lines        |
@@ -67,7 +67,7 @@ type
 
     procedure SetIcon (Value: TIcon);
     procedure SetEnabled (Value: Boolean);
-    procedure SetHint (Value: string);
+    procedure SetHint(Value: string);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -127,7 +127,7 @@ destructor TTrayIcon.Destroy;
 begin
   if FIconThere then
   begin
-    FIcon := Nil;
+    FIcon := nil;
     UpdateIcon (0);
   end;
 
@@ -197,7 +197,7 @@ var
 begin
   if not (csDesigning in ComponentState) then
   begin
-    iconData.cbSize := SizeOf (iconData);
+    iconData.cbSize := SizeOf(iconData);
     iconData.Wnd := FWindowHandle;
     iconData.uID := Tag;
     iconData.uFlags :=NIF_ICON or NIF_TIP or NIF_MESSAGE;
@@ -235,7 +235,7 @@ begin
   end
 end;
 
-procedure TTrayIcon.SetHint (Value: String);
+procedure TTrayIcon.SetHint(Value: String);
 begin
   if FHint <> Value then
   begin
@@ -281,7 +281,7 @@ begin
       if Msg.Msg = WM_WTSSESSION_CHANGE then
       begin
         if Assigned (OnXPFastUserSwitch) then
-          OnXPFastUserSwitch (self, Msg.WParam, Msg.LParam)
+          OnXPFastUserSwitch(self, Msg.WParam, Msg.LParam)
       end;
 
   Msg.Result := CallWindowProc (FOldMainWProc, Application.Handle, Msg.Msg, Msg.WParam, Msg.LParam);

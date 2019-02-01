@@ -53,7 +53,8 @@ var
 
 implementation
 
-uses unitCREdProperties;
+uses
+  unitCREdProperties;
 
 {$R *.DFM}
 
@@ -121,7 +122,7 @@ function TfmPropertyPageRCSettings.GetNodePackage(
 var
   Data: PObject;
 begin
-  Data := PObject (vstIncludePackages.GetNodeData(Node));
+  Data := PObject(vstIncludePackages.GetNodeData(Node));
   Result := TIncludePathPackage(Data^);
 end;
 
@@ -131,7 +132,7 @@ begin
   Result := vstIncludePackages.GetFirst;
   while Assigned (Result) do
   begin
-    if SameText (GetNodePackage(Result).Name, packageName) then
+    if SameText(GetNodePackage(Result).Name, packageName) then
       break
     else
       Result := vstIncludePackages.GetNext(Result)
@@ -182,7 +183,7 @@ procedure TfmPropertyPageRCSettings.vstIncludePackagesInitNode(
 var
   Data: PObject;
 begin
-  Data := PObject (vstIncludePackages.GetNodeData(Node));
+  Data := PObject(vstIncludePackages.GetNodeData(Node));
   Data^ := FIncludePathPackages.Package [Node^.Index];
   Node^.CheckType := ctRadioButton ;
 end;
@@ -221,7 +222,7 @@ begin
   while Assigned (p) do
   begin
     package := GetNodePackage(p);
-    if CompilerPath and SameText (package.Name, FData.FIncludePathPackageName) then
+    if CompilerPath and SameText(package.Name, FData.FIncludePathPackageName) then
       p.CheckState := csCheckedNormal
     else
       p.CheckState := csUncheckedNormal;

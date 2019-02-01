@@ -89,24 +89,24 @@ var
   buffer: array [0..256] of char;
   i: Integer;
 begin
-  count := GetMenuItemCount (FMenuHandle);      // Delete all application's system
+  count := GetMenuItemCount(FMenuHandle);      // Delete all application's system
   while count > 0 do                            // menu items.
   begin
     DeleteMenu(FMenuHandle, 0, MF_BYPOSITION);
     Dec(count)
   end;
 
-  count := GetMenuItemCount (FWindowMenuHandle);
+  count := GetMenuItemCount(FWindowMenuHandle);
 
                                                 // Now copy entries from the main form's
                                                 // system menu to the application's system menu
   for i := 0 to count - 1 do
   begin
-    FillChar (item, sizeof (item), 0);
+    FillChar (item, SizeOf(item), 0);
 
     if (Win32MajorVersion > 4) or ((Win32MajorVersion = 4) and (Win32MinorVersion >= 10)) then               // Ie Win2K or '98
     begin
-      item.cbSize := sizeof (item);
+      item.cbSize := SizeOf(item);
       item.fMask := MIIM_STATE or MIIM_BITMAP or MIIM_ID or MIIM_STRING or MIIM_FTYPE;
     end
     else
@@ -114,7 +114,7 @@ begin
       item.cbSize := 44;                        // Sizeof old-style MENUITEMINFO
       item.fMask := MIIM_STATE or MIIM_ID or MIIM_TYPE;
     end;
-    item.cch := sizeof (buffer);
+    item.cch := SizeOf(buffer);
     item.dwTypeData := buffer;
                                                 // Get details from window system menu
     if GetMenuItemInfo (FWindowMenuHandle, i, True, item) then
@@ -297,7 +297,7 @@ procedure TStandardSystemMenu.SetItemState(itemID, state: Integer);
 var
   item: TMenuItemInfo;
 begin
-  FillChar (item, SizeOf (item), 0);
+  FillChar (item, SizeOf(item), 0);
   item.cbSize := 44;
   item.fMask := MIIM_STATE;
   if GetMenuItemInfo (FMenuHandle, itemID, False, item) then

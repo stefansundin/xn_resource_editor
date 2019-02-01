@@ -61,12 +61,12 @@ type
     procedure DoOnListboxKeyDown (Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure DoOnEditKeyDown (Sender: TObject; var Key: Word; Shift: TShiftState);
 
-    procedure DoOnListBoxExit (Sender: TObject);
+    procedure DoOnListBoxExit(Sender: TObject);
 
 
-    procedure ShowList (show, update: Boolean);
+    procedure ShowList(show, update: Boolean);
 
-    procedure WmHideList (var Msg: TMessage); message WM_HIDELIST;
+    procedure WmHideList(var Msg: TMessage); message WM_HIDELIST;
 
     property DropdownButtonWidth: Integer read GetDropdownButtonWidth;
     property ButtonRect: TRect read GetButtonRect;
@@ -134,7 +134,7 @@ begin
   TabStop := True;
 
   FItems := TStringList.Create;
-  TStringList (FItems).OnChange := StringListOnChange;
+  TStringList(FItems).OnChange := StringListOnChange;
 
   FEdit := TEdit.Create(self);
   FEdit.Parent := Self;
@@ -157,7 +157,7 @@ end;
 
 procedure TFakeCombobox.DoOnListBoxExit(Sender: TObject);
 begin
-  ShowList (False, False);
+  ShowList(False, False);
 end;
 
 procedure TFakeCombobox.DoOnListboxMouseDown(Sender: TObject;
@@ -264,11 +264,11 @@ begin
   inherited;
   SetFocus;
   if ((Items.Count > 0) or SpecialButton) then
-    if PtInRect (ButtonRect, Point (X, Y)) then
+    if PtInRect(ButtonRect, Point(X, Y)) then
     begin
       ButtonPressed := True;
       if not SpecialButton then
-        ShowList (True, False)
+        ShowList(True, False)
       else
         if Assigned (OnSpecialButtonClick) then
           OnSpecialButtonClick(Self);
@@ -277,7 +277,7 @@ end;
 
 procedure TFakeCombobox.MouseMove(Shift: TShiftState; X, Y: Integer);
 begin
-  if not PtInRect (ButtonRect, Point (X, Y)) then
+  if not PtInRect(ButtonRect, Point(X, Y)) then
     ButtonPressed := False
   else
     if ssLeft in Shift then
@@ -309,8 +309,8 @@ begin
       Style := Style or DFCS_PUSHED;
     DrawFrameControl (Canvas.Handle, r, DFC_BUTTON, Style);
     OldMode := SetBkMode(Canvas.Handle, TRANSPARENT);
-    OffsetRect (r, 0, -4);
-    DrawText (Canvas.Handle, '...', 3, r, DT_CENTER or DT_VCENTER or DT_SINGLELINE);
+    OffsetRect(r, 0, -4);
+    DrawText(Canvas.Handle, '...', 3, r, DT_CENTER or DT_VCENTER or DT_SINGLELINE);
     SetBkMode(Canvas.Handle, OldMode);
   end
   else
@@ -455,7 +455,7 @@ begin
     FreeAndNil (FListBox);
 
     if Assigned (OnExit) and Update then
-      OnExit (Self);
+      OnExit(Self);
     SetFocus
   end
 end;
@@ -468,7 +468,7 @@ end;
 
 procedure TFakeCombobox.WmHideList(var Msg: TMessage);
 begin
-  ShowList (False, Boolean (Msg.wParam));
+  ShowList(False, Boolean (Msg.wParam));
 end;
 
 procedure TFakeCombobox.DoOnEditKeyDown(Sender: TObject; var Key: Word;
@@ -477,7 +477,7 @@ begin
   if key = VK_NEXT then
   begin
     if Items.Count > 0 then
-      ShowList (True, False)
+      ShowList(True, False)
     else
       if SpecialButton and Assigned (OnSpecialButtonClick) then
         OnSpecialButtonClick(Self);

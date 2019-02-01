@@ -42,7 +42,8 @@ unit unitExIcon;
 
 interface
 
-uses Windows, Classes, SysUtils, Graphics, Controls;
+uses
+  Windows, Classes, SysUtils, Graphics, Controls;
 
 type
 
@@ -214,13 +215,13 @@ type
   end;
 
 function GetPixelFormatNumColors (pf : TPixelFormat) : Integer;
-function GetPixelFormatBitCount (pf : TPixelFormat) : Integer;
+function GetPixelFormatBitCount(pf : TPixelFormat) : Integer;
 
 function CreateMappedBitmap (source : TGraphic; palette : HPALETTE; hiPixelFormat : TPixelFormat; Width, Height : Integer) : TBitmap;
 function GetBitmapInfoNumColors (const BI : TBitmapInfoHeader) : Integer;
-function GetBitmapInfoPixelFormat (const BI : TBitmapInfoHeader) : TPixelFormat;
+function GetBitmapInfoPixelFormat(const BI : TBitmapInfoHeader) : TPixelFormat;
 procedure GetBitmapInfoSizes (const BI : TBitmapInfoHeader; var InfoHeaderSize, ImageSize : DWORD; iconInfo : Boolean);
-function GetPixelFormat (graphic : TGraphic) : TPixelFormat;
+function GetPixelFormat(graphic : TGraphic) : TPixelFormat;
 
 var
   SystemPalette256 : HPALETTE;  // 256 color 'web' palette.
@@ -228,7 +229,8 @@ var
 
 implementation
 
-uses Clipbrd;
+uses
+  Clipbrd;
 
 resourceString
   rstInvalidIcon           = 'Invalid Icon or Cursor';
@@ -257,7 +259,7 @@ end;
  |                                                                      |
  | Get number of bits per pixel for a pixel format                      |
  *----------------------------------------------------------------------*)
-function GetPixelFormatBitCount (pf : TPixelFormat) : Integer;
+function GetPixelFormatBitCount(pf : TPixelFormat) : Integer;
 begin
   case pf of
     pf1Bit : Result := 1;
@@ -277,7 +279,7 @@ end;
  |                                                                      |
  | Get our pixel format.                                                |
  *----------------------------------------------------------------------*)
-function GetPixelFormat (graphic : TGraphic) : TPixelFormat;
+function GetPixelFormat(graphic : TGraphic) : TPixelFormat;
 begin
   if graphic is TBitmap then
     Result := TBitmap (graphic).PixelFormat
@@ -331,7 +333,7 @@ begin
 
   if PixelFormat in [pf1Bit..pf8Bit] then
   begin
-    BI.biBitCount := GetPixelFormatBitCount (PixelFormat);
+    BI.biBitCount := GetPixelFormatBitCount(PixelFormat);
     BI.biClrUsed := GetPixelFormatNumColors (PixelFormat)
   end
   else
@@ -376,7 +378,7 @@ end;
  |                                                                            |
  | Get the pixel format of a bitmap header.                                   |
  *----------------------------------------------------------------------------*)
-function GetBitmapInfoPixelFormat (const BI : TBitmapInfoHeader) : TPixelFormat;
+function GetBitmapInfoPixelFormat(const BI : TBitmapInfoHeader) : TPixelFormat;
 begin
   case BI.biBitCount of
     1: Result := pf1Bit;
@@ -406,7 +408,7 @@ var
   numColors : Integer;
   height : Integer;
 begin
-  InfoHeaderSize := SizeOf (TBitmapInfoHeader);
+  InfoHeaderSize := SizeOf(TBitmapInfoHeader);
 
   numColors := GetBitmapInfoNumColors (bi);
 
@@ -487,7 +489,7 @@ begin
       Result := CopyPalette(SystemPalette2)
     else
     begin
-      GetMem (lpPal, sizeof (TLogPalette) + sizeof (TPaletteEntry) * NumColors);
+      GetMem (lpPal, SizeOf(TLogPalette) + SizeOf(TPaletteEntry) * NumColors);
       try
         lpPal^.palVersion    := $300;
         lpPal^.palNumEntries := NumColors;
@@ -531,7 +533,7 @@ begin
   if palette <> 0 then
   begin
     colorCount := 0;
-    if GetObject (palette, sizeof (colorCount), @colorCount) = 0 then
+    if GetObject(palette, SizeOf(colorCount), @colorCount) = 0 then
       RaiseLastOSError;
 
     case colorCount of
@@ -544,12 +546,12 @@ begin
 
     Result.Palette := CopyPalette(palette);
 
-    Result.Canvas.StretchDraw (rect (0, 0, Width, Height), source);
+    Result.Canvas.StretchDraw (rect(0, 0, Width, Height), source);
   end
   else
   begin
     Result.PixelFormat := hiPixelFormat;
-    Result.Canvas.StretchDraw (rect (0, 0, Width, Height), source);
+    Result.Canvas.StretchDraw (rect(0, 0, Width, Height), source);
   end
 end;
 
@@ -587,7 +589,7 @@ begin
   else
     maskColor := 0;
 
-  bitsPerPixel := GetPixelFormatBitCount (PixelFormat);
+  bitsPerPixel := GetPixelFormatBitCount(PixelFormat);
   if bitsPerPixel = 0 then
       raise EInvalidGraphic.Create(rstInvalidPixelFormat);
 
@@ -640,7 +642,7 @@ begin
           24 :
             begin
               PWORD (bitp)^ := $0000;
-              PBYTE (bitp + sizeof (WORD))^ := $00
+              PBYTE (bitp + SizeOf(WORD))^ := $00
             end;
 
           32 :
@@ -695,7 +697,7 @@ begin
     FTransparentColor := src.TransparentColor;
 
     ReleaseImages;
-    SetLength (fImages, src.ImageCount);
+    SetLength(fImages, src.ImageCount);
 
     for i := 0 to ImageCount - 1 do
     begin
@@ -757,7 +759,7 @@ var
   maskInfo : PBitmapInfo;
   dc : HDC;
 begin
-  src := Nil;
+  src := nil;
   maskBmp := TBitmap.Create;
 
   try
@@ -799,7 +801,7 @@ begin
       if image.FIsIcon then
         offset := 0
       else
-        offset := sizeof (DWORD);
+        offset := SizeOf(DWORD);
 
       image.FMemoryImage.Size := infoHeaderSize + imageSize + maskImageSize + offset;
 
@@ -814,13 +816,13 @@ begin
       maskInfo := nil;
       dc := CreateCompatibleDC (0);
       try
-        GetMem (maskInfo, SizeOf (TBitmapInfoHeader) + 2 * SizeOf (RGBQUAD));
+        GetMem (maskInfo, SizeOf(TBitmapInfoHeader) + 2 * SizeOf(RGBQUAD));
                                       // Get mask bits
 
         with maskInfo^.bmiHeader do  // Set the 1st six members of info header, according
         begin                        // to the docs.
 
-          biSize := SizeOf (TBitmapInfoHeader);
+          biSize := SizeOf(TBitmapInfoHeader);
           biWidth := Width;
           biHeight := Height;
           biBitCount := 1;
@@ -884,7 +886,7 @@ begin
     bmp.Transparent := True;
     bmp.TransparentColor := TransparentColor;
     bmp.Canvas.Brush.Color := TransparentColor;
-    bmp.Canvas.FillRect (RECT (0, 0, Width, Height));
+    bmp.Canvas.FillRect(RECt(0, 0, Width, Height));
     bmp.Canvas.Draw (0, 0, self);
   end
   else
@@ -900,7 +902,7 @@ constructor TExIconCursor.Create;
 begin
   inherited Create;
   FTransparentColor := RGB ($fe, $e6, $f8);
-  SetLength (FImages, 1);
+  SetLength(FImages, 1);
   FImages[0] := TExIconImage.Create;
   FImages[0].FIsIcon := self is TExIcon;
   Images[0].Reference;
@@ -948,7 +950,7 @@ begin
       oldMonoBmp := 0;
       monoDC := 0;
       colorDC := 0;
-      monoInfo := Nil;
+      monoInfo := nil;
 
       dc := GDICheck(GetDC (0));
       try
@@ -967,11 +969,11 @@ begin
 
         if PixelFormat <> pf32Bit then
         begin
-          GetMem (monoInfo, sizeof (TBitmapInfoHeader) + 2 * sizeof (RGBQUAD));
-          Move(hdr^, monoInfo^, sizeof (TBitmapInfoHeader));
+          GetMem (monoInfo, SizeOf(TBitmapInfoHeader) + 2 * SizeOf(RGBQUAD));
+          Move(hdr^, monoInfo^, SizeOf(TBitmapInfoHeader));
           monoInfo^.bmiHeader.biBitCount := 1;
           monoInfo^.bmiHeader.biCompression := 0;
-          with PRGBQUAD (PChar (monoInfo) + sizeof (TBitmapInfoHeader) + sizeof (RGBQUAD))^ do
+          with PRGBQUAD (PChar (monoInfo) + SizeOf(TBitmapInfoHeader) + SizeOf(RGBQUAD))^ do
           begin
             rgbRed := $ff;
             rgbGreen := $ff;
@@ -986,7 +988,7 @@ begin
           oldMonoBmp := GDICheck(SelectObject(monoDC, monoBmp));
                                                 // Draw the masked bitmap
 
-          with rect do TransparentStretchBlt (ACanvas.Handle,
+          with rect do TransparentStretchBlt(ACanvas.Handle,
                                               left, top, right - left, bottom - top,
                                               colorDC, 0, 0,
                                               hdr^.biWidth, hdr^.biHeight, monoDC, 0, 0);
@@ -998,14 +1000,14 @@ begin
       finally
         hdr^.biHeight := hdr^.biHeight * 2;
 
-        if oldMonoBmp <> 0 then SelectObject (monoDC, oldMonoBmp);
+        if oldMonoBmp <> 0 then SelectObject(monoDC, oldMonoBmp);
         if monoDC <> 0 then DeleteDC (monoDC);
 
-        if oldColorBmp <> 0 then SelectObject (colorDC, oldColorBmp);
+        if oldColorBmp <> 0 then SelectObject(colorDC, oldColorBmp);
         if colorDC <> 0 then DeleteDC (colorDC);
 
-        if colorBmp <> 0 then DeleteObject (colorBmp);
-        if monoBmp <> 0 then DeleteObject (monoBmp);
+        if colorBmp <> 0 then DeleteObject(colorBmp);
+        if monoBmp <> 0 then DeleteObject(monoBmp);
         ReleaseDC (0, dc);
         if monoInfo <> Nil then FreeMem (monoInfo)
       end
@@ -1072,7 +1074,7 @@ end;
  *----------------------------------------------------------------------------*)
 function TExIconCursor.GetImageCount: Integer;
 begin
-  Result := Length (fImages);
+  Result := Length(fImages);
 end;
 
 (*----------------------------------------------------------------------------*
@@ -1167,7 +1169,7 @@ begin
 
         image.FWidth := info^.bmiHeader.biWidth;
         image.FHeight := info^.bmiHeader.biHeight;
-        image.FPixelFormat := GetBitmapInfoPixelFormat (info^.bmiHeader);
+        image.FPixelFormat := GetBitmapInfoPixelFormat(info^.bmiHeader);
 
         GetBitmapInfoSizes (info^.bmiHeader, InfoHeaderSize, ImageSize, False);
         monoSize := image.Width * image.FHeight div 8;
@@ -1237,15 +1239,15 @@ var
   i : Integer;
   p : PBitmapInfoHeader;
 begin
-  Stream.Read (hdr, SizeOf (hdr));
+  Stream.Read (hdr, SizeOf(hdr));
 
   if (self is TExIcon) <> (hdr.wType = 1) then
     raise EInvalidGraphic.Create(rstInvalidIcon);
 
   ReleaseImages;  // Get rid of existing images
 
-  SetLength (fImages, hdr.wCount);
-  SetLength (dirEntry, hdr.wCount);
+  SetLength(fImages, hdr.wCount);
+  SetLength(dirEntry, hdr.wCount);
 
                   // Create and initialize the ExIconImage classes and read
                   // the dirEntry structures from the stream.
@@ -1257,23 +1259,23 @@ begin
     fImages[i].FMemoryImage := TMemoryStream.Create;
     fImages[i].Reference;
 
-    Stream.Read (dirEntry [i], SizeOf (TIconDirEntry));
-    fImages[i].FWidth := dirEntry [i].bWidth;
-    fImages[i].FHeight := dirEntry [i].bHeight;
+    Stream.Read (dirEntry[i], SizeOf(TIconDirEntry));
+    fImages[i].FWidth := dirEntry[i].bWidth;
+    fImages[i].FHeight := dirEntry[i].bHeight;
   end;
 
                   // Read the icon images into their Memory streams
   for i := 0 to hdr.wCount - 1 do
   begin
 
-    stream.Seek(dirEntry [i].dwImageOffset, soFromBeginning);
+    stream.Position := dirEntry[i].dwImageOffset;
 
-    fImages[i].FMemoryImage.CopyFrom (stream, dirEntry [i].dwBytesInRes);
+    fImages[i].FMemoryImage.CopyFrom (stream, dirEntry[i].dwBytesInRes);
 
     p := FImages[i].GetBitmapInfoHeader;
     p^.biSizeImage := 0;
 
-    fImages[i].FPixelFormat := GetBitmapInfoPixelFormat (p^);
+    fImages[i].FPixelFormat := GetBitmapInfoPixelFormat(p^);
   end;
 
   FCurrentImage := 0;
@@ -1305,18 +1307,18 @@ var
   strm1 : TCustomMemoryStream;
   p : PBitmapInfoHEader;
 begin
-  stream.read (hdr, SizeOf (hdr));
+  stream.read (hdr, SizeOf(hdr));
 
   if (self is TExIcon) <> (hdr.wType = 1) then
     raise EInvalidGraphic.Create(rstInvalidIcon);
 
   ReleaseImages;  // Get rid of existing images
 
-  SetLength (fImages, hdr.wCount);
+  SetLength(fImages, hdr.wCount);
 
   for i := 0 to hdr.wCount - 1 do
   begin
-    stream.read (resDir, SizeOf (resDir));
+    stream.read (resDir, SizeOf(resDir));
 
     strm1 := TResourceStream.CreateFromID (Instance, resDir.wNameOrdinal, RT_ICON);
     try
@@ -1340,7 +1342,7 @@ begin
       p := FImages[i].GetBitmapInfoHeader;
       p^.biSizeImage := 0;
 
-      fImages[i].FPixelFormat := GetBitmapInfoPixelFormat (p^);
+      fImages[i].FPixelFormat := GetBitmapInfoPixelFormat(p^);
     finally
       strm1.Free
     end
@@ -1365,10 +1367,10 @@ procedure TExIconCursor.ReleaseImages;
 var
   i : Integer;
 begin
-  for i := 0 to Length (fImages) - 1 do
+  for i := 0 to Length(fImages) - 1 do
     fImages[i].Release;
 
-  SetLength (fImages, 0)
+  SetLength(fImages, 0)
 end;
 
 (*----------------------------------------------------------------------*
@@ -1393,13 +1395,13 @@ begin
 
   stream := TFileStream.Create(FileName, fmCreate);
   try
-    Stream.Write(hdr, SizeOf (hdr));
-    dirSize := sizeof (dirEntry) + sizeof (hdr);
+    Stream.Write(hdr, SizeOf(hdr));
+    dirSize := SizeOf(dirEntry) + SizeOf(hdr);
 
     ImageNeeded;
     image := Images[CurrentImage];
 
-    FillChar (dirEntry, SizeOf (dirEntry), 0);
+    FillChar (dirEntry, SizeOf(dirEntry), 0);
 
     dirEntry.bWidth := image.Width;
     dirEntry.bHeight := image.Height;
@@ -1425,14 +1427,14 @@ begin
     dirEntry.dwBytesInRes := image.FMemoryImage.Size;
     if hdr.wType = 2 then
     begin
-      image.FMemoryImage.Seek(SizeOf (DWORD), soFromBeginning);
-      Dec(dirEntry.dwBytesInRes, SizeOf (DWORD))
+      image.FMemoryImage.Seek(SizeOf(DWORD), soFromBeginning);
+      Dec(dirEntry.dwBytesInRes, SizeOf(DWORD))
     end
     else
       image.FMemoryImage.Seek(0, soFromBeginning);
 
     dirEntry.dwImageOffset := dirSize;
-    Stream.Write(dirEntry, SizeOf (dirEntry));
+    Stream.Write(dirEntry, SizeOf(dirEntry));
     Stream.CopyFrom (image.FMemoryImage, image.FMemoryImage.Size - image.FMemoryImage.Position);
 
   finally
@@ -1489,8 +1491,8 @@ begin
     hdr.wType := 2;
   hdr.wCount := ImageCount;
 
-  Stream.Write(hdr, SizeOf (hdr));
-  dirSize := ImageCount * sizeof (dirEntry) + sizeof (hdr);
+  Stream.Write(hdr, SizeOf(hdr));
+  dirSize := ImageCount * SizeOf(dirEntry) + SizeOf(hdr);
 
   oldCurrentImage := FCurrentImage;
   try
@@ -1501,7 +1503,7 @@ begin
       ImageNeeded;
       image := Images[i];
 
-      FillChar (dirEntry, SizeOf (dirEntry), 0);
+      FillChar (dirEntry, SizeOf(dirEntry), 0);
 
       dirEntry.bWidth := image.Width;
       dirEntry.bHeight := image.Height;
@@ -1521,7 +1523,7 @@ begin
       dirEntry.dwBytesInRes := image.FMemoryImage.Size;
       dirEntry.dwImageOffset := dirSize + offset;
 
-      Stream.Write(dirEntry, SizeOf (dirEntry));
+      Stream.Write(dirEntry, SizeOf(dirEntry));
       Inc(offset, dirEntry.dwBytesInRes);
     end
   finally
@@ -1555,7 +1557,7 @@ begin
       image.FIsIcon := self is TExIcon;
       image.FWidth := BI.biWidth;
       image.FHeight := BI.biHeight;
-      image.FPixelFormat := GetBitmapInfoPixelFormat (BI);
+      image.FPixelFormat := GetBitmapInfoPixelFormat(BI);
     except
       image.Free;
       raise
@@ -1568,8 +1570,8 @@ begin
     image.Reference;
     Changed(Self)
   finally
-    DeleteObject (iconInfo.hbmMask);
-    DeleteObject (iconInfo.hbmColor)
+    DeleteObject(iconInfo.hbmMask);
+    DeleteObject(iconInfo.hbmColor)
   end
   else
     RaiseLastOSError;
@@ -1595,7 +1597,7 @@ var
 begin
   newPixelFormat := pfDevice;
   colorCount := 0;
-  if GetObject (Value, sizeof (colorCount), @colorCount) = 0 then
+  if GetObject(Value, SizeOf(colorCount), @colorCount) = 0 then
     RaiseLastOSError;
 
   case colorCount of
@@ -1605,7 +1607,7 @@ begin
   end;
 
   if FImages[FCurrentImage].FPalette <> 0 then
-    DeleteObject (FImages[FCurrentImage].FPalette);
+    DeleteObject(FImages[FCurrentImage].FPalette);
 
   if newPixelFormat <> pfDevice then
   begin
@@ -1647,7 +1649,7 @@ begin
   FImages[FCurrentImage].FPixelFormat := Value;
 
   if FImages[FCurrentImage].FPalette <> 0 then
-    DeleteObject (FImages[FCurrentImage].FPalette);
+    DeleteObject(FImages[FCurrentImage].FPalette);
 
   if newPalette <> 0 then
   begin
@@ -1663,7 +1665,7 @@ begin
   AssignFromGraphic (self)
 end;
 
-procedure TExIconCursor.SetWidth (Value: Integer);
+procedure TExIconCursor.SetWidth(Value: Integer);
 begin
   if Value = Width then Exit;
 
@@ -1685,7 +1687,7 @@ begin
     DestroyIcon(FHandle);
 
   if FPalette <> 0 then
-    DeleteObject (FPalette);
+    DeleteObject(FPalette);
   FGotPalette := False;
   FPalette := 0;
   FHandle := 0;
@@ -1697,7 +1699,7 @@ begin
     if FIsIcon then
       Result := PBitmapInfo (FMemoryImage.Memory)
     else
-      Result := PBitmapInfo (PChar (FMemoryImage.Memory) + sizeof (DWORD))
+      Result := PBitmapInfo (PChar (FMemoryImage.Memory) + SizeOf(DWORD))
   else
     Result := Nil
 end;
@@ -1732,12 +1734,12 @@ begin
 
   if fPalette <> 0 then
   begin
-    DeleteObject (fPalette);
+    DeleteObject(fPalette);
     fPalette := 0;
     fGotPalette := False;
   end;
 
-  if FMemoryImage.Size > sizeof (TBitmapInfoHeader) + 4 then
+  if FMemoryImage.Size > SizeOf(TBitmapInfoHeader) + 4 then
   begin
     info := GetBitmapInfoHeader;
 
@@ -1761,7 +1763,7 @@ begin
 
     FWidth := info^.biWidth;
     FHeight := info^.biHeight div 2;
-    FPixelFormat := GetBitmapInfoPixelFormat (info^);
+    FPixelFormat := GetBitmapInfoPixelFormat(info^);
 
     if info^.biBitCount <= 8 then
       FPalette := CreateDIBPalette(PBitmapInfo (info)^);
@@ -1815,8 +1817,8 @@ begin
 
         if (not FIsIcon) then
         begin
-          Image.Write(IconInfo.xHotspot, SizeOf (iconInfo.xHotspot));
-          Image.Write(IconInfo.yHotspot, SizeOf (iconInfo.yHotspot))
+          Image.Write(IconInfo.xHotspot, SizeOf(iconInfo.xHotspot));
+          Image.Write(IconInfo.yHotspot, SizeOf(iconInfo.yHotspot))
         end;
 
         if IconInfo.hbmColor <> 0 then
@@ -1908,15 +1910,15 @@ var
 begin
   stream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyWrite);
   try
-    Stream.Read (hdr, SizeOf (hdr));
+    Stream.Read (hdr, SizeOf(hdr));
 
     if hdr.wType <> 2 then
       raise EInvalidGraphic.Create(rstInvalidCursor);
 
     ReleaseImages;  // Get rid of existing images
 
-    SetLength (fImages, hdr.wCount);
-    SetLength (dirEntry, hdr.wCount);
+    SetLength(fImages, hdr.wCount);
+    SetLength(dirEntry, hdr.wCount);
 
                     // Create and initialize the ExIconImage classes and read
                     // the dirEntry structures from the stream.
@@ -1928,25 +1930,25 @@ begin
       fImages[i].FMemoryImage := TMemoryStream.Create;
       fImages[i].Reference;
 
-      Stream.Read (dirEntry [i], SizeOf (TIconDirEntry));
-      fImages[i].FWidth := dirEntry [i].bWidth;
-      fImages[i].FHeight := dirEntry [i].bHeight;
+      Stream.Read (dirEntry[i], SizeOf(TIconDirEntry));
+      fImages[i].FWidth := dirEntry[i].bWidth;
+      fImages[i].FHeight := dirEntry[i].bHeight;
     end;
 
                     // Read the icon images into their Memory streams
     for i := 0 to hdr.wCount - 1 do
     begin
-      hotspot := MAKELONG (dirEntry [i].wPlanes, dirEntry [i].wBitCount);
+      hotspot := MAKELONG (dirEntry[i].wPlanes, dirEntry[i].wBitCount);
 
-      stream.Seek(dirEntry [i].dwImageOffset, soFromBeginning);
+      stream.Position := dirEntry[i].dwImageOffset;
 
-      fImages[i].FMemoryImage.Write(hotspot, SizeOf (hotspot));
-      fImages[i].FMemoryImage.CopyFrom (stream, dirEntry [i].dwBytesInRes);
+      fImages[i].FMemoryImage.Write(hotspot, SizeOf(hotspot));
+      fImages[i].FMemoryImage.CopyFrom (stream, dirEntry[i].dwBytesInRes);
 
       p := FImages[i].GetBitmapInfoHeader;
       p^.biSizeImage := 0;
 
-      fImages[i].FPixelFormat := GetBitmapInfoPixelFormat (p^);
+      fImages[i].FPixelFormat := GetBitmapInfoPixelFormat(p^);
     end;
 
     FCurrentImage := 0;
@@ -1971,8 +1973,8 @@ begin
     hdr.wType := 2;
     hdr.wCount := ImageCount;
 
-    Stream.Write(hdr, SizeOf (hdr));
-    dirSize := ImageCount * sizeof (dirEntry) + sizeof (hdr);
+    Stream.Write(hdr, SizeOf(hdr));
+    dirSize := ImageCount * SizeOf(dirEntry) + SizeOf(hdr);
 
     oldCurrentImage := FCurrentImage;
     try
@@ -1983,7 +1985,7 @@ begin
         ImageNeeded;
         image := Images[i];
 
-        FillChar (dirEntry, SizeOf (dirEntry), 0);
+        FillChar (dirEntry, SizeOf(dirEntry), 0);
 
         dirEntry.bWidth := image.Width;
         dirEntry.bHeight := image.Height;
@@ -2002,10 +2004,10 @@ begin
         dirEntry.wPlanes   := LOWORD (Hotspot);
         dirEntry.wBitCount := HIWORD (Hotspot);
 
-        dirEntry.dwBytesInRes := image.FMemoryImage.Size - SizeOf (DWORD);
+        dirEntry.dwBytesInRes := image.FMemoryImage.Size - SizeOf(DWORD);
         dirEntry.dwImageOffset := dirSize + offset;
 
-        Stream.Write(dirEntry, SizeOf (dirEntry));
+        Stream.Write(dirEntry, SizeOf(dirEntry));
         Inc(offset, dirEntry.dwBytesInRes);
       end
     finally
@@ -2014,7 +2016,7 @@ begin
 
     for i := 0 to ImageCount - 1 do
     begin
-      fImages[i].FMemoryImage.Seek(SizeOf (DWORD), soFromBeginning);
+      fImages[i].FMemoryImage.Seek(SizeOf(DWORD), soFromBeginning);
       Stream.CopyFrom (images[i].FMemoryImage, images[i].FMemoryImage.Size - images[i].fMemoryImage.Position);
     end
   finally
@@ -2059,9 +2061,9 @@ type
   TLogWebPalette	= packed record
     palVersion		: word;
     palNumEntries	: word;
-    PalEntries		: array [0..5,0..5,0..5] of TPaletteEntry;
-    MonoEntries         : array [0..23] of TPaletteEntry;
-    StdEntries          : array [0..15] of TPaletteEntry;
+    PalEntries		: array[0..5,0..5,0..5] of TPaletteEntry;
+    MonoEntries         : array[0..23] of TPaletteEntry;
+    StdEntries          : array[0..15] of TPaletteEntry;
   end;
 var
   r, g, b		: byte;
@@ -2106,20 +2108,20 @@ end;
  *----------------------------------------------------------------------*)
 function Create2ColorPalette : HPALETTE;
 const
-  palColors2 : array [0..1] of TColor = ($000000, $ffffff);
+  palColors2 : array[0..1] of TColor = ($000000, $ffffff);
 var
   logPalette : PLogPalette;
   i, c : Integer;
 
 begin
-  GetMem (logPalette, sizeof (logPalette) + 2 * sizeof (PALETTEENTRY));
+  GetMem (logPalette, SizeOf(logPalette) + 2 * SizeOf(PALETTEENTRY));
 
   try
     logPalette^.palVersion := $300;
     logPalette^.palNumEntries := 2;
 {$R-}
     for i := 0 to 1 do
-      with logPalette^.palPalEntry [i] do
+      with logPalette^.palPalEntry[i] do
       begin
         c := palColors2 [i];
 
@@ -2138,6 +2140,6 @@ initialization
   SystemPalette256 := WebPalette;
   SystemPalette2 := Create2ColorPalette;
 finalization
-  DeleteObject (SystemPalette2);
-  DeleteObject (SystemPalette256);
+  DeleteObject(SystemPalette2);
+  DeleteObject(SystemPalette256);
 end.

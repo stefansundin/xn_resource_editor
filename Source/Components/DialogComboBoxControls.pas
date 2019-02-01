@@ -28,7 +28,8 @@ unit DialogComboBoxControls;
 
 interface
 
-uses Windows, Messages, Classes, SysUtils, cmpDialogEditor, DialogConsts;
+uses
+  Windows, Messages, Classes, SysUtils, cmpDialogEditor, DialogConsts;
 
 type
   //----------------------------------------------------------------
@@ -62,7 +63,8 @@ type
 
 implementation
 
-uses DialogStrings;
+uses
+  DialogStrings;
 
 const
   ComboBoxControlPropertyGeneralCount = 0;
@@ -136,8 +138,8 @@ var
 begin
   if FEditWnd = $ffffffff then
   begin
-    FillChar (Info, SizeOf (Info), 0);
-    Info.cbSize := SizeOf (Info);
+    FillChar (Info, SizeOf(Info), 0);
+    Info.cbSize := SizeOf(Info);
 
     if Assigned (fnGetComboboxInfo) then
       fnGetComboBoxInfo (ControlHandle, @Info);
@@ -175,7 +177,7 @@ end;
 function TComboBoxControlInfo.GetPropertyCount(
   kind: TPropertyKind): Integer;
 begin
-  Result := inherited GetPropertyCount (kind) + ComboBoxControlPropertyCount [kind]
+  Result := inherited GetPropertyCount(kind) + ComboBoxControlPropertyCount [kind]
 end;
 
 (*----------------------------------------------------------------------*
@@ -186,11 +188,11 @@ end;
 function TComboBoxControlInfo.GetPropertyEnumCount(kind: TPropertyKind;
   idx: Integer): Integer;
 begin
-  if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumCount (kind, idx)
+  if idx < inherited GetPropertyCount(kind) then
+    Result := inherited GetPropertyEnumCount(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
 
     Result := 0;
     case kind of
@@ -216,11 +218,11 @@ end;
 function TComboBoxControlInfo.GetPropertyEnumName(kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := '';
     case kind of
       pkStyle :
@@ -250,11 +252,11 @@ end;
 function TComboBoxControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyName(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := '';
     case kind of
 //      pkGeneral: Result := StaticControlPropertyGeneralName [idx];
@@ -272,11 +274,11 @@ end;
 function TComboBoxControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyType(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := ptInteger;
     case kind of
 //      pkGeneral: Result := StaticControlPropertyGeneralType [idx];
@@ -297,11 +299,11 @@ end;
 function TComboBoxControlInfo.GetPropertyValue(kind: TPropertyKind;
   idx: Integer): Variant;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
 
     case kind of
       pkStyle :
@@ -361,11 +363,11 @@ procedure TComboBoxControlInfo.SetPropertyValue(kind: TPropertyKind;
 var
   recreateRequired: Boolean;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     recreateRequired := False;
 
     case kind of

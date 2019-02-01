@@ -11,9 +11,9 @@ type
   private
     FUseTheme: Boolean;
     FTheme: HTHEME;
-    procedure DoWMNCPaint (DC: HDC);
+    procedure DoWMNCPaint(DC: HDC);
     procedure SetUseTheme(const Value: Boolean);
-    procedure WMNCPaint (var msg: TwmNCPaint); message WM_NCPAINT;
+    procedure WMNCPaint(var msg: TwmNCPaint); message WM_NCPAINT;
     procedure WMThemeChanged(var Message: TMessage); message WM_THEMECHANGED;
   protected
     procedure CreateWnd; override;
@@ -50,7 +50,7 @@ end;
 procedure TThemedScrollBox.DoWMNCPaint(DC: HDC);
 // Unfortunately, the VCL does a bad job regarding non-client area painting in TWinControl to paint a window's bevel
 // which results often in heavy flickering. This method is a copy of TWinControl.WMNCPaintHandler adjusted to take
-// the passed update region into account (actually, this happens already in the WMNCPaint).
+// the passed update region into account(actually, this happens already in the WMNCPaint).
 // Since the advent of themes this method also draws the theme border.
 
 const
@@ -157,7 +157,7 @@ begin
 
   if DC <> 0 then
   begin
-    DoWMNCPaint (DC);
+    DoWMNCPaint(DC);
     ReleaseDC(Handle, DC);
   end;
 

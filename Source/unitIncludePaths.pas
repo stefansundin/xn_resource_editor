@@ -88,9 +88,9 @@ function TIncludePathPackages.FindIncludePathPackage(
 var
   i : Integer;
 begin
-  Result := Nil;
+  Result := nil;
   for i := 0 to Count - 1 do
-    if SameText (Package [i].Name, PackageName) then
+    if SameText(Package [i].Name, PackageName) then
     begin
       Result := Package [i];
       break

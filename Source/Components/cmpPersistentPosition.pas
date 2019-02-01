@@ -237,8 +237,8 @@ begin
     if CreateReg (false, reg) then
     try
       try
-        FillChar (wp, sizeof (wp), 0);
-        wp.length := sizeof (wp);
+        FillChar (wp, SizeOf(wp), 0);
+        wp.length := SizeOf(wp);
 
         wasVisible := fm.Visible;
         if wasVisible then
@@ -257,7 +257,7 @@ begin
         wp.rcNormalPosition.Top := reg.ReadInteger ('Top');
         wp.rcNormalPosition.Right := reg.ReadInteger ('Width') + wp.rcNormalPosition.Left;
         wp.rcNormalPosition.Bottom := reg.ReadInteger ('Height') + wp.rcNormalPosition.Top;
-        SetWindowPlacement (fm.Handle, @wp);
+        SetWindowPlacement(fm.Handle, @wp);
         if not wasVisible then
           fm.WindowState := TWindowState(reg.ReadInteger ('State'));
       except
@@ -281,9 +281,9 @@ begin
   if FEnabled and (Owner is TForm) then
   begin
     fm := TForm (Owner);
-    FillChar (wp, sizeof (wp), 0);
-    wp.length := sizeof (wp);
-    GetWindowPlacement (fm.Handle, @wp);
+    FillChar (wp, SizeOf(wp), 0);
+    wp.length := SizeOf(wp);
+    GetWindowPlacement(fm.Handle, @wp);
 
     if IsIconic (Application.Handle) then
       state := Ord (wsMinimized)
@@ -351,7 +351,7 @@ begin
   if CreateReg (false, reg) then
   try
     try
-      Result := Rect (reg.ReadInteger ('Left'), reg.ReadInteger ('Top'), reg.ReadInteger ('Width'), reg.ReadInteger ('Height'));
+      Result := Rect(reg.ReadInteger ('Left'), reg.ReadInteger ('Top'), reg.ReadInteger ('Width'), reg.ReadInteger ('Height'));
       Result.Right := Result.Right + Result.Left;
       Result.Bottom := Result.Bottom + Result.Top;
     except
@@ -360,7 +360,7 @@ begin
     reg.Free
   end
   else
-    Result := Rect (0, 0, 0, 0);
+    Result := Rect(0, 0, 0, 0);
 end;
 
 procedure TPersistentPosition.Subclass;

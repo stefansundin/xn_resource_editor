@@ -117,13 +117,13 @@ var
   begin
     BaseP := p;
     wLength := PWord (p)^;
-    Inc(p, sizeof (word));
+    Inc(p, SizeOf(word));
     wValueLength := PWord (p)^;
-    Inc(p, sizeof (word));
+    Inc(p, SizeOf(word));
     wType := PWord (p)^;
-    Inc(p, sizeof (word));
+    Inc(p, SizeOf(word));
     SzKey := PWideChar (p);
-    Inc(p, (lstrlenw (SzKey) + 1) * sizeof (WideChar));
+    Inc(p, (lstrlenw (SzKey) + 1) * SizeOf(WideChar));
     while Integer (p) mod 4 <> 0 do
       Inc(p);
     Result := p - BaseP;
@@ -144,8 +144,8 @@ var
       t := GetVersionHeader (p, wLength, wValueLength, wType, Key);
       Dec(wLength, t);
 
-      langID := StrToInt ('$' + Copy(Key, 1, 4));
-      codePage := StrToInt ('$' + Copy(Key, 5, 4));
+      langID := StrToInt('$' + Copy(Key, 1, 4));
+      codePage := StrToInt('$' + Copy(Key, 5, 4));
 
       strBase := p;
       for i := 0 to FChildStrings.Count - 1 do
@@ -165,7 +165,7 @@ var
         while Integer (p) mod 4 <> 0 do
           Inc(p);
 
-        FChildStrings.AddObject (Key, TVersionStringValue.Create(value, langID, codePage))
+        FChildStrings.AddObject(Key, TVersionStringValue.Create(value, langID, codePage))
       end
     end;
     base := p
@@ -191,7 +191,7 @@ var
       while(p - strBase) < wLength do
       begin
         v := PDWORD (p)^;
-        Inc(p, sizeof (DWORD));
+        Inc(p, SizeOf(DWORD));
         FTranslations.Add (pointer (v));
       end
     end;
@@ -216,7 +216,7 @@ begin
         Inc(p);
     end
     else
-      FFixedInfo := Nil;
+      FFixedInfo := nil;
 
     while wLength > (p - FVersionInfo) do
     begin
@@ -293,11 +293,11 @@ var
     keyLen: word;
   begin
     wKey := Key;
-    strm.Write(wLength, sizeof (wLength));
+    strm.Write(wLength, SizeOf(wLength));
 
-    strm.Write(wValueLength, sizeof (wValueLength));
-    strm.Write(wType, sizeof (wType));
-    keyLen := (Length (wKey) + 1) * sizeof (WideChar);
+    strm.Write(wValueLength, SizeOf(wValueLength));
+    strm.Write(wType, SizeOf(wType));
+    keyLen := (Length(wKey) + 1) * SizeOf(WideChar);
     strm.Write(wKey [1], keyLen);
 
     PadStream (strm);
@@ -306,7 +306,7 @@ var
     begin
       valueLen := wValueLength;
       if wType = 1 then
-        valueLen := valueLen * sizeof (WideChar);
+        valueLen := valueLen * SizeOf(WideChar);
       strm.Write(value, valueLen)
     end;
   end;
@@ -316,7 +316,7 @@ begin { SaveToStream }
   begin
     zeros := 0;
 
-    SaveVersionHeader (strm, 0, sizeof (FFixedInfo^), 0, 'VS_VERSION_INFO', FFixedInfo^);
+    SaveVersionHeader (strm, 0, SizeOf(FFixedInfo^), 0, 'VS_VERSION_INFO', FFixedInfo^);
 
     if FChildStrings.Count > 0 then
     begin
@@ -333,17 +333,17 @@ begin { SaveToStream }
           p := stringInfoStream.Position;
           strg := TVersionStringValue(FChildStrings.Objects[i]);
           wValue := strg.FValue;
-          SaveVersionHeader (stringInfoStream, 0, Length (strg.FValue) + 1, 1, FChildStrings[i], wValue [1]);
+          SaveVersionHeader (stringInfoStream, 0, Length(strg.FValue) + 1, 1, FChildStrings[i], wValue [1]);
           wSize := stringInfoStream.Size - p;
           stringInfoStream.Seek(p, soFromBeginning);
-          stringInfoStream.Write(wSize, sizeof (wSize));
+          stringInfoStream.Write(wSize, SizeOf(wSize));
           stringInfoStream.Seek(0, soFromEnd);
 
         end;
 
         stringInfoStream.Seek(0, soFromBeginning);
         wSize := stringInfoStream.Size;
-        stringInfoStream.Write(wSize, sizeof (wSize));
+        stringInfoStream.Write(wSize, SizeOf(wSize));
 
         PadStream (strm);
         p := strm.Position;
@@ -354,7 +354,7 @@ begin { SaveToStream }
         stringInfoStream.Free
       end;
       strm.Seek(p, soFromBeginning);
-      strm.Write(wSize, sizeof (wSize));
+      strm.Write(wSize, SizeOf(wSize));
       strm.Seek(0, soFromEnd)
     end;
 
@@ -371,23 +371,23 @@ begin { SaveToStream }
       for i := 0 to FTranslations.Count - 1 do
       begin
         v := Integer (FTranslations[i]);
-        strm.Write(v, sizeof (v))
+        strm.Write(v, SizeOf(v))
       end;
 
       wSize := strm.Size - p1;
       strm.Seek(p1, soFromBeginning);
-      strm.Write(wSize, sizeof (wSize));
-      wSize := sizeof (Integer) * FTranslations.Count;
-      strm.Write(wSize, sizeof (wSize));
+      strm.Write(wSize, SizeOf(wSize));
+      wSize := SizeOf(Integer) * FTranslations.Count;
+      strm.Write(wSize, SizeOf(wSize));
 
       wSize := strm.Size - p;
       strm.Seek(p, soFromBeginning);
-      strm.Write(wSize, sizeof (wSize));
+      strm.Write(wSize, SizeOf(wSize));
     end;
 
     strm.Seek(0, soFromBeginning);
     wSize := strm.Size;
-    strm.Write(wSize, sizeof (wSize));
+    strm.Write(wSize, SizeOf(wSize));
     strm.Seek(0, soFromEnd);
   end
   else
@@ -402,7 +402,7 @@ begin
   begin
     i := FChildStrings.IndexOf (idx);
     if i = -1 then
-      i := FChildStrings.AddObject (idx, TVersionStringValue.Create(idx, 0, 0));
+      i := FChildStrings.AddObject(idx, TVersionStringValue.Create(idx, 0, 0));
 
     TVersionStringValue(FChildStrings.Objects[i]).FValue := Value
   end

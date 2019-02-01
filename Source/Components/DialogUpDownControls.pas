@@ -2,7 +2,8 @@ unit DialogUpDownControls;
 
 interface
 
-uses Windows, Classes, SysUtils, cmpDialogEditor, DialogConsts, CommCtrl;
+uses
+  Windows, Classes, SysUtils, cmpDialogEditor, DialogConsts, CommCtrl;
 
 type
 TUpDownControlInfo = class (TStandardControlInfo)
@@ -20,7 +21,8 @@ end;
 
 implementation
 
-uses DialogStrings;
+uses
+  DialogStrings;
 
 const
   UpDownControlPropertyGeneralCount = 0;
@@ -51,17 +53,17 @@ end;
 function TUpDownControlInfo.GetPropertyCount(
   kind: TPropertyKind): Integer;
 begin
-  Result := inherited GetPropertyCount (kind) + UpDownControlPropertyCount [kind]
+  Result := inherited GetPropertyCount(kind) + UpDownControlPropertyCount [kind]
 end;
 
 function TUpDownControlInfo.GetPropertyEnumCount(kind: TPropertyKind;
   idx: Integer): Integer;
 begin
-  if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumCount (kind, idx)
+  if idx < inherited GetPropertyCount(kind) then
+    Result := inherited GetPropertyEnumCount(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := 0;
     case kind of
       pkStyle :
@@ -76,11 +78,11 @@ end;
 function TUpDownControlInfo.GetPropertyEnumName(kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := '';
     case kind of
       pkStyle :
@@ -102,11 +104,11 @@ end;
 function TUpDownControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyName(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := '';
      case kind of
 //      pkGeneral : Result := StaticControlPropertyGeneralName [idx];
@@ -119,11 +121,11 @@ end;
 function TUpDownControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyType(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     Result := ptInteger;
     case kind of
 //      pkGeneral : Result := StaticControlPropertyGeneralType [idx];
@@ -136,11 +138,11 @@ end;
 function TUpDownControlInfo.GetPropertyValue(kind: TPropertyKind;
   idx: Integer): Variant;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
 
     case kind of
       pkStyle :
@@ -171,11 +173,11 @@ procedure TUpDownControlInfo.SetPropertyValue(kind: TPropertyKind;
 var
   recreateRequired : Boolean;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     recreateRequired := True;
 
     case kind of

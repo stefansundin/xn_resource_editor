@@ -93,7 +93,7 @@ type
     class function Language(idx: Integer): TISpellLanguage;
 
     function CheckWord (const ws: WideString; Suggestions: TStrings = Nil): Boolean;
-    function Check(const ws: WideString; startPos: Integer; var selStart, selEnd: Integer; Suggestions: TStrings = Nil; SkipFirstLine: Boolean = False): Boolean;
+    function Check(const ws: WideString; startPos: Integer; var selStart, selEnd: Integer; Suggestions: TStrings = nil; SkipFirstLine: Boolean = False): Boolean;
     procedure Add (const word: WideString);
     property LanguageIdx: Integer read FLanguageIdx write SetLanguageIdx default -1;
     property QuoteChars: string read FQuoteChars write FQuoteChars;
@@ -107,10 +107,11 @@ var
 
 implementation
 
-uses ActiveX, unitDefRegistry, iniFiles, unitCharsetMap, unitSearchString;
+uses
+  ActiveX, unitDefRegistry, iniFiles, unitCharsetMap, unitSearchString;
 
 var
-  gISpellLanguages: TObjectList = Nil;
+  gISpellLanguages: TObjectList = nil;
   gCoInitialize: Boolean = False;
 
 
@@ -177,7 +178,7 @@ var
   end;
 
 begin
-  l := Length (ws);
+  l := Length(ws);
   if l = 0 then
   begin
     Result := True;
@@ -476,17 +477,17 @@ begin
   FCodePage := ACodePage;
   SetEnvironmentVariable('HOME', PChar (APath));
 
-  sa.nLength := sizeof (TSecurityAttributes);
-  sa.lpSecurityDescriptor := Nil;
+  sa.nLength := SizeOf(TSecurityAttributes);
+  sa.lpSecurityDescriptor := nil;
   sa.bInheritHandle := True;
 
-  FillChar (FProcessInformation, SizeOf (FProcessInformation), 0);
-  FillChar (si, SizeOf (si), 0);
+  FillChar (FProcessInformation, SizeOf(FProcessInformation), 0);
+  FillChar (si, SizeOf(si), 0);
 
   CreateStdHandles (sa, hInputRead, FHInputWrite, FHOutputRead, hOutputWrite, FHErrorRead, hErrorWrite);
 
   try
-    si.cb := SizeOf (si);
+    si.cb := SizeOf(si);
     si.dwFlags := STARTF_USESTDHANDLES or STARTF_USESHOWWINDOW;
     si.hStdOutput := hOutputWrite;
     si.hStdInput := hInputRead;
@@ -515,7 +516,7 @@ begin
   if FProcessInformation.hProcess <> 0 then
   begin
     SpellCommand(^Z);     // Send Ctrl-Z to ISpell to terminate it
-    WaitForSingleObject (FProcessInformation.hProcess, 1000);      // Wait for it to finish
+    WaitForSingleObject(FProcessInformation.hProcess, 1000);      // Wait for it to finish
   end;
 
   try
@@ -551,12 +552,12 @@ var
 
     if avail > 0 then
     begin
-      SetLength (s, avail + 512);
+      SetLength(s, avail + 512);
 
       if not ReadFile(pipeHandle, s[1], avail + 512, avail, nil) then
         RaiseLastOSError;
 
-      SetLength (s, avail);
+      SetLength(s, avail);
       Result := True
     end
     else
@@ -594,10 +595,10 @@ function TSpeller.GetResponse: string;
 var
   avail: DWORD;
 begin
-  SetLength (Result, 2048);
+  SetLength(Result, 2048);
   if ReadFile(FHOutputRead, Result [1], 2048, avail, nil) then
   begin
-    SetLength (Result, avail);
+    SetLength(Result, avail);
     Result := Trim (Result)
   end
   else
@@ -613,7 +614,7 @@ procedure TSpeller.SpellCommand(const cmd: string);
 var
   n: DWORD;
 begin
-  WriteFile(FHInputWrite, (cmd + #13#10) [1], Length (cmd) + 2, n, Nil);
+  WriteFile(FHInputWrite, (cmd + #13#10) [1], Length(cmd) + 2, n, Nil);
 end;
 
 procedure InitISpell;
@@ -642,7 +643,7 @@ var
 begin
   if CoInitialize(nil) = S_OK then
     gCoInitialize := True;
-  sections := Nil;
+  sections := nil;
   reg := TDefRegistry.Create(KEY_READ);
   try
     reg.RootKey := HKEY_LOCAL_MACHINE;
@@ -651,9 +652,9 @@ begin
     begin                       // Get the ISpell.exe path from the registry
 
       ISpellPath := IncludeTrailingPathDelimiter (reg.ReadString ('Path'));
-      path := ExtractFilePath (ExcludeTrailingPathDelimiter (ISpellPath));
+      path := ExtractFilePath(ExcludeTrailingPathDelimiter (ISpellPath));
 
-      if FindFirst (ISpellPath + '*.*', faDirectory, f) = 0 then
+      if FindFirst(ISpellPath + '*.*', faDirectory, f) = 0 then
       try
         sections := TStringList.Create;
 
@@ -691,7 +692,7 @@ begin
             finally
               Free
             end
-        until FindNext (f) <> 0
+        until FindNext(f) <> 0
       finally
         FindClose(f)
       end;

@@ -89,7 +89,8 @@ type
 
 implementation
 
-uses unitCharsetMap;
+uses
+  unitCharsetMap;
 
 { TNewsRichEdit }
 
@@ -248,7 +249,7 @@ var
   hl: TFontStyles;
 
 begin
-  own := TNewsRichEdit (stream.Owner);
+  own := TNewsRichEdit(stream.Owner);
   trc := own.TruncateFrom <> '';
   with stream do
   begin
@@ -352,7 +353,7 @@ begin
       end;
 
       if sol and trc and FInSignature then
-        if WideSameText (Copy(p, 1, Length (own.TruncateFrom)), own.TruncateFrom) then
+        if WideSameText(Copy(p, 1, Length(own.TruncateFrom)), own.TruncateFrom) then
         begin
           stream.Truncate := True;
           break;

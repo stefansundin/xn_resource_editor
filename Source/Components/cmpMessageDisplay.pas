@@ -47,7 +47,7 @@ type
   protected
     FObj: TObject;
     FYPos: Integer;
-    class function DisplaysObject (obj: TObject): Boolean; virtual; abstract;
+    class function DisplaysObject(obj: TObject): Boolean; virtual; abstract;
 
     procedure Display(const r: TRect; var y: Integer); virtual; abstract;
     function GetCursor: TCursor; virtual;
@@ -61,13 +61,13 @@ type
     function GetObj: TObject; virtual;
     function GetBusy: Boolean ; virtual;
     procedure SetObj(const Value: TObject); virtual;
-    function CursorAt (x, y: Integer): TCursor; virtual;
+    function CursorAt(x, y: Integer): TCursor; virtual;
     procedure KeyPress (var ch: char); virtual;
-    function FindText (const SearchStr: string; NewSearch: Boolean; Options: TStringSearchOptions; y: Integer): Boolean; virtual;
-    procedure GetSelectedText (var txt: WideString); virtual;
-    procedure SetSelectedText (const txt: WideString); virtual;
+    function FindText(const SearchStr: string; NewSearch: Boolean; Options: TStringSearchOptions; y: Integer): Boolean; virtual;
+    procedure GetSelectedText(var txt: WideString); virtual;
+    procedure SetSelectedText(const txt: WideString); virtual;
     function GetSelLength: Integer; virtual;
-    procedure GetText (var txt: WideString); virtual;
+    procedure GetText(var txt: WideString); virtual;
     procedure GetHTML (var txt: string; rawFragment: Boolean = false); virtual;
     function GetHasText: Boolean; virtual;
     procedure PageDown; virtual;
@@ -110,7 +110,7 @@ type
     fWidth: Integer;
     fHeight: Integer;
   protected
-    class function DisplaysObject (obj: TObject): Boolean; override;
+    class function DisplaysObject(obj: TObject): Boolean; override;
     procedure Display(const r: TRect; var y: Integer); override;
     function GetHeight: Integer; override;
     function GetWidth: Integer; override;
@@ -133,7 +133,7 @@ type
   private
     function GetCtrl: TWinControl;
   protected
-    class function DisplaysObject (obj: TObject): Boolean; override;
+    class function DisplaysObject(obj: TObject): Boolean; override;
     procedure Display(const r: TRect; var y: Integer); override;
     function GetCursor: TCursor; override;
     function GetHeight: Integer; override;
@@ -203,14 +203,14 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Clear;
-    procedure FocusObject (obj: TObject);
-    function AddObject (obj: TObject; codepage: Integer): TDisplayObjectLink;
-    function FindText (const SearchStr: string; NewSearch: Boolean; Options: TStringSearchOptions): Boolean;
+    procedure FocusObject(obj: TObject);
+    function AddObject(obj: TObject; codepage: Integer): TDisplayObjectLink;
+    function FindText(const SearchStr: string; NewSearch: Boolean; Options: TStringSearchOptions): Boolean;
     function GetObjectLinkClass (obj: TObject; XFace: Boolean): TDisplayObjectLinkClass;
-    function InsertObject (idx: Integer; obj: TObject;  codepage: Integer; tp: TDisplayObjectLinkClass = Nil): TDisplayObjectLink;
-    function ObjectAt (x, y: Integer): Integer;
+    function InsertObject(idx: Integer; obj: TObject;  codepage: Integer; tp: TDisplayObjectLinkClass = Nil): TDisplayObjectLink;
+    function ObjectAt(x, y: Integer): Integer;
     procedure RecalcBounds;
-    procedure Refresh (objIdx: Integer = -1);
+    procedure Refresh(objIdx: Integer = -1);
     procedure SetBounds(ALeft, ATop, AWidth, AHeight: Integer); override;
     procedure BeginUpdate;
     procedure EndUpdate;
@@ -218,14 +218,14 @@ type
     procedure CopyToClipboard;
     function ExecuteAction(Action: TBasicAction): Boolean; override;
     function GetSelectedText(var txt: WideString): Boolean;
-    procedure SetSelectedText (const st: WideString);
+    procedure SetSelectedText(const st: WideString);
     procedure PageDown;
     function GetHTML (rawFragment: Boolean = false): string;
 
     procedure Print;
-    function GetPageCount (dc: HDC): Integer;
+    function GetPageCount(dc: HDC): Integer;
 
-    function TextWidth (const st: string): Integer;
+    function TextWidth(const st: string): Integer;
     function UpdateAction (Action: TBasicAction): Boolean; override;
 
     property HasSelection: Boolean read GetHasSelection;
@@ -310,7 +310,7 @@ begin
   if i >= fRegisteredLinkSize then
   begin
     Inc(fRegisteredLinkSize, 5);
-    SetLength (fRegisteredLinks, fRegisteredLinkSize)
+    SetLength(fRegisteredLinks, fRegisteredLinkSize)
   end;
 
   if i >= fRegisteredLinkCount then
@@ -440,7 +440,7 @@ begin
   FFocusedObject := -1;
   FObjects.Clear;
   RecalcBounds;
-  InvalidateRect (Handle, Nil, True);
+  InvalidateRect(Handle, Nil, True);
 end;
 
 (*----------------------------------------------------------------------*
@@ -475,7 +475,7 @@ begin
   inherited;
   Canvas.Font := Self.Font;
   FLineHeight := Canvas.TextHeight('M');
-  InvalidateRect (Handle, Nil, True);
+  InvalidateRect(Handle, Nil, True);
 end;
 
 (*----------------------------------------------------------------------*
@@ -490,7 +490,7 @@ var
 begin
   t := TStringList.Create;
   try
-    GetSelectedText (s);
+    GetSelectedText(s);
     Clipboard.AsText := s
   finally
     t.Free
@@ -557,7 +557,7 @@ begin
   inherited;
 
   if Handle = 0 then
-    ShowMessage(Format ('Could not create a %dx%d window.  Unable to display messages.', [FCreateWindowSizeW, FCreateWindowSizeH]));
+    ShowMessage(Format('Could not create a %dx%d window.  Unable to display messages.', [FCreateWindowSizeW, FCreateWindowSizeH]));
 
   Canvas.Font := Self.Font;
   RecalcBounds;         // Will be required if RecreateWnd was called
@@ -682,7 +682,7 @@ begin
   begin
     obj := Objects[c];
 
-    Result := obj.FindText (SearchStr, NewSearch, Options, y);
+    Result := obj.FindText(SearchStr, NewSearch, Options, y);
     if Result then Exit;
 
     NewSearch := True;
@@ -790,7 +790,7 @@ function TMessageDisplay.GetObjectLinkClass(
 var
   i: Integer;
 begin
-  Result := Nil;
+  Result := nil;
   i := fRegisteredLinkCount - 1;
   while i >= 0 do
     if fRegisteredLinks[i].DisplaysObject(obj) then
@@ -870,7 +870,7 @@ var
 begin
   d := GetFocusedTextObject;
   if Assigned (d) then
-    d.GetText (Result)
+    d.GetText(Result)
   else
     Result := ''
 end;
@@ -923,7 +923,7 @@ procedure TMessageDisplay.MouseDown(Button: TMouseButton;
 begin
   inherited;
 
-  FocusedObject := ObjectAt (x, y);
+  FocusedObject := ObjectAt(x, y);
 end;
 
 function TMessageDisplay.ObjectAt(x, y: Integer): Integer;
@@ -1009,8 +1009,8 @@ var
 begin
   LogX := GetDeviceCaps(Printer.Handle, LOGPIXELSX);
   LogY := GetDeviceCaps(Printer.Handle, LOGPIXELSY);
-  pageRect := rect (0, 0, Printer.PageWidth, Printer.PageHeight);
-  InflateRect (pageRect, -LogX div 2, -LogY div 2);
+  pageRect := rect(0, 0, Printer.PageWidth, Printer.PageHeight);
+  InflateRect(pageRect, -LogX div 2, -LogY div 2);
   hadXFace := False;
 
   printer.Title := Subject;
@@ -1018,8 +1018,8 @@ begin
   try
     for i := 0 to ObjectCount - 1 do
     begin
-      pageRect := rect (0, 0, Printer.PageWidth, Printer.PageHeight);
-      InflateRect (pageRect, -LogX div 2, -LogY div 2);
+      pageRect := rect(0, 0, Printer.PageWidth, Printer.PageHeight);
+      InflateRect(pageRect, -LogX div 2, -LogY div 2);
       Objects[i].PageRect := PageRect;
       Objects[i].Print;
       if hadXFace then;
@@ -1177,7 +1177,7 @@ var
 begin
   d := GetFocusedTextObject;
   if Assigned (d) then
-    d.SetSelectedText (st)
+    d.SetSelectedText(st)
 end;
 
 procedure TMessageDisplay.SetTextIndent(const Value: Integer);
@@ -1202,8 +1202,8 @@ begin
     Result := 0
   else
   begin
-    r := rect (0, 0, MaxInt, LineHeight);
-    DrawText (Canvas.Handle, PChar (st), Length (st), r, DT_CALCRECT or DT_NOPREFIX or DT_EXPANDTABS);
+    r := rect(0, 0, MaxInt, LineHeight);
+    DrawText(Canvas.Handle, PChar (st), Length(st), r, DT_CALCRECT or DT_NOPREFIX or DT_EXPANDTABS);
     Result := r.Right - r.Left
   end
 end;
@@ -1261,7 +1261,7 @@ begin
   FFont := TFont.Create;
   FFont.Assign(AOwner.Font);
   FCodePage := codePage;
-  FFont.Charset := CodePageToCharset (codepage);
+  FFont.Charset := CodePageToCharset(codepage);
   FColor := AOwner.Color;
 end;
 
@@ -1497,15 +1497,15 @@ var
       if rgn <> 0 then
       begin
         SelectClipRgn (Owner.Canvas.Handle, 0);
-        DeleteObject (rgn)
+        DeleteObject(rgn)
       end
     end
   end;
 
 begin
-  r1 := Rect (0, y, Owner.ClientWidth, y + Height);
+  r1 := Rect(0, y, Owner.ClientWidth, y + Height);
 
-  if IntersectRect (r2, r, r1) then
+  if IntersectRect(r2, r, r1) then
   try
     DrawGraphic
   except
@@ -1625,8 +1625,8 @@ begin
     Owner.RecalcBounds
   else
   begin
-    r := Rect (Margin, FYPos, Margin + fWidth, FYPos + fHeight);
-    InvalidateRect (Owner.Handle, @r, false)
+    r := Rect(Margin, FYPos, Margin + fWidth, FYPos + fHeight);
+    InvalidateRect(Owner.Handle, @r, false)
   end
 end;
 

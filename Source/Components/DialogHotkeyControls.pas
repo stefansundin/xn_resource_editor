@@ -2,27 +2,29 @@ unit DialogHotkeyControls;
 
 interface
 
-uses Windows, Classes, SysUtils, cmpDialogEditor, DialogConsts, CommCtrl;
+uses
+  Windows, Classes, SysUtils, CommCtrl, cmpDialogEditor, DialogConsts;
 
 type
-THotkeyControlInfo = class (TStandardControlInfo)
-protected
-  procedure Init; override;
-public
-  class procedure CreateControlParams (var params : TCreateControlParams); override;
-  class function GetDescription : string; override;
-  function GetPropertyCount(kind: TPropertyKind): Integer; override;
-  function GetPropertyEnumCount(kind: TPropertyKind; idx: Integer): Integer; override;
-  function GetPropertyEnumName(kind: TPropertyKind; idx, enum: Integer): string; override;
-  function GetPropertyName(kind: TPropertyKind; idx: Integer): string; override;
-  function GetPropertyValue(kind: TPropertyKind; idx: Integer): Variant; override;
-  function GetPropertyType(kind: TPropertyKind; idx: Integer): TPropertyType; override;
-  procedure SetPropertyValue(kind: TPropertyKind; idx: Integer;const Value: Variant); override;
-end;
+  THotkeyControlInfo = class (TStandardControlInfo)
+  protected
+    procedure Init; override;
+  public
+    class procedure CreateControlParams (var params : TCreateControlParams); override;
+    class function GetDescription : string; override;
+    function GetPropertyCount(kind: TPropertyKind): Integer; override;
+    function GetPropertyEnumCount(kind: TPropertyKind; idx: Integer): Integer; override;
+    function GetPropertyEnumName(kind: TPropertyKind; idx, enum: Integer): string; override;
+    function GetPropertyName(kind: TPropertyKind; idx: Integer): string; override;
+    function GetPropertyValue(kind: TPropertyKind; idx: Integer): Variant; override;
+    function GetPropertyType(kind: TPropertyKind; idx: Integer): TPropertyType; override;
+    procedure SetPropertyValue(kind: TPropertyKind; idx: Integer;const Value: Variant); override;
+  end;
 
 implementation
 
-uses DialogStrings;
+uses
+  DialogStrings;
 
 const
   HotkeyControlPropertyGeneralCount = 0;
@@ -53,17 +55,17 @@ end;
 function THotkeyControlInfo.GetPropertyCount(
   kind: TPropertyKind): Integer;
 begin
-  Result := inherited GetPropertyCount (kind) + HotkeyControlPropertyCount [kind]
+  Result := inherited GetPropertyCount(kind) + HotkeyControlPropertyCount [kind]
 end;
 
 function THotkeyControlInfo.GetPropertyEnumCount(kind: TPropertyKind;
   idx: Integer): Integer;
 begin
-  if idx < inherited GetPropertyCount (kind) then
-    Result := inherited GetPropertyEnumCount (kind, idx)
+  if idx < inherited GetPropertyCount(kind) then
+    Result := inherited GetPropertyEnumCount(kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     if idx = 1 then
       Result := 3
     else
@@ -74,11 +76,11 @@ end;
 function THotkeyControlInfo.GetPropertyEnumName(kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyEnumName(kind, idx, enum)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     if idx = 1 then
       case enum of
         0 : Result := rstBoth;
@@ -95,11 +97,11 @@ end;
 function THotkeyControlInfo.GetPropertyName(kind: TPropertyKind;
   idx: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyName(kind, idx)
   else
   begin
-//    Dec(idx, inherited GetPropertyCount (kind));
+//    Dec(idx, inherited GetPropertyCount(kind));
     Result := '';
 (*     case kind of
 //      pkGeneral : Result := StaticControlPropertyGeneralName [idx];
@@ -113,11 +115,11 @@ end;
 function THotkeyControlInfo.GetPropertyType(kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyType(kind, idx)
   else
   begin
-//    Dec(idx, inherited GetPropertyCount (kind));
+//    Dec(idx, inherited GetPropertyCount(kind));
     Result := ptInteger;
 (*
     case kind of
@@ -132,11 +134,11 @@ end;
 function THotkeyControlInfo.GetPropertyValue(kind: TPropertyKind;
   idx: Integer): Variant;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     Result := inherited GetPropertyValue(kind, idx)
   else
   begin
-//    Dec(idx, inherited GetPropertyCount (kind));
+//    Dec(idx, inherited GetPropertyCount(kind));
   end
 end;
 
@@ -152,11 +154,11 @@ procedure THotkeyControlInfo.SetPropertyValue(kind: TPropertyKind;
 var
   recreateRequired : Boolean;
 begin
-  if idx < inherited GetPropertyCount (kind) then
+  if idx < inherited GetPropertyCount(kind) then
     inherited SetPropertyValue(kind, idx, Value)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (kind));
+    Dec(idx, inherited GetPropertyCount(kind));
     recreateRequired := True;
 
     case kind of

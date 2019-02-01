@@ -26,8 +26,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, VirtualTrees, PropertyPageForm, ConTnrs, StdCtrls,
-  cmpPersistentPosition, Menus;
+  Dialogs, ExtCtrls, Contnrs, StdCtrls, Menus, VirtualTrees, PropertyPageForm,
+  cmpPersistentPosition;
 
 const
   WM_UPDATESPLITTER = WM_USER + $201;
@@ -143,26 +143,15 @@ type
     procedure PopulateControls (AData: TPropertyPageData); override;
   end;
 
-var
-  fmPropertyBase: TfmPropertyBase;
-
 implementation
 
-uses unitCredProperties;
+uses
+  Math, unitCredProperties;
 
 {$R *.dfm}
 
 type
   PObject = ^TObject;
-
-//----------------------------------------------------
-function Max (x, y: Integer): Integer;
-begin
-  if x > y then
-    Result := x
-  else
-    Result := y
-end;
 
 {*----------------------------------------------------------------------*
  | procedure FixFormConstraints                                         |
@@ -276,7 +265,7 @@ procedure TfmPropertyBase.DoCancelPropertyPageSettings(
   page: TPropertyPageDetails; param: pointer; var continue: Boolean);
 begin
   if Assigned (page.FData) then
-                // nb.  FData.Initialized won't be set (and its data won't be
+                // nb.  FData.Initialized won't be set(and its data won't be
                 //      valid unless a page has been selected.
     if page.FData.Initialized then
       page.FData.Cancel
@@ -318,10 +307,10 @@ procedure TfmPropertyBase.DoGetLargestConstraints(Details: TPropertyPageDetails;
 var
   p: PPoint;
 begin
-  p := PPoint (param);
+  p := PPoint(param);
 
-  p.X := Max (Details.FData.MinX, p.X);
-  p.Y := Max (Details.FData.MinY, p.Y)
+  p.X := Max(Details.FData.MinX, p.X);
+  p.Y := Max(Details.FData.MinY, p.Y)
 end;
 
 {*----------------------------------------------------------------------*
@@ -333,7 +322,7 @@ procedure TfmPropertyBase.DoSavePropertyPageSettings(
   page: TPropertyPageDetails; param: pointer; var continue: Boolean);
 begin
   if Assigned (page.FData) then
-                // nb.  FData.Initialized won't be set (and its data won't be
+                // nb.  FData.Initialized won't be set(and its data won't be
                 //      valid unless a page has been selected.
     if page.FData.Initialized then
       page.FData.Apply
@@ -387,23 +376,23 @@ var
   cont: Boolean;
   rv: TPropertyPageDetails;
 
-  procedure DoForEach (Details: TPropertyPageDetails);
+  procedure DoForEach(Details: TPropertyPageDetails);
   begin
     if Assigned (Details) then
     begin
       rv := Details;
       proc (Details, param, cont);
-      if cont then DoForEach (Details.FirstChild);
-      if cont then DoForEach (Details.Sibling)
+      if cont then DoForEach(Details.FirstChild);
+      if cont then DoForEach(Details.Sibling)
     end
   end;
 
 begin
-  rv := Nil;
+  rv := nil;
   cont := True;
   for i := 0 to FPropertyPageDetails.Count - 1 do
   begin
-    DoForEach (TPropertyPageDetails (FPropertyPageDetails[i]));
+    DoForEach(TPropertyPageDetails (FPropertyPageDetails[i]));
     if not cont then
       break
   end;
@@ -422,7 +411,7 @@ procedure TfmPropertyBase.FormShow(Sender: TObject);
 var
   n: PVirtualNode;
 begin
-  FDetailsConstraints := Point (0, 0);
+  FDetailsConstraints := Point(0, 0);
   FOrigHelpType := HelpType;
   FOrigHelpContext := HelpContext;
   FOrigHelpKeyword := HelpKeyword;
@@ -510,7 +499,7 @@ begin
         FreeAndNil (page);
     end
     else
-      page := Nil;
+      page := nil;
 
     if Assigned (Details) then
     begin
@@ -652,7 +641,7 @@ var
 begin
   FPropertyPageClass := APropertyPageClass;
   FParent := AParent;
-  tempPropertyPage := Nil;
+  tempPropertyPage := nil;
   try
 
   // In order to get the form's constraints, caption, etc. we need
@@ -711,7 +700,7 @@ begin
       minY := tempPropertyPage.Constraints.MinHeight;
     end;
 
-                // Create the data class.
+    // Create the data class.
     FData := dataClass.Create(caption, helpText, helpKeyword, minX, minY, AParam);
   finally
     tempPropertyPage.Free
@@ -850,7 +839,7 @@ begin
   if key = VK_f1 then
   begin
     btnHelpClick(nil);
-    Key := 0
+    Key := 0;
   end
 end;
 

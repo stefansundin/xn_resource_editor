@@ -25,7 +25,7 @@ unit unitRCFile;
 interface
 
 uses
-  Windows, Classes, SysUtils, Menus,Graphics, ConTnrs, unitResFile,
+  Windows, Classes, SysUtils, Menus,Graphics, Contnrs, unitResFile,
   unitResourceDetails, DialogConsts;
 
 type
@@ -385,7 +385,7 @@ var
   Parser: TRCParser;
 begin
   Parser := TRCParser.Create(stream, self);
-  Parser.PathName := ExtractFilePath (FFileName);
+  Parser.PathName := ExtractFilePath(FFileName);
 
   // Add identifiers so that MSVC resource script load correctly
   Parser.AddIdentifier('RC_INVOKED', '');
@@ -426,7 +426,6 @@ type
 var
   i: Integer;
   tt: t;
-
 begin
   FParent := AParent;
   FLangId := SysLocale.DefaultLCID;  // Check - maybe should be US LCID
@@ -491,101 +490,118 @@ begin
 
       HasToken := False;
       case kw of
-        kwCaption: begin       // Parse a CAPTION statement followed by
-                                // "captiontext" in double quotes.
-                      Result.FCaption := NextString;
-                      Include(ValidKeywords, kwCaption)
-                    end;
+        kwCaption:
+          begin
+            // Parse a CAPTION statement followed by
+            // "captiontext" in double quotes.
+            Result.FCaption := NextString;
+            Include(ValidKeywords, kwCaption)
+          end;
 
-        kwCharacteristics:     // Parse a CHARACTERISTICS statement followed
-                                // by a DWORD value.  Which is irrelevant
-                    begin
-                      Result.FCharacteristics := NextInteger;
-                      Include(ValidKeywords, kwCharacteristics)
-                    end;
+        kwCharacteristics:
+          begin
+            // Parse a CHARACTERISTICS statement followed
+            // by a DWORD value.  Which is irrelevant
+            Result.FCharacteristics := NextInteger;
+            Include(ValidKeywords, kwCharacteristics)
+          end;
 
-        kwStyle  : begin       // Parse a STYLE statement followed by a DWORD
-                                // expression containing a window style
+        kwStyle:
+          begin
+            // Parse a STYLE statement followed by a DWORD
+            // expression containing a window style
 
-                      NextExpression (v);
-                      HasToken := True;
-                      if v.tp = vInteger then
-                        Result.FStyle := v.iVal
-                      else
-                        raise Exception.Create('Integer expected in STYLE');
-                      Include(ValidKeywords, kwStyle);
-                    end;
+            NextExpression (v);
+            HasToken := True;
+            if v.tp = vInteger then
+              Result.FStyle := v.iVal
+            else
+              raise Exception.Create('Integer expected in STYLE');
+            Include(ValidKeywords, kwStyle);
+          end;
 
-        kwExStyle: begin       // Parse an EXSTYLE statement followed by a DWORD
-                                // expressions containing a window Ex Style
+        kwExStyle:
+          begin
+            // Parse an EXSTYLE statement followed by a DWORD
+            // expressions containing a window Ex Style
 
-                      NextExpression (v);
-                      HasToken := True;
-                      if v.tp = vInteger then
-                        Result.FExStyle := v.iVal
-                      else
-                        raise Exception.Create('Integer expected in EXSTYLE');
-                      Include(ValidKeywords, kwExStyle);
-                    end;
+            NextExpression (v);
+            HasToken := True;
+            if v.tp = vInteger then
+              Result.FExStyle := v.iVal
+            else
+              raise Exception.Create('Integer expected in EXSTYLE');
+            Include(ValidKeywords, kwExStyle);
+          end;
 
-        kwFont   : begin       // Parse a FONT statement followed by the
-                                // fontsize DWORD and string font name.  If this
-                                // occurs in an EXDIALOG, this is followed by the
-                                // Weight, Italic and CharSet values
-                      Result.FFontSize := NextInteger;
-                      NextChar (',');
-                      Result.FFontFace := NextString;
-                      GetToken;
-                      HasToken := True;
-                      if (TokenType = ttChar) and (TokenChar = ',') then
-                      begin
-                        Result.FFontWeight := NextIntegerExpression;
-                        ExpectChar (',');
-                        Result.FFontItalic := NextIntegerExpression;
-                        ExpectChar (',');
-                        Result.FFontCharset := NextIntegerExpression;
-                      end;
-                      Include(ValidKeywords, kwFont);
-                    end;
+        kwFont:
+          begin
+            // Parse a FONT statement followed by the
+            // fontsize DWORD and string font name.  If this
+            // occurs in an EXDIALOG, this is followed by the
+            // Weight, Italic and CharSet values
+            Result.FFontSize := NextInteger;
+            NextChar (',');
+            Result.FFontFace := NextString;
+            GetToken;
+            HasToken := True;
+            if (TokenType = ttChar) and (TokenChar = ',') then
+            begin
+              Result.FFontWeight := NextIntegerExpression;
+              ExpectChar (',');
+              Result.FFontItalic := NextIntegerExpression;
+              ExpectChar (',');
+              Result.FFontCharset := NextIntegerExpression;
+            end;
+            Include(ValidKeywords, kwFont);
+          end;
 
-        kwLanguage :begin       // Parse a LANGUAGE statement followed by the
-                                // primary and sub language components
-                      pri := NextInteger;
-                      NextChar (',');
-                      Sec := NextInteger;
-                      Result.FLanguage := MakeLangID (pri, Sec);
-                    end;
+        kwLanguage:
+          begin
+            // Parse a LANGUAGE statement followed by the
+            // primary and sub language components
+            pri := NextInteger;
+            NextChar (',');
+            Sec := NextInteger;
+            Result.FLanguage := MakeLangID (pri, Sec);
+          end;
 
-        kwMenu    : begin      // Parse a MENU stetement.  Not to be confused
-                                // with a menu resource type identifier - this
-                                // option may appear in DIALOG and DIALOGEX resources.
-                                // The keyword 'MENU' is followed by the menu SZ or ID
+        kwMenu:
+          begin
+            // Parse a MENU statement.  Not to be confused
+            // with a menu resource type identifier - this
+            // option may appear in DIALOG and DIALOGEX resources.
+            // The keyword 'MENU' is followed by the menu SZ or ID
 
-                       GetToken;
-                       Result.FMenuId := ValToSzOrID (ResolveToken);
-                       Include(ValidKeywords, kwMenu);
-                     end;
+            GetToken;
+            Result.FMenuId := ValToSzOrID (ResolveToken);
+            Include(ValidKeywords, kwMenu);
+          end;
 
-        kwClass   : begin      // Parse a CLASS statement followed by an Sz or ID
-                                // window (dialog) class identifier.
-                       GetToken;
-                       Result.FClass := ValToSzOrID (ResolveToken);
-                       Include(ValidKeywords, kwClass);
-                     end;
+        kwClass:
+          begin
+            // Parse a CLASS statement followed by an Sz or ID
+            // window (dialog) class identifier.
+            GetToken;
+            Result.FClass := ValToSzOrID (ResolveToken);
+            Include(ValidKeywords, kwClass);
+          end;
 
-        kwVersion : begin      // VERSION statement followed by an ignored
-                                // version DWORD.  Not to be confused with a
-                                // VERSIONINFO resource type
-                       Result.FVersion := NextInteger;
-                       Include(ValidKeywords, kwVersion)
-                     end
+        kwVersion:
+          begin
+            // VERSION statement followed by an ignored
+            // version DWORD.  Not to be confused with a
+            // VERSIONINFO resource type
+            Result.FVersion := NextInteger;
+            Include(ValidKeywords, kwVersion)
+          end
       end;
       if not HasToken then
         FEOF := not GetToken;
     until FEOF
   end
   else
-    Result := Nil;
+    Result := nil;
 end;
 
 {*----------------------------------------------------------------------*
@@ -615,19 +631,18 @@ var
   ac: TAcceleratorResourceDetails;
   v: TValue;
   vk: Integer;
-  flags: Integer;
+  Flags: Integer;
   l, id: Integer;
-  options: TResourceOptions;
+  Options: TResourceOptions;
   ValidKeywords: TSupportedKeywords;
-
 begin
   GetToken;
   SkipYeOldeMemoryAttributes;
 
-  options := CreateResourceOptions (AcceleratorsOptionKeywords, ValidKeywords);
+  Options := CreateResourceOptions (AcceleratorsOptionKeywords, ValidKeywords);
   try
-   if Assigned(options) then
-      ac := TAcceleratorResourceDetails.CreateNew(FParent, options.Language, ValToStr (FName))
+   if Assigned(Options) then
+      ac := TAcceleratorResourceDetails.CreateNew(FParent, Options.Language, ValToStr (FName))
     else
       ac := TAcceleratorResourceDetails.CreateNew(FParent, FLangId, ValToStr (FName));
 
@@ -641,7 +656,7 @@ begin
       if vk <> 0 then;          // Get's rid of erroneous compiler warning
       if v.tp = vString then
       begin
-        l := Length (v.sVal);
+        l := Length(v.sVal);
         if (l = 2) and (v.sVal [1] = '^') then
           vk := Ord (v.sVal [2]) and $1f
         else
@@ -660,9 +675,9 @@ begin
                                 // Next identifier contains the 'ID'
       id := NextIntegerExpression;
 
-      flags := 0;
+      Flags := 0;
 
-                                // Now get the(optional) flags.  Technically
+                                // Now get the(optional) Flags.  Technically
                                 // VIRTKEY or ASCII should be the first flag if
                                 // it's specified.  But no real need to enforce
                                 // this.
@@ -671,21 +686,21 @@ begin
         GetToken;
 
         case KeyID of
-          kwVirtKey : flags := flags or FVIRTKEY;
-          kwNoInvert: flags := flags or FNOINVERT;
-          kwShift   : flags := flags or FSHIFT;
-          kwAlt     : flags := flags or FALT;
-          kwControl : flags := flags or FCONTROL;
+          kwVirtKey : Flags := Flags or FVIRTKEY;
+          kwNoInvert: Flags := Flags or FNOINVERT;
+          kwShift   : Flags := Flags or FSHIFT;
+          kwAlt     : Flags := Flags or FALT;
+          kwControl : Flags := Flags or FCONTROL;
         end;
       end;
 
-      ac.Add(flags, vk, id);
+      ac.Add(Flags, vk, id);
     end;
     if KeyID <> kwEnd then
       raise EParser.Create('End expected');
     GetToken;
   finally
-    options.Free
+    Options.Free
   end
 end;
 
@@ -757,9 +772,9 @@ begin
   SkipYeOldeMemoryAttributes;
 
   // Get dialog coordinates
-  x := ExpectInteger; NextChar (',');
-  y := NextInteger;   NextChar (',');
-  cx := NextInteger;  NextChar (',');
+  x := ExpectInteger; NextChar(',');
+  y := NextInteger;   NextChar(',');
+  cx := NextInteger;  NextChar(',');
   cy := NextInteger;  GetToken;
 
   // Get dialog options - eg. caption.
@@ -933,7 +948,7 @@ begin
         until KeyID = kwEnd
       end
     finally
-      dlg.EndInit (CtlCount)
+      dlg.EndInit(CtlCount)
     end
   finally
     options.Free
@@ -1392,7 +1407,7 @@ var
   begin
     msg := id + ' expected';
     NextIdentifier (msg);
-    if not SameText (id, Token) then
+    if not SameText(id, Token) then
       raise EParser.Create(msg);
 
     st := GetRestOfLine;
@@ -1502,7 +1517,7 @@ begin
   if idx >= 0 then
     Result := TKeywordDetails (FKeywords.Objects[idx])
   else
-    Result := Nil;
+    Result := nil;
 end;
 
 function TRCParser.NextExpression (var v: TValue): Boolean;
@@ -1578,7 +1593,7 @@ begin
         else
         begin
           for i := 0 to NoKeywords -1 do
-            if Integer (KeywordTable [i].resID) = StrToInt (Token) then
+            if Integer (KeywordTable [i].resID) = StrToInt(Token) then
             begin
               dets := Keyword (KeywordTable [i].kw);
 

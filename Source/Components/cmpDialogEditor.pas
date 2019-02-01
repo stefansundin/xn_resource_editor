@@ -542,7 +542,7 @@ begin
   Result.isID := Length(st) > 0;
 
   for i := 1 to Length(st) do          // Is it all numeric ??
-    if not (st [i] in ['0'..'9']) then
+    if not (st[i] in ['0'..'9']) then
     begin
       Result.isID := False;
       break
@@ -1011,7 +1011,7 @@ begin
     FSelectedControl := Value;
     Invalidate;
 
-    if Assigned(OnDesignModeSelectedItemChange) and not(csDestroying in ComponentState) then
+    if Assigned(OnDesignModeSelectedItemChange) and not (csDestroying in ComponentState) then
        OnDesignModeSelectedItemChange(Self);
   end
 end;
@@ -1229,26 +1229,26 @@ var
 begin
   if Self = FOwner.FDialogInfo then
   begin
-    windows.GetClientRect (FControlHWND, Result);
+    windows.GetClientRect(FControlHWND, Result);
     if HasStyle [WS_VSCROLL] then dw := GetSystemMetrics (SM_CXVSCROLL) else dw := 0;
     if HasStyle [WS_HSCROLL] then dh := GetSystemMetrics (SM_CYHSCROLL) else dh := 0;
 
     Inc(Result.Right, dw);
     Inc(Result.Bottom, dh);
 
-    OffsetRect (Result, -FOwner.Margin, -FOwner.Margin);
+    OffsetRect(Result, -FOwner.Margin, -FOwner.Margin);
   end
   else
   begin
-    windows.GetWindowRect (FControlHWND, Result);
-    MapWindowPoints (HWND_DESKTOP, GetParent (FControlHWND), Result, 2);
+    windows.GetWindowRect(FControlHWND, Result);
+    MapWindowPoints (HWND_DESKTOP, GetParent(FControlHWND), Result, 2);
   end;
-  Result := FOwner.RectToDialogRect (Result)
+  Result := FOwner.RectToDialogRect(Result)
 end;
 
 function TControlInfo.GetWindowText: WideString;
 begin
-  SetLength (Result, 1024);
+  SetLength(Result, 1024);
   windows.GetWindowTextW(FControlHWND, PWideChar(Result), 1024);
   Result := PWideChar(Result);
 end;
@@ -1302,7 +1302,7 @@ begin
       setResizeControl := True
     end;
 
-    windows.GetWindowRect (FControlHWND, rect);
+    windows.GetWindowRect(FControlHWND, rect);
     MapWindowPoints (HWND_DESKTOP, Owner.DialogHandle, rect, 2);
 
     RemoveProp (FControlHWND, PWideChar (gWndAtom));
@@ -1364,7 +1364,7 @@ begin
     if oldExStyle <> oldExStyle or st then
     begin
       SetWindowLong (FControlHWND, GWL_EXSTYLE, oldExStyle or st);
-      InvalidateRect (GetParent (FControlHWND), nil, True)
+      InvalidateRect(GetParent(FControlHWND), nil, True)
     end
   end
   else
@@ -1372,7 +1372,7 @@ begin
     if oldExStyle <> oldExStyle and not st then
     begin
       SetWindowLong (FControlHWND, GWL_EXSTYLE, oldExStyle and not st);
-      InvalidateRect (GetParent (FControlHWND), nil, True)
+      InvalidateRect(GetParent(FControlHWND), nil, True)
     end
   end;
   FGotStyle := False
@@ -1405,12 +1405,12 @@ begin
         r := WindowRect;
         r1 := r;
         case idx of
-{ height }0: r := rect (r.Left, r.Top, r.Right, r.Top + Value);
-{ left }  1: if Self = FOwner.FDialogInfo then FOwner.fOrigX := Value else r := rect (Value, r.Top, r.Right, r.Bottom);
-{ top  }  2: if Self = FOwner.FDialogInfo then FOwner.fOrigY := Value else r := rect (r.Left, Value, r.Right, r.Bottom);
-{ width}  3: r := rect (r.Left, r.Top, r.Left + Value, r.Bottom)
+{ height }0: r := rect(r.Left, r.Top, r.Right, r.Top + Value);
+{ left }  1: if Self = FOwner.FDialogInfo then FOwner.fOrigX := Value else r := rect(Value, r.Top, r.Right, r.Bottom);
+{ top  }  2: if Self = FOwner.FDialogInfo then FOwner.fOrigY := Value else r := rect(r.Left, Value, r.Right, r.Bottom);
+{ width}  3: r := rect(r.Left, r.Top, r.Left + Value, r.Bottom)
         end;
-        if not EqualRect (r1, r) then
+        if not EqualRect(r1, r) then
           WindowRect := r
       end;
     pkStyle :
@@ -1464,7 +1464,7 @@ begin
   if Value.Right  <> -1 then r.right  := Value.Right;
   if Value.Bottom <> -1 then r.bottom := Value.Bottom;
 
-  r := FOwner.DialogRectToRect (r);
+  r := FOwner.DialogRectToRect(r);
 
   if Self = FOwner.FDialogInfo then
   begin
@@ -1506,9 +1506,9 @@ var
 begin
   inherited;
 
-  GetWindowRect (FControl.FControlHWND, r);
-  MapWindowPoints (HWND_DESKTOP, GetParent (FControlHWND), r, 2);
-  InflateRect (r, SizerWidth, SizerWidth);
+  GetWindowRect(FControl.FControlHWND, r);
+  MapWindowPoints (HWND_DESKTOP, GetParent(FControlHWND), r, 2);
+  InflateRect(r, SizerWidth, SizerWidth);
 
   Params.X := r.Left;
   Params.Y := r.Top;
@@ -1528,11 +1528,11 @@ procedure TResizeControl.MouseDown(Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
   inherited;
-  FBasePT := point (x, y);
+  FBasePT := point(x, y);
 
   // Keep BasePt in screen units
   MapWindowPoints (Handle, HWND_DESKTOP, FBasePT, 1);
-  PtInSnib (point (x, y), FBaseSnib);
+  PtInSnib (point(x, y), FBaseSnib);
 end;
 
 procedure TResizeControl.MouseMove(Shift: TShiftState; X, Y: Integer);
@@ -1546,7 +1546,7 @@ var
 const
   inMouseMove: Integer = 0;
 
-  procedure AdjustRect (var r: TRect);
+  procedure AdjustRect(var r: TRect);
   var
     r1: TRect;
   begin
@@ -1581,19 +1581,19 @@ const
 begin
   if ssLeft in Shift then
   begin
-    p := Point (x, y);
+    p := Point(x, y);
     MapWindowPoints (handle, HWND_DESKTOP, p, 1);
 
     DeltaX := p.x - FBasePT.x;
     DeltaY := p.y - FBasePT.y;
 
-    GetWindowRect (handle, r);
+    GetWindowRect(handle, r);
     MapWindowPoints (HWND_DESKTOP, ParentWindow, r, 2);
 
-    InvalidateRect (parentWindow, nil, True);
+    InvalidateRect(parentWindow, nil, True);
 
     br := r;
-    AdjustRect (r);   // BR & R in parent units...
+    AdjustRect(r);   // BR & R in parent units...
 
     FBasePT := p;
     if (br.Top <> r.Top) or (br.Bottom <> r.Bottom) or (br.Right <> r.Right) or (br.Left <> r.Left)then
@@ -1607,18 +1607,18 @@ begin
         br := r;        // br in Control units
         MapWindowPoints (ParentWindow, Handle, br, 2);
 
-        r1 := CreateRectRgnIndirect (br);
-        InflateRect (br, -SizerWidth, -SizerWidth);
-        r2 := CreateRectRgnIndirect (br);
+        r1 := CreateRectRgnIndirect(br);
+        InflateRect(br, -SizerWidth, -SizerWidth);
+        r2 := CreateRectRgnIndirect(br);
 
         CombineRgn (r1, r1, r2, RGN_DIFF);
-        DeleteObject (r2);
+        DeleteObject(r2);
         SetWindowRgn (Handle, r1, False);
 
         if FControl = FDialogBox.FDialogInfo then
         begin
 
-          GetWindowRect (FControlHWND, r);
+          GetWindowRect(FControlHWND, r);
           adjX := (br.Right - br.Left) - (r.right - r.left);
           adjY := (br.Bottom - br.Top) - (r.bottom - r.top);
           if adjX > 0 then
@@ -1648,9 +1648,9 @@ begin
 
   if Button = mbLeft then
   begin
-    GetWindowRect (handle, r);
+    GetWindowRect(handle, r);
     MapWindowPoints (HWND_DESKTOP, parentWindow, r, 2);
-    InflateRect (r, -SizerWidth, -SizerWidth);
+    InflateRect(r, -SizerWidth, -SizerWidth);
 
     if FControl = FDialogBox.FDialogInfo then
     begin
@@ -1662,7 +1662,7 @@ begin
     else
     begin
       SetWindowPos (FControlHWND, 0, r.Left, r.top, r.Right - r.Left, r.Bottom - r.Top, SWP_NOZORDER or SWP_NOREDRAW);
-      InvalidateRect (parentWindow, nil, True)
+      InvalidateRect(parentWindow, nil, True)
     end;
 
     if Assigned (FControl.FOwner.OnControlResize) then
@@ -1681,9 +1681,9 @@ var
   end;
 
 begin
-  GetWindowRect (handle, r);
+  GetWindowRect(handle, r);
   MapWindowPoints (HWND_DESKTOP, Handle, r, 2);
-  FillRect (DC, r, GetStockObject (GRAY_BRUSH));
+  FillRect(DC, r, GetStockObject(GRAY_BRUSH));
 
   w2 := (ClientWidth - SizerWidth) div 2;
   h2 := (ClientHeight - SizerWidth) div 2;
@@ -1711,7 +1711,7 @@ begin
   w2 := (ClientWidth - SizerWidth) div 2;
   h2 := (ClientHeight - SizerWidth) div 2;
 
-  if PtInRect (Rect (0, 0, r, SizerWidth), pt) then
+  if PtInRect(Rect(0, 0, r, SizerWidth), pt) then
   begin
     if pt.x <= sizerWidth then
       snibType := stLT
@@ -1723,7 +1723,7 @@ begin
           snibType := stMT
   end
   else
-  if PtInRect (Rect (0, b - SizerWidth, r, b), pt) then
+  if PtInRect(Rect(0, b - SizerWidth, r, b), pt) then
   begin
     if pt.x <= sizerWidth then
       snibType := stLB
@@ -1735,10 +1735,10 @@ begin
           snibType := stMB
   end
   else
-    if PtInRect (Rect (0, h2, SizerWidth, h2 + SizerWidth), pt) then
+    if PtInRect(Rect(0, h2, SizerWidth, h2 + SizerWidth), pt) then
       snibType := stLM
     else
-      if PtInRect (Rect (r - sizerWidth, h2, r, h2 + SizerWidth), pt) then
+      if PtInRect(Rect(r - sizerWidth, h2, r, h2 + SizerWidth), pt) then
         snibType := stRM
 end;
 
@@ -1747,21 +1747,21 @@ var
   r1, r2: HRgn;
   r: TRect;
 begin
-  GetWindowRect (FControl.FControlHWND, r);
-  MapWindowPoints (HWND_DESKTOP, GetParent (FControlHWND), r, 2);
-  InflateRect (r, SizerWidth, SizerWidth);
+  GetWindowRect(FControl.FControlHWND, r);
+  MapWindowPoints (HWND_DESKTOP, GetParent(FControlHWND), r, 2);
+  InflateRect(r, SizerWidth, SizerWidth);
   SetWindowPos (handle, 0, r.left, r.top, r.right - r.left, r.bottom - r.top, SWP_NOZORDER or SWP_NOREDRAW);
 
   MapWindowPoints (parentWindow, handle, r, 2);
 
-  r1 := CreateRectRgnIndirect (r);
-  InflateRect (r, -SizerWidth, -SizerWidth);
-  r2 := CreateRectRgnIndirect (r);
+  r1 := CreateRectRgnIndirect(r);
+  InflateRect(r, -SizerWidth, -SizerWidth);
+  r2 := CreateRectRgnIndirect(r);
 
   CombineRgn (r1, r1, r2, RGN_DIFF);
-  DeleteObject (r2);
+  DeleteObject(r2);
   SetWindowRgn (Handle, r1, False);
-  InvalidateRect (parentWindow, nil, True);
+  InvalidateRect(parentWindow, nil, True);
 end;
 
 procedure TResizeControl.SetControl(Value: TControlInfo);
@@ -1772,7 +1772,7 @@ begin
   if FControl = FDialogBox.FDialogInfo then
     parentWindow := FDialogBox.Handle
   else
-    parentWindow := GetParent (FControl.FControlHWND);
+    parentWindow := GetParent(FControl.FControlHWND);
 
 end;
 
@@ -1799,17 +1799,17 @@ end;
 function TStandardControlInfo.GetPropertyCount(
   Kind: TPropertyKind): Integer;
 begin
-  Result := inherited GetPropertyCount (Kind) + StandardControlPropertyCount [Kind]
+  Result := inherited GetPropertyCount(Kind) + StandardControlPropertyCount [Kind]
 end;
 
 function TStandardControlInfo.GetPropertyEnumCount(Kind: TPropertyKind;
   idx: Integer): Integer;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
-    Result := inherited GetPropertyEnumCount (Kind, idx)
+  if idx < inherited GetPropertyCount(Kind) then
+    Result := inherited GetPropertyEnumCount(Kind, idx)
   else
   begin
-//    Dec(idx, inherited GetPropertyCount (Kind));
+//    Dec(idx, inherited GetPropertyCount(Kind));
     Result := 0;
   end
 end;
@@ -1817,11 +1817,11 @@ end;
 function TStandardControlInfo.GetPropertyEnumName(Kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyEnumName(Kind, idx, enum)
   else
   begin
-//    Dec(idx, inherited GetPropertyCount (Kind));
+//    Dec(idx, inherited GetPropertyCount(Kind));
     Result := '';
   end
 
@@ -1830,11 +1830,11 @@ end;
 function TStandardControlInfo.GetPropertyName(Kind: TPropertyKind;
   idx: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyName(Kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
     Result := '';
     case Kind of
       pkGeneral: Result := StandardControlPropertyGeneralName [idx];
@@ -1847,11 +1847,11 @@ end;
 function TStandardControlInfo.GetPropertyType(Kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyType(Kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
     Result := ptInteger;
     case Kind of
       pkGeneral: Result := StandardControlPropertyGeneralType [idx];
@@ -1864,11 +1864,11 @@ end;
 function TStandardControlInfo.GetPropertyValue(Kind: TPropertyKind;
   idx: Integer): Variant;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyValue(Kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
 
     case Kind of
       pkGeneral :
@@ -1896,11 +1896,11 @@ var
 begin
   recreateRequired := False;
   frameChanged := False;
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     inherited SetPropertyValue(Kind, idx, Value)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
 
     case Kind of
       pkGeneral :
@@ -1934,18 +1934,18 @@ end;
 
 function TDialogControlInfo.GetPropertyCount(Kind: TPropertyKind): Integer;
 begin
-  Result := inherited GetPropertyCount (Kind) + DialogControlPropertyCount [Kind]
+  Result := inherited GetPropertyCount(Kind) + DialogControlPropertyCount [Kind]
 end;
 
 function TDialogControlInfo.GetPropertyEnumCount(Kind: TPropertyKind;
   idx: Integer): Integer;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
-    Result := inherited GetPropertyEnumCount (Kind, idx)
+  if idx < inherited GetPropertyCount(Kind) then
+    Result := inherited GetPropertyEnumCount(Kind, idx)
   else
   begin
     Result := 0;
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
 
     case Kind of
       pkStyle :
@@ -1960,12 +1960,12 @@ end;
 function TDialogControlInfo.GetPropertyEnumName(Kind: TPropertyKind; idx,
   enum: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyEnumName(Kind, idx, enum)
   else
   begin
     Result := '';
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
 
     case Kind of
       pkStyle :
@@ -1991,11 +1991,11 @@ end;
 function TDialogControlInfo.GetPropertyName(Kind: TPropertyKind;
   idx: Integer): string;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyName(Kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
     Result := '';
     case Kind of
       pkGeneral: Result := DialogControlPropertyGeneralName [idx];
@@ -2008,11 +2008,11 @@ end;
 function TDialogControlInfo.GetPropertyType(Kind: TPropertyKind;
   idx: Integer): TPropertyType;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyType(Kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
     Result := ptInteger;
     case Kind of
       pkGeneral: Result := DialogControlPropertyGeneralType [idx];
@@ -2025,18 +2025,18 @@ end;
 function TDialogControlInfo.GetPropertyValue(Kind: TPropertyKind;
   idx: Integer): Variant;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     Result := inherited GetPropertyValue(Kind, idx)
   else
   begin
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
 
     case Kind of
       pkGeneral :
         case idx of
           0: Result := WindowText;
           1 :
-            Result := Format (rstFontDesc, [Owner.FFontPoint, Owner.FFontName]);
+            Result := Format(rstFontDesc, [Owner.FFontPoint, Owner.FFontName]);
           2: Result := SzOrIDToString (Owner.FDlgMenu);
         end;
       pkStyle :
@@ -2092,12 +2092,12 @@ procedure TDialogControlInfo.SetPropertyValue(Kind: TPropertyKind;
 var
   RecreateRequired: Boolean;
 begin
-  if idx < inherited GetPropertyCount (Kind) then
+  if idx < inherited GetPropertyCount(Kind) then
     inherited SetPropertyValue(Kind, idx, Value)
   else
   begin
     recreateRequired := False;
-    Dec(idx, inherited GetPropertyCount (Kind));
+    Dec(idx, inherited GetPropertyCount(Kind));
 
     case Kind of
       pkGeneral :
@@ -2265,7 +2265,7 @@ begin
     templateEx.Y := OrigY;
     templateEx.cx := r.Right - r.Left;
     templateEx.cy := r.Bottom - r.Top;
-    stream.Write(templateEx, SizeOf (templateEx));
+    stream.Write(templateEx, SizeOf(templateEx));
   end
   else
   begin                 // Set up and save standard Template
@@ -2276,7 +2276,7 @@ begin
     Template.Y := OrigY;
     Template.cx := r.Right - r.Left;
     Template.cy := r.Bottom - r.Top;
-    stream.Write(Template, SizeOf (Template));
+    stream.Write(Template, SizeOf(Template));
   end;
 
                         // Write Menu, class title sz or ids
@@ -2291,22 +2291,22 @@ begin
   if (Style and DS_SETFONT) <> 0 then
   begin
     w := FFontPoint;
-    stream.Write(w, SizeOf (w));
+    stream.Write(w, SizeOf(w));
 
     if Extended then
     begin
       w := FFontWeight;
-      stream.write(w, SizeOf (w));
+      stream.write(w, SizeOf(w));
 
       b := Byte(FFontItalic);
-      stream.Write(b, SizeOf (b));
+      stream.Write(b, SizeOf(b));
 
       b := Byte(FFontCharset);
-      stream.Write(b, SizeOf (b))
+      stream.Write(b, SizeOf(b))
     end;
 
     ws := FFontName;
-    stream.Write(ws[1], (Length (ws) + 1) * SizeOf (WideChar));
+    stream.Write(ws[1], (Length(ws) + 1) * SizeOf(WideChar));
   end;
 
   for i := 0 to ControlInfoCount - 1 do
@@ -2328,7 +2328,7 @@ begin
       itemTemplateEx.cy := r.Bottom - r.Top;
       itemTemplateEx.ID := info.FItemID;
 
-      stream.Write(itemTemplateEx, SizeOf (itemTemplateEx));
+      stream.Write(itemTemplateEx, SizeOf(itemTemplateEx));
       pad (stream);
     end
     else
@@ -2340,7 +2340,7 @@ begin
       itemTemplate.cx := r.Right - r.Left;
       itemTemplate.cy := r.Bottom - r.Top;
       itemTemplate.ID := info.FItemID;
-      stream.Write(itemTemplate, SizeOf (itemTemplate));
+      stream.Write(itemTemplate, SizeOf(itemTemplate));
     end;
 
     WriteSzOrID (stream, info.GetClassSzOrID);
@@ -2355,7 +2355,7 @@ begin
     WriteSzOrID (stream, szOrId);
 
     w := info.FExtraCount;
-    stream.Write(w, SizeOf (w));
+    stream.Write(w, SizeOf(w));
 
     if w > 0 then
       stream.Write(info.FExtraData^, w);

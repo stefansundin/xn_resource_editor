@@ -69,16 +69,14 @@ type
     property CanDelete: Boolean read GetCanDelete;
   end;
 
-var
-  fmResource: TfmResource;
-
 procedure ClearUndoDetails;
-procedure SetInternationalFont (const name: TFontName; height: Integer);
-procedure UseInternationalFont (font: TFont);
+procedure SetInternationalFont(const name: TFontName; height: Integer);
+procedure UseInternationalFont(font: TFont);
 
 implementation
 
-uses ConTnrs, unitCREdProperties;
+uses
+  Contnrs, unitCREdProperties;
 
 type
 //=======================================================================
@@ -114,7 +112,7 @@ type
 
 var
   gUndoDetails: TObjectList;
-  gInternationalFont: TFont = Nil;
+  gInternationalFont: TFont = nil;
 
 {$R *.DFM}
 
@@ -139,7 +137,7 @@ begin
   gInternationalFont.Height := gProperties.InternationalFontHeight;
 end;
 
-procedure UseInternationalFont (font: TFont);
+procedure UseInternationalFont(font: TFont);
 begin
   if not Assigned (gInternationalFont) then
     CreateInternationalFont;
@@ -148,7 +146,7 @@ begin
     font.Assign(gInternationalFont)
 end;
 
-procedure SetInternationalFont (const name: TFontName; height: Integer);
+procedure SetInternationalFont(const name: TFontName; height: Integer);
 begin
   FreeAndNil (gInternationalFont);
   gProperties.InternationalFontName := name;
@@ -416,7 +414,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TUndoDetails.AddUndoEntry(const Details: string);
 begin
-  FUndoStack.Push (TUndoEntry.Create(Details, FResourceDetails));
+  FUndoStack.Push(TUndoEntry.Create(Details, FResourceDetails));
 end;
 
 (*----------------------------------------------------------------------*
@@ -470,7 +468,7 @@ begin
   if FRedoStack.Count > 0 then
   begin
     entry := TUndoEntry(FRedoStack.Pop);
-    FUndoStack.Push (TUndoEntry.Create(entry.FDetails, FResourceDetails));
+    FUndoStack.Push(TUndoEntry.Create(entry.FDetails, FResourceDetails));
     FResourceDetails.ResourceName := entry.FName;
     FResourceDetails.ResourceLanguage := entry.FLanguage;
     FResourceDetails.ChangeData(entry.FData);
@@ -490,7 +488,7 @@ begin
   if FUndoStack.Count > 0 then
   begin
     entry := TUndoEntry(FUndoStack.Pop);
-    FRedoStack.Push (TUndoEntry.Create(entry.FDetails, FResourceDetails));
+    FRedoStack.Push(TUndoEntry.Create(entry.FDetails, FResourceDetails));
     FResourceDetails.ResourceName := entry.FName;
     FResourceDetails.ResourceLanguage := entry.FLanguage;
     FResourceDetails.ChangeData(entry.FData);

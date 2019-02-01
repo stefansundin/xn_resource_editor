@@ -2,7 +2,8 @@ unit unitHTMLHelpViewer;
 
 interface
 
-uses Windows, Classes, SysUtils;
+uses
+  Windows, Classes, SysUtils;
 
 function HHPreTranslateMessage(var Msg : TMsg) : Boolean;
 procedure InitializeHTMLHelp;
@@ -154,7 +155,7 @@ var
   fn, pn : string;
 begin
   fn := FHelpManager.GetHelpFile;
-  pn := ExtractFilePath (ParamStr (0));
+  pn := ExtractFilePath(ParamStr (0));
   fn := pn + fn;
   HTMLHelp (Application.Handle, PChar (fn), HH_DISPLAY_TOC, 0);
 end;
@@ -195,11 +196,11 @@ var
   fn, pn : string;
 begin
   fn := FHelpManager.GetHelpFile;
-  pn := ExtractFilePath (ParamStr (0));
+  pn := ExtractFilePath(ParamStr (0));
   fn := pn + fn;
   HTMLHelp (Application.Handle, PChar (fn), HH_DISPLAY_TOPIC, 0);
 
-  params.cbStruct := SizeOf (params);
+  params.cbStruct := SizeOf(params);
   params.pszKeywords := PChar (HelpString);
   params.pszUrl := nil;
   params.pszMsgText := nil;

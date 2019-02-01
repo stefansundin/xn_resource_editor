@@ -86,22 +86,22 @@ type
     procedure SetStrictSigSeparator(const Value: Boolean);
 
   protected
-    class function DisplaysObject (obj: TObject): Boolean; override;
-    procedure GetSelectedText (var txt: WideString); override;
-    procedure SetSelectedText (const txt: WideString); override;
+    class function DisplaysObject(obj: TObject): Boolean; override;
+    procedure GetSelectedText(var txt: WideString); override;
+    procedure SetSelectedText(const txt: WideString); override;
     function GetSelLength: Integer; override;
-    procedure GetText (var txt: WideString); override;
+    procedure GetText(var txt: WideString); override;
     procedure GetHTML (var txt: string; rawFragment: Boolean = false); override;
     procedure Refresh; override;
     function GetHeight: Integer; override;
     function GetWidth: Integer; override;
     function GetHasText: Boolean; override;
-    function FindText (const SearchStr: string; NewSearch: Boolean; Options: TStringSearchOptions; y: Integer): Boolean; override;
+    function FindText(const SearchStr: string; NewSearch: Boolean; Options: TStringSearchOptions; y: Integer): Boolean; override;
   public
     constructor Create(AOwner: TMessageDisplay; AObj: TObject; codepage: Integer); override;
     destructor Destroy; override;
-    procedure SetTextObject (objNo: Integer; obj: TObject);
-    procedure AddTextObject (obj: TObject);
+    procedure SetTextObject(objNo: Integer; obj: TObject);
+    procedure AddTextObject(obj: TObject);
     procedure Print; override;
 
     procedure BeginUpdate;
@@ -237,7 +237,7 @@ begin
   if StartPos >= 0 then
   begin
     RichEdit.SelStart := StartPos;
-    RichEdit.SelLength := Length (SearchStr);
+    RichEdit.SelLength := Length(SearchStr);
     Result := True;
   end
   else
@@ -384,7 +384,7 @@ var
     styles := [];
     Result := '';
 
-    len := Length (st);
+    len := Length(st);
     while i <= len do
     begin
       ch := st [i];
@@ -498,7 +498,7 @@ begin
         offset := Pos ( #4, line); if offset > 0 then line := StringReplaceEx (line,  #4, '}',  [rfReplaceAll], offset);
       end;
 
-      if (Length (line) > 0) and (line [1] = #1) then
+      if (Length(line) > 0) and (line [1] = #1) then
       begin
         if not inHeader and rtf then
         begin
@@ -582,7 +582,7 @@ var
     i, p, l: Integer;
     ch: char;
   begin
-    l := Length (indicator);
+    l := Length(indicator);
     i := 1;
     while i + l - 1 <= len do
     begin
@@ -612,8 +612,8 @@ var
   end;
 
 begin
- len := Length (st);
-  for i := Low (urlIndicators) to High (urlIndicators) do
+ len := Length(st);
+  for i := Low (urlIndicators) to High(urlIndicators) do
     Unwrap (urlIndicators[i])
 end;
 *)
@@ -643,7 +643,7 @@ begin
     st := StringReplace(TStrings (FTextObjects[i]).Text, 'url:', 'url: ', [rfReplaceAll, rfIgnoreCase]);
 //    UnwrapURLS (st);
     ws := StringToWideString (st, cp);
-    lastLen := Length (ws);
+    lastLen := Length(ws);
     ws1 := ws1 + ws;
   end;
 
@@ -926,7 +926,7 @@ begin
     sp := FindScrollingParent;
     if Assigned(sp) then
     begin
-      p := Point (msg.xPos, msg.yPos);
+      p := Point(msg.xPos, msg.yPos);
       MapWindowPoints (Handle, sp.Handle, p, 1);
       if p.Y < sp.ClientRect.Top then
         FTimerScrollDelta := p.Y - sp.ClientRect.Top

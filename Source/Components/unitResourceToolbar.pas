@@ -2,7 +2,8 @@ unit unitResourceToolbar;
 
 interface
 
-uses Windows, Classes, SysUtils, Contnrs, unitResourceDetails, Menus;
+uses
+  Windows, Classes, SysUtils, Contnrs, Menus, unitResourceDetails;
 
 const
   RT_TOOLBAR = MakeIntResource(241);
@@ -68,7 +69,7 @@ begin
   dat.wBtnHeight := 15;
   dat.wBtnCount := 0;
 
-  data.Write(dat, sizeof (dat) - sizeof (dat.wButtonIDs))
+  data.Write(dat, SizeOf(dat) - SizeOf(dat.wButtonIDs))
 end;
 
 initialization

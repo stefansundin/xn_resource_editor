@@ -207,7 +207,7 @@ var
   w, h: Integer;
 begin
   Result := True;
-  if not(csDesigning in ComponentState) then
+  if not (csDesigning in ComponentState) then
   begin
     if FHwndDlg <> 0 then
       GetWindowRect(FHwndDlg, r)
@@ -320,7 +320,7 @@ var
 
 begin
   ContinueProcessing := True;
-  if Assigned(FOnDlgMessage) and not(csDestroying in ComponentState) then
+  if Assigned(FOnDlgMessage) and not (csDestroying in ComponentState) then
   begin
     Msg.Result := Ord(False);
     OnDlgMessage(self, Msg, ContinueProcessing)
@@ -688,7 +688,7 @@ var
         FOrigY := ExTemplate^.y;
 
         newTemplate := ExTemplate^;
-        newTemplate.style :=(ExTemplate^.style and not(WS_POPUP or DS_CENTER or DS_CENTERMOUSE or DS_ABSALIGN)) or WS_CHILD or WS_VISIBLE;
+        newTemplate.style :=(ExTemplate^.style and not (WS_POPUP or DS_CENTER or DS_CENTERMOUSE or DS_ABSALIGN)) or WS_CHILD or WS_VISIBLE;
         newTemplate.x := 0;
         newTemplate.y := 0;
         p := PChar(FResourceTemplate) + SizeOf(TDlgTemplateEx);
@@ -704,7 +704,7 @@ var
         newTemplate.signature := $ffff;
         newTemplate.helpID := 0;
         newTemplate.exStyle := Template^.dwExtendedStyle;
-        newTemplate.Style :=(Template^.Style and not(WS_POPUP or DS_CENTER or DS_CENTERMOUSE or DS_ABSALIGN)) or WS_CHILD or WS_VISIBLE;
+        newTemplate.Style :=(Template^.Style and not (WS_POPUP or DS_CENTER or DS_CENTERMOUSE or DS_ABSALIGN)) or WS_CHILD or WS_VISIBLE;
         newTemplate.cDlgItems := Template^.cdit;
         newTemplate.x := 0;
         newTemplate.y := 0;

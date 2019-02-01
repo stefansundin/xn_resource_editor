@@ -2,7 +2,8 @@ unit unitParser;
 
 interface
 
-uses Windows, Classes, SysUtils, unitStreamTextReader, unitCExpression;
+uses
+  Windows, Classes, SysUtils, unitStreamTextReader, unitCExpression;
 
 const
   ttUnknown = 0;
@@ -191,7 +192,7 @@ end;
 function TParser.ExpectInteger(const errMsg: string): Integer;
 begin
   if tokenType = ttNumber then
-    Result := StrToInt (token)
+    Result := StrToInt(token)
   else
     raise EParser.Create(errMsg);
 end;
@@ -212,7 +213,7 @@ begin
   repeat
     if lineCont then
       MessageBeep ($ffff);
-    while FLinePos >= Length (FLineBuf) do
+    while FLinePos >= Length(FLineBuf) do
     begin
       if not FReader.ReadLn(FLineBuf) then
       begin
@@ -229,7 +230,7 @@ begin
     FCh := FLineBuf [FLinePos + 1];
     Inc(FLinePos);
     LineCont := True;
-  until (FCh <> '\') or (FLinePos < Length (FLineBuf));
+  until (FCh <> '\') or (FLinePos < Length(FLineBuf));
 
   if FSOL and not (FCh in Whitespace) then
   begin
@@ -323,11 +324,11 @@ end;
 procedure TParser.RawGetToken(charset: TCharset; tp: Integer);
 begin
   FToken := FCh;
-  if FLinePos < Length (FLineBuf) then
+  if FLinePos < Length(FLineBuf) then
     while GetChar in charset do
     begin
       FToken := FToken + FCh;
-      if FLinePos = Length (FLineBuf) then
+      if FLinePos = Length(FLineBuf) then
       begin
         GetChar;
         break
@@ -342,7 +343,7 @@ procedure TParser.SkipLine;
 begin
   if not FSOL then
   begin
-    FLinePos := Length (FLineBuf);
+    FLinePos := Length(FLineBuf);
     GetChar
   end
 end;
@@ -388,16 +389,16 @@ begin
 
   FDirectives := TStringList.Create;
   FDirectives.CaseSensitive := True;
-  FDirectives.AddObject ('include', TObject (dtInclude));
-  FDirectives.AddObject ('define',  TObject (dtDefine));
-  FDirectives.AddObject ('ifdef',   TObject (dtIfdef));
-  FDirectives.AddObject ('ifndef',  TObject (dtIfndef));
-  FDirectives.AddObject ('endif',   TObject (dtEndif));
-  FDirectives.AddObject ('undef',   TObject (dtUndef));
-  FDirectives.AddObject ('else',    TObject (dtElse));
-  FDirectives.AddObject ('if',      TObject (dtIf));
-  FDirectives.AddObject ('pragma',  TObject (dtPragma));
-  FDirectives.AddObject ('error',   TObject (dtError));
+  FDirectives.AddObject('include', TObject(dtInclude));
+  FDirectives.AddObject('define',  TObject(dtDefine));
+  FDirectives.AddObject('ifdef',   TObject(dtIfdef));
+  FDirectives.AddObject('ifndef',  TObject(dtIfndef));
+  FDirectives.AddObject('endif',   TObject(dtEndif));
+  FDirectives.AddObject('undef',   TObject(dtUndef));
+  FDirectives.AddObject('else',    TObject(dtElse));
+  FDirectives.AddObject('if',      TObject(dtIf));
+  FDirectives.AddObject('pragma',  TObject(dtPragma));
+  FDirectives.AddObject('error',   TObject(dtError));
   FDirectives.Sorted := True;
 end;
 
@@ -417,7 +418,7 @@ begin
     FIdentifiers.Delete(FIdentifiers.IndexOf (id))
   end
   else
-    raise EParser.CreateFmt ('Identifier %s not found', [id]);
+    raise EParser.CreateFmt('Identifier %s not found', [id]);
 end;
 
 destructor TCPreProcessor.Destroy;
@@ -471,9 +472,9 @@ procedure TCPreProcessor.DoError;
 begin
   GetRestOfLine;
   if IncludeFile = '' then
-    raise EErrorPragma.CreateFmt ('#Error in line %d %s', [FLineNo, FToken])
+    raise EErrorPragma.CreateFmt('#Error in line %d %s', [FLineNo, FToken])
   else
-    raise EErrorPragma.CreateFmt ('#Error in line %d:s %s', [FLineNo, IncludeFile, FToken])
+    raise EErrorPragma.CreateFmt('#Error in line %d:s %s', [FLineNo, IncludeFile, FToken])
 end;
 
 procedure TCPreProcessor.DoIf;
@@ -541,7 +542,7 @@ begin
   oldCh := FCh;
   oldPathName := PathName;
 
-  r := Nil;
+  r := nil;
   fName := GetIncludePathName(FToken);
   f := TFileStream.Create(fName, fmOpenRead or fmShareDenyWrite);
   try
@@ -553,7 +554,7 @@ begin
     FFirstChar := True;
     FLineBuf := '';
     FIfLevel := 0;
-    PathName := ExtractFilePath (fName);
+    PathName := ExtractFilePath(fName);
     IncludeFile := ExtractFileName(fName);
 
     Parse;
@@ -630,7 +631,7 @@ begin
 
       if p <> '' then
       begin
-        ch := p [Length (p)];
+        ch := p [Length(p)];
         if (ch <> '\') and (ch <> ':') then
           p := p + '\';
 
@@ -666,7 +667,7 @@ begin
         begin
           GetChar;
           repeat
-            if FLinePos >= Length (FLineBuf) then
+            if FLinePos >= Length(FLineBuf) then
               break;
 
             if FCh = '*' then
@@ -676,13 +677,13 @@ begin
             end
             else
               GetChar
-          until FLinePos >= Length (FLineBuf)
+          until FLinePos >= Length(FLineBuf)
         end
         else
           FToken := FToken + '/' + FCh
     else
       FToken := FToken + FCh;
-    if FLinePos = Length (FLineBuf) then
+    if FLinePos = Length(FLineBuf) then
     begin
       GetChar;
       break

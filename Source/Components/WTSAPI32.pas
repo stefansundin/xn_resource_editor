@@ -2,7 +2,8 @@ unit WTSAPI32;
 
 interface
 
-uses Windows;
+uses
+  Windows;
 
 const
   NOTIFY_FOR_ALL_SESSIONS = 1;

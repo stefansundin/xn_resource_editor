@@ -23,7 +23,8 @@ unit GraphFlip;
  
 interface 
  
-uses Windows, Classes, Sysutils, Graphics; 
+uses
+  Windows, Classes, Sysutils, Graphics;
  
 function RotateBitmap270 (const bitmap: TBitmap): TBitmap;
 function RotateBitmap90 (const bitmap: TBitmap): TBitmap;

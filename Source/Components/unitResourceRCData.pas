@@ -2,7 +2,8 @@ unit unitResourceRCData;
 
 interface
 
-uses Windows, Classes, SysUtils, Contnrs, unitResourceDetails;
+uses
+  Windows, Classes, SysUtils, Contnrs, unitResourceDetails;
 
 type
   TRCDataResourceDetails = class (TResourceDetails)
@@ -84,9 +85,9 @@ type
     bit      meaning
     -----------------------------------------------------------------------------------------
     0      | main unit
-    1      | package unit (dpk source)
+    1      | package unit(dpk source)
     2      | $WEAKPACKAGEUNIT unit
-    3      | original containment of $WEAKPACKAGEUNIT (package into which it was compiled)
+    3      | original containment of $WEAKPACKAGEUNIt(package into which it was compiled)
     4      | implicitly imported
     5..7   | reserved
   }
@@ -115,14 +116,14 @@ end;
 procedure TRCDataDescriptionResourceDetails.SetDescription(
   const Value: WideString);
 begin
-  data.Size := (Length (Value) + 1) * SizeOf (WideChar);
-  Move(Value [1], data.memory^, (Length (Value) + 1) * SizeOf (WideChar))
+  data.Size := (Length(Value) + 1) * SizeOf(WideChar);
+  Move(Value [1], data.memory^, (Length(Value) + 1) * SizeOf(WideChar))
 end;
 
 class function TRCDataDescriptionResourceDetails.SupportsRCData(
   const AName: string; Size: Integer; data: Pointer): Boolean;
 begin
-  Result := CompareText (AName, 'DESCRIPTION') = 0;
+  Result := CompareText(AName, 'DESCRIPTION') = 0;
 end;
 
 { TRCDataPackagesResourceDetails }
@@ -149,10 +150,10 @@ begin
 
     p := Data.Memory;
     FFlags := PDWORD (p)^;
-    Inc(p, SizeOf (DWORD)); //  Flags
+    Inc(p, SizeOf(DWORD)); //  Flags
 
     Count := PInteger (p)^;
-    Inc(p, SizeOf (Integer));
+    Inc(p, SizeOf(Integer));
 
     for i := 0 to Count - 1 do
     begin
@@ -164,12 +165,12 @@ begin
     end;
 
     Count := PInteger (p)^;
-    Inc(p, SizeOf (Integer));
+    Inc(p, SizeOf(Integer));
 
     for i := 0 to Count - 1 do
     begin
       unt := PUnitName(p);
-      FContainsList.AddObject (unt^.Name, TObject (Integer (unt.Flags)));
+      FContainsList.AddObject(unt^.Name, TObject(Integer (unt.Flags)));
       Inc(p, 3 + lstrlen (unt^.Name));
     end
   end
@@ -216,7 +217,7 @@ end;
 function TRCDataPackagesResourceDetails.GetEnvironment: TPackageEnvironment;
 begin
   DecodeData;
-  Result := TPackageEnvironment ((FFlags shr 26) and 3);
+  Result := TPackageEnvironment((FFlags shr 26) and 3);
 end;
 
 function TRCDataPackagesResourceDetails.GetModuleType: TModuleType;
@@ -252,7 +253,7 @@ end;
 class function TRCDataPackagesResourceDetails.SupportsRCData(
   const AName: string; Size: Integer; data: Pointer): Boolean;
 begin
-  Result := CompareText (AName, 'PACKAGEINFO') = 0;
+  Result := CompareText(AName, 'PACKAGEINFO') = 0;
 end;
 
 { TRCDataFormResourceDetails }
@@ -264,7 +265,7 @@ begin
   s := TStringStream.Create('');
   try
     data.Seek(0, soFromBeginning);
-    ObjectBinaryToText (data, s);
+    ObjectBinaryToText(data, s);
     Result := UTF8Decode(s.DataString);
   finally
     s.Free

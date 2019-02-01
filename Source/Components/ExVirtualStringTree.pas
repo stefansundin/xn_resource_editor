@@ -18,7 +18,7 @@ type
     procedure SaveColumnPCs;
     function GetNodeObject(Node: PVirtualNode): TObject;
     procedure SetNodeObject(Node: PVirtualNode; const Value: TObject);
-    procedure CheckObject (p: PVirtualNode; param: Integer; var continue: Boolean);
+    procedure CheckObject(p: PVirtualNode; param: Integer; var continue: Boolean);
   protected
     procedure Loaded; override;
     procedure Resize; override;
@@ -379,7 +379,7 @@ begin
 
         if ClientWidth - w > Columns[Columns.Count - 1].Width then
           Columns[Columns.Count - 1].Width := ClientWidth - w;
-        SetLength (FColumnPCs, Header.Columns.Count);
+        SetLength(FColumnPCs, Header.Columns.Count);
 
         SaveColumnPCs
       end
@@ -397,7 +397,7 @@ end;
 
 function TCustomExVirtualStringTree.FindNodeObject(obj: TObject; root: PVirtualNode): PVirtualNode;
 begin
-  Result := ForEach (CheckObject, Integer (obj), root)
+  Result := ForEach(CheckObject, Integer (obj), root)
 end;
 
 function TCustomExVirtualStringTree.ForEach(proc: TVTIteratorProc; param: Integer;
@@ -424,7 +424,7 @@ var
 
 begin
   if root = Nil then root := RootNode;
-  Node := Nil;
+  Node := nil;
   Iterate(GetFirstChild (root));
   Result := Node
 end;
@@ -434,7 +434,7 @@ procedure TCustomExVirtualStringTree.CheckObject(p: PVirtualNode;
 var
   obj: TObject;
 begin
-  obj := GetNodeObject (p);
+  obj := GetNodeObject(p);
   continue := Integer (obj) <> param
 end;
 

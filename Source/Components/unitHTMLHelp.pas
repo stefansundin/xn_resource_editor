@@ -6,7 +6,8 @@ unit unitHTMLHelp;
 
 interface
 
-uses Windows;
+uses
+  Windows;
 
 const
   HH_DISPLAY_TOPIC        = $0000;

@@ -60,7 +60,7 @@ function SplitString (const search: string; var s: string): string;
 function SplitToken (var st: string): string;
 function DelimPos (const delims: string; const st: string; out delim: char): Integer;
 function DelimSplitString (const search: string; var s: string; out delim: char): string;
-function WideContainsText (const AText, ASubText: WideString): Boolean;
+function WideContainsText(const AText, ASubText: WideString): Boolean;
 function WidePosEx(const SubStr, S: WideString; Offset: Cardinal = 1): Integer;
 function WideSplitString (const search: WideString; var s: WideString): WideString;
 function WideStrScan(const Str: PWideChar; Chr: WideChar): PWideChar;
@@ -76,7 +76,7 @@ implementation
 
 // nb.  Pos is a 'magic' function that internally has an (undocumented) wide version
 
-function WideContainsText (const AText, ASubText: WideString): Boolean;
+function WideContainsText(const AText, ASubText: WideString): Boolean;
 begin
   Result := Pos (WideUpperCase(ASubText), WideUpperCase(AText)) > 0;
 end;
@@ -131,7 +131,7 @@ var
   pc: PChar;
 
 begin
-  l := Length (search);
+  l := Length(search);
   if l = 1 then
   begin
     pc := AnsiStrScan (PChar (s), search [1]);
@@ -164,7 +164,7 @@ var
   p, l: Integer;
   pc: PChar;
 begin
-  l := Length (search);
+  l := Length(search);
   if l = 1 then
   begin
     pc := AnsiStrScan (PChar (s), search [1]);
@@ -220,14 +220,14 @@ var
   p, l: Integer;
   pc: PWideChar;
 begin
-  l := Length (search);
+  l := Length(search);
   if l = 1 then
   begin
     pc := WideStrScan (PWideChar (s), search [1]);
     if pc = nil then
       p := 0
     else
-      p := (Integer (pc) - Integer (PWideChar (s))) div sizeof (WideChar) + 1
+      p := (Integer (pc) - Integer (PWideChar (s))) div SizeOf(WideChar) + 1
   end
   else
     p := Pos (search, s);
@@ -247,8 +247,8 @@ function WildContains (const a, b: string): Boolean;
 var
   p, offs, l, l1: Integer;
 begin
-  l := Length (a);
-  l1 := Length (b);
+  l := Length(a);
+  l1 := Length(b);
 
   if (l1 = 0) or (l = 0) then
   begin
@@ -300,8 +300,8 @@ function WWildContains (const a, b: WideString): Boolean;
 var
   p, offs, l, l1: Integer;
 begin
-  l := Length (a);
-  l1 := Length (b);
+  l := Length(a);
+  l1 := Length(b);
 
   if (l1 = 0) or (l = 0) then
   begin
@@ -403,14 +403,14 @@ var
 
   procedure AddToVarArray(var arr: TStrArray; const st: string; var n: Integer);
   begin
-    if n = Length (arr) then
-      SetLength (arr, n + 5);
+    if n = Length(arr) then
+      SetLength(arr, n + 5);
     arr [n] := st;
     Inc(n)
   end;
 
 begin
-  if CompareText (FSearchString, searchString) = 0 then
+  if CompareText(FSearchString, searchString) = 0 then
     Exit;
   FSearchString := searchString;
   FCountAndWords := 0;
@@ -419,7 +419,7 @@ begin
   if not FCaseSensitive then
     searchString := UpperCase(searchString);
 
-  l := Length (searchString);
+  l := Length(searchString);
   op := opAnd;
   while l > 0 do
   begin
@@ -428,13 +428,13 @@ begin
         begin
           op := opAnd;
           Delete(searchString, 1, 1);
-          l := Length (searchString);
+          l := Length(searchString);
         end;
       '-' :
         begin
           op := opNot;
           Delete(searchString, 1, 1);
-          l := Length (searchString);
+          l := Length(searchString);
         end
     end;
 
@@ -451,7 +451,7 @@ begin
       if UpperCase(s1) = 'OR' then
       begin
         op := opOR;
-        l := Length (searchString);
+        l := Length(searchString);
         continue
       end
     end;
@@ -464,7 +464,7 @@ begin
       end;
 
     op := opAnd;
-    l := Length (searchString)
+    l := Length(searchString)
   end
 end;
 
@@ -530,14 +530,14 @@ var
 
   procedure AddToVarArray(var arr: TWStrArray; const st: WideString; var n: Integer);
   begin
-    if n = Length (arr) then
-      SetLength (arr, n + 5);
+    if n = Length(arr) then
+      SetLength(arr, n + 5);
     arr [n] := st;
     Inc(n)
   end;
 
 begin
-  if WideCompareText (FSearchString, searchString) = 0 then
+  if WideCompareText(FSearchString, searchString) = 0 then
     Exit;
   FSearchString := searchString;
   FCountAndWords := 0;
@@ -546,7 +546,7 @@ begin
   if not FCaseSensitive then
     searchString := WideUpperCase(searchString);
 
-  l := Length (searchString);
+  l := Length(searchString);
   op := opAnd;
   while l > 0 do
   begin
@@ -555,13 +555,13 @@ begin
         begin
           op := opAnd;
           Delete(searchString, 1, 1);
-          l := Length (searchString);
+          l := Length(searchString);
         end;
       '-' :
         begin
           op := opNot;
           Delete(searchString, 1, 1);
-          l := Length (searchString);
+          l := Length(searchString);
         end
     end;
 
@@ -578,7 +578,7 @@ begin
       if WideUpperCase(s1) = 'OR' then
       begin
         op := opOR;
-        l := Length (searchString);
+        l := Length(searchString);
         continue
       end
     end;
@@ -594,13 +594,13 @@ begin
       end;
 
     op := opAnd;
-    l := Length (searchString)
+    l := Length(searchString)
   end
 end;
 
 function SearchStringArray(arr: array of string; const st: string): Integer;
 
-  function bsearch (s, e: Integer): Integer;
+  function bsearch(s, e: Integer): Integer;
   var
     m, c: Integer;
   begin
@@ -608,22 +608,22 @@ function SearchStringArray(arr: array of string; const st: string): Integer;
     begin
       m := s + (e - s) div 2;
 
-      c := CompareText (st, arr [m]);
+      c := CompareText(st, arr [m]);
 
       if c = 0 then
         Result := m
       else
         if c > 0 then
-          Result := bsearch (m + 1, e)
+          Result := bsearch(m + 1, e)
         else
-          Result := bsearch (s, m - 1)
+          Result := bsearch(s, m - 1)
     end
     else
       Result := -1
   end;
 
 begin
-  Result := bsearch (Low (arr), High (arr))
+  Result := bsearch(Low (arr), High(arr))
 end;
 
 function StringArrayContains (arr: array of string; const st: string): Boolean;
@@ -635,7 +635,7 @@ function WideDequotedStr (st: WideString; q: WideChar): WideString;
 var
   i, l: Integer;
 begin
-  l := Length (st);
+  l := Length(st);
   if (l > 0) and (st [1] = q) then
   begin
     i := 2;
@@ -681,7 +681,7 @@ begin
   end;
 
   Result := MaxInt;
-  for i := 1 to Length (delims) do
+  for i := 1 to Length(delims) do
   begin
     p := Pos (delims[i], st);
     if (p > 0) and (p < Result) then

@@ -14,22 +14,22 @@ function CharsetNameToCodepage(const CharsetName: string): Integer;
 function CodepageToMIMECharsetName(codepage: Integer): string;
 function CodepageToCharsetName(codepage: Integer): string;
 function CharsetToCodePage(FontCharset: TFontCharset): Integer;
-function CodePageToCharset (codePage: Integer): TFontCharset;
-function WideStringToString (const ws: WideString; codePage: Integer): string;
-function StringToWideString (const st: string; codePage: Integer): WideString;
-function StringToGDIString (const s: string; codePage: Integer): string;
-function GDIStringToString (const s: string; codePage: Integer): string;
+function CodePageToCharset(codePage: Integer): TFontCharset;
+function WideStringToString(const ws: WideString; codePage: Integer): string;
+function StringToWideString(const st: string; codePage: Integer): WideString;
+function StringToGDIString(const s: string; codePage: Integer): string;
+function GDIStringToString(const s: string; codePage: Integer): string;
 function URLSuffixToCodePage(urlSuffix: string): Integer;
-procedure GetCharsetNames (sl: TStrings);
+procedure GetCharsetNames(sl: TStrings);
 function TrimEx(const S: string): string;
 function IsWideCharAlpha(ch: WideChar): Boolean;
-function IsWideCharAlnum (ch: WideChar): Boolean;
+function IsWideCharAlnum(ch: WideChar): Boolean;
 procedure FontToCharFormat(font: TFont; codePage: Integer; var Format: TCharFormatW);
-function WideStringToUTF8 (const ws: WideString): string;
-function UTF8ToWideString (const st: string): WideString;
+function WideStringToUTF8(const ws: WideString): string;
+function UTF8ToWideString(const st: string): WideString;
 
 var
-  gIMultiLanguage: IMultiLanguage = Nil;
+  gIMultiLanguage: IMultiLanguage = nil;
   gMultilanguageLoaded: Boolean = False;
   gMultiLang: Boolean = False;
 
@@ -52,16 +52,16 @@ var
   gCharsetMap: array [0..35] of TCharsetRec = (
     (Name:'US ASCII';                      URLSuffix:'';    CodePage: 0; Charset:0;   MIMECharsetName:'';            CharsetName:'ANSI_CHARSET'       ),
     (Name:'US ASCII';                      URLSuffix:'';    CodePage: 0; Charset:0;   MIMECharsetName:'us-ascii';    CharsetName:'ANSI_CHARSET'       ),
-    (Name:'Western Europe(ISO)';          URLSuffix:'';    CodePage:28591; Charset:0;   MIMECharsetName:'iso-8859-1';        CharsetName:'ANSI_CHARSET'       ),
-    (Name:'Western Europe(Windows)';      URLSuffix:'';    CodePage:01252; Charset:0;   MIMECharsetName:'windows-1252';      CharsetName:'ANSI_CHARSET'       ),
+    (Name:'Western Europe(ISO)';           URLSuffix:'';    CodePage:28591; Charset:0;   MIMECharsetName:'iso-8859-1';        CharsetName:'ANSI_CHARSET'       ),
+    (Name:'Western Europe(Windows)';       URLSuffix:'';    CodePage:01252; Charset:0;   MIMECharsetName:'windows-1252';      CharsetName:'ANSI_CHARSET'       ),
     (Name:'Latin (3)';                     URLSuffix:'';    CodePage:28593; Charset:162; MIMECharsetName:'iso-8859-3';        CharsetName:'TURKISH_CHARSET'     ),
     (Name:'Latin (9)';                     URLSuffix:'';    CodePage:28605; Charset:0;   MIMECharsetName:'iso-8859-15';       CharsetName:'ANSI_CHARSET'       ),
     (Name:'Thai';                          URLSuffix:'.th'; CodePage:00874; Charset:222; MIMECharsetName:'iso-8859-11';       CharsetName:'ARABIC_CHARSET'     ),
-    (Name:'Japanese(JIS)';                URLSuffix:'.jp'; CodePage:50220; Charset:128; MIMECharsetName:'iso-2022-jp';       CharsetName:'SHIFTJIS_CHARSET'   ),
-    (Name:'Japanese(EUC)';                URLSuffix:'';    CodePage:51932; Charset:128; MIMECharsetName:'euc-jp';          CharsetName:'SHIFTJIS_CHARSET'   ),
-    (Name:'Japanese(EUC)';                URLSuffix:'';    CodePage:51932; Charset:128; MIMECharsetName:'x-euc-jp';          CharsetName:'SHIFTJIS_CHARSET'   ),
-    (Name:'Japanese(Shift-JIS)';          URLSuffix:'';    CodePage:00932; Charset:128; MIMECharsetName:'shift-jis';    CharsetName:'SHIFTJIS_CHARSET'   ),
-    (Name:'Japanese(Shift-JIS)';          URLSuffix:'';    CodePage:00932; Charset:128; MIMECharsetName:'x-shift-jis';    CharsetName:'SHIFTJIS_CHARSET'   ),
+    (Name:'Japanese(JIS)';                 URLSuffix:'.jp'; CodePage:50220; Charset:128; MIMECharsetName:'iso-2022-jp';       CharsetName:'SHIFTJIS_CHARSET'   ),
+    (Name:'Japanese(EUC)';                 URLSuffix:'';    CodePage:51932; Charset:128; MIMECharsetName:'euc-jp';          CharsetName:'SHIFTJIS_CHARSET'   ),
+    (Name:'Japanese(EUC)';                 URLSuffix:'';    CodePage:51932; Charset:128; MIMECharsetName:'x-euc-jp';          CharsetName:'SHIFTJIS_CHARSET'   ),
+    (Name:'Japanese(Shift-JIS)';           URLSuffix:'';    CodePage:00932; Charset:128; MIMECharsetName:'shift-jis';    CharsetName:'SHIFTJIS_CHARSET'   ),
+    (Name:'Japanese(Shift-JIS)';           URLSuffix:'';    CodePage:00932; Charset:128; MIMECharsetName:'x-shift-jis';    CharsetName:'SHIFTJIS_CHARSET'   ),
     (Name:'Chinese - Simplified (GB2312)'; URLSuffix:'';    CodePage:00936; Charset:134; MIMECharsetName:'gb2312';         CharsetName:'GB2312_CHARSET'     ),
     (Name:'Chinese - Simplified (HZ)';     URLSuffix:'';    CodePage:52936; Charset:134; MIMECharsetName:'hz-gb-2312';          CharsetName:'GB2312_CHARSET'     ),
     (Name:'Chinese - Traditional (Big5)';  URLSuffix:'.cn'; CodePage:00950; Charset:136; MIMECharsetName:'big5';              CharsetName:'CHINESEBIG5_CHARSET'),
@@ -78,14 +78,14 @@ var
     (Name:'Russian (KOI8)';                URLSuffix:'';    CodePage:20866; Charset:204; MIMECharsetName:'x-koi8';            CharsetName:'RUSSIAN_CHARSET'    ),
     (Name:'Russian (ISO)';                 URLSuffix:'';    CodePage:28595; Charset:204; MIMECharsetName:'iso-8859-5';        CharsetName:'RUSSIAN_CHARSET'    ),
     (Name:'Russian (Windows)';             URLSuffix:'';    CodePage:01251; Charset:204; MIMECharsetName:'windows-1251';              CharsetName:'RUSSIAN_CHARSET'    ),
-    (Name:'Greek(ISO)';                   URLSuffix:'';    CodePage:28597; Charset:161; MIMECharsetName:'iso-8859-7';        CharsetName:'GREEK_CHARSET'      ),
-    (Name:'Greek(Windows)';               URLSuffix:'.gr'; CodePage:01253; Charset:161; MIMECharsetName:'windows-1253';        CharsetName:'GREEK_CHARSET'      ),
-    (Name:'Turkish (ISO)';                 URLSuffix:'.tr'; CodePage:28599; Charset:162; MIMECharsetName:'iso-8859-9';        CharsetName:'TURKISH_CHARSET'    ),
+    (Name:'Greek(ISO)';                    URLSuffix:'';    CodePage:28597; Charset:161; MIMECharsetName:'iso-8859-7';        CharsetName:'GREEK_CHARSET'      ),
+    (Name:'Greek(Windows)';                URLSuffix:'.gr'; CodePage:01253; Charset:161; MIMECharsetName:'windows-1253';        CharsetName:'GREEK_CHARSET'      ),
+    (Name:'Turkish(ISO)';                 URLSuffix:'.tr'; CodePage:28599; Charset:162; MIMECharsetName:'iso-8859-9';        CharsetName:'TURKISH_CHARSET'    ),
     (Name:'Hebrew (Windows)';              URLSuffix:'.il'; CodePage:01255; Charset:177; MIMECharsetName:'windows-1255';        CharsetName:'HEBREW_CHARSET'     ),
     (Name:'Hebrew (ISO)';                  URLSuffix:'';    CodePage:28598; Charset:177; MIMECharsetName:'iso-8859-9';        CharsetName:'HEBREW_CHARSET'     ),
     (Name:'Arabic (ISO)';                  URLSuffix:'';    CodePage:28596; Charset:178; MIMECharsetName:'iso-8859-6';        CharsetName:'ARABIC_CHARSET'     ),
     (Name:'Baltic (ISO)';                  URLSuffix:'';    CodePage:28594; Charset:186; MIMECharsetName:'iso-8859-4';        CharsetName:'BALTIC_CHARSET'     ),
-    (Name:'Unicode(UTF-8)';               URLSuffix:'';    CodePage:65001; Charset:0;   MIMECharsetName:'utf-8';             CharsetName:'BALTIC_CHARSET'     )
+    (Name:'Unicode(UTF-8)';                URLSuffix:'';    CodePage:65001; Charset:0;   MIMECharsetName:'utf-8';             CharsetName:'BALTIC_CHARSET'     )
   );
 
   CharsetMap: array of TCharsetRec;
@@ -110,12 +110,12 @@ begin
     if Assigned(gIMultiLanguage) then
     begin
       gIMultiLanguage.EnumCodePages(MIMECONTF_MAILNEWS, enum);
-      info := CoTaskMemAlloc (10* sizeof (tagMIMECPInfo));;
+      info := CoTaskMemAlloc (10* SizeOf(tagMIMECPInfo));
       try
         c := 2;
-        while SUCCEEDED (enum.Next (10, info^, ct)) and (ct <> 0) do
+        while SUCCEEDED (enum.Next(10, info^, ct)) and (ct <> 0) do
         begin
-          SetLength (CharsetMap, c + ct);
+          SetLength(CharsetMap, c + ct);
           if c = 2 then
           begin
             CharsetMap [0] := gCharsetMap [0];
@@ -136,7 +136,7 @@ begin
         end;
 
         for i := 0 to c - 1 do
-          for j := Low (gCharsetMap) to High (gCharsetMap) do
+          for j := Low (gCharsetMap) to High(gCharsetMap) do
             if gCharsetMap [j].CodePage = charsetMap [i].CodePage then
             begin
               if charsetMap [i].URLSuffix = '' then
@@ -154,11 +154,11 @@ begin
           end;
 
         if not Found then
-          for i := Low (gCharsetMap) to High (gCharsetMap) do
+          for i := Low (gCharsetMap) to High(gCharsetMap) do
             if gCharsetMap [i].CodePage = DefaultCodePage then
             begin
-              SetLength (charsetMap, c + 1);
-              charsetMap [c] := gCharsetMap [i];
+              SetLength(charsetMap, c + 1);
+              CharsetMap[c] := gCharsetMap[i];
               break;
             end;
 
@@ -169,9 +169,9 @@ begin
     end
     else
     begin
-      SetLength (CharsetMap, High (gCharsetMap) + 1);
-      for i := Low (gCharsetMap) to High (gCharsetMap) do
-        CharsetMap [i] := gCharsetMap [i]
+      SetLength(CharsetMap, High(gCharsetMap) + 1);
+      for i := Low (gCharsetMap) to High(gCharsetMap) do
+        CharsetMap[i] := gCharsetMap [i]
     end
   end
 end;
@@ -182,21 +182,21 @@ var
 begin
   LoadMultiLanguage;
 
-  if CompareText (MIMECharsetName, 'us-ascii') = 0 then
+  if CompareText(MIMECharsetName, 'us-ascii') = 0 then
     Result := CP_USASCII
   else
   begin
     Result := 0;
     i := Pos ('-', MIMECharsetName);
     if i > 0 then
-      if CompareText (Copy(MIMECharsetName, 1, i - 1), 'windows') = 0 then
+      if CompareText(Copy(MIMECharsetName, 1, i - 1), 'windows') = 0 then
         Result := StrToIntDef (Copy(MIMECharsetName, i + 1, MaxInt), 1252);
 
     if Result = 0 then
     begin
       Result := CP_USASCII;
-      for i := Low (CharsetMap) to High (CharsetMap) do
-        if CompareText (CharsetMap [i].MIMECharsetName, MIMECharsetName) = 0 then
+      for i := Low (CharsetMap) to High(CharsetMap) do
+        if CompareText(CharsetMap [i].MIMECharsetName, MIMECharsetName) = 0 then
         begin
           Result := CharsetMap [i].codepage;
           break
@@ -211,8 +211,8 @@ var
 begin
   LoadMultiLanguage;
   Result := CP_USASCII;
-  for i := Low (CharsetMap) to High (CharsetMap) do
-    if CompareText (CharsetMap [i].Name, CharsetName) = 0 then
+  for i := Low (CharsetMap) to High(CharsetMap) do
+    if CompareText(CharsetMap [i].Name, CharsetName) = 0 then
     begin
       Result := CharsetMap [i].codepage;
       break
@@ -226,7 +226,7 @@ begin
   LoadMultiLanguage;
   Result := '';
 
-  for i := Low (CharsetMap) to High (CharsetMap) do
+  for i := Low (CharsetMap) to High(CharsetMap) do
     if CharsetMap [i].Codepage = codepage then
     begin
       Result := CharsetMap [i].MIMECharsetName;
@@ -241,7 +241,7 @@ begin
   LoadMultiLanguage;
   Result := '';
 
-  for i := Low (CharsetMap) to High (CharsetMap) do
+  for i := Low (CharsetMap) to High(CharsetMap) do
     if CharsetMap [i].Codepage = codepage then
     begin
       Result := CharsetMap [i].Name;
@@ -255,7 +255,7 @@ var
 begin
   LoadMultiLanguage;
   Result := CP_USASCII;
-  for i := Low (CharsetMap) to High (CharsetMap) do
+  for i := Low (CharsetMap) to High(CharsetMap) do
     if CharsetMap [i].CharSet = FontCharset then
     begin
       Result := CharsetMap [i].CodePage;
@@ -263,14 +263,14 @@ begin
     end
 end;
 
-function CodePageToCharset (codePage: Integer): TFontCharset;
+function CodePageToCharset(codePage: Integer): TFontCharset;
 var
   i: Integer;
 begin
   LoadMultiLanguage;
   Result := 0;
   if codepage <> 65001 then
-    for i := Low (CharsetMap) to High (CharsetMap) do
+    for i := Low (CharsetMap) to High(CharsetMap) do
       if CharsetMap [i].Codepage = codepage then
       begin
         Result := CharsetMap [i].CharSet;
@@ -278,16 +278,16 @@ begin
       end
 end;
 
-function WideStringToString (const ws: WideString; codePage: Integer): string;
+function WideStringToString(const ws: WideString; codePage: Integer): string;
 var
   dlen, len: DWORD;
   mode: DWORD;
 begin
   LoadMultiLanguage;
 
-  len := Length (ws);
+  len := Length(ws);
   dlen := len * 4;
-  SetLength (Result, dlen);  // Dest string may be longer than source string if it's UTF-8
+  SetLength(Result, dlen);  // Dest string may be longer than source string if it's UTF-8
   if codePage = -1 then
     codePage := CP_USASCII;
 
@@ -303,10 +303,10 @@ begin
   if dlen = 0 then
     Result := ws
   else
-    SetLength (Result, dlen)
+    SetLength(Result, dlen)
 end;
 
-function StringToWideString (const st: string; codePage: Integer): WideString;
+function StringToWideString(const st: string; codePage: Integer): WideString;
 var
   len, dlen, mode: DWORD;
 begin
@@ -317,9 +317,9 @@ begin
     Result := ''
   else
   begin
-    len := Length (st);
+    len := Length(st);
     dlen := len * 4;
-    SetLength (Result, dlen);
+    SetLength(Result, dlen);
 
     if gMultiLang and (codePage <> CP_ACP) then
     begin
@@ -333,7 +333,7 @@ begin
     if dlen = 0 then
       Result := st
     else
-      SetLength (Result, dlen)
+      SetLength(Result, dlen)
   end
 end;
 
@@ -345,7 +345,7 @@ begin
   urlSuffix := LowerCase(urlSuffix);
   Result := CP_USASCII;
   if urlSuffix <> '' then
-    for i := Low (CharsetMap) to High (CharsetMap) do
+    for i := Low (CharsetMap) to High(CharsetMap) do
       if CharsetMap [i].URLSuffix = urlSuffix then
       begin
         Result := CharsetMap [i].CodePage;
@@ -361,7 +361,7 @@ begin
   LoadMultiLanguage;
   sl.Clear;
   lst := '~';
-  for i := Low (CharsetMap) to High (CharsetMap) do
+  for i := Low (CharsetMap) to High(CharsetMap) do
     if lst <> CharsetMap [i].Name then
     begin
       lst := CharsetMap [i].Name;
@@ -392,7 +392,7 @@ begin
   Result:= StrToIntDef(Buffer, GetACP);
 end;
 
-function StringToGDIString (const s: String; codePage: Integer): string;
+function StringToGDIString(const s: String; codePage: Integer): string;
 var
   cs: TFontCharset;
   i: Integer;
@@ -401,10 +401,10 @@ var
   len, dlen: DWORD;
 begin
   LoadMultiLanguage;
-  cs := CodePageToCharset (codePage);
+  cs := CodePageToCharset(codePage);
 
   destCP := -1;
-  for i := Low (CharsetMap) to High (CharsetMap) do
+  for i := Low (CharsetMap) to High(CharsetMap) do
     if (CharsetMap [i].CharSet = cs) and (CharsetMap [i].CodePage < 2000) then
     begin
       destCP := CharsetMap [i].codePage;
@@ -416,20 +416,20 @@ begin
   else
   begin
     mode := 0;
-    len := Length (s);
+    len := Length(s);
     dlen := len * 4;
-    SetLength (Result, dlen);
+    SetLength(Result, dlen);
     if not SUCCEEDED (gIMultiLanguage.ConvertString (mode, codepage, destCP, PChar (s), len, PChar (Result), dlen)) then
       dlen := 0;
 
     if dlen = 0 then
       Result := s
     else
-      SetLength (Result, dlen)
+      SetLength(Result, dlen)
   end
 end;
 
-function GDIStringToString (const s: string; codePage: Integer): string;
+function GDIStringToString(const s: string; codePage: Integer): string;
 var
   cs: TFontCharset;
   i: Integer;
@@ -438,10 +438,10 @@ var
   len, dlen: DWORD;
 begin
   LoadMultiLanguage;
-  cs := CodePageToCharset (codePage);
+  cs := CodePageToCharset(codePage);
 
   srcCP := -1;
-  for i := Low (CharsetMap) to High (CharsetMap) do
+  for i := Low (CharsetMap) to High(CharsetMap) do
     if (CharsetMap [i].CharSet = cs) and (CharsetMap [i].CodePage < 2000) then
     begin
       srcCP := CharsetMap [i].codePage;
@@ -453,24 +453,24 @@ begin
   else
   begin
     mode := 0;
-    len := Length (s);
+    len := Length(s);
     dlen := len * 4;
-    SetLength (Result, dlen);
+    SetLength(Result, dlen);
     if not SUCCEEDED (gIMultiLanguage.ConvertString (mode, srcCP, codepage, PChar (s), len, PChar (Result), dlen)) then
       dlen := 0;
 
     if dlen = 0 then
       Result := s
     else
-      SetLength (Result, dlen)
+      SetLength(Result, dlen)
   end
 end;
 
 function IsWideCharAlpha(ch: WideChar): Boolean;
 var
-  w: word;
+  w: Word;
 begin
-  w := Word (ch);
+  w := Word(ch);
 
   if w < $80 then       // Ascii range
     Result := (w >=  $41) and (w <=  $5a) or
@@ -504,7 +504,7 @@ begin
     Result := True;     // Can't be bothered to do any more - for the moment!
 end;
 
-function IsWideCharAlnum (ch: WideChar): Boolean;
+function IsWideCharAlnum(ch: WideChar): Boolean;
 var
   w: word;
 begin
@@ -519,9 +519,9 @@ procedure FontToCharFormat(font: TFont; codePage: Integer; var Format: TCharForm
 var
   wFontName: WideString;
 begin
-  FillChar (Format, SizeOf (Format), 0);
+  FillChar (Format, SizeOf(Format), 0);
 
-  Format.cbSize := sizeof (Format);
+  Format.cbSize := SizeOf(Format);
   Format.dwMask := Integer (CFM_SIZE or CFM_COLOR or CFM_FACE or CFM_CHARSET or CFM_BOLD or CFM_ITALIC or CFM_UNDERLINE or CFM_STRIKEOUT);
 
   if Font.Color = clWindowText then
@@ -544,7 +544,7 @@ begin
 
   Format.yHeight := Abs (Font.Size) * 20;
   Format.yOffset := 0;
-  Format.bCharSet := CodePageToCharset (codePage);
+  Format.bCharSet := CodePageToCharset(codePage);
 
   case Font.Pitch of
     fpVariable: Format.bPitchAndFamily := VARIABLE_PITCH;

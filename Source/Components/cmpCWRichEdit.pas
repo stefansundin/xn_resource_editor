@@ -35,7 +35,7 @@ type
 
 //--------------------------------------------------------------------
 // Provide rich edit services from the Microsoft richedit control.
-// Overriden for each version of richedit (v1, v2, v3) so that we
+// Overriden for each version of richedit(v1, v2, v3) so that we
 // can take their individual requirements into account.
 //
 // nb. v3 is supported by W2K, XP
@@ -48,12 +48,12 @@ type
 
   protected
     procedure CreateSubclass (var Params: TCreateParams); virtual; abstract;
-    procedure SetText (const st: WideString); virtual; abstract;
+    procedure SetText(const st: WideString); virtual; abstract;
     function GetText: WideString; virtual; abstract;
     function GetSelText: WideString; virtual; abstract;
     function GetTextLen: Integer; virtual; abstract;
     function GetCRLFTextLen: Integer; virtual; abstract;
-    procedure SetSelText (const value: WideString); virtual; abstract;
+    procedure SetSelText(const value: WideString); virtual; abstract;
     function UsesCRLF: Boolean; virtual; abstract;
     function GetIRichEditOLE: IRichEditOLE; virtual;
   public
@@ -161,7 +161,7 @@ type
     procedure DoURLMouseUp(var Message: TWMMouse; Button: TMouseButton; Shift: TShiftState);
     procedure WMKeyDown(var Message: TWMKeyDown); message WM_KEYDOWN;
 
-    procedure SetUpFont (Font: TFont; All: Boolean);
+    procedure SetUpFont(Font: TFont; All: Boolean);
     function ProtectChange(StartPos, EndPos: Integer): Boolean;
     function SaveClipboard(NumObj, NumChars: Integer): Boolean;
     procedure SetAlignment(const Value: TAlignment);
@@ -177,9 +177,9 @@ type
     procedure WMPaint(var Message: TWMPaint); message WM_PAINT;
     procedure WMSetCursor(var Message: TWMSetCursor); message WM_SETCURSOR;
     procedure WMSetFont(var Message: TWMSetFont); message WM_SETFONT;
-    procedure WmGetText (var Message: TWMGetText); message WM_GETTEXT;
-    procedure WmSetText (var Message: TWMSetText); message WM_SETTEXT;
-    procedure WmGetTextLength (var Message: TWMGetTextLength); message WM_GETTEXTLENGTH;
+    procedure WmGetText(var Message: TWMGetText); message WM_GETTEXT;
+    procedure WmSetText(var Message: TWMSetText); message WM_SETTEXT;
+    procedure WmGetTextLength(var Message: TWMGetTextLength); message WM_GETTEXTLENGTH;
     function GetText: WideString;
     procedure SetAutoURLDetect(const Value: Boolean);
     function GetSelLength: Integer;
@@ -246,7 +246,7 @@ type
     procedure ClearUndoBuffer;
     function ExecuteAction(Action: TBasicAction): Boolean; override;
     function FindText(const SearchStr: string; StartPos, Length: Integer; Options: TSearchTypes): Integer;
-    procedure FontToCharFormat (Font: TFont; var Format: TCharFormat);
+    procedure FontToCharFormat(Font: TFont; var Format: TCharFormat);
     procedure CutToClipboard;
     procedure CopyToClipboard;
     procedure PasteFromClipboard;
@@ -295,13 +295,13 @@ type
   private
   protected
     procedure CreateSubclass (var Params: TCreateParams); override;
-    procedure SetText (const st: WideString); override;
+    procedure SetText(const st: WideString); override;
     function GetText: WideString; override;
     function GetSelText: WideString; override;
     function GetTextLen: Integer; override;
     function GetCRLFTextLen: Integer; override;
     function UsesCRLF: Boolean; override;
-    procedure SetSelText (const value: WideString); override;
+    procedure SetSelText(const value: WideString); override;
   end;
 
 //---------------------------------------------------------------------
@@ -311,16 +311,16 @@ type
   private
     FIRichEditOLE: IRichEditOLE;
     FGotIRichEditOLE: Boolean;
-    function RawGetText (sel: Boolean): WideString;
-    procedure RawSetText (const st: WideString; sel: Boolean);
+    function RawGetText(sel: Boolean): WideString;
+    procedure RawSetText(const st: WideString; sel: Boolean);
   protected
     procedure CreateSubclass (var Params: TCreateParams); override;
-    procedure SetText (const st: WideString); override;
+    procedure SetText(const st: WideString); override;
     function GetText: WideString; override;
     function GetSelText: WideString; override;
     function GetTextLen: Integer; override;
     function GetCRLFTextLen: Integer; override;
-    procedure SetSelText (const value: WideString); override;
+    procedure SetSelText(const value: WideString); override;
     function UsesCRLF: Boolean; override;
     function GetIRichEditOLE: IRichEditOLE; override;
   public
@@ -450,7 +450,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TCustomExRichEdit.Clear;
 begin
-  SetWindowText (Handle, '');
+  SetWindowText(Handle, '');
   StrDispose(WindowText);
   WindowText := Nil
 end;
@@ -483,7 +483,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TCustomExRichEdit.CMFontChanged(var Message: TMessage);
 begin
-  SetUpFont (Font, True);
+  SetUpFont(Font, True);
 end;
 
 (*----------------------------------------------------------------------*
@@ -519,7 +519,7 @@ begin
           mouseMsg.YPos := HiWord (ENLink^.lParam);
           mouseMsg.Result := 0;
 
-          SetLength (FURLText, 65536);
+          SetLength(FURLText, 65536);
           textRange.chrg := ENLink^.chrg;
           textRange.lpstrText := PAnsiChar(FURLText);
           SendMessage(Handle, EM_GETTEXTRANGE, 0, lParam (@textRange));
@@ -727,7 +727,7 @@ begin
     if WindowHandle = 0 then
       Raise Exception.Create('Unable to create window handle');
 
-    DoSetMaxLength (fMaxLength);
+    DoSetMaxLength(fMaxLength);
     if SendMessage(WindowHandle, WM_SETTEXT, 0, Longint(Caption)) = 0 then
       RaiseLastOSError;
   end;
@@ -856,9 +856,9 @@ end;
  *----------------------------------------------------------------------*)
 procedure TCustomExRichEdit.FontToCharFormat(Font: TFont; var Format: TCharFormat);
 begin
-  FillChar (Format, SizeOf (Format), 0);
+  FillChar (Format, SizeOf(Format), 0);
 
-  Format.cbSize := sizeof (Format);
+  Format.cbSize := SizeOf(Format);
   Format.dwMask := Integer (CFM_SIZE or CFM_COLOR or CFM_FACE or CFM_CHARSET or CFM_BOLD or CFM_ITALIC or CFM_UNDERLINE or CFM_STRIKEOUT);
 
   if Font.Color = clWindowText then
@@ -881,7 +881,7 @@ begin
 
   Format.yHeight := Abs (Font.Size) * 20;
   Format.yOffset := 0;
-  Format.bCharSet := CodePageToCharset (CodePage);
+  Format.bCharSet := CodePageToCharset(CodePage);
 
   case Font.Pitch of
     fpVariable: Format.bPitchAndFamily := VARIABLE_PITCH;
@@ -926,7 +926,7 @@ function TCustomExRichEdit.GetSelLength: Integer;
 var
   range: TCharRange;
 begin
-  SendMessage(Handle, EM_EXGETSEL, 0, LongInt (@range));
+  SendMessage(Handle, EM_EXGETSEL, 0, LongInt(@range));
   Result := range.cpMax - range.cpMin
 end;
 
@@ -939,7 +939,7 @@ function TCustomExRichEdit.GetSelStart: Integer;
 var
   range: TCharRange;
 begin
-  SendMessage(Handle, EM_EXGETSEL, 0, LongInt (@range));
+  SendMessage(Handle, EM_EXGETSEL, 0, LongInt(@range));
   Result := range.cpMin
 end;
 
@@ -1241,7 +1241,7 @@ begin
     if Value = '' then
       Clear
     else
-      FRichEditProvider.SetText (value);
+      FRichEditProvider.SetText(value);
     ClearUndoBuffer
   end
   else
@@ -1257,7 +1257,7 @@ end;
  |                                                                      |
  | Set the Font parameters for All text or just selected text.          |
  *----------------------------------------------------------------------*)
-procedure TCustomExRichEdit.SetUpFont (Font: TFont; All: Boolean);
+procedure TCustomExRichEdit.SetUpFont(Font: TFont; All: Boolean);
 var
   Format: TCharFormat;
   Flag: DWORD;
@@ -1271,7 +1271,7 @@ begin
     else
       Flag := SCF_SELECTION;
 
-    FontToCharFormat (Font, Format);
+    FontToCharFormat(Font, Format);
 
     SendMessage(Handle, EM_SETCHARFORMAT, Flag, LPARAM(@Format));
 
@@ -1463,7 +1463,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TCustomExRichEdit.WMSetFont(var Message: TWMSetFont);
 begin
-  SetUpFont (Font, True);
+  SetUpFont(Font, True);
 end;
 
 { TRichEditProvider }
@@ -1522,9 +1522,9 @@ var
   s: string;
   len: Integer;
 begin
-  len := GetWindowTextLength (Owner.Handle);
-  SetLength (s, len);
-  GetWindowText (Owner.Handle, PChar (s), len);
+  len := GetWindowTextLength(Owner.Handle);
+  SetLength(s, len);
+  GetWindowText(Owner.Handle, PChar (s), len);
   Result := StringToWideString (s, Owner.CodePage);
 end;
 
@@ -1535,7 +1535,7 @@ end;
  *----------------------------------------------------------------------*)
 function TRichEdit1Provider.GetTextLen: Integer;
 begin
-  Result := GetWindowTextLength (Owner.Handle)
+  Result := GetWindowTextLength(Owner.Handle)
 end;
 
 (*----------------------------------------------------------------------*
@@ -1555,7 +1555,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TRichEdit1Provider.SetText(const st: WideString);
 begin
-  SetWindowText (Owner.Handle, PChar (WideStringToString (st, Owner.CodePage)));
+  SetWindowText(Owner.Handle, PChar (WideStringToString (st, Owner.CodePage)));
 end;
 
 { TRichEditStream }
@@ -1590,14 +1590,14 @@ end;
  *----------------------------------------------------------------------*)
 procedure TRichEditStream.GetString(var st: string);
 begin
-  SetLength (st, ChunkEnd - ChunkStart);
+  SetLength(st, ChunkEnd - ChunkStart);
   Move((FBuffer + ChunkStart)^, PChar (st)^, (ChunkEnd - ChunkStart));
 end;
 
 procedure TRichEditStream.GetWideString(var ws: WideString);
 begin
-  SetLength (ws, ChunkEnd - ChunkStart);
-  Move((FBuffer + ChunkStart)^, PWideChar (ws)^, (ChunkEnd - ChunkStart) * SizeOf (WideChar));
+  SetLength(ws, ChunkEnd - ChunkStart);
+  Move((FBuffer + ChunkStart)^, PWideChar (ws)^, (ChunkEnd - ChunkStart) * SizeOf(WideChar));
 end;
 
 { TRichEdit2_3Provider }
@@ -1624,12 +1624,12 @@ var
 begin
   stream := TRichEditStream (dwCookie);
 
-  ret := (stream.FChunkEnd - stream.FChunkStart - stream.FPos) * sizeof (WideChar);
+  ret := (stream.FChunkEnd - stream.FChunkStart - stream.FPos) * SizeOf(WideChar);
   if ret > cb then
     ret := cb;
 
   Move((stream.FBuffer + stream.FChunkStart + stream.FPos)^, pbBuff^, ret);
-  Inc(stream.FPos, ret div sizeof (WideChar));
+  Inc(stream.FPos, ret div SizeOf(WideChar));
   Result := 0
 end;
 
@@ -1696,12 +1696,12 @@ begin
 
   if cb > 0 then with stream do
   begin
-    FLen := FPos * sizeof (WideChar) + cb;
+    FLen := FPos * SizeOf(WideChar) + cb;
     ReallocMem (FBuffer, FLen);
     FOwnsBuffer := True;
-    FLen := FLen div sizeof (WideChar);
+    FLen := FLen div SizeOf(WideChar);
     Move(pbBuff^, (stream.FBuffer + stream.FPos)^, cb);
-    Inc(FPos, cb div sizeof (WideChar));
+    Inc(FPos, cb div SizeOf(WideChar));
     ret := cb
   end;
 
@@ -1755,7 +1755,7 @@ end;
  *----------------------------------------------------------------------*)
 destructor TRichEdit2_3Provider.Destroy;
 begin
-  FIRichEditOLE := Nil;
+  FIRichEditOLE := nil;
   inherited;
 end;
 
@@ -1765,7 +1765,7 @@ var
 begin
   ltx.flags := GTL_NUMCHARS or GTL_PRECISE or GTL_USECRLF;
   ltx.codepage := 1200; // Unicode
-  Result := SendMessage(Owner.Handle, EM_GETTEXTLENGTHEX, LongInt (@ltx), 0);
+  Result := SendMessage(Owner.Handle, EM_GETTEXTLENGTHEX, LongInt(@ltx), 0);
 end;
 
 function TRichEdit2_3Provider.GetIRichEditOLE: IRichEditOLE;
@@ -1780,7 +1780,7 @@ end;
 
 function TRichEdit2_3Provider.GetSelText: WideString;
 begin
-  Result := RawGetText (True)
+  Result := RawGetText(True)
 end;
 
 (*----------------------------------------------------------------------*
@@ -1790,7 +1790,7 @@ end;
  *----------------------------------------------------------------------*)
 function TRichEdit2_3Provider.GetText: WideString;
 begin
-  Result := RawGetText (False)
+  Result := RawGetText(False)
 end;
 
 (*----------------------------------------------------------------------*
@@ -1804,7 +1804,7 @@ var
 begin
   ltx.flags := GTL_NUMCHARS or GTL_PRECISE;
   ltx.codepage := 1200; // Unicode
-  Result := SendMessage(Owner.Handle, EM_GETTEXTLENGTHEX, LongInt (@ltx), 0);
+  Result := SendMessage(Owner.Handle, EM_GETTEXTLENGTHEX, LongInt(@ltx), 0);
 end;
 
 (*----------------------------------------------------------------------*
@@ -1837,7 +1837,7 @@ begin
       editStream.pfnCallback := @EditStreamOCallback
     else
       editStream.pfnCallback := @EditStreamOchCallback;
-    SendMessage(Owner.Handle, EM_STREAMOUT, flags, LongInt (@editStream));
+    SendMessage(Owner.Handle, EM_STREAMOUT, flags, LongInt(@editStream));
     if (flags and SF_UNICODE) <> 0 then
       stream.GetWideString(Result)
     else
@@ -1868,7 +1868,7 @@ begin
   stream := TRichEditStream.Create(Owner);
   try
     stream.FBuffer := PWideChar (st);
-    stream.FLen := Length (st);
+    stream.FLen := Length(st);
     editStream.dwCookie := DWORD (stream);
     editStream.dwError := 0;
     editStream.pfnCallback := @EditStreamICallback;
@@ -1900,10 +1900,10 @@ begin
       Owner.CharFormatter.GetFormattedChars(stream, fc);
 
       if fc.dwMask <> 0 then
-        SendMessage(Owner.Handle, EM_SETCHARFORMAT, SCF_SELECTION, LongInt (@fc));
+        SendMessage(Owner.Handle, EM_SETCHARFORMAT, SCF_SELECTION, LongInt(@fc));
 
       stream.FPos := 0;
-      SendMessage(Owner.Handle, EM_STREAMIN, flags, LongInt (@editStream));
+      SendMessage(Owner.Handle, EM_STREAMIN, flags, LongInt(@editStream));
 
       stream.FChunkStart := stream.FChunkEnd;
       if stream.Truncate then
@@ -1925,7 +1925,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TRichEdit2_3Provider.SetSelText(const value: WideString);
 begin
-  RawSetText (value, True);
+  RawSetText(value, True);
   Owner.Invalidate
 end;
 
@@ -1936,7 +1936,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TRichEdit2_3Provider.SetText(const st: WideString);
 begin
-  RawSetText (st, False);
+  RawSetText(st, False);
   Owner.Invalidate;
 end;
 
@@ -2064,7 +2064,7 @@ begin
   if not (csDestroying in ComponentState) and HandleAllocated then
     Message.Result := GetCRLFTextLen
   else
-    Message.Result := Length (WindowText);
+    Message.Result := Length(WindowText);
 end;
 
 procedure TCustomExRichEdit.WmSetText(var Message: TWMSetText);
@@ -2078,7 +2078,7 @@ begin
     fInSetText := True;
     try
       txt := Message.Text;
-      SetText (StringToWideString (txt, FCodePage));
+      SetText(StringToWideString (txt, FCodePage));
       Message.Result := 1
     finally
       fInSetText := False

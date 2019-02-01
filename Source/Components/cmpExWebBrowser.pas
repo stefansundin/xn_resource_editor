@@ -115,7 +115,8 @@ type
 
 implementation
 
-uses ComObj;
+uses
+  ComObj;
 
 const
   DOCHOSTUIFLAG_DIALOG = $00000001;
@@ -180,7 +181,7 @@ end;
 function TExWebBrowser.FilterDataObject(const pDO: IDataObject;
   out ppDORet: IDataObject): HRESULT;
 begin
-  ppDORet := Nil;
+  ppDORet := nil;
   Result := S_FALSE;
 end;
 
@@ -198,7 +199,7 @@ end;
 function TExWebBrowser.GetDropTarget(const pDropTarget: IDropTarget;
   out ppDropTarget: IDropTarget): HRESULT;
 begin
-  ppDropTarget := Nil;
+  ppDropTarget := nil;
   Result := E_NOTIMPL
 end;
 
@@ -216,9 +217,9 @@ end;
 
 function TExWebBrowser.GetHostInfo(var pInfo: TDOCHOSTUIINFO): HRESULT;
 begin
-  FillChar (pInfo, SizeOf (pInfo), 0);
+  FillChar (pInfo, SizeOf(pInfo), 0);
 
-  pInfo.cbSize := sizeof (TDOCHOSTUIINFO);
+  pInfo.cbSize := SizeOf(TDOCHOSTUIINFO);
   pInfo.cbSize := SizeOf(pInfo);
   pInfo.dwFlags := 0;
 

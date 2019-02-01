@@ -41,7 +41,7 @@ var
   i : Integer;
   def : string;
 begin
-  UseInternationalFont (ntedName.Font);
+  UseInternationalFont(ntedName.Font);
   if Assigned(ResourceDetails) then
   begin
     if resourceDetails is TStringResourceDetails then

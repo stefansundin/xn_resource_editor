@@ -104,8 +104,8 @@ end;
 
 procedure TfmMenuResource.UpdateFonts;
 begin
-  useInternationalFont (PropertyListBox1.Font);
-  useInternationalFont (MenuDesigner1.Font);
+  useInternationalFont(PropertyListBox1.Font);
+  useInternationalFont(MenuDesigner1.Font);
 end;
 
 procedure TfmMenuResource.MenuDesigner1SelectedItemChange(Sender: TObject);
@@ -126,7 +126,7 @@ begin
   with PropertyListBox1.FindProperty(rstShortcut) do
   begin
     Tag := taShortcut;
-    s := ExtractShortcut (Utf8Decode(item.Caption));
+    s := ExtractShortcut(Utf8Decode(item.Caption));
 
     if s = '' then
       s := rstNone;
@@ -164,7 +164,7 @@ var
   begin
     for w := lo to hi do
     begin
-      s := ShortCutToText (w + flags);
+      s := ShortCutToText(w + flags);
       if s <> '' then
         prop.EnumValues.Add (s)
     end
@@ -247,7 +247,7 @@ begin
   case PropertyListBox1.SelectedPropertyNo of
     taCaption :
       begin
-        MenuDesigner1.SelectedItem.Caption := Utf8Encode(MergeCaption (prop.PropertyValue, ExtractShortcut (Utf8Decode(MenuDesigner1.SelectedItem.Caption))));
+        MenuDesigner1.SelectedItem.Caption := Utf8Encode(MergeCaption (prop.PropertyValue, ExtractShortcut(Utf8Decode(MenuDesigner1.SelectedItem.Caption))));
         s := rstChangeItemCaption
       end;
 

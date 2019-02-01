@@ -31,7 +31,8 @@ unit unitObjectCache;
 
 interface
 
-uses Windows, Classes, SysUtils, ConTnrs, SyncObjs;
+uses
+  Windows, Classes, SysUtils, Contnrs, SyncObjs;
 
 type
   TObjectCacheProc = procedure(obj : TObject; idx, param : Integer; var continue : Boolean) of object;
@@ -66,19 +67,19 @@ type
   public
     constructor Create(ACapacity : Integer; OwnsObjects : Boolean);
     destructor Destroy; override;
-    function IndexOfObject (AObject : TObject) : Integer;
+    function IndexOfObject(AObject : TObject) : Integer;
     procedure Add (AObject : TObject); virtual;
     procedure Clear;
-    function ForEach (proc : TObjectCacheProc; param : Integer) : TObject;
+    function ForEach(proc : TObjectCacheProc; param : Integer) : TObject;
     function ForEachIdx (proc : TObjectCacheProc; param : Integer) : Integer;
     function GetEnumerator : TObjectCacheEnumerator;
-    procedure BringToFrontObject (idx : Integer);
-    function ObjectAt (idx : Integer) : TObject;
+    procedure BringToFrontObject(idx : Integer);
+    function ObjectAt(idx : Integer) : TObject;
 
     procedure Remove(AObject : TObject);
-    function Extract (AObject : TObject) : TObject;
+    function Extract(AObject : TObject) : TObject;
 
-    procedure Push (AObject : TObject);
+    procedure Push(AObject : TObject);
     function Pop : TObject;
 
     property OwnsObjects : Boolean read GetOwnsObjects write SetOwnsObjects;
@@ -163,7 +164,7 @@ type
   protected
     procedure Execute; override;
 
-    procedure Reset (obj : TObject); virtual;
+    procedure Reset(obj : TObject); virtual;
     procedure Process (obj : TObject); virtual;
     procedure ObjectsProcessed; virtual;
   public
@@ -222,7 +223,7 @@ var
   idx, c : Integer;
   b : Boolean;
 begin
-  idx := IndexOfObject (AObject);
+  idx := IndexOfObject(AObject);
   if idx = 0 then       // Already in the cache at the front
   begin
     if OwnsObjects then
@@ -254,11 +255,11 @@ begin
     if FObjects.Capacity = FObjects.Count then // Bulge the cache
       FObjects.Capacity := FObjects.Capacity + 1;
 
-    FObjects.Insert (0, AObject)
+    FObjects.Insert(0, AObject)
   end
   else                  // The object was already in the cache.  So bring it to
   begin                 // the front
-    BringToFrontObject (idx);
+    BringToFrontObject(idx);
     if OwnsObjects then
       AObject.Free
   end
@@ -284,7 +285,7 @@ begin
     OwnsObjects := False;       // Temporarily turn off 'owns objects' so we
     try                         // can delete and reinsert safely.
       FObjects.Delete(idx);
-      FObjects.Insert (0, obj)
+      FObjects.Insert(0, obj)
     finally
       OwnsObjects := b
     end
@@ -521,7 +522,7 @@ begin
   if Count > 0 then
   begin
     Result := FObjects[0];
-    Extract (Result)
+    Extract(Result)
   end
   else
     Result := Nil
@@ -568,7 +569,7 @@ end;
  | procedure TObjectCache.SetOwnsObjects                                |
  |                                                                      |
  | If 'OwnsObjects' is true, the object cache assumes responsibility    |
- | for deleting objects added to it (with Add or Push).  Whenever       |
+ | for deleting objects added to it(with Add or Push).  Whenever       |
  | objects are removed from the cache, either with 'Remove' or because  |
  | the cache overflowed, the get deleted (freed).                       |
  *----------------------------------------------------------------------*)
@@ -782,7 +783,7 @@ begin
   i := IndexOf [st, cls];
 
   if i = -1 then
-    FAssociations.InsertObject (0, st, TObject (cls))
+    FAssociations.InsertObject(0, st, TObject(cls))
 end;
 
 constructor TClassStringAssociations.Create;
@@ -848,7 +849,7 @@ var
 begin
   Result := -1;
   for i := 0 to Count - 1 do
-    if (FAssociations.Objects[i] = TObject (cls)) and SameText (st, FAssociations[i]) then
+    if (FAssociations.Objects[i] = TObject(cls)) and SameText(st, FAssociations[i]) then
     begin
       Result := i;
       break
@@ -881,7 +882,7 @@ begin
   FSync.Enter;
   try
     for i := 0 to FObjects.Count - 1 do
-      Reset (FObjects[i]);
+      Reset(FObjects[i]);
     FObjects.Clear;
   finally
     FSync.Leave

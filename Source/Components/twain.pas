@@ -6,13 +6,13 @@ uses Windows;
 
 (* ======================================================================== *\
 
-  Translated to Delphi by Colin Wilson.  Translation copyright (c) Colin
+  Translated to Delphi by Colin Wilson.  Translation copyright(c) Colin
   Wilson 2002.  All rights reserved. 
 
-  Copyright (C) 1991, 1992 TWAIN Working Group: Aldus, Caere, Eastman-Kodak,
+  Copyright(C) 1991, 1992 TWAIN Working Group: Aldus, Caere, Eastman-Kodak,
   Hewlett-Packard and Logitech Corporations.  All rights reserved.
 
-  Copyright (C) 1997 TWAIN Working Group: Bell+Howell, Canon, DocuMagix,
+  Copyright(C) 1997 TWAIN Working Group: Bell+Howell, Canon, DocuMagix,
   Fujitsu, Genoa Technology, Hewlett-Packard, Kofax Imaging Products, and
   Ricoh Corporation.  All rights reserved.
 
@@ -1394,7 +1394,7 @@ const
 (* Generic messages may be used with any of several DATs.                   *)
   MSG_GET          = $0001; (* Get one or more values                   *)
   MSG_GETCURRENT   = $0002; (* Get current value                        *)
-  MSG_GETDEFAULT   = $0003; (* Get default (e.g. power up) value        *)
+  MSG_GETDEFAULT   = $0003; (* Get default(e.g. power up) value        *)
   MSG_GETFIRST     = $0004; (* Get first of a series of items, e.g. DSs *)
   MSG_GETNEXT      = $0005; (* Iterate through a series of items.       *)
   MSG_SET          = $0006; (* Set one or more values                   *)

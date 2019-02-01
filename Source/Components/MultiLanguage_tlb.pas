@@ -32,7 +32,8 @@ unit MultiLanguage_TLB;
 {$VARPROPSETTER ON}
 interface
 
-uses Windows, ActiveX, Classes, Graphics, OleServer, StdVCL, Variants;
+uses
+  Windows, ActiveX, Classes, Graphics, OleServer, StdVCL, Variants;
   
 
 // *********************************************************************//
@@ -644,7 +645,8 @@ type
 
 implementation
 
-uses ComObj;
+uses
+  ComObj;
 
 class function CoCMLangString.Create: IMLangString;
 begin

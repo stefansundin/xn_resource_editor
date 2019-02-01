@@ -41,7 +41,8 @@ var
 
 implementation
 
-uses ResourceForm, unitCredProperties;
+uses
+  ResourceForm, unitCredProperties;
 
 {$R *.DFM}
 { TfmPropertyPageProgramSettings }
@@ -88,7 +89,7 @@ end;
 
 procedure TPropertyPageProgramSettingsData.Apply;
 begin
-  SetInternationalFont (fInternationalFontName, fInternationalFontHeight);
+  SetInternationalFont(fInternationalFontName, fInternationalFontHeight);
   gProperties.ParserType := fParserType;
 end;
 

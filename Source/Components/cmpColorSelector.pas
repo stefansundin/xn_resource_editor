@@ -89,7 +89,7 @@ end;
 destructor TColorSelector.Destroy;
 begin
   if FPalette <> 0 then
-    DeleteObject (FPalette);
+    DeleteObject(FPalette);
   inherited
 end;
 
@@ -120,7 +120,7 @@ begin
   SetFocus;
   p.x := x;
   p.y := y;
-  ScreenToClient (p);
+  ScreenToClient(p);
 
   selectedIdx := -1;
   if FPalette = 0 then
@@ -167,7 +167,7 @@ begin
     FSelectedIdx := selectedIdx;
     FSelectedColor := selectedColor;
     if Assigned(FOnColorSelect) and changed and not (csDestroying in ComponentState) then
-      OnColorSelect (self)
+      OnColorSelect(self)
   end
 end;
 
@@ -299,14 +299,14 @@ begin
   begin
     if FPalette <> 0 then
     begin
-      DeleteObject (FPalette);
+      DeleteObject(FPalette);
       FPalette := 0
     end;
 
     if value <> 0 then
-      if GetObject (Value, sizeof (colorCount), @colorCount) <> 0 then
+      if GetObject(Value, SizeOf(colorCount), @colorCount) <> 0 then
       begin
-        SetLength (FPaletteEntries, colorCount);
+        SetLength(FPaletteEntries, colorCount);
         FColorCount := colorCount;
         GetPaletteEntries (Value, 0, colorCount, FPaletteEntries[0]);
         FPalette := CopyPalette(Value);
@@ -333,16 +333,16 @@ begin
   if FPalette = 0 then
     Exit;
 
-  if GetObject (FPalette, sizeof (colorCount), @colorCount) <> 0 then
+  if GetObject(FPalette, SizeOf(colorCount), @colorCount) <> 0 then
   begin
     rgb := ColorToRGB (color);
-    SetLength (FPaletteEntries, colorCount);
+    SetLength(FPaletteEntries, colorCount);
     GetPaletteEntries (FPalette, 0, colorCount, FPaletteEntries[0]);
     FPaletteEntries[FSelectedIdx].peRed   := GetRValue(rgb);
     FPaletteEntries[FSelectedIdx].peGreen := GetGValue(rgb);
     FPaletteEntries[FSelectedIdx].peBlue  := GetBValue(rgb);
 
-    GetMem (logPal, sizeof (TLogPalette) + 256 * sizeof (TPaletteEntry));
+    GetMem (logPal, SizeOf(TLogPalette) + 256 * SizeOf(TPaletteEntry));
     try
       logPal^.palVersion := $300;
       logPal^.palNumEntries := colorCount;
