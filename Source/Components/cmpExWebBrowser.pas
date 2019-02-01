@@ -3,17 +3,18 @@ unit cmpExWebBrowser;
 interface
 
 uses
-  Windows, SysUtils, Classes, Controls, OleCtrls, SHDocVw, ActiveX, Forms, URLMon;
+  Windows, SysUtils, Classes, Controls, OleCtrls, SHDocVw, ActiveX, Forms,
+  URLMon;
 
 type
   TDocHostUIInfo = packed record
-    cbSize : ULONG;
-    dwFlags : DWORD;
-    dwDoubleClick : DWORD;
-    pchHostCss : polestr;
-    pchHostNS : polestr;
+    cbSize: ULONG;
+    dwFlags: DWORD;
+    dwDoubleClick: DWORD;
+    pchHostCss: POleStr;
+    pchHostNS: POleStr;
   end;
-  pDocHostUIInfo = ^TDocHostUIInfo;
+  PDocHostUIInfo = ^TDocHostUIInfo;
 
   IDocHostUIHandler = interface(IUnknown)
     ['{bd3f23c0-d43e-11cf-893b-00aa00bdce1a}']
@@ -27,23 +28,23 @@ type
     function OnFrameWindowActivate(const fActivate: BOOL): HRESULT; stdcall;
     function ResizeBorder(const prcBorder: PRECT; const pUIWindow: IOleInPlaceUIWindow; const fRameWindow: BOOL): HRESULT; stdcall;
     function TranslateAccelerator(const lpMsg: PMSG; const pguidCmdGroup:PGUID; const nCmdID: DWORD): HRESULT; stdcall;
-    function GetOptionKeyPath(var pchKey: POLESTR; const dw: DWORD):HRESULT; stdcall;
+    function GetOptionKeyPath(var pchKey: POleStr; const dw: DWORD):HRESULT; stdcall;
     function GetDropTarget(const pDropTarget: IDropTarget; out ppDropTarget: IDropTarget): HRESULT; stdcall;
     function GetExternal(out ppDispatch: IDispatch): HRESULT; stdcall;
-    function TranslateUrl(const dwTranslate: DWORD; const pchURLIn: POLESTR; var ppchURLOut: POLESTR): HRESULT; stdcall;
+    function TranslateUrl(const dwTranslate: DWORD; const pchURLIn: POleStr; var ppchURLOut: POleStr): HRESULT; stdcall;
     function FilterDataObject(const pDO: IDataObject; out ppDORet: IDataObject): HRESULT; stdcall;
   end;
 
   ICustomDoc = interface(IUnknown)
   ['{3050f3f0-98b5-11cf-bb82-00aa00bdce0b}']
-    function SetUIHandler (const pUIHandler : IDocHostUIHandler) : HRESULT; stdcall;
+    function SetUIHandler (const pUIHandler: IDocHostUIHandler): HRESULT; stdcall;
   end;
 
   TExWebBrowser = class;
 
   TUIProperties = class (TPersistent)
   private
-    FOwner : TExWebBrowser;
+    FOwner: TExWebBrowser;
 
     FEnableContextMenu: Boolean;
     FEnableScrollBars: Boolean;
@@ -56,27 +57,27 @@ type
     FEnableDownloadActiveX: Boolean;
     FEnableJava: Boolean;
   public
-    constructor Create(AOwner : TExWebBrowser);
+    constructor Create(AOwner: TExWebBrowser);
   published
-    property EnableContextMenu : Boolean read FEnableContextMenu write FEnableContextMenu;
-    property EnableScrollBars : Boolean read FEnableScrollBars write FEnableScrollBars;
-    property FlatScrollBars : Boolean read FFlatScrollBars write FFlatScrollBars;
-    property Has3DBorder : Boolean read FHas3DBorder write FHas3DBorder;
-    property OpenLinksInNewWindow : Boolean read FOpenLinksInNewWindow write FOpenLinksInNewWindow;
+    property EnableContextMenu: Boolean read FEnableContextMenu write FEnableContextMenu;
+    property EnableScrollBars: Boolean read FEnableScrollBars write FEnableScrollBars;
+    property FlatScrollBars: Boolean read FFlatScrollBars write FFlatScrollBars;
+    property Has3DBorder: Boolean read FHas3DBorder write FHas3DBorder;
+    property OpenLinksInNewWindow: Boolean read FOpenLinksInNewWindow write FOpenLinksInNewWindow;
 
-    property EnableScripting : Boolean read FEnableScripting write FEnableScripting;
-    property EnableJava : Boolean read FEnableJava write FEnableJava;
-    property EnableDownloadActiveX : Boolean read FEnableDownloadActiveX write FEnableDownloadActiveX;
+    property EnableScripting: Boolean read FEnableScripting write FEnableScripting;
+    property EnableJava: Boolean read FEnableJava write FEnableJava;
+    property EnableDownloadActiveX: Boolean read FEnableDownloadActiveX write FEnableDownloadActiveX;
 
-    property ShowImages : Boolean read FShowImages write FShowImages default True;
-    property ShowActiveX : Boolean read FShowActiveX write FShowActiveX default True;
+    property ShowImages: Boolean read FShowImages write FShowImages default True;
+    property ShowActiveX: Boolean read FShowActiveX write FShowActiveX default True;
   end;
 
   TExWebBrowser = class(TWebBrowser, IDocHostUIHandler, IDispatch)
   private
-    FUIProperties : TUIProperties;
-    FURL : string;
-    FInternetSession : IInternetSession;
+    FUIProperties: TUIProperties;
+    FURL: string;
+    FInternetSession: IInternetSession;
 
     { IDispatch }
     function IDispatch.Invoke = Invoke;
@@ -93,24 +94,24 @@ type
     function OnFrameWindowActivate(const fActivate: BOOL): HRESULT; stdcall;
     function ResizeBorder(const prcBorder: PRECT; const pUIWindow: IOleInPlaceUIWindow; const fRameWindow: BOOL): HRESULT; stdcall;
     function TranslateAccelerator(const lpMsg: PMSG; const pguidCmdGroup:PGUID; const nCmdID: DWORD): HRESULT; stdcall;
-    function GetOptionKeyPath(var pchKey: POLESTR; const dw: DWORD):HRESULT; stdcall;
+    function GetOptionKeyPath(var pchKey: POleStr; const dw: DWORD):HRESULT; stdcall;
     function GetDropTarget(const pDropTarget: IDropTarget; out ppDropTarget: IDropTarget): HRESULT; stdcall;
     function GetExternal(out ppDispatch: IDispatch): HRESULT; stdcall;
-    function TranslateUrl(const dwTranslate: DWORD; const pchURLIn: POLESTR; var ppchURLOut: POLESTR): HRESULT; stdcall;
+    function TranslateUrl(const dwTranslate: DWORD; const pchURLIn: POleStr; var ppchURLOut: POleStr): HRESULT; stdcall;
     function FilterDataObject(const pDO: IDataObject; out ppDORet: IDataObject): HRESULT; stdcall;
     function GetURL: string;
     procedure SetURL(const Value: string);
   protected
     procedure Loaded; override;
   public
-    constructor Create(AOwner : TComponent); override;
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure LoadFromString (const st : string);
-    procedure LoadFromStream (s : TStream; takeOwnership : Boolean = false);
+    procedure LoadFromString (const st: string);
+    procedure LoadFromStream (s: TStream; takeOwnership: Boolean = false);
   published
-    property UIProperties : TUIProperties read FUIProperties write FUIProperties;
-    property URL : string read GetURL write SetURL;
+    property UIProperties: TUIProperties read FUIProperties write FUIProperties;
+    property URL: string read GetURL write SetURL;
   end;
 
 implementation
@@ -139,7 +140,7 @@ const
 
 constructor TExWebBrowser.Create(AOwner: TComponent);
 ///var
-//  Factory : IClassFactory;
+//  Factory: IClassFactory;
 begin
   inherited Create(AOwner);
   FUIProperties := TUIProperties.Create(Self);
@@ -241,7 +242,7 @@ begin
   Result := S_OK;
 end;
 
-function TExWebBrowser.GetOptionKeyPath(var pchKey: POLESTR;
+function TExWebBrowser.GetOptionKeyPath(var pchKey: POleStr;
   const dw: DWORD): HRESULT;
 begin
   Result := S_FALSE;
@@ -274,8 +275,8 @@ function TExWebBrowser.Invoke(DispID: Integer; const IID: TGUID;
   DLCTL_DOWNLOADONLY        = $00000800;
 
 var
-  ort : HRESULT;
-  dlc : Integer;
+  ort: HRESULT;
+  dlc: Integer;
 begin
   Result := inherited Invoke(DispID, IID, LocaleID, Flags, Params, VarResult, ExcepInfo, ArgErr);
   if (Flags and DISPATCH_PROPERTYGET <> 0) and (VarResult <> nil) then
@@ -328,9 +329,9 @@ end;
 
 procedure TExWebBrowser.LoadFromStream(s: TStream; takeOwnership: Boolean);
 var
-  ownership : TStreamOwnership;
-  persistStreamInit : IPersistStreamInit;
-  adapter : TStreamAdapter;
+  ownership: TStreamOwnership;
+  persistStreamInit: IPersistStreamInit;
+  adapter: TStreamAdapter;
 
 begin
   if Document = Nil then
@@ -411,7 +412,7 @@ begin
 end;
 
 function TExWebBrowser.TranslateUrl(const dwTranslate: DWORD;
-  const pchURLIn: POLESTR; var ppchURLOut: POLESTR): HRESULT;
+  const pchURLIn: POleStr; var ppchURLOut: POleStr): HRESULT;
 begin
   Result := S_FALSE;   // URL was not translated
 end;

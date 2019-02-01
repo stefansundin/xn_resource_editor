@@ -6,7 +6,7 @@ uses
   Windows, Messages, Classes, SysUtils, Controls, Graphics;
 
 type
-  TCustomGradientShape = class (TGraphicControl)
+  TCustomGradientShape = class(TGraphicControl)
   private
     FPen: TPen;
     FStartColor: TColor;
@@ -24,7 +24,7 @@ type
 
   TGradientShapeRectType = (gsrLR, gsrTB, gsrTLBR, gsrBLTR);
 
-  TCustomGradientShapeRect = class (TCustomGradientShape)
+  TCustomGradientShapeRect = class(TCustomGradientShape)
   private
     FRectType: TGradientShapeRectType;
     procedure SetRectType(const Value: TGradientShapeRectType);
@@ -34,7 +34,7 @@ type
     property RectType: TGradientShapeRectType read FRectType write SetRectType;
   end;
 
-  TGradientShapeRect = class (TCustomGradientShapeRect)
+  TGradientShapeRect = class(TCustomGradientShapeRect)
   published
     property Color;
     property RectType;
@@ -176,6 +176,7 @@ begin
   GradientFill (dc, @Vertex [0], nVertices, p, nElements, mode);
 end;
 
+
 { TCustomGradientShape }
 
 constructor TCustomGradientShape.Create(AOwner: TComponent);
@@ -216,6 +217,7 @@ procedure TCustomGradientShape.WMEraseBkgnd(var Message: TWmEraseBkgnd);
 begin
   Message.Result := 1;
 end;
+
 
 { TCustomGradientShapeRect }
 

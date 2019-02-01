@@ -42,7 +42,7 @@ begin
       fmSpellChecker := TfmSpellChecker.Create(Owner);
       fmSpellChecker.QuoteChars := QuoteChars;
       fmSpellChecker.Initialize(Self, ss, se, Suggestions);
-      Result := fmSpellChecker.ShowModal
+      Result := fmSpellChecker.ShowModal;
     end
   finally
     Suggestions.Free

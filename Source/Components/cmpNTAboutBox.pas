@@ -234,24 +234,24 @@ end;
 
 procedure TNTAboutBox.Execute;
 var
-  dlg: TfmNTAboutBox;
+  Dialog: TfmNTAboutBox;
 begin
-  dlg := TfmNTAboutBox.Create(nil);
+  Dialog := TfmNTAboutBox.Create(nil);
   try
     if Copyright <> '' then
-      dlg.stCopyright.Caption := Copyright;
+      Dialog.stCopyright.Caption := Copyright;
 
     if DisplaySupportLink then
     begin
-      dlg.lblSupport.Visible := True;
-      dlg.hlbSupport.Visible := True
+      Dialog.lblSupport.Visible := True;
+      Dialog.hlbSupport.Visible := True
     end;
 
-    dlg.FThanksTo := FThanksTo;
+    Dialog.FThanksTo := FThanksTo;
 
-    dlg.ShowModal
+    Dialog.ShowModal
   finally
-    dlg.Free
+    Dialog.Free
   end
 end;
 

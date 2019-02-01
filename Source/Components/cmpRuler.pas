@@ -7,6 +7,7 @@ uses
 
 type
   TRulerOrientation = (ruHorizontal, ruVertical);
+
   TRuler = class(TCustomControl)
   private
     FSmallTickSpacing: Integer;
@@ -83,7 +84,7 @@ var
   t: Integer;
   sm: Integer;
   r: TRect;
-  offset: Integer;
+  Offset: Integer;
 begin
   Canvas.Brush.Color := Color;
   Canvas.Font := Font;
@@ -98,21 +99,21 @@ begin
 
   y := 0;
   x := 0;
-  offset := 0;
+  Offset := 0;
   t := 0;
   
   if Orientation = ruHorizontal then
   begin
     repeat
-      Inc(offset, sm);
+      Inc(Offset, sm);
       if FDialogBox <> 0 then
       begin
-        r := Rect(0, 0, offset, 10);
+        r := Rect(0, 0, Offset, 10);
         MapDialogRect(FDialogBox, r);
         x := r.Right;
       end
       else
-        x := offset;
+        x := Offset;
       Inc(t);
       if x < w then
       begin
@@ -130,15 +131,15 @@ begin
   else
   begin
     repeat
-      Inc(offset, sm);
+      Inc(Offset, sm);
       if FDialogBox <> 0 then
       begin
-        r := Rect(0, 0, 10, offset);
+        r := Rect(0, 0, 10, Offset);
         MapDialogRect(FDialogBox, r);
         y := r.Bottom;
       end
       else
-        y := offset;
+        y := Offset;
 
       Inc(t);
       if y < h then
@@ -159,7 +160,7 @@ end;
 procedure TRuler.SetDialogBox(const Value: HWND);
 begin
   FDialogBox := Value;
-  invalidate;
+  Invalidate;
 end;
 
 procedure TRuler.SetLargeTickLength(const Value: Integer);

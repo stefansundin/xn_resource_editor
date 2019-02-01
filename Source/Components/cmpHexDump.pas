@@ -12,9 +12,8 @@ const
 { THexDump }
 
 type
-
-  THexStr = array[0..2] of Char;
-  THexStrArray = array[0..MAXDIGITS-1] of THexStr;
+  THexStr = array [0..2] of AnsiChar;
+  THexStrArray = array [0..MAXDIGITS - 1] of THexStr;
 
   THexDump = class(TCustomControl)
   private
@@ -33,12 +32,12 @@ type
     FShowAddress: Boolean;
     FBorder: TBorderStyle;
     FHexData: THexStrArray;
-    FLineAddr: array[0..15] of Char;
+    FLineAddr: array [0..15] of AnsiChar;
     FReadOnly: Boolean;
     FCurrentLinePos: Integer;
-    FAddressWidth : Integer;
-    FEditCharacters : Boolean;
-    FLowNibble : Boolean;
+    FAddressWidth: Integer;
+    FEditCharacters: Boolean;
+    FLowNibble: Boolean;
     FChanges: Boolean;
     FOnChanges: TNotifyEvent;
     FAddressOffset: Integer;
@@ -54,9 +53,9 @@ type
     procedure SetAddress(Value: Pointer);
     procedure SetDataSize(Value: Integer);
     procedure AdjustScrollBars;
-    function LineAddr(Index: Integer): PChar;
-    function LineData(Index: Integer): PChar;
-    function LineChars(Index: Integer): PChar;
+    function LineAddr(Index: Integer): PAnsiChar;
+    function LineData(Index: Integer): PAnsiChar;
+    function LineChars(Index: Integer): PAnsiChar;
     function ScrollIntoView: Boolean;
     procedure CMFontChanged(var Message: TMessage); message CM_FONTCHANGED;
     procedure CMEnter(var Message: TCMGotFocus); message CM_ENTER;
@@ -64,9 +63,9 @@ type
     procedure WMSize(var Message: TWMSize); message WM_SIZE;
     procedure WMVScroll(var Message: TWMVScroll); message WM_VSCROLL;
     procedure WMGetDlgCode(var Message: TWMGetDlgCode); message WM_GETDLGCODE;
-    procedure WMSetFocus (var Message : TWMSetFocus); message WM_SETFOCUS;
-    procedure WMKillFocus (var Message : TWMKillFocus); message WM_KILLFOCUS;
-    procedure WMChar (var Message : TWMChar); message WM_CHAR;
+    procedure WMSetFocus(var Message: TWMSetFocus); message WM_SETFOCUS;
+    procedure WMKillFocus(var Message: TWMKillFocus); message WM_KILLFOCUS;
+    procedure WMChar(var Message: TWMChar); message WM_CHAR;
     procedure SetReadOnly(const Value: Boolean);
     procedure SetCurrentLinePos(const Value: Integer);
     procedure SetCaretPos;
@@ -84,13 +83,13 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     property CurrentLine: Integer read FCurrentLine write SetCurrentLine;
-    property CurrentLinePos : Integer read FCurrentLinePos write SetCurrentLinePos;
-    property EditCharacters : Boolean read FEditCharacters write SetEditCharacters;
+    property CurrentLinePos: Integer read FCurrentLinePos write SetCurrentLinePos;
+    property EditCharacters: Boolean read FEditCharacters write SetEditCharacters;
     property Address: Pointer read FAddress write SetAddress;
     property DataSize: Integer read FDataSize write SetDataSize;
-    property AddressOffset : Integer read FAddressOffset write SetAddressOffset;
-    property LowNibble : Boolean read FLowNibble write SetLowNibble;
-    property Changes : Boolean read FChanges write FChanges;
+    property AddressOffset: Integer read FAddressOffset write SetAddressOffset;
+    property LowNibble: Boolean read FLowNibble write SetLowNibble;
+    property Changes: Boolean read FChanges write FChanges;
   published
     property Align;
     property Anchors;
@@ -144,18 +143,21 @@ type
     property OnStartDock;
     property OnStartDrag;
     property OnUnDock;
-    property ReadOnly : Boolean read FReadOnly write SetReadOnly;
+    property ReadOnly: Boolean read FReadOnly write SetReadOnly;
     property ShowAddress: Boolean read FShowAddress write SetShowAddress default True;
     property ShowCharacters: Boolean read FShowCharacters write SetShowCharacters default True;
     property AddressColor: TColor index 0 read GetFileColor write SetFileColor default clBlack;
     property HexDataColor: TColor index 1 read GetFileColor write SetFileColor default clBlack;
     property AnsiCharColor: TColor index 2 read GetFileColor write SetFileColor default clBlack;
-    property OnChanges : TNotifyEvent read FOnChanges write FOnChanges;
+    property OnChanges: TNotifyEvent read FOnChanges write FOnChanges;
   end;
 
 function CreateHexDump(AOwner: TWinControl): THexDump;
 
 implementation
+
+uses
+  AnsiStrings;
 
 { Form Methods }
 
@@ -230,8 +232,8 @@ end;
 
 procedure THexDump.WMSize(var Message: TWMSize);
 var
-  Offset : Integer;
-  Obpl : Integer;
+  Offset: Integer;
+  Obpl: Integer;
 begin
   inherited;
   Obpl := fBytesPerLine;
@@ -312,7 +314,6 @@ const
   Divisor: array[Boolean] of Integer = (3,4);
 var
   CharsPerLine: Integer;
-
 begin
   if FItemHeight < 1 then Exit;
   FVisibleLines := (ClientHeight div FItemHeight) + 1;
@@ -440,20 +441,20 @@ begin
         begin
           Canvas.Font.Color := FFileColors[0];
           R.Right := R.Left + FAddressWidth;
-          ExtTextOut(Canvas.Handle, R.Left, R.Top, ETO_OPAQUE or ETO_CLIPPED, @R, LineAddr(I+FTopLine), 9, nil);
+          ExtTextOutA(Canvas.Handle, R.Left, R.Top, ETO_OPAQUE or ETO_CLIPPED, @R, LineAddr(I + FTopLine), 9, nil);
           R.Left := R.Right;
           R.Right := ClientWidth;
           Canvas.Font.Color := FFileColors[1];
         end;
         if (I+FTopLine = FLineCount-1) and ((DataSize mod FBytesPerLine) > 0) then
           ByteCnt := DataSize mod FBytesPerLine;
-        TabbedTextOut(Canvas.Handle, R.Left, R.Top, LineData(I+FTopLine),
+        TabbedTextOutA(Canvas.Handle, R.Left, R.Top, LineData(I + FTopLine),
           (ByteCnt*3)-1, 1, TabStop, R.Left);
         if FShowCharacters then
         begin
-          R.Left := FAddressWidth+(FItemWidth*(FBytesPerLine*3));
+          R.Left := FAddressWidth + (FItemWidth * (FBytesPerLine * 3));
           Canvas.Font.Color := FFileColors[2];
-          ExtTextOut(Canvas.Handle, R.Left, R.Top, ETO_OPAQUE or ETO_CLIPPED, @R, LineChars(I+FTopLine), ByteCnt, nil);
+          ExtTextOutA(Canvas.Handle, R.Left, R.Top, ETO_OPAQUE or ETO_CLIPPED, @R, LineChars(I + FTopLine), ByteCnt, nil);
         end;
       end
       else ExtTextOut(Canvas.Handle, R.Left, R.Top, ETO_OPAQUE or ETO_CLIPPED,
@@ -474,29 +475,36 @@ begin
   if not FActive then Exit;
 
   case Key of
-    VK_DOWN: CurrentLine := CurrentLine + 1;
-    VK_UP: CurrentLine := CurrentLine - 1;
-    VK_NEXT: CurrentLine := CurrentLine + FVisibleLines;
-    VK_PRIOR: CurrentLine := CurrentLine - FVisibleLines;
-    VK_HOME: CurrentLine := 0;
-    VK_END: CurrentLine := FLineCount - 1;
-
-    VK_LEFT : if EditCharacters or not LowNibble then
-              begin
-                FLowNibble := True;
-                CurrentLinePos := CurrentLinePos - 1
-              end
-              else
-                LowNibble := False;
-
-    VK_RIGHT : if EditCharacters or LowNibble then
-               begin
-                 FLowNibble := False;
-                 CurrentLinePos := CurrentLinePos + 1
-               end
-               else
-                 LowNibble := True;
-    VK_TAB : EditCharacters := not EditCharacters
+    VK_DOWN:
+      CurrentLine := CurrentLine + 1;
+    VK_UP:
+      CurrentLine := CurrentLine - 1;
+    VK_NEXT:
+      CurrentLine := CurrentLine + FVisibleLines;
+    VK_PRIOR:
+      CurrentLine := CurrentLine - FVisibleLines;
+    VK_HOME:
+      CurrentLine := 0;
+    VK_END:
+      CurrentLine := FLineCount - 1;
+    VK_LEFT:
+      if EditCharacters or not LowNibble then
+      begin
+        FLowNibble := True;
+        CurrentLinePos := CurrentLinePos - 1
+      end
+      else
+        LowNibble := False;
+    VK_RIGHT:
+      if EditCharacters or LowNibble then
+      begin
+        FLowNibble := False;
+        CurrentLinePos := CurrentLinePos + 1
+      end
+      else
+        LowNibble := True;
+    VK_TAB:
+      EditCharacters := not EditCharacters
   end;
 end;
 
@@ -504,7 +512,8 @@ procedure THexDump.MouseDown(Button: TMouseButton; Shift: TShiftState;
   X, Y: Integer);
 begin
   inherited MouseDown(Button, Shift, X, Y);
-  if not Focused then SetFocus;
+  if not Focused then
+    SetFocus;
   if (Button = mbLeft) and FActive then
     CurrentLine := FTopLine + (Y div FItemHeight);
 end;
@@ -570,42 +579,41 @@ begin
   AdjustScrollBars;
 end;
 
-function THexDump.LineAddr(Index: Integer): PChar;
+function THexDump.LineAddr(Index: Integer): PAnsiChar;
 begin
-  Result := StrFmt(FLineAddr, '%p:', [Pointer(PChar(AddressOffset)+Index*FBytesPerLine)]);
+  Result := AnsiStrings.StrFmt(FLineAddr, '%p:', [Pointer(PAnsiChar(AddressOffset) + Index * FBytesPerLine)]);
 end;
 
-function THexDump.LineData(Index: Integer): PChar;
+function THexDump.LineData(Index: Integer): PAnsiChar;
 
-  procedure SetData(P: PChar);
+  procedure SetData(P: PAnsiChar);
   const
-    HexDigits : array[0..15] of Char = '0123456789ABCDEF';
+    HexDigits: array [0..15] of AnsiChar = '0123456789ABCDEF';
   var
     I: Integer;
     B: Byte;
   begin
-    for I := 0 to FBytesPerLine-1 do
+    for I := 0 to FBytesPerLine - 1 do
     begin
       try
         B := Byte(P[I]);
-        FHexData[I][0] := HexDigits[B SHR $04];
-        FHexData[I][1] := HexDigits[B AND $0F];
+        FHexData[I][0] := HexDigits[B shr $04];
+        FHexData[I][1] := HexDigits[B and $0F];
       except
         FHexData[I][0] := '?';
         FHexData[I][1] := '?';
       end;
-
     end;
   end;
 
 begin
-  SetData(PChar(FAddress) + Index*FBytesPerLine);
+  SetData(PAnsiChar(FAddress) + Index * FBytesPerLine);
   Result := FHexData[0];
 end;
 
-function THexDump.LineChars(Index: Integer): PChar;
+function THexDump.LineChars(Index: Integer): PAnsiChar;
 begin
-  Result := PChar(FAddress) + Index*FBytesPerLine;
+  Result := PAnsiChar(FAddress) + Index * FBytesPerLine;
 end;
 
 procedure THexDump.CreateWnd;
@@ -642,7 +650,7 @@ end;
 
 procedure THexDump.SetCurrentLinePos(const Value: Integer);
 var
-  v : Integer;
+  v: Integer;
 begin
   if Value <> FCurrentLinePos then
   begin
@@ -678,20 +686,20 @@ end;
 
 procedure THexDump.SetCaretPos;
 var
-  x, y : Integer;
+  x, y: Integer;
 begin
   if Focused then
   begin
     y := FItemHeight * (CurrentLine - FTopLine);
     if FEditCharacters then
-      x := FAddressWidth+(FItemWidth*(FBytesPerLine*3)) + (FItemWidth - 1) * CurrentLinePos
+      x := FAddressWidth + (FItemWidth * (FBytesPerLine * 3)) + (FItemWidth - 1) * CurrentLinePos
     else
     begin
       x := (FItemWidth) * 3 * CurrentLinePos + FAddressWidth;
       if FLowNibble then
         Inc(x, FItemWidth - 1)
     end;
-    Windows.SetCaretPos (x, y)
+    Windows.SetCaretPos(x, y)
   end
 end;
 
@@ -709,42 +717,44 @@ begin
   if FLowNibble <> Value then
   begin
     FLowNibble := Value;
-    SetCaretPos
+    SetCaretPos;
   end
 end;
 
 procedure THexDump.WMChar(var Message: TWMChar);
 var
-  ch : Char;
-  Offset : Integer;
-  data : byte;
-  changes : Boolean;
-  b : byte;
+  ch: Char;
+  ach: AnsiChar;
+  Offset: Integer;
+  Data: byte;
+  Changes: Boolean;
+  b: byte;
 begin
   inherited;
 
-  ch := Char (message.CharCode);
-  if ch in [' '..#$ff] then
+  ch := Char(message.CharCode);
+  if CharInSet(ch, [' ' .. #$ff]) then
   begin
+    ach := AnsiChar(ch);
     Offset := CurrentLine * FBytesPerLine + CurrentLinePos;
-    changes := False;
+    Changes := False;
     if EditCharacters then
-      changes := True
+      Changes := True
     else
-      if ch in ['0'..'9', 'A'..'F', 'a'..'f'] then
+      if ach in ['0'..'9', 'A'..'F', 'a'..'f'] then
       begin
-        data := Byte(PChar (Address) [Offset]);
-        changes := True;
-        b := StrToInt('$' + ch);
+        Data := Byte(PAnsiChar(Address)[Offset]);
+        Changes := True;
+        b := StrToInt('$' + ach);
         if LowNibble then
-          ch := Char (data and $f0 + b)
+          ach := AnsiChar(Data and $f0 + b)
         else
-          ch := Char (data and $0f + (b shl 4));
+          ach := AnsiChar(Data and $0f + (b shl 4));
       end;
 
-    if changes then
+    if Changes then
     begin
-      PChar (Address) [Offset] := ch;
+      PAnsiChar(Address)[Offset] := ach;
       SetChanged;
       if EditCharacters or LowNibble then
       begin
@@ -753,7 +763,7 @@ begin
       end
       else
         LowNibble := True;
-      Invalidate
+      Invalidate;
     end
   end
 end;

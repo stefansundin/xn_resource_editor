@@ -45,7 +45,6 @@ type
   TRichEditProvider = class
   private
     FOwner: TCustomExRichEdit;
-
   protected
     procedure CreateSubclass (var Params: TCreateParams); virtual; abstract;
     procedure SetText(const st: WideString); virtual; abstract;
