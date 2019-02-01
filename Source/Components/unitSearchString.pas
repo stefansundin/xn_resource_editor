@@ -55,35 +55,35 @@ type
     procedure Parse(searchString: WideString); override;
   end;
 
-function ExtractString (const search: string; var s: string): string;
-function SplitString (const search: string; var s: string): string;
-function SplitToken (var st: string): string;
-function DelimPos (const delims: string; const st: string; out delim: char): Integer;
-function DelimSplitString (const search: string; var s: string; out delim: char): string;
+function ExtractString(const search: string; var s: string): string;
+function SplitString(const search: string; var s: string): string;
+function SplitToken(var st: string): string;
+function DelimPos(const delims: string; const st: string; out delim: char): Integer;
+function DelimSplitString(const search: string; var s: string; out delim: char): string;
 function WideContainsText(const AText, ASubText: WideString): Boolean;
 function WidePosEx(const SubStr, S: WideString; Offset: Cardinal = 1): Integer;
-function WideSplitString (const search: WideString; var s: WideString): WideString;
+function WideSplitString(const search: WideString; var s: WideString): WideString;
 function WideStrScan(const Str: PWideChar; Chr: WideChar): PWideChar;
 function SearchStringArray(arr: array of string; const st: string): Integer;
-function StringArrayContains (arr: array of string; const st: string): Boolean;
-function WideDequotedStr (st: WideString; q: WideChar = '"'): WideString;
-function WideQuotedStr (st: WideString; q: WideChar = '"'): WideString;
-function WildContains (const a, b: string): Boolean;
-function WWildContains (const a, b: WideString): Boolean;
+function StringArrayContains(arr: array of string; const st: string): Boolean;
+function WideDequotedStr(st: WideString; q: WideChar = '"'): WideString;
+function WideQuotedStr(st: WideString; q: WideChar = '"'): WideString;
+function WildContains(const a, b: string): Boolean;
+function WWildContains(const a, b: WideString): Boolean;
 
 
 implementation
 
-// nb.  Pos is a 'magic' function that internally has an (undocumented) wide version
+// nb.  Pos is a 'magic' function that internally has an(undocumented) wide version
 
 function WideContainsText(const AText, ASubText: WideString): Boolean;
 begin
-  Result := Pos (WideUpperCase(ASubText), WideUpperCase(AText)) > 0;
+  Result := Pos(WideUpperCase(ASubText), WideUpperCase(AText)) > 0;
 end;
 
-function WideContainsStr (const AText, ASubText: WideString): Boolean;
+function WideContainsStr(const AText, ASubText: WideString): Boolean;
 begin
-  Result := Pos (ASubText, AText) > 0;
+  Result := Pos(ASubText, AText) > 0;
 end;
 
 function WidePosEx(const SubStr, S: WideString; Offset: Cardinal = 1): Integer;
@@ -125,7 +125,7 @@ end;
  | characters after it.  If it was not found, return an empty string    |
  | and leave the source string unchanged.                               |
  *----------------------------------------------------------------------*)
-function ExtractString (const search: string; var s: string): string;
+function ExtractString(const search: string; var s: string): string;
 var
   p, l: Integer;
   pc: PChar;
@@ -134,18 +134,18 @@ begin
   l := Length(search);
   if l = 1 then
   begin
-    pc := AnsiStrScan (PChar (s), search [1]);
+    pc := AnsiStrScan(PChar(s), search [1]);
     if pc = nil then
       p := 0
     else
-      p := Integer (pc) - Integer (PChar (s)) + 1
+      p := Integer(pc) - Integer(PChar(s)) + 1
   end
   else
-    p := Pos (search, s);
+    p := Pos(search, s);
   if p > 0 then
   begin
-    Result := Trim (Copy(s, 1, p - 1));
-    s := Trim (Copy(s, p + l, maxInt))
+    Result := Trim(Copy(s, 1, p - 1));
+    s := Trim(Copy(s, p + l, maxInt))
   end
   else
     Result := ''
@@ -159,7 +159,7 @@ end;
  | characters after it.  If it was not found, return the entire source  |
  | string, and set the source string to an empty string                 |
  *----------------------------------------------------------------------*)
-function SplitString (const search: string; var s: string): string;
+function SplitString(const search: string; var s: string): string;
 var
   p, l: Integer;
   pc: PChar;
@@ -167,38 +167,38 @@ begin
   l := Length(search);
   if l = 1 then
   begin
-    pc := AnsiStrScan (PChar (s), search [1]);
+    pc := AnsiStrScan(PChar(s), search [1]);
     if pc = nil then
       p := 0
     else
-      p := Integer (pc) - Integer (PChar (s)) + 1
+      p := Integer(pc) - Integer(PChar(s)) + 1
   end
   else
-    p := Pos (search, s);
+    p := Pos(search, s);
   if p > 0 then
   begin
-    Result := Trim (Copy(s, 1, p - 1));
-    s := Trim (Copy(s, p + l, maxInt))
+    Result := Trim(Copy(s, 1, p - 1));
+    s := Trim(Copy(s, p + l, maxInt))
   end
   else
   begin
-    Result := Trim (s);
+    Result := Trim(s);
     s := ''
   end
 end;
 
-function SplitToken (var st: string): string;
+function SplitToken(var st: string): string;
 var
   p, p1: Integer;
 begin
-  p := Pos (' ', st);
-  p1 := Pos (#9, st);
+  p := Pos(' ', st);
+  p1 := Pos(#9, st);
   if p = 0 then p := MaxInt;
   if p1 = 0 then p1 := MaxInt;
   if p < p1 then
-    Result := SplitString (' ', st)
+    Result := SplitString(' ', st)
   else
-    Result := SplitString (#9, st)
+    Result := SplitString(#9, st)
 end;
 
 function WideStrScan(const Str: PWideChar; Chr: WideChar): PWideChar;
@@ -215,7 +215,7 @@ begin
   end;
 end;
 
-function WideSplitString (const search: WideString; var s: WideString): WideString;
+function WideSplitString(const search: WideString; var s: WideString): WideString;
 var
   p, l: Integer;
   pc: PWideChar;
@@ -223,27 +223,27 @@ begin
   l := Length(search);
   if l = 1 then
   begin
-    pc := WideStrScan (PWideChar (s), search [1]);
+    pc := WideStrScan(PWideChar(s), search [1]);
     if pc = nil then
       p := 0
     else
-      p := (Integer (pc) - Integer (PWideChar (s))) div SizeOf(WideChar) + 1
+      p :=(Integer(pc) - Integer(PWideChar(s))) div SizeOf(WideChar) + 1
   end
   else
-    p := Pos (search, s);
+    p := Pos(search, s);
   if p > 0 then
   begin
-    Result := Trim (Copy(s, 1, p - 1));
-    s := Trim (Copy(s, p + l, maxInt))
+    Result := Trim(Copy(s, 1, p - 1));
+    s := Trim(Copy(s, p + l, maxInt))
   end
   else
   begin
-    Result := Trim (s);
+    Result := Trim(s);
     s := ''
   end
 end;
 
-function WildContains (const a, b: string): Boolean;
+function WildContains(const a, b: string): Boolean;
 var
   p, offs, l, l1: Integer;
 begin
@@ -261,19 +261,19 @@ begin
     if l1 = 1 then
       Result := True
     else
-      Result := AnsiContainsStr (a, Copy(b, 1, l1 - 1));
+      Result := AnsiContainsStr(a, Copy(b, 1, l1 - 1));
     exit
   end;
 
   if b [1] = '*' then
   begin
-    Result := AnsiContainsStr (a, Copy(b, 2, l1 - 1));
+    Result := AnsiContainsStr(a, Copy(b, 2, l1 - 1));
     exit
   end;
 
   offs := 1;
   repeat
-    p := PosEx (b, a, offs);
+    p := PosEx(b, a, offs);
     offs := 0;
     if p > 0 then
     begin
@@ -291,12 +291,12 @@ begin
         continue
       end
     end
-  until (p <> 0) or (offs = 0);
+  until(p <> 0) or (offs = 0);
 
   Result := p <> 0
 end;
 
-function WWildContains (const a, b: WideString): Boolean;
+function WWildContains(const a, b: WideString): Boolean;
 var
   p, offs, l, l1: Integer;
 begin
@@ -311,31 +311,31 @@ begin
 
   if b [l1] = '*' then
   begin
-    Result := WideContainsStr (a, Copy(b, 1, l1 - 1));
+    Result := WideContainsStr(a, Copy(b, 1, l1 - 1));
     exit
   end;
 
   offs := 1;
   repeat
-    p := WidePosEx (b, a, offs);
+    p := WidePosEx(b, a, offs);
     offs := 0;
     if p > 0 then
     begin
-      if (p > 1) and IsWideCharAlNum (a [p - 1]) then
+      if (p > 1) and IsWideCharAlNum(a [p - 1]) then
       begin
         offs := p + 1;
         p := 0;
         continue
       end;
 
-      if ((p + l1) < l) and IsWideCharAlNum (a [p + l1]) then
+      if ((p + l1) < l) and IsWideCharAlNum(a [p + l1]) then
       begin
         offs := p + l1 + 1;
         p := 0;
         continue
       end
     end
-  until (p <> 0) or (offs = 0);
+  until(p <> 0) or (offs = 0);
 
   Result := p <> 0
 end;
@@ -351,7 +351,7 @@ end;
 
 function TStringSearcher.Matches(AString: string): Boolean;
 type
-  TMatch = (mYes, mNo, mMaybe);
+  TMatch =(mYes, mNo, mMaybe);
 var
   i: Integer;
   ok: TMatch;
@@ -362,7 +362,7 @@ begin
   ok := mMaybe;
 
   for i := 0 to FCountOrWords - 1 do
-    if WildContains (AString, FOrWords[i]) then
+    if WildContains(AString, FOrWords[i]) then
     begin
       ok := mYes;
       break
@@ -370,7 +370,7 @@ begin
 
   if ok = mMaybe then
     for i := 0 to FCountAndWords - 1 do
-      if not WildContains (AString, FAndWords[i]) then
+      if not WildContains(AString, FAndWords[i]) then
       begin
         ok := mNo;
         break
@@ -378,14 +378,14 @@ begin
 
   if ok = mMaybe then
     for i := 0 to FCountNotWords - 1 do
-      if WildContains (AString, FNotWords[i]) then
+      if WildContains(AString, FNotWords[i]) then
       begin
         ok := mNo;
         break
       end;
 
   if ok = mMaybe then
-    Result := (FCountAndWords > 0) or (FCountNotWords > 0)
+    Result :=(FCountAndWords > 0) or (FCountNotWords > 0)
   else
     Result := ok = mYes
 
@@ -395,7 +395,7 @@ end;
 
 procedure TGoogleLikeStringSearcher.Parse(searchString: string);
 type
-  tOP = (opAnd, opOr, opNot);
+  tOP =(opAnd, opOr, opNot);
 var
   l: Integer;
   s1: string;
@@ -443,11 +443,11 @@ begin
     if searchString [1] = '"' then
     begin
       Delete(searchString, 1, 1);
-      s1 := SplitString ('"', searchString)
+      s1 := SplitString('"', searchString)
     end
     else
     begin
-      s1 := SplitString (' ', searchString);
+      s1 := SplitString(' ', searchString);
       if UpperCase(s1) = 'OR' then
       begin
         op := opOR;
@@ -479,7 +479,7 @@ end;
 
 function TWideStringSearcher.Matches(AString: WideString): Boolean;
 type
-  TMatch = (mYes, mNo, mMaybe);
+  TMatch =(mYes, mNo, mMaybe);
 var
   i: Integer;
   ok: TMatch;
@@ -490,7 +490,7 @@ begin
   ok := mMaybe;
 
   for i := 0 to FCountOrWords - 1 do
-    if WWildContains (AString, FOrWords[i]) then
+    if WWildContains(AString, FOrWords[i]) then
     begin
       ok := mYes;
       break
@@ -498,7 +498,7 @@ begin
 
   if ok = mMaybe then
     for i := 0 to FCountAndWords - 1 do
-      if not WWildContains (AString, FAndWords[i]) then
+      if not WWildContains(AString, FAndWords[i]) then
       begin
         ok := mNo;
         break
@@ -506,14 +506,14 @@ begin
 
   if ok = mMaybe then
     for i := 0 to FCountNotWords - 1 do
-      if WWildContains (AString, FNotWords[i]) then
+      if WWildContains(AString, FNotWords[i]) then
       begin
         ok := mNo;
         break
       end;
 
   if ok = mMaybe then
-    Result := (FCountAndWords > 0) or (FCountNotWords > 0)
+    Result :=(FCountAndWords > 0) or (FCountNotWords > 0)
   else
     Result := ok = mYes
 end;
@@ -522,7 +522,7 @@ end;
 
 procedure TGoogleLikeWideStringSearcher.Parse(searchString: WideString);
 type
-  tOP = (opAnd, opOr, opNot);
+  tOP =(opAnd, opOr, opNot);
 var
   l: Integer;
   s1: WideString;
@@ -570,11 +570,11 @@ begin
     if searchString [1] = '"' then
     begin
       Delete(searchString, 1, 1);
-      s1 := WideSplitString ('"', searchString)
+      s1 := WideSplitString('"', searchString)
     end
     else
     begin
-      s1 := WideSplitString (' ', searchString);
+      s1 := WideSplitString(' ', searchString);
       if WideUpperCase(s1) = 'OR' then
       begin
         op := opOR;
@@ -606,7 +606,7 @@ function SearchStringArray(arr: array of string; const st: string): Integer;
   begin
     if s <= e then
     begin
-      m := s + (e - s) div 2;
+      m := s +(e - s) div 2;
 
       c := CompareText(st, arr [m]);
 
@@ -623,15 +623,15 @@ function SearchStringArray(arr: array of string; const st: string): Integer;
   end;
 
 begin
-  Result := bsearch(Low (arr), High(arr))
+  Result := bsearch(Low(arr), High(arr))
 end;
 
-function StringArrayContains (arr: array of string; const st: string): Boolean;
+function StringArrayContains(arr: array of string; const st: string): Boolean;
 begin
   Result := SearchStringArray(arr, st) >= 0
 end;
 
-function WideDequotedStr (st: WideString; q: WideChar): WideString;
+function WideDequotedStr(st: WideString; q: WideChar): WideString;
 var
   i, l: Integer;
 begin
@@ -660,7 +660,7 @@ begin
   end
 end;
 
-function WideQuotedStr (st: WideString; q: WideChar): WideString;
+function WideQuotedStr(st: WideString; q: WideChar): WideString;
 var
   I: Integer;
 begin
@@ -670,7 +670,7 @@ begin
   Result := q + Result + q;
 end;
 
-function DelimPos (const delims: string; const st: string; out delim: char): Integer;
+function DelimPos(const delims: string; const st: string; out delim: char): Integer;
 var
   i, p: Integer;
 begin
@@ -683,7 +683,7 @@ begin
   Result := MaxInt;
   for i := 1 to Length(delims) do
   begin
-    p := Pos (delims[i], st);
+    p := Pos(delims[i], st);
     if (p > 0) and (p < Result) then
     begin
       delim := delims[i];
@@ -695,19 +695,19 @@ begin
     Result := 0
 end;
 
-function DelimSplitString (const search: string; var s: string; out delim: char): string;
+function DelimSplitString(const search: string; var s: string; out delim: char): string;
 var
   p: Integer;
 begin
-  p := DelimPos (search, s, delim);
+  p := DelimPos(search, s, delim);
   if p > 0 then
   begin
-    Result := Trim (Copy(s, 1, p - 1));
-    s := Trim (Copy(s, p + 1, maxInt))
+    Result := Trim(Copy(s, 1, p - 1));
+    s := Trim(Copy(s, p + 1, maxInt))
   end
   else
   begin
-    Result := Trim (s);
+    Result := Trim(s);
     s := ''
   end
 end;

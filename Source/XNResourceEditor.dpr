@@ -100,8 +100,8 @@ uses
   unitHTMLStringsDisplayObject in 'Components\unitHTMLStringsDisplayObject.pas',
   unitIncludePathPackages in 'unitIncludePathPackages.pas',
   unitIncludePaths in 'unitIncludePaths.pas',
-  unitMidiGlobals in 'Components\unitMidiGlobals.pas',
-  unitMidiTrackStream in 'Components\unitMidiTrackStream.pas',
+  unitMidiGlobals in 'unitMidiGlobals.pas',
+  unitMidiTrackStream in 'unitMidiTrackStream.pas',
   unitNTModule in 'Components\unitNTModule.pas',
   unitObjectCache in 'Components\unitObjectCache.pas',
   unitParser in 'Components\unitParser.pas',
@@ -123,11 +123,9 @@ uses
   unitResourceToolbar in 'Components\unitResourceToolbar.pas',
   unitResourceVersionInfo in 'Components\unitResourceVersionInfo.pas',
   unitResourceXPManifests in 'Components\unitResourceXPManifests.pas',
-  unitRTF2HTML in 'Components\unitRTF2HTML.pas',
   unitSearchString in 'Components\unitSearchString.pas',
   unitStreamTextReader in 'Components\unitStreamTextReader.pas',
-  unitVersionInfo in 'Components\unitVersionInfo.pas',
-  unitVirtualMemory in 'Components\unitVirtualMemory.pas';
+  unitVersionInfo in 'Components\unitVersionInfo.pas';
 
 {$R i.res}
 

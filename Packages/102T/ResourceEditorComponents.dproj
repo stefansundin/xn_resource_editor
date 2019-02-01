@@ -159,8 +159,6 @@
         <DCCReference Include="..\..\Source\Components\unitHTMLHelp.pas"/>
         <DCCReference Include="..\..\Source\Components\unitHTMLHelpViewer.pas"/>
         <DCCReference Include="..\..\Source\Components\unitHTMLStringsDisplayObject.pas"/>
-        <DCCReference Include="..\..\Source\Components\unitMidiGlobals.pas"/>
-        <DCCReference Include="..\..\Source\Components\unitMidiTrackStream.pas"/>
         <DCCReference Include="..\..\Source\Components\unitObjectCache.pas"/>
         <DCCReference Include="..\..\Source\Components\unitParser.pas"/>
         <DCCReference Include="..\..\Source\Components\unitPEFile.pas"/>
@@ -181,11 +179,9 @@
         <DCCReference Include="..\..\Source\Components\unitResourceToolbar.pas"/>
         <DCCReference Include="..\..\Source\Components\unitResourceVersionInfo.pas"/>
         <DCCReference Include="..\..\Source\Components\unitResourceXPManifests.pas"/>
-        <DCCReference Include="..\..\Source\Components\unitRTF2HTML.pas"/>
         <DCCReference Include="..\..\Source\Components\unitSearchString.pas"/>
         <DCCReference Include="..\..\Source\Components\unitStreamTextReader.pas"/>
         <DCCReference Include="..\..\Source\Components\unitVersionInfo.pas"/>
-        <DCCReference Include="..\..\Source\Components\unitVirtualMemory.pas"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
