@@ -132,7 +132,7 @@ end;
 destructor TPersistentPosition.Destroy;
 begin
   UnSubclass;
-  if Assigned (FObjectInstance) then
+  if Assigned(FObjectInstance) then
     Classes.FreeObjectInstance(FObjectInstance);
   inherited;
 end;

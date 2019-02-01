@@ -1,4 +1,4 @@
-inherited fmPropertyPageProgramSettings: TfmPropertyPageProgramSettings
+inherited FormPropertyPageProgramSettings: TFormPropertyPageProgramSettings
   Caption = 'XN Resource Editor Options'
   ClientHeight = 191
   ClientWidth = 318
@@ -8,33 +8,33 @@ inherited fmPropertyPageProgramSettings: TfmPropertyPageProgramSettings
   ExplicitHeight = 191
   PixelsPerInch = 96
   TextHeight = 13
-  object Label1: TLabel [0]
+  object LabelSelectFont: TLabel [0]
     Left = 16
     Top = 56
     Width = 274
     Height = 13
     Caption = 'Select a font to use when displaying and editing resources'
   end
-  object stModuleParser: TLabel [1]
+  object StaticTextModuleParser: TLabel [1]
     Left = 16
     Top = 136
     Width = 286
     Height = 13
     Caption = 'Choose which parser to use when loading Windows modules'
   end
-  inherited Panel1: TPanel
+  inherited PanelSectionDetails: TPanel
     Width = 318
-    ExplicitWidth = 278
-    inherited Bevel1: TBevel
+    ExplicitWidth = 318
+    inherited Bevel: TBevel
       Width = 318
       ExplicitWidth = 269
     end
-    inherited stSectionDetails: TLabel
+    inherited StaticTextSectionDetails: TLabel
       Width = 306
       ExplicitWidth = 257
     end
   end
-  object stFontDetails: TStaticText
+  object StaticTextFontDetails: TStaticText
     Left = 24
     Top = 75
     Width = 258
@@ -45,7 +45,7 @@ inherited fmPropertyPageProgramSettings: TfmPropertyPageProgramSettings
     BevelKind = bkTile
     TabOrder = 1
   end
-  object Button1: TButton
+  object ButtonSelectFont: TButton
     Left = 288
     Top = 71
     Width = 25
@@ -53,9 +53,9 @@ inherited fmPropertyPageProgramSettings: TfmPropertyPageProgramSettings
     Anchors = [akTop, akRight]
     Caption = '...'
     TabOrder = 2
-    OnClick = Button1Click
+    OnClick = ButtonSelectFontClick
   end
-  object cbModuleParser: TComboBox
+  object ComboBoxModuleParser: TComboBox
     Left = 24
     Top = 155
     Width = 258
@@ -64,12 +64,12 @@ inherited fmPropertyPageProgramSettings: TfmPropertyPageProgramSettings
     ItemIndex = 0
     TabOrder = 3
     Text = 'Windows API resource parser'
-    OnChange = cbModuleParserChange
+    OnChange = ComboBoxModuleParserChange
     Items.Strings = (
       'Windows API resource parser'
       'XN Resource Editor internal  resource parser')
   end
-  object FontDialog1: TFontDialog
+  object FontDialog: TFontDialog
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11

@@ -1,5 +1,5 @@
-inherited fmTextResource: TfmTextResource
-  Caption = 'fmTextResource'
+inherited FormTextResource: TFormTextResource
+  Caption = 'FormTextResource'
   OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
@@ -13,7 +13,7 @@ inherited fmTextResource: TfmTextResource
     Header.AutoSizeIndex = 1
     Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoVisible]
     Header.Style = hsPlates
-    PopupMenu = pomStrings
+    PopupMenu = PopupMenuStrings
     TabOrder = 1
     TreeOptions.MiscOptions = [toAcceptOLEDrop, toEditable, toFullRepaintOnResize, toInitOnSave, toToggleOnDblClick, toWheelPanning]
     TreeOptions.PaintOptions = [toShowDropmark, toShowHorzGridLines, toShowVertGridLines, toThemeAware, toUseBlendedImages, toFullVertGridLines]
@@ -56,65 +56,65 @@ inherited fmTextResource: TfmTextResource
     Visible = False
     OnExit = mmoMessageExit
   end
-  object mnuStringsMenu: TMainMenu
+  object MainMenuStrings: TMainMenu
     Left = 648
     Top = 32
-    object mnuStrings: TMenuItem
+    object MenuItemStrings: TMenuItem
       Caption = '&Strings'
-      object AddString1: TMenuItem
-        Action = actStringsAdd
+      object MenuItemAddString: TMenuItem
+        Action = ActionStringsAdd
       end
-      object ModifyString1: TMenuItem
-        Action = actStringsModify
+      object MenuItemModifyString: TMenuItem
+        Action = ActionStringsModify
       end
-      object DeleteString1: TMenuItem
-        Action = actStringsDelete
+      object MenuItemDeleteString: TMenuItem
+        Action = ActionStringsDelete
       end
-      object ChangeID1: TMenuItem
-        Action = actStringsChangeID
+      object MenuItemChangeID: TMenuItem
+        Action = ActionStringsChangeID
       end
     end
   end
-  object ActionList1: TActionList
+  object ActionList: TActionList
     Left = 648
     Top = 72
-    object actStringsAdd: TAction
+    object ActionStringsAdd: TAction
       Category = 'Strings'
       Caption = '&Add String'
       ShortCut = 45
-      OnExecute = actStringsAddExecute
+      OnExecute = ActionStringsAddExecute
     end
-    object actStringsModify: TAction
+    object ActionStringsModify: TAction
       Category = 'Strings'
       Caption = '&Modify String'
-      OnExecute = actStringsModifyExecute
+      OnExecute = ActionStringsModifyExecute
     end
-    object actStringsDelete: TAction
+    object ActionStringsDelete: TAction
       Category = 'Strings'
       Caption = '&Delete String'
       ShortCut = 46
-      OnExecute = actStringsDeleteExecute
+      OnExecute = ActionStringsDeleteExecute
     end
-    object actStringsChangeID: TAction
+    object ActionStringsChangeID: TAction
       Category = 'Strings'
       Caption = '&Change ID'
-      OnExecute = actStringsChangeIDExecute
+      OnExecute = ActionStringsChangeIDExecute
     end
   end
-  object pomStrings: TPopupMenu
+  object PopupMenuStrings: TPopupMenu
     Left = 648
     Top = 120
-    object AddString2: TMenuItem
-      Action = actStringsAdd
+    object MenuItemAddString2: TMenuItem
+      Action = ActionStringsAdd
     end
-    object ModifyString2: TMenuItem
-      Action = actStringsModify
+    object MenuItemModifyString2: TMenuItem
+      Action = ActionStringsModify
     end
-    object DeleteString2: TMenuItem
-      Action = actStringsDelete
+    object MenuItemDeleteString2: TMenuItem
+      Action = ActionStringsDelete
     end
-    object ChangeID2: TMenuItem
-      Action = actStringsChangeID
+    object MenuItemChangeID2: TMenuItem
+      Action = ActionStringsChangeID
     end
   end
 end

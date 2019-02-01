@@ -10,9 +10,9 @@ uses
 type
   TOnDuplicates = (duCopy, duAsk, duAbort);
   TCopyMode = (cmCopy, cmMove, cmNothing);
-  TOnCopyFile = procedure(sender: TObject; const srcfileName, dstFileName: string; fileSize: Integer) of object;
-  TForEachProc = procedure(const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean) of object;
-  TOnException = procedure(sender: TObject; e: Exception) of object;
+  TOnCopyFile = procedure(Sender: TObject; const srcfileName, dstFileName: string; fileSize: Integer) of object;
+  TForEachProc = procedure(const Directory, Dest: string; const SearchRec: TSearchRec; var Continue: Boolean) of object;
+  TOnException = procedure(Sender: TObject; e: Exception) of object;
   TFileCopier = class (TComponent)
   private
     FCopierThread: TThread;
@@ -42,12 +42,12 @@ type
     FCheckedDrive: Boolean;
     FOnException: TOnException;
 
-    procedure AnalyzeFile(const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean);
-    procedure CopyFile(const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean);
-    procedure TidyDir (const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean);
+    procedure AnalyzeFile(const Directory, Dest: string; const SearchRec: TSearchRec; var Continue: Boolean);
+    procedure CopyFile(const Directory, Dest: string; const SearchRec: TSearchRec; var Continue: Boolean);
+    procedure TidyDir(const Directory, Dest: string; const SearchRec: TSearchRec; var Continue: Boolean);
     function ForEach(const Mask, destPath: string; proc, proc1: TForEachProc): Boolean;
-    procedure AnalyzeFiles (const sourceFiles: string);
-    procedure CopyFiles (const sourceFiles: string);
+    procedure AnalyzeFiles(const SourceFiles: string);
+    procedure CopyFiles(const SourceFiles: string);
     procedure DoOnException;
     procedure DoOnStartAnalysis;
     procedure DoOnEndAnalysis;
@@ -114,28 +114,28 @@ type
 
 { TFileCopier }
 
-procedure TFileCopier.AnalyzeFile(const Directory, dest: string; const sr: TSearchRec; var Continue: Boolean);
+procedure TFileCopier.AnalyzeFile(const Directory, Dest: string; const SearchRec: TSearchRec; var Continue: Boolean);
 var
   destFileName: string;
   fa: Integer;
 begin
   Inc(FAnalyzedFileCount);
-  FAnalyzedFileSize := FAnalyzedFileSize + sr.Size;
+  FAnalyzedFileSize := FAnalyzedFileSize + SearchRec.Size;
 
   // Check we can open the source file for reading.
-  with TFileStream.Create(Directory + sr.Name, fmOpenRead or fmShareDenyNone) do
+  with TFileStream.Create(Directory + SearchRec.Name, fmOpenRead or fmShareDenyNone) do
     Free;
 
   if not FCheckedDrive then
   begin
-                // Check the dest drive or share is valid
+                // Check the Dest drive or share is valid
     FCheckedDrive := True;
-    destFileName := dest + sr.Name;
+    destFileName := Dest + SearchRec.Name;
     fa := FileGetAttr (ExtractFileDrive(destFileName));
     if fa = -1 then
       raise Exception.Create('Destination drive or share not valid');
 
-                // Check we can create files on the dest share or drive
+                // Check we can create files on the Dest share or drive
     destFileName := ExtractFileDrive(destFilename) + 'copier.woozle.1122';
     if FileExists (destFileName) then
       DeleteFile(destFileName);
@@ -145,42 +145,42 @@ begin
       RaiseLastOSError;
   end;
 
-  destFileName := dest + sr.Name;
+  destFileName := Dest + SearchRec.Name;
   fa := FileGetAttr (destFileName);
   if fa <> -1 then
-    if OnDuplicates = duAbort then // Complain if dest file exists
+    if OnDuplicates = duAbort then // Complain if Dest file exists
       raise EFileCopier.Create('Duplicate file ' + destFileName + ' aborted')
     else
-                                // Check we can overwrite the existing dest file when the
+                                // Check we can overwrite the existing Dest file when the
                                 // time comes.
       with TFileStream.Create(destFileName, fmOpenReadWrite or fmShareDenyNone) do
         Free;
 
 end;
 
-procedure TFileCopier.AnalyzeFiles (const sourcefiles: string);
+procedure TFileCopier.AnalyzeFiles (const SourceFiles: string);
 var
   st: string;
   Continue: Boolean;
-  sr: TSearchRec;
+  SearchRec: TSearchRec;
   err: Integer;
   available, a1: Int64;
   a2: TLargeInteger;
 begin
-  if Length(sourceFiles) = 0 then
+  if Length(SourceFiles) = 0 then
     raise EFileCopier.Create(rstNoSource);
 
   if Length(FDestFiles) = 0 then
     raise EFileCopier.Create(rstNoDest);
 
   FSourceMask := '';
-  if (Pos ('?', sourceFiles) > 0) or (Pos ('*', sourceFiles) > 0) then
-    FSourceMask := sourceFiles
+  if (Pos ('?', SourceFiles) > 0) or (Pos ('*', SourceFiles) > 0) then
+    FSourceMask := SourceFiles
   else
   begin
-    st := Copy(sourceFiles, Length(sourceFiles), 1);
+    st := Copy(SourceFiles, Length(SourceFiles), 1);
     if (st = '\') or (st = ':') then
-      FSourceMask := sourceFiles + '*.*'
+      FSourceMask := SourceFiles + '*.*'
   end;
 
   FDestDir := FDestFiles;
@@ -196,13 +196,13 @@ begin
 
   if FSourceMask = '' then
   begin
-    err := FileGetAttr (sourceFiles);
+    err := FileGetAttr (SourceFiles);
     if err = -1 then
-      raise EFOpenError.CreateFmt(rstFileNotFound, [sourceFiles]);
+      raise EFOpenError.CreateFmt(rstFileNotFound, [SourceFiles]);
     if (err and faDirectory) <> 0 then
     begin
-      FSourceMask := sourceFiles + '\*.*';
-      FDestDir := FDestDir + ExtractFileName(sourceFiles) + '\'
+      FSourceMask := SourceFiles + '\*.*';
+      FDestDir := FDestDir + ExtractFileName(SourceFiles) + '\'
     end
   end;
 
@@ -210,17 +210,17 @@ begin
   if FSourceMask <> '' then
     ForEach(FSourceMask, FDestDir, AnalyzeFile, Nil)
   else
-    if FindFirst(sourceFiles, faAnyFile, sr) = 0 then
+    if FindFirst(SourceFiles, faAnyFile, SearchRec) = 0 then
     try
       Continue := True;
-      AnalyzeFile(ExtractFilePath(sourceFiles), FDestDir, sr, Continue)
+      AnalyzeFile(ExtractFilePath(SourceFiles), FDestDir, SearchRec, Continue)
     finally
-      FindClose(sr)
+      FindClose(SearchRec)
     end
     else
-      raise EFOpenError.CreateFmt(rstFileNotFound, [sourceFiles]);
+      raise EFOpenError.CreateFmt(rstFileNotFound, [SourceFiles]);
 
-  if (CopyMode = cmCopy) or (ExtractFileDrive(sourceFiles) <> ExtractFileDrive(FDestDir)) then
+  if (CopyMode = cmCopy) or (ExtractFileDrive(SourceFiles) <> ExtractFileDrive(FDestDir)) then
   begin
     SysUtils.GetDiskFreeSpaceEx (PChar (ExtractFileDrive(FDestDir)), available, a1, @a2);
 
@@ -234,18 +234,18 @@ begin
   FCancelled := True;
 end;
 
-procedure TFileCopier.CopyFile(const Directory, dest: string;
-  const sr: TSearchRec; var Continue: Boolean);
+procedure TFileCopier.CopyFile(const Directory, Dest: string;
+  const SearchRec: TSearchRec; var Continue: Boolean);
 begin
-  FCurrentFileName := Directory + sr.Name;
-  FDestFileName := dest + sr.Name;
-  FCurrentFileSize := sr.Size;
+  FCurrentFileName := Directory + SearchRec.Name;
+  FDestFileName := Dest + SearchRec.Name;
+  FCurrentFileSize := SearchRec.Size;
 
   if Assigned(FOnStartCopyFile) then
     FCopierThread.Synchronize(FCopierThread, DoOnStartCopyFile);
 
   if CopyMode <> cmNothing then
-    ForceDirectories (dest);
+    ForceDirectories (Dest);
 
   case CopyMode of
     cmNothing:;
@@ -256,21 +256,21 @@ begin
     FCopierThread.Synchronize(FCopierThread, DoOnEndCopyFile);
 end;
 
-procedure TFileCopier.CopyFiles (const sourceFiles: string);
+procedure TFileCopier.CopyFiles (const SourceFiles: string);
 var
-  sr: TSearchRec;
+  SearchRec: TSearchRec;
   Continue: Boolean;
   st: string;
   err: Integer;
 begin
   FSourceMask := '';
-  if (Pos ('?', sourceFiles) > 0) or (Pos ('*', sourceFiles) > 0) then
-    FSourceMask := sourceFiles
+  if (Pos ('?', SourceFiles) > 0) or (Pos ('*', SourceFiles) > 0) then
+    FSourceMask := SourceFiles
   else
   begin
-    st := Copy(sourceFiles, Length(sourceFiles), 1);
+    st := Copy(SourceFiles, Length(SourceFiles), 1);
     if (st = '\') or (st = ':') then
-      FSourceMask := sourceFiles + '*.*'
+      FSourceMask := SourceFiles + '*.*'
   end;
 
   FDestDir := FDestFiles;
@@ -286,25 +286,25 @@ begin
 
   if FSourceMask = '' then
   begin
-    err := FileGetAttr (sourceFiles);
+    err := FileGetAttr (SourceFiles);
     if err = -1 then
-      raise EFOpenError.CreateFmt(rstFileNotFound, [sourceFiles]);
+      raise EFOpenError.CreateFmt(rstFileNotFound, [SourceFiles]);
     if (err and faDirectory) <> 0 then
     begin
-      FSourceMask := sourceFiles + '\*.*';
-      FDestDir := FDestDir + ExtractFileName(sourceFiles) + '\'
+      FSourceMask := SourceFiles + '\*.*';
+      FDestDir := FDestDir + ExtractFileName(SourceFiles) + '\'
     end
   end;
 
   if FSourceMask <> '' then
     ForEach(FSourceMask, FDestDir, CopyFile, TidyDir)
   else
-    if FindFirst(sourceFiles, faAnyFile, sr) = 0 then
+    if FindFirst(SourceFiles, faAnyFile, SearchRec) = 0 then
     try
       Continue := True;
-      CopyFile(ExtractFilePath(sourceFiles), FDestDir, sr, Continue)
+      CopyFile(ExtractFilePath(SourceFiles), FDestDir, SearchRec, Continue)
     finally
-      FindClose(sr)
+      FindClose(SearchRec)
     end
 end;
 
@@ -354,25 +354,25 @@ end;
 procedure TFileCopier.DoOnEndAnalysis;
 begin
   if (not (csDesigning in ComponentState)) and Assigned(OnEndAnalysis) then
-    OnEndAnalysis (self);
+    OnEndAnalysis(Self);
 end;
 
 procedure TFileCopier.DoOnEndCopy;
 begin
   if (not (csDesigning in ComponentState)) and Assigned(OnEndCopy) then
-    OnEndCopy(self);
+    OnEndCopy(Self);
 end;
 
 procedure TFileCopier.DoOnEndCopyFile;
 begin
   if (not (csDesigning in ComponentState)) and Assigned(OnEndCopyFile) then
-    OnEndCopyFile(self, FCurrentFileName, FDestFileName, FCurrentFileSize);
+    OnEndCopyFile(Self, FCurrentFileName, FDestFileName, FCurrentFileSize);
 end;
 
 procedure TFileCopier.DoOnException;
 begin
   if (not (csDesigning in ComponentState)) and Assigned(OnException) then
-    OnException (self, FExcep)
+    OnException (Self, FExcep)
   else
     Application.ShowException(FExcep);
 end;
@@ -380,49 +380,49 @@ end;
 procedure TFileCopier.DoOnStartAnalysis;
 begin
   if (not (csDesigning in ComponentState)) and Assigned(OnStartAnalysis) then
-    OnStartAnalysis (self);
+    OnStartAnalysis (Self);
 end;
 
 procedure TFileCopier.DoOnStartCopy;
 begin
   if (not (csDesigning in ComponentState)) and Assigned(OnStartCopy) then
-    OnStartCopy(self);
+    OnStartCopy(Self);
 end;
 
 procedure TFileCopier.DoOnStartCopyFile;
 begin
   if (not (csDesigning in ComponentState)) and Assigned(OnStartCopyFile) then
-    OnStartCopyFile(self, FCurrentFileName, FDestFileName, FCurrentFileSize);
+    OnStartCopyFile(Self, FCurrentFileName, FDestFileName, FCurrentFileSize);
 end;
 
 function TFileCopier.ForEach(const Mask, destPath: string; proc, proc1: TForEachProc): Boolean;
 var
-  sr: TSearchRec;
+  SearchRec: TSearchRec;
   st: string;
 begin
   Result := True;
   begin
-    if FindFirst(Mask, faAnyFile, sr) = 0 then
+    if FindFirst(Mask, faAnyFile, SearchRec) = 0 then
     try
       repeat
-        if (sr.Attr and faDirectory) <> 0 then
+        if (SearchRec.Attr and faDirectory) <> 0 then
         begin
-          if (sr.Name <> '.') and (sr.Name <> '..') and Recursive then
+          if (SearchRec.Name <> '.') and (SearchRec.Name <> '..') and Recursive then
           begin
-            st := destPath + sr.Name + '\';
+            st := destPath + SearchRec.Name + '\';
 
-            Result := ForEach(ExtractFilePath(Mask) + sr.Name + '\' + ExtractFileName(Mask), st, proc, proc1)
+            Result := ForEach(ExtractFilePath(Mask) + SearchRec.Name + '\' + ExtractFileName(Mask), st, proc, proc1)
           end
         end
         else
-          proc (ExtractFilePath(Mask), destPath, sr, Result);
+          proc (ExtractFilePath(Mask), destPath, SearchRec, Result);
         if FCancelled then
           Result := False;
-      until not Result or (FindNext(sr) <> 0)
+      until not Result or (FindNext(SearchRec) <> 0)
     finally
-      FindClose(sr);
+      FindClose(SearchRec);
       if Assigned(proc1) then
-        proc1 (ExtractFilePath(Mask), '', sr, Result)
+        proc1 (ExtractFilePath(Mask), '', SearchRec, Result)
     end
     else
       RaiseLastOSError
@@ -440,14 +440,14 @@ begin
   FCheckedDrive := False;
   if not Assigned(FCopierThread) then
   begin
-    FCopierThread := TCopierThread.Create(self);
+    FCopierThread := TCopierThread.Create(Self);
   end
   else
     raise EFileCopier.Create(rstAlreadyCopying);
 end;
 
-procedure TFileCopier.TidyDir(const Directory, dest: string;
-  const sr: TSearchRec; var Continue: Boolean);
+procedure TFileCopier.TidyDir(const Directory, Dest: string;
+  const SearchRec: TSearchRec; var Continue: Boolean);
 var
   st: string;
 begin

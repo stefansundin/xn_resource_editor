@@ -1,8 +1,8 @@
-inherited fmProperties: TfmProperties
+inherited FormProperties: TFormProperties
   Caption = 'Options'
   PixelsPerInch = 96
   TextHeight = 13
-  inherited PersistentPosition1: TPersistentPosition
+  inherited PersistentPosition: TPersistentPosition
     Section = 'Options'
   end
 end

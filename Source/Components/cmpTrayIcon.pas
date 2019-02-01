@@ -38,8 +38,8 @@ uses
 type
   TTrayIcon = class;
 
-  TTaskbarCreatedEvent = procedure(sender: TObject; var RedoIcon: Boolean) of object;
-  TXPFastUserSwitchEvent = procedure(sender: TObject; StatusCode, SessionID: DWORD) of object;
+  TTaskbarCreatedEvent = procedure(Sender: TObject; var RedoIcon: Boolean) of object;
+  TXPFastUserSwitchEvent = procedure(Sender: TObject; StatusCode, SessionID: DWORD) of object;
 
   TTrayIcon = class(TComponent)
   private
@@ -134,7 +134,7 @@ begin
   if WTSAPIOk then
     WTSUnRegisterSessionNotification (Application.Handle); 
 
-  if Assigned (FObjectInstance) then
+  if Assigned(FObjectInstance) then
   begin
     SetWindowLong (Application.Handle, GWL_WNDPROC, Integer (FOldMainWProc));
     Classes.FreeObjectInstance(FObjectInstance)
@@ -155,10 +155,10 @@ begin
       case lParam of
         WM_RBUTTONDOWN :
           begin
-            if Assigned (FOnRightBtnClick) then
-            	OnRightBtnClick(self);
+            if Assigned(FOnRightBtnClick) then
+            	OnRightBtnClick(Self);
 
-            if Assigned (FPopupMenu) then
+            if Assigned(FPopupMenu) then
             begin
               GetCursorPos (pt);
               if AutoShow then FPopupMenu.Items[0].default := True;
@@ -169,22 +169,22 @@ begin
           end;
 
         WM_LBUTTONDOWN :
-          if Assigned (FOnLeftBtnClick) then
-            OnLeftBtnClick(self);
+          if Assigned(FOnLeftBtnClick) then
+            OnLeftBtnClick(Self);
 
         WM_LBUTTONDBLCLK :
         begin
-          if Assigned (FOnLeftBtnDblClick) then
-            OnLeftBtnDblClick(self);
+          if Assigned(FOnLeftBtnDblClick) then
+            OnLeftBtnDblClick(Self);
 
-          if Assigned (FPopupMenu) and AutoShow then with FPopupMenu do
-            if Assigned (items[0]) then
+          if Assigned(FPopupMenu) and AutoShow then with FPopupMenu do
+            if Assigned(items[0]) then
               items[0].click
         end;
 
         WM_MOUSEMOVE :
-          if Assigned (FOnMouseMove) then
-            OnMouseMove(self);
+          if Assigned(FOnMouseMove) then
+            OnMouseMove(Self);
       end
     else
       if msg = WM_QUERYENDSESSION then
@@ -204,7 +204,7 @@ begin
     iconData.uCallbackMessage := WM_ICONMESSAGE;
     StrPCopy(iconData.szTip, FHint);
 
-    if Assigned (FIcon) and FEnabled then
+    if Assigned(FIcon) and FEnabled then
     begin
       iconData.hIcon := FIcon.Handle;
       if FIconThere then
@@ -266,22 +266,22 @@ begin
   if Msg.Msg = WM_TASKBARCREATED then
   begin
     redoI := True;
-    if Assigned (OnTaskbarCreated) then
-      OnTaskbarCreated (self, redoI);
+    if Assigned(OnTaskbarCreated) then
+      OnTaskbarCreated (Self, redoI);
     if redoI then
       RedoIcon
   end
   else
     if Msg.Msg = WM_QUERYENDSESSION then
     begin
-      if Assigned (OnEndSession) then
-        OnEndSession (self)
+      if Assigned(OnEndSession) then
+        OnEndSession (Self)
     end
     else
       if Msg.Msg = WM_WTSSESSION_CHANGE then
       begin
-        if Assigned (OnXPFastUserSwitch) then
-          OnXPFastUserSwitch(self, Msg.WParam, Msg.LParam)
+        if Assigned(OnXPFastUserSwitch) then
+          OnXPFastUserSwitch(Self, Msg.WParam, Msg.LParam)
       end;
 
   Msg.Result := CallWindowProc (FOldMainWProc, Application.Handle, Msg.Msg, Msg.WParam, Msg.LParam);

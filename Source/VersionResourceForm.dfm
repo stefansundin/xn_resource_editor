@@ -1,22 +1,22 @@
-inherited fmVersionResource: TfmVersionResource
+inherited FormVersionResource: TFormVersionResource
   Left = 174
   Top = 116
-  ActiveControl = PropertyListBox1
-  Caption = 'fmVersionResource'
+  ActiveControl = PropertyListBox
+  Caption = 'FormVersionResource'
   ClientHeight = 432
   ClientWidth = 777
-  Menu = MainMenu1
+  Menu = MainMenu
   OnResize = FormResize
   ExplicitWidth = 777
   ExplicitHeight = 451
   PixelsPerInch = 96
   TextHeight = 13
-  object Splitter1: TSplitter
+  object Splitter: TSplitter
     Left = 201
     Top = 0
     Height = 432
   end
-  object lvVersionStrings: TListView
+  object ListViewVersionStrings: TListView
     Left = 204
     Top = 0
     Width = 573
@@ -34,13 +34,13 @@ inherited fmVersionResource: TfmVersionResource
     ColumnClick = False
     GridLines = True
     RowSelect = True
-    PopupMenu = PopupMenu1
+    PopupMenu = PopupMenu
     TabOrder = 1
     ViewStyle = vsReport
-    OnDblClick = lvVersionStringsDblClick
-    OnEdited = lvVersionStringsEdited
+    OnDblClick = ListViewVersionStringsDblClick
+    OnEdited = ListViewVersionStringsEdited
   end
-  object Panel1: TPanel
+  object PanelStrings: TPanel
     Left = 0
     Top = 0
     Width = 201
@@ -49,7 +49,7 @@ inherited fmVersionResource: TfmVersionResource
     BevelOuter = bvLowered
     FullRepaint = False
     TabOrder = 0
-    object PropertyListBox1: TPropertyListBox
+    object PropertyListBox: TPropertyListBox
       Left = 1
       Top = 1
       Width = 199
@@ -126,7 +126,7 @@ inherited fmVersionResource: TfmVersionResource
           ReadOnly = False
         end>
       ActualValueColWidth = 0
-      OnPropertyChanged = PropertyListBox1PropertyChanged
+      OnPropertyChanged = PropertyListBoxPropertyChanged
     end
   end
   object mmoMessage: TExRichEdit
@@ -149,66 +149,66 @@ inherited fmVersionResource: TfmVersionResource
     Visible = False
     OnExit = mmoMessageExit
   end
-  object MainMenu1: TMainMenu
+  object MainMenu: TMainMenu
     Left = 728
     Top = 32
-    object mnuStrings: TMenuItem
+    object MenuItemStrings: TMenuItem
       Caption = '&Strings'
       GroupIndex = 27
-      object mnuAddString: TMenuItem
-        Action = actStringAddString
+      object MenuItemAddString: TMenuItem
+        Action = ActionStringAddString
       end
-      object mnuModifyString: TMenuItem
-        Action = actStringModifyString
+      object MenuItemModifyString: TMenuItem
+        Action = ActionStringModifyString
       end
-      object actStringModifyStringName1: TMenuItem
-        Action = actStringModifyStringName
+      object MenuItemStringModifyStringName: TMenuItem
+        Action = ActionStringModifyStringName
       end
-      object mnuDeleteString: TMenuItem
-        Action = actStringDeleteString
+      object MenuItemDeleteString: TMenuItem
+        Action = ActionStringDeleteString
       end
     end
   end
-  object ActionList1: TActionList
+  object ActionList: TActionList
     Left = 728
     Top = 64
-    object actStringAddString: TAction
+    object ActionStringAddString: TAction
       Category = 'Strings'
       Caption = '&Add String'
       ShortCut = 45
-      OnExecute = actStringAddStringExecute
+      OnExecute = ActionStringAddStringExecute
     end
-    object actStringModifyString: TAction
+    object ActionStringModifyString: TAction
       Category = 'Strings'
       Caption = '&Modify String'
-      OnExecute = actStringModifyStringExecute
+      OnExecute = ActionStringModifyStringExecute
     end
-    object actStringDeleteString: TAction
+    object ActionStringDeleteString: TAction
       Category = 'Strings'
       Caption = '&Delete String'
       ShortCut = 46
-      OnExecute = actStringDeleteStringExecute
+      OnExecute = ActionStringDeleteStringExecute
     end
-    object actStringModifyStringName: TAction
+    object ActionStringModifyStringName: TAction
       Category = 'Strings'
       Caption = 'Modify String &Name'
-      OnExecute = actStringModifyStringNameExecute
+      OnExecute = ActionStringModifyStringNameExecute
     end
   end
-  object PopupMenu1: TPopupMenu
+  object PopupMenu: TPopupMenu
     Left = 736
     Top = 96
-    object AddString2: TMenuItem
-      Action = actStringAddString
+    object MenuItemAddString2: TMenuItem
+      Action = ActionStringAddString
     end
-    object ModifyString2: TMenuItem
-      Action = actStringModifyString
+    object MenuItemModifyString2: TMenuItem
+      Action = ActionStringModifyString
     end
-    object ModifyStringName1: TMenuItem
-      Action = actStringModifyStringName
+    object MenuItemModifyStringName: TMenuItem
+      Action = ActionStringModifyStringName
     end
-    object DeleteString2: TMenuItem
-      Action = actStringDeleteString
+    object MenuItemDeleteString2: TMenuItem
+      Action = ActionStringDeleteString
     end
   end
 end

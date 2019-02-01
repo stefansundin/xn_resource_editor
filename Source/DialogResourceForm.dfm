@@ -1,17 +1,17 @@
-inherited fmDialogResource: TfmDialogResource
+inherited FormDialogResource: TFormDialogResource
   Left = 257
   Top = 207
-  ActiveControl = cbControls
-  Caption = 'fmDialogResource'
+  ActiveControl = ComboBoxControls
+  Caption = 'DialogResource'
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object Splitter1: TSplitter
+  object Splitter: TSplitter
     Left = 185
     Top = 0
     Height = 455
   end
-  object pnlProperties: TPanel
+  object PanelProperties: TPanel
     Left = 0
     Top = 0
     Width = 185
@@ -20,7 +20,7 @@ inherited fmDialogResource: TfmDialogResource
     BevelOuter = bvLowered
     FullRepaint = False
     TabOrder = 0
-    object pnlPropertyCombo: TPanel
+    object PanelPropertyCombo: TPanel
       Left = 1
       Top = 1
       Width = 183
@@ -31,7 +31,7 @@ inherited fmDialogResource: TfmDialogResource
       DesignSize = (
         183
         26)
-      object cbControls: TComboBox
+      object ComboBoxControls: TComboBox
         Left = 2
         Top = 2
         Width = 179
@@ -41,10 +41,10 @@ inherited fmDialogResource: TfmDialogResource
         ParentShowHint = False
         ShowHint = True
         TabOrder = 0
-        OnChange = cbControlsChange
+        OnChange = ComboBoxControlsChange
       end
     end
-    object tcPropertyKind: TTabControl
+    object TabControlPropertyKind: TTabControl
       Left = 1
       Top = 27
       Width = 183
@@ -56,8 +56,8 @@ inherited fmDialogResource: TfmDialogResource
         'Styles'
         'Extended')
       TabIndex = 0
-      OnChange = tcPropertyKindChange
-      object PropertyListBox1: TPropertyListBox
+      OnChange = TabControlPropertyKindChange
+      object PropertyListBox: TPropertyListBox
         Left = 4
         Top = 24
         Width = 175
@@ -70,11 +70,11 @@ inherited fmDialogResource: TfmDialogResource
         Properties = <>
         NameColWidth = 110
         ActualValueColWidth = 0
-        OnPropertyChanged = PropertyListBox1PropertyChanged
+        OnPropertyChanged = PropertyListBoxPropertyChanged
       end
     end
   end
-  object ScrollBox1: TScrollBox
+  object ScrollBox: TScrollBox
     Left = 188
     Top = 0
     Width = 436
@@ -83,7 +83,7 @@ inherited fmDialogResource: TfmDialogResource
     Color = clWindow
     ParentColor = False
     TabOrder = 1
-    object Panel3: TPanel
+    object PanelRulerTop: TPanel
       Left = 0
       Top = 0
       Width = 432
@@ -91,14 +91,14 @@ inherited fmDialogResource: TfmDialogResource
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 0
-      object Ruler1: TRuler
+      object RulerTop: TRuler
         Left = 28
         Top = 4
         Width = 180
         Height = 17
       end
     end
-    object Panel4: TPanel
+    object PanelRulerLeft: TPanel
       Left = 0
       Top = 25
       Width = 25
@@ -106,31 +106,31 @@ inherited fmDialogResource: TfmDialogResource
       Align = alLeft
       BevelOuter = bvNone
       TabOrder = 1
-      object Ruler2: TRuler
+      object RulerLeft: TRuler
         Left = 4
         Top = 0
         Width = 17
         Height = 180
       end
     end
-    object DialogEditor1: TDialogEditor
+    object DialogEditor: TDialogEditor
       Left = 25
       Top = 25
       Width = 180
       Height = 120
       Color = clWindow
       ParentColor = False
-      OnResize = DialogEditor1Resize
-      OnShow = DialogEditor1Show
-      OnGetControlImage = DialogEditor1GetControlImage
-      OnDesignModeSelectedItemChange = DialogEditor1DesignModeSelectedItemChange
-      OnDesignModeDropControl = DialogEditor1DesignModeDropControl
-      OnControlResize = DialogEditor1ControlResize
-      OnControlPropertyChange = DialogEditor1ControlPropertyChange
-      OnDeleteControl = DialogEditor1DeleteControl
+      OnResize = DialogEditorResize
+      OnShow = DialogEditorShow
+      OnGetControlImage = DialogEditorGetControlImage
+      OnDesignModeSelectedItemChange = DialogEditorDesignModeSelectedItemChange
+      OnDesignModeDropControl = DialogEditorDesignModeDropControl
+      OnControlResize = DialogEditorControlResize
+      OnControlPropertyChange = DialogEditorControlPropertyChange
+      OnDeleteControl = DialogEditorDeleteControl
     end
   end
-  object SizingPageControl1: TSizingPageControl
+  object SizingPageControl: TSizingPageControl
     Left = 624
     Top = 0
     Width = 77
@@ -139,10 +139,10 @@ inherited fmDialogResource: TfmDialogResource
     DockSite = True
     MultiLine = True
     TabOrder = 2
-    OnDockDrop = SizingPageControl1DockDrop
-    OnUnDock = SizingPageControl1UnDock
+    OnDockDrop = SizingPageControlDockDrop
+    OnUnDock = SizingPageControlUnDock
   end
-  object pnlPalette: TPanel
+  object PanelPalette: TPanel
     Left = 616
     Top = 24
     Width = 81
@@ -154,7 +154,7 @@ inherited fmDialogResource: TfmDialogResource
     DragMode = dmAutomatic
     FullRepaint = False
     TabOrder = 3
-    object Panel1: TPanel
+    object PanelInnerPalette: TPanel
       Left = 6
       Top = 6
       Width = 69
@@ -163,174 +163,174 @@ inherited fmDialogResource: TfmDialogResource
       BevelOuter = bvNone
       FullRepaint = False
       TabOrder = 0
-      object ToolBar1: TToolBar
+      object ToolBar: TToolBar
         Left = 0
         Top = 0
         Width = 69
         Height = 198
         Align = alNone
         AutoSize = True
-        Caption = 'ToolBar1'
+        Caption = 'ToolBar'
         GradientEndColor = clBtnFace
         GradientStartColor = clBtnHighlight
-        Images = ImageList1
+        Images = ImageList
         ParentShowHint = False
         ShowHint = True
         TabOrder = 0
-        object ToolButton1: TToolButton
+        object ToolButtonCursor: TToolButton
           Left = 0
           Top = 0
-          Caption = 'ToolButton1'
+          Caption = 'ToolButtonCursor'
           Down = True
           Grouped = True
           ImageIndex = 0
           Style = tbsCheck
-          OnClick = ToolButton1Click
+          OnClick = ToolButtonCursorClick
         end
-        object ToolButton2: TToolButton
+        object ToolButtonImage: TToolButton
           Tag = 1
           Left = 23
           Top = 0
-          Caption = 'ToolButton2'
+          Caption = 'ToolButtonImage'
           Grouped = True
           ImageIndex = 1
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
-        object ToolButton3: TToolButton
+        object ToolButtonFont: TToolButton
           Tag = 2
           Left = 46
           Top = 0
-          Caption = 'ToolButton3'
+          Caption = 'ToolButtonFont'
           Grouped = True
           ImageIndex = 2
           Wrap = True
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
-        object ToolButton4: TToolButton
+        object ToolButtonText: TToolButton
           Tag = 3
           Left = 0
           Top = 22
-          Caption = 'ToolButton4'
+          Caption = 'ToolButtonText'
           Grouped = True
           ImageIndex = 3
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
-        object ToolButton5: TToolButton
+        object ToolButton1: TToolButton
           Tag = 4
           Left = 23
           Top = 22
-          Caption = 'ToolButton5'
+          Caption = 'ToolButton1'
           Grouped = True
           ImageIndex = 4
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
-        object ToolButton6: TToolButton
+        object ToolButton2: TToolButton
           Tag = 5
           Left = 46
           Top = 22
-          Caption = 'ToolButton6'
+          Caption = 'ToolButton2'
           Grouped = True
           ImageIndex = 5
           Wrap = True
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
-        object ToolButton7: TToolButton
+        object ToolButtonCheckBox: TToolButton
           Tag = 6
           Left = 0
           Top = 44
-          Caption = 'ToolButton7'
+          Caption = 'ToolButtonCheckBox'
           Grouped = True
           ImageIndex = 6
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
-        object ToolButton8: TToolButton
+        object ToolButtonRadioButton: TToolButton
           Tag = 7
           Left = 23
           Top = 44
-          Caption = 'ToolButton8'
+          Caption = 'ToolButtonRadioButton'
           Grouped = True
           ImageIndex = 7
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
-        object ToolButton9: TToolButton
+        object ToolButton3: TToolButton
           Tag = 8
           Left = 46
           Top = 44
-          Caption = 'ToolButton9'
+          Caption = 'ToolButton3'
           Grouped = True
           ImageIndex = 8
           Wrap = True
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
-        object ToolButton10: TToolButton
+        object ToolButton4: TToolButton
           Tag = 9
           Left = 0
           Top = 66
-          Caption = 'ToolButton10'
+          Caption = 'ToolButton4'
           Grouped = True
           ImageIndex = 9
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
-        object ToolButton11: TToolButton
+        object ToolButton5: TToolButton
           Tag = 10
           Left = 23
           Top = 66
-          Caption = 'ToolButton11'
+          Caption = 'ToolButton5'
           Grouped = True
           ImageIndex = 10
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
-        object ToolButton12: TToolButton
+        object ToolButton6: TToolButton
           Tag = 11
           Left = 46
           Top = 66
-          Caption = 'ToolButton12'
+          Caption = 'ToolButton6'
           Grouped = True
           ImageIndex = 11
           Wrap = True
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
         object ToolButton13: TToolButton
           Tag = 12
           Left = 0
           Top = 88
-          Caption = 'ToolButton13'
+          Caption = 'ToolButton7'
           Grouped = True
           ImageIndex = 12
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
         object ToolButton14: TToolButton
           Tag = 13
           Left = 23
           Top = 88
-          Caption = 'ToolButton14'
+          Caption = 'ToolButton8'
           Grouped = True
           ImageIndex = 13
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
-        object ToolButton15: TToolButton
+        object ToolButtonTrackbar: TToolButton
           Tag = 14
           Left = 46
           Top = 88
-          Caption = 'ToolButton15'
+          Caption = 'ToolButtonTrackbar'
           Grouped = True
           ImageIndex = 14
           Wrap = True
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
         object ToolButton16: TToolButton
           Tag = 15
@@ -340,7 +340,7 @@ inherited fmDialogResource: TfmDialogResource
           Grouped = True
           ImageIndex = 15
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
         object ToolButton17: TToolButton
           Tag = 16
@@ -350,7 +350,7 @@ inherited fmDialogResource: TfmDialogResource
           Grouped = True
           ImageIndex = 16
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
         object ToolButton18: TToolButton
           Tag = 17
@@ -361,27 +361,27 @@ inherited fmDialogResource: TfmDialogResource
           ImageIndex = 17
           Wrap = True
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
-        object ToolButton19: TToolButton
+        object ToolButtonTabs: TToolButton
           Tag = 18
           Left = 0
           Top = 132
-          Caption = 'ToolButton19'
+          Caption = 'ToolButtonTabs'
           Grouped = True
           ImageIndex = 18
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
-        object ToolButton20: TToolButton
+        object ToolButtonVideo: TToolButton
           Tag = 19
           Left = 23
           Top = 132
-          Caption = 'ToolButton20'
+          Caption = 'ToolButtonVideo'
           Grouped = True
           ImageIndex = 19
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
         object ToolButton21: TToolButton
           Tag = 20
@@ -392,7 +392,7 @@ inherited fmDialogResource: TfmDialogResource
           ImageIndex = 20
           Wrap = True
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
         object ToolButton22: TToolButton
           Tag = 21
@@ -402,17 +402,17 @@ inherited fmDialogResource: TfmDialogResource
           Grouped = True
           ImageIndex = 21
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
-        object ToolButton23: TToolButton
+        object ToolButtonTable: TToolButton
           Tag = 22
           Left = 23
           Top = 154
-          Caption = 'ToolButton23'
+          Caption = 'ToolButtonTable'
           Grouped = True
           ImageIndex = 22
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
         object ToolButton24: TToolButton
           Tag = 23
@@ -423,7 +423,7 @@ inherited fmDialogResource: TfmDialogResource
           ImageIndex = 23
           Wrap = True
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
         object ToolButton25: TToolButton
           Tag = 24
@@ -433,7 +433,7 @@ inherited fmDialogResource: TfmDialogResource
           Grouped = True
           ImageIndex = 24
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
         object ToolButton26: TToolButton
           Tag = 25
@@ -443,16 +443,16 @@ inherited fmDialogResource: TfmDialogResource
           Grouped = True
           ImageIndex = 25
           Style = tbsCheck
-          OnClick = ToolButton2Click
+          OnClick = ToolButtonImageClick
         end
       end
     end
   end
-  object ImageList1: TImageList
+  object ImageList: TImageList
     Left = 462
     Top = 378
     Bitmap = {
-      494C01011A002000080010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01011A002000100010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000007000000001002000000000000070
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1383,7 +1383,7 @@ inherited fmDialogResource: TfmDialogResource
       F7FF7FFEFFFFFFFDFFFF0000FFFFFFFF00000000000000000000000000000000
       000000000000}
   end
-  object FontDialog1: TFontDialog
+  object FontDialog: TFontDialog
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11

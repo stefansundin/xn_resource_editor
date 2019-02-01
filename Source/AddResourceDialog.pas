@@ -7,12 +7,12 @@ uses
   ComCtrls, StdCtrls, unitResourceDetails, unitResourceJPEG;
 
 type
-  TdlgAddResource = class(TForm)
+  TDialogAddResource = class(TForm)
     ListView: TListView;
-    btnOK: TButton;
-    btnCancel: TButton;
+    ButtonOK: TButton;
+    ButtonCancel: TButton;
     procedure FormCreate(Sender: TObject);
-    procedure btnOKClick(Sender: TObject);
+    procedure ButtonOKClick(Sender: TObject);
     procedure ListViewDblClick(Sender: TObject);
     procedure FormResize(Sender: TObject);
   private
@@ -49,7 +49,7 @@ const
     TAcceleratorResourceDetails
   );
 
-procedure TdlgAddResource.FormCreate(Sender: TObject);
+procedure TDialogAddResource.FormCreate(Sender: TObject);
 var
   i: Integer;
 begin
@@ -61,7 +61,7 @@ begin
     end
 end;
 
-procedure TdlgAddResource.btnOKClick(Sender: TObject);
+procedure TDialogAddResource.ButtonOKClick(Sender: TObject);
 begin
   if Assigned(ListView.Selected) then
     FResourceDetailsClass := CAddableItems[ListView.Selected.Index]
@@ -69,13 +69,13 @@ begin
     FResourceDetailsClass := Nil
 end;
 
-procedure TdlgAddResource.ListViewDblClick(Sender: TObject);
+procedure TDialogAddResource.ListViewDblClick(Sender: TObject);
 begin
-  btnOKClick(Self);
+  ButtonOKClick(Self);
   modalResult := mrOK;
 end;
 
-procedure TdlgAddResource.FormResize(Sender: TObject);
+procedure TDialogAddResource.FormResize(Sender: TObject);
 begin
   ListView.Columns[0].Width := ListView.Width - 16;
 end;

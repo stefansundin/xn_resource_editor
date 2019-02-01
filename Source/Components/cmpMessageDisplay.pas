@@ -727,7 +727,7 @@ var
   d: TDisplayObjectLink;
 begin
   d := GetFocusedTextObject;
-  if Assigned (d) then
+  if Assigned(d) then
     d.GetHTML (Result, rawFragment)
   else
     Result := ''
@@ -774,7 +774,7 @@ end;
  *----------------------------------------------------------------------*)
 function TMessageDisplay.GetObjectCount: Integer;
 begin
-  if Assigned (FObjects) then
+  if Assigned(FObjects) then
     Result := FObjects.Count
   else
     Result := 0
@@ -836,7 +836,7 @@ var
   d: TDisplayObjectLink;
 begin
   d := GetFocusedTextObject;
-  if Assigned (d) then
+  if Assigned(d) then
   begin
     d.GetSelectedText(txt);
     Result := txt <> ''
@@ -858,7 +858,7 @@ var
   d: TDisplayObjectLink;
 begin
   d := FocusedTextObject;
-  if Assigned (d) then
+  if Assigned(d) then
     Result := d.GetSelLength
   else
     Result := 0
@@ -869,7 +869,7 @@ var
   d: TDisplayObjectLink;
 begin
   d := GetFocusedTextObject;
-  if Assigned (d) then
+  if Assigned(d) then
     d.GetText(Result)
   else
     Result := ''
@@ -896,10 +896,10 @@ function TMessageDisplay.InsertObject(idx: Integer; obj: TObject; codepage: Inte
 begin
   Result := nil;
 
-  if not Assigned (tp) then
+  if not Assigned(tp) then
     tp := GetObjectLinkClass (obj, False);
 
-  if Assigned (tp) then
+  if Assigned(tp) then
   begin
     Result := tp.Create(Self, obj, codepage);
     FObjects.Insert(idx, Result);
@@ -1103,7 +1103,7 @@ begin
     inherited
   else
   begin
-    if Assigned (parent) then
+    if Assigned(parent) then
     begin
       if parent is TScrollingWinControl then
       begin
@@ -1176,7 +1176,7 @@ var
   d: TDisplayObjectLink;
 begin
   d := GetFocusedTextObject;
-  if Assigned (d) then
+  if Assigned(d) then
     d.SetSelectedText(st)
 end;
 

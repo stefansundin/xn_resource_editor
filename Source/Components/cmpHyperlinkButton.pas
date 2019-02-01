@@ -220,7 +220,7 @@ begin
     Font := Self.Font;
     FontHeight := TextHeight('W');
 
-    if Assigned (FImages) and (FImageIndex >=0) and (FImageIndex < FImages.Count) then
+    if Assigned(FImages) and (FImageIndex >=0) and (FImageIndex < FImages.Count) then
     begin
       FImages.Draw (Canvas, rect.Left, rect.Top, FImageIndex);
       Rect.Left := Rect.Left + FImages.Width + 8
@@ -238,8 +238,8 @@ begin
     DrawText(Handle, PChar(Caption), -1, Rect, Flags);
   end;
 
-  if Assigned (OnPainted) and not (csDestroying in ComponentState) then
-    OnPainted (self);
+  if Assigned(OnPainted) and not (csDestroying in ComponentState) then
+    OnPainted(Self);
 
 end;
 
@@ -283,16 +283,16 @@ begin
     if FMouseInControl then
     begin
       Perform(CM_MOUSELEAVE, 0, 0);
-      if Assigned (OnEndCapture) then
-        OnEndCapture(self);
-      SetCaptureControl (nil)
+      if Assigned(OnEndCapture) then
+        OnEndCapture(Self);
+      SetCaptureControl(nil)
     end
     else
     begin
       if GetCaptureControl = nil then
       begin
         Perform(CM_MOUSEENTER, 0, 0);
-        SetCaptureControl (Self)
+        SetCaptureControl(Self)
       end
     end
   end;

@@ -127,9 +127,9 @@ var
  *----------------------------------------------------------------------*)
 procedure TSpellChecker.Add(const word: WideString);
 begin
-  if not Assigned (FSpeller) then
+  if not Assigned(FSpeller) then
     Initialize;
-  if Assigned (FSpeller) then
+  if Assigned(FSpeller) then
     FSpeller.SpellCommand('*' + WideStringToString (word, FSpeller.CodePage));
 end;
 
@@ -279,15 +279,15 @@ function TSpellChecker.CheckWord(const ws: WideString;
 var
   resp: string;
 begin
-  if not Assigned (FSpeller) then
+  if not Assigned(FSpeller) then
     Initialize;
-  if Assigned (FSpeller) then
+  if Assigned(FSpeller) then
   begin                         // Send word to ispell.exe
     FSpeller.SpellCommand(WideStringToString (ws, FSpeller.CodePage));
     resp := FSpeller.GetResponse;
     Result := resp = '';        // If blank line received the word was
                                 // spelt OK.
-    if Assigned (Suggestions) then
+    if Assigned(Suggestions) then
     begin
       Suggestions.BeginUpdate;
       Suggestions.Clear;
@@ -339,7 +339,7 @@ begin
     FLanguageIdx := gDefaultISpellLanguage;
 
   FreeAndNil (FSpeller);
-  if (FLanguageIdx >= 0) and Assigned (gISpellLanguages) and (FLanguageIdx < gISpellLanguages.Count) then
+  if (FLanguageIdx >= 0) and Assigned(gISpellLanguages) and (FLanguageIdx < gISpellLanguages.Count) then
     with TISpellLanguage(gISpellLanguages[FLanguageIdx]) do
       FSpeller := TSpeller.Create(Path, Cmd, CodePage);
 end;
@@ -359,7 +359,7 @@ end;
 
 class function TSpellChecker.LanguageCount: Integer;
 begin
-  if Assigned (gISpellLanguages) then
+  if Assigned(gISpellLanguages) then
     Result := gISpellLanguages.Count
   else
     Result := 0
@@ -676,7 +676,7 @@ begin
                 cmd := ReadString (s, 'Cmd', '');
                 cmd := StringReplace(cmd, '%UniRed%',path, [rfReplaceAll, rfIgnoreCase]);
 
-                if not Assigned (gISpellLanguages) then
+                if not Assigned(gISpellLanguages) then
                   gISpellLanguages := TObjectList.Create;
 
                 sectionLanguage := ReadInteger (s, 'LangNo', sectionLanguage);

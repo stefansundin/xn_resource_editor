@@ -1,17 +1,17 @@
-inherited fmMenuResource: TfmMenuResource
+inherited FormMenuResource: TFormMenuResource
   Left = 315
   Top = 221
-  ActiveControl = PropertyListBox1
-  Caption = 'fmMenuResource'
+  ActiveControl = PropertyListBox
+  Caption = 'Menu Resource'
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object Splitter1: TSplitter
+  object Splitter: TSplitter
     Left = 185
     Top = 0
     Height = 455
   end
-  object Panel1: TPanel
+  object PanelProperties: TPanel
     Left = 0
     Top = 0
     Width = 185
@@ -20,13 +20,13 @@ inherited fmMenuResource: TfmMenuResource
     BevelOuter = bvLowered
     FullRepaint = False
     TabOrder = 0
-    object PropertyListBox1: TPropertyListBox
+    object PropertyListBox: TPropertyListBox
       Left = 1
       Top = 1
       Width = 183
       Height = 453
-      VertScrollBar.Increment = 19
-      VertScrollBar.Range = 95
+      VertScrollBar.Increment = 17
+      VertScrollBar.Range = 85
       Align = alClient
       BorderStyle = bsNone
       TabOrder = 0
@@ -73,10 +73,10 @@ inherited fmMenuResource: TfmMenuResource
           ReadOnly = False
         end>
       ActualValueColWidth = 0
-      OnPropertyChanged = PropertyListBox1PropertyChanged
+      OnPropertyChanged = PropertyListBoxPropertyChanged
     end
   end
-  object Panel2: TPanel
+  object PanelMain: TPanel
     Left = 188
     Top = 0
     Width = 513
@@ -85,86 +85,86 @@ inherited fmMenuResource: TfmMenuResource
     BevelOuter = bvLowered
     FullRepaint = False
     TabOrder = 1
-    object MenuDesigner1: TMenuDesigner
+    object MenuDesigner: TMenuDesigner
       Left = 1
       Top = 1
       Width = 511
       Height = 453
-      OnSelectedItemChange = MenuDesigner1SelectedItemChange
+      OnSelectedItemChange = MenuDesignerSelectedItemChange
       Align = alClient
       UseDockManager = False
-      PopupMenu = PopupMenu1
+      PopupMenu = PopupMenu
       TabOrder = 0
       TabStop = True
-      OnKeyDown = MenuDesigner1KeyDown
+      OnKeyDown = MenuDesignerKeyDown
     end
   end
-  object alMenu: TActionList
+  object ActionListMenu: TActionList
     Left = 660
     Top = 40
-    object actMenuDeleteItem: TAction
+    object ActionMenuDeleteItem: TAction
       Category = 'Menu'
       Caption = '&Delete Item'
       ShortCut = 46
-      OnExecute = actMenuDeleteItemExecute
+      OnExecute = ActionMenuDeleteItemExecute
     end
-    object actMenuInsertItem: TAction
+    object ActionMenuInsertItem: TAction
       Category = 'Menu'
       Caption = '&Add &Item Before'
       ShortCut = 45
-      OnExecute = actMenuInsertItemExecute
+      OnExecute = ActionMenuInsertItemExecute
     end
-    object actMenuAppendItem: TAction
+    object ActionMenuAppendItem: TAction
       Category = 'Menu'
       Caption = '&Add Item After'
       ShortCut = 8237
-      OnExecute = actMenuAppendItemExecute
+      OnExecute = ActionMenuAppendItemExecute
     end
-    object actMenuAddChildItem: TAction
+    object ActionMenuAddChildItem: TAction
       Category = 'Menu'
       Caption = 'Add &Child Item'
-      OnExecute = actMenuAddChildItemExecute
+      OnExecute = ActionMenuAddChildItemExecute
     end
   end
-  object mnuMenu: TMainMenu
+  object MainMenuMenu: TMainMenu
     Left = 660
     Top = 80
-    object mnuMenuITem: TMenuItem
+    object MenuItemMenuITem: TMenuItem
       Caption = '&Menu'
-      object InsetrItem2: TMenuItem
-        Action = actMenuInsertItem
+      object MenuItemInsertItem2: TMenuItem
+        Action = ActionMenuInsertItem
       end
-      object AddItemAfter2: TMenuItem
-        Action = actMenuAppendItem
+      object MenuItemAddItemAfter2: TMenuItem
+        Action = ActionMenuAppendItem
       end
-      object AddChildItem2: TMenuItem
-        Action = actMenuAddChildItem
+      object MenuItemAddChildItem2: TMenuItem
+        Action = ActionMenuAddChildItem
       end
       object N2: TMenuItem
         Caption = '-'
       end
-      object mnuMenuDeleteItem: TMenuItem
-        Action = actMenuDeleteItem
+      object MenuItemMenuDeleteItem2: TMenuItem
+        Action = ActionMenuDeleteItem
       end
     end
   end
-  object PopupMenu1: TPopupMenu
+  object PopupMenu: TPopupMenu
     Left = 660
     Top = 120
-    object InsetrItem1: TMenuItem
-      Action = actMenuInsertItem
+    object MenuItemInsertItem: TMenuItem
+      Action = ActionMenuInsertItem
     end
-    object AddItemAfter1: TMenuItem
-      Action = actMenuAppendItem
+    object MenuItemAddItemAfter: TMenuItem
+      Action = ActionMenuAppendItem
     end
-    object AddChildItem1: TMenuItem
-      Action = actMenuAddChildItem
+    object MenuItemAddChildItem: TMenuItem
+      Action = ActionMenuAddChildItem
     end
     object N1: TMenuItem
       Caption = '-'
     end
-    object pomMenuDeleteITem: TMenuItem
-      Action = actMenuDeleteItem
+    object MenuItemMenuDeleteItem: TMenuItem
+      Action = ActionMenuDeleteItem
     end
   end
 end

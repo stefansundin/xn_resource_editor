@@ -1418,7 +1418,7 @@ begin
 
         RasGetSubEntryHandleA := GetProcAddress(RASLibrary, 'RasGetSubEntryHandleA');
 
-        if Assigned (RasGetSubEntryHandleA) then
+        if Assigned(RasGetSubEntryHandleA) then
         begin
           RasVer401 := True;
           RasGetSubEntryHandleW := GetProcAddress(RASLibrary, 'RasGetSubEntryHandleW');

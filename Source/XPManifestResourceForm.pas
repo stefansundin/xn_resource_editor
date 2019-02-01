@@ -8,13 +8,12 @@ uses
   StdCtrls;
 
 type
-  TfmXPManifestResource = class(TfmResource)
-    Memo1: TMemo;
-    procedure Memo1Exit(Sender: TObject);
+  TFormXPManifestResource = class(TFormResource)
+    Memo: TMemo;
+    procedure MemoExit(Sender: TObject);
   private
     FDetails : TXPManifestResourceDetails;
   protected
-
     function GetCanCopy: Boolean; override;
     function GetCanCut: Boolean; override;
     function GetCanPaste: Boolean; override;
@@ -30,82 +29,80 @@ type
     procedure EditDelete; override;
   end;
 
-var
-  fmXPManifestResource: TfmXPManifestResource;
-
 implementation
 
 {$R *.dfm}
 
 resourcestring
   rstChangeManifest = 'change manifest';
+
 { TfmXPManifestResource }
 
-procedure TfmXPManifestResource.Copy;
+procedure TFormXPManifestResource.Copy;
 begin
-  Memo1.CopyToClipboard;
+  Memo.CopyToClipboard;
 end;
 
-procedure TfmXPManifestResource.Cut;
+procedure TFormXPManifestResource.Cut;
 begin
-  Memo1.CutToClipboard
+  Memo.CutToClipboard;
 end;
 
-procedure TfmXPManifestResource.EditDelete;
+procedure TFormXPManifestResource.EditDelete;
 begin
-  Memo1.SetSelTextBuf('');
+  Memo.SetSelTextBuf('');
 end;
 
-function TfmXPManifestResource.GetCanCopy: Boolean;
+function TFormXPManifestResource.GetCanCopy: Boolean;
 begin
-  Result := Memo1.SelLength > 0
+  Result := Memo.SelLength > 0;
 end;
 
-function TfmXPManifestResource.GetCanCut: Boolean;
+function TFormXPManifestResource.GetCanCut: Boolean;
 begin
-  Result := Memo1.SelLength > 0
+  Result := Memo.SelLength > 0;
 end;
 
-function TfmXPManifestResource.GetCanDelete: Boolean;
+function TFormXPManifestResource.GetCanDelete: Boolean;
 begin
-  Result := Memo1.SelLength > 0
+  Result := Memo.SelLength > 0;
 end;
 
-function TfmXPManifestResource.GetCanPaste: Boolean;
+function TFormXPManifestResource.GetCanPaste: Boolean;
 begin
-  Result := Memo1.SelLength > 0
+  Result := Memo.SelLength > 0;
 end;
 
-function TfmXPManifestResource.GetCanSelectAll: Boolean;
+function TFormXPManifestResource.GetCanSelectAll: Boolean;
 begin
-  Result := Memo1.SelLength > 0
+  Result := Memo.SelLength > 0;
 end;
 
-procedure TfmXPManifestResource.Paste;
+procedure TFormXPManifestResource.Paste;
 begin
-  Memo1.PasteFromClipboard
+  Memo.PasteFromClipboard;
 end;
 
-procedure TfmXPManifestResource.SelectAll;
+procedure TFormXPManifestResource.SelectAll;
 begin
-  Memo1.SelectAll
+  Memo.SelectAll;
 end;
 
-procedure TfmXPManifestResource.SetObject(const Value: TObject);
+procedure TFormXPManifestResource.SetObject(const Value: TObject);
 begin
   inherited;
 
   FDetails := obj as TXPManifestResourceDetails;
-  Memo1.Lines.Text := FDetails.Text;
+  Memo.Lines.Text := FDetails.Text;
 end;
 
-procedure TfmXPManifestResource.Memo1Exit(Sender: TObject);
+procedure TFormXPManifestResource.MemoExit(Sender: TObject);
 begin
-  if Memo1.CanUndo then
+  if Memo.CanUndo then
   begin
     AddUndoEntry(rstChangeManifest);
-    FDetails.Text := Memo1.Lines.Text
-  end
+    FDetails.Text := Memo.Lines.Text;
+  end;
 end;
 
 end.

@@ -4,40 +4,36 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  PropertyPageForm, Menus, cmpPersistentPosition, StdCtrls, VirtualTrees,
-  ExtCtrls;
+  StdCtrls, Menus, ExtCtrls, VirtualTrees, PropertyPageForm,
+  cmpPersistentPosition;
 
 type
   TPropertyPageProgramSettingsData = class (TPropertyPageData)
   private
-    fInternationalFontName : string;
-    fInternationalFontHeight : Integer;
-    fParserType : Integer;  // 0 = NT API; 1 = Internal
+    FInternationalFontName : string;
+    FInternationalFontHeight : Integer;
+    FParserType : Integer;  // 0 = NT API; 1 = Internal
   protected
     procedure Initialize; override;
   public
     procedure Apply; override;
   end;
 
-  TfmPropertyPageProgramSettings = class(TfmPropertyPage)
-    FontDialog1: TFontDialog;
-    stFontDetails: TStaticText;
-    Button1: TButton;
-    Label1: TLabel;
-    stModuleParser: TLabel;
-    cbModuleParser: TComboBox;
-    procedure cbModuleParserChange(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+  TFormPropertyPageProgramSettings = class(TFormPropertyPage)
+    FontDialog: TFontDialog;
+    StaticTextFontDetails: TStaticText;
+    ButtonSelectFont: TButton;
+    LabelSelectFont: TLabel;
+    StaticTextModuleParser: TLabel;
+    ComboBoxModuleParser: TComboBox;
+    procedure ComboBoxModuleParserChange(Sender: TObject);
+    procedure ButtonSelectFontClick(Sender: TObject);
   private
-    fData : TPropertyPageProgramSettingsData;
-  protected
+    FData : TPropertyPageProgramSettingsData;
   public
     class function GetDataClass : TPropertyPageDataClass; override;
     procedure PopulateControls (AData : TPropertyPageData); override;
   end;
-
-var
-  fmPropertyPageProgramSettings: TfmPropertyPageProgramSettings;
 
 implementation
 
@@ -45,43 +41,44 @@ uses
   ResourceForm, unitCredProperties;
 
 {$R *.DFM}
-{ TfmPropertyPageProgramSettings }
 
-procedure TfmPropertyPageProgramSettings.Button1Click(Sender: TObject);
+{ TFormPropertyPageProgramSettings }
+
+procedure TFormPropertyPageProgramSettings.ButtonSelectFontClick(Sender: TObject);
 begin
-  FontDialog1.Font.Name := fData.fInternationalFontName;
-  FontDialog1.Font.Height := fData.fInternationalFontHeight;
-  if FontDialog1.Execute(Handle) then
+  FontDialog.Font.Name := FData.FInternationalFontName;
+  FontDialog.Font.Height := FData.FInternationalFontHeight;
+  if FontDialog.Execute(Handle) then
   begin
-    fData.fInternationalFontName := FontDialog1.Font.Name;
-    fData.fInternationalFontHeight := FontDialog1.Font.Height;
+    FData.FInternationalFontName := FontDialog.Font.Name;
+    FData.FInternationalFontHeight := FontDialog.Font.Height;
 
-    stFontDetails.Caption := fData.fInternationalFontName
+    StaticTextFontDetails.Caption := FData.FInternationalFontName
   end;
 end;
 
-procedure TfmPropertyPageProgramSettings.cbModuleParserChange(Sender: TObject);
+procedure TFormPropertyPageProgramSettings.ComboBoxModuleParserChange(Sender: TObject);
 begin
-  fData.fParserType := cbModuleParser.ItemIndex
+  FData.FParserType := ComboBoxModuleParser.ItemIndex
 end;
 
-class function TfmPropertyPageProgramSettings.GetDataClass: TPropertyPageDataClass;
+class function TFormPropertyPageProgramSettings.GetDataClass: TPropertyPageDataClass;
 begin
   Result := TPropertyPageProgramSettingsData;
 end;
 
-procedure TfmPropertyPageProgramSettings.PopulateControls(AData: TPropertyPageData);
+procedure TFormPropertyPageProgramSettings.PopulateControls(AData: TPropertyPageData);
 begin
   inherited;
-  fData := AData as TPropertyPageProgramSettingsData;
-  stFontDetails.Caption := fData.fInternationalFontName;
+  FData := AData as TPropertyPageProgramSettingsData;
+  StaticTextFontDetails.Caption := FData.FInternationalFontName;
 
   if Win32Platform = VER_PLATFORM_WIN32_NT then
-    cbModuleParser.ItemIndex := fData.fParserType
+    ComboBoxModuleParser.ItemIndex := FData.FParserType
   else
   begin
-    cbModuleParser.Visible := False;
-    stModuleParser.Visible := False
+    ComboBoxModuleParser.Visible := False;
+    StaticTextModuleParser.Visible := False;
   end
 end;
 
@@ -89,15 +86,15 @@ end;
 
 procedure TPropertyPageProgramSettingsData.Apply;
 begin
-  SetInternationalFont(fInternationalFontName, fInternationalFontHeight);
-  gProperties.ParserType := fParserType;
+  SetInternationalFont(FInternationalFontName, FInternationalFontHeight);
+  gProperties.ParserType := FParserType;
 end;
 
 procedure TPropertyPageProgramSettingsData.Initialize;
 begin
-  fInternationalFontName := gProperties.InternationalFontName;
-  fInternationalFontHeight := gProperties.InternationalFontHeight;
-  fParserType := gProperties.ParserType;
+  FInternationalFontName := gProperties.InternationalFontName;
+  FInternationalFontHeight := gProperties.InternationalFontHeight;
+  FParserType := gProperties.ParserType;
 end;
 
 end.

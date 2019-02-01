@@ -145,7 +145,7 @@ end;
  *----------------------------------------------------------------------*)
 function TNewsRichEdit.GetCharFormatter: TCharFormatter;
 begin
-  if not Assigned (FFormatter) then
+  if not Assigned(FFormatter) then
     if RawText then
       FFormatter := TCharFormatter.Create
     else

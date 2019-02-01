@@ -458,7 +458,7 @@ end;
  *----------------------------------------------------------------------*)
 function TObjectCache.GetEnumerator: TObjectCacheEnumerator;
 begin
-  Result := TObjectCacheEnumerator.Create(self);
+  Result := TObjectCacheEnumerator.Create(Self);
 end;
 
 (*----------------------------------------------------------------------*

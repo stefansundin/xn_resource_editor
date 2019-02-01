@@ -1,17 +1,17 @@
-inherited fmGroupResource: TfmGroupResource
+inherited FormGroupResource: TFormGroupResource
   Left = 294
   Top = 207
-  Caption = 'fmGroupResource'
+  Caption = 'Group Resource'
   PixelsPerInch = 96
   TextHeight = 13
-  object ScrollBox1: TScrollBox
+  object ScrollBox: TScrollBox
     Left = 0
     Top = 0
     Width = 701
     Height = 455
     Align = alClient
     TabOrder = 0
-    object Image1: TImage
+    object Image: TImage
       Left = 8
       Top = 8
       Width = 32

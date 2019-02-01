@@ -73,7 +73,7 @@ begin
     Frame3D(Canvas, Rect, TopColor, BottomColor, BevelWidth);
   end;
 
-  if Assigned (Picture.Graphic) and not Picture.Graphic.Empty then
+  if Assigned(Picture.Graphic) and not Picture.Graphic.Empty then
   begin
     if TExtureKind <> tkTile then
     begin
@@ -95,7 +95,7 @@ begin
   begin
     Brush.Color := Color;
 
-    if not Assigned (Picture.Graphic) or Picture.Graphic.Empty then
+    if not Assigned(Picture.Graphic) or Picture.Graphic.Empty then
       FillRect(Rect);
     Brush.Style := bsClear;
     Font := Self.Font;

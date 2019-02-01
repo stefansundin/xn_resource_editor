@@ -178,7 +178,7 @@ procedure TExRegistry.ClearSearchStack;
 var
   i: Integer;
 begin
-  if Assigned (FSearchStack) then
+  if Assigned(FSearchStack) then
   begin
     for i := 0 to FSearchStack.Count - 1 do
       TSearchNode(FSearchStack [i]).Free;
@@ -268,7 +268,7 @@ end;
 
 function TExRegistry.EndExport: string;
 begin
-  if Assigned (FExportStrings) then
+  if Assigned(FExportStrings) then
   begin
     Result := FExportStrings.Text;
     freeandNil (FExportStrings)
@@ -900,7 +900,7 @@ var
           keyLen := SizeOf(keyName);
           RegEnumKey(k, i, keyName, keyLen);
 
-          if not ((level = 1) and Assigned (FExportExcludeKeys) and (FExportExcludeKeys.IndexOf(keyName) >= 0)) then
+          if not ((level = 1) and Assigned(FExportExcludeKeys) and (FExportExcludeKeys.IndexOf(keyName) >= 0)) then
             if pathName = '' then
               DoWalk(keyName)
             else
@@ -919,7 +919,7 @@ begin
   GetMem (buffer, bufSize);
 
   try
-    if Assigned (walkProc) then
+    if Assigned(walkProc) then
       DoWalk(CurrentPath);
   finally
     FreeMem (buffer)
@@ -1048,7 +1048,7 @@ var
   r: TExRegistry;
   i: Integer;
 begin
-  if not Assigned (FKeyNames) then
+  if not Assigned(FKeyNames) then
   begin
     FKeyNames := TStringList.Create;
     r := TExRegistry.Create;
@@ -1070,7 +1070,7 @@ var
   r: TExRegistry;
   i: Integer;
 begin
-  if not Assigned (FValueNames) then
+  if not Assigned(FValueNames) then
   begin
     FValueNames := TStringList.Create;
     r := TExRegistry.Create;

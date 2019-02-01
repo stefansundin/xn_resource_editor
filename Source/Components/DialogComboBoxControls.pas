@@ -90,7 +90,7 @@ type
   end;
   PComboBoxInfo = ^TComboBoxInfo;
 
-TfnGetComboBoxInfo = function (hwndCombo: HWND; pcbi: PComboBoxInfo): Boolean; stdcall;
+  TfnGetComboBoxInfo = function (hwndCombo: HWND; pcbi: PComboBoxInfo): Boolean; stdcall;
 
 var
   fnGetComboBoxInfo: TfnGetComboBoxInfo = nil;
@@ -141,7 +141,7 @@ begin
     FillChar (Info, SizeOf(Info), 0);
     Info.cbSize := SizeOf(Info);
 
-    if Assigned (fnGetComboboxInfo) then
+    if Assigned(fnGetComboboxInfo) then
       fnGetComboBoxInfo (ControlHandle, @Info);
     FEditWnd := Info.hwndEdit;
     FListBoxWnd := Info.hwndList
@@ -196,10 +196,12 @@ begin
 
     Result := 0;
     case kind of
-      pkStyle :
+      pkStyle:
         case idx of
-          0: Result := 3;  // 'Type' property - Simple; DropDown; DroppdownList
-          1: Result := 3;  // 'OwnerDraw' propery - No; Fixed; Variable
+          0:
+            Result := 3;  // 'Type' property - Simple; DropDown; DroppdownList
+          1:
+            Result := 3;  // 'OwnerDraw' propery - No; Fixed; Variable
         end
     end;
   end
@@ -225,19 +227,25 @@ begin
     Dec(idx, inherited GetPropertyCount(kind));
     Result := '';
     case kind of
-      pkStyle :
+      pkStyle:
         case idx of
           0:                   // 'Type' property
             case enum of
-              0: Result := rstSimple;
-              1: Result := rstDropdown;
-              2: Result := rstDropdownList
+              0:
+                Result := rstSimple;
+              1:
+                Result := rstDropdown;
+              2:
+                Result := rstDropdownList
             end;
           1:                   // 'OwnerDraw' property
             case enum of
-              0: Result := rstNo;
-              1: Result := rstFixed;
-              2: Result := rstVariable
+              0:
+                Result := rstNo;
+              1:
+                Result := rstFixed;
+              2:
+                Result := rstVariable
             end
         end
     end
@@ -260,7 +268,7 @@ begin
     Result := '';
     case kind of
 //      pkGeneral: Result := StaticControlPropertyGeneralName [idx];
-      pkStyle  : Result := ComboBoxControlPropertyStyleName [idx];
+      pkStyle: Result := ComboBoxControlPropertyStyleName [idx];
 //      pkExtended: Result := StaticControlPropertyExtendedName [idx];
     end
   end
@@ -282,7 +290,7 @@ begin
     Result := ptInteger;
     case kind of
 //      pkGeneral: Result := StaticControlPropertyGeneralType [idx];
-      pkStyle  : Result := ComboBoxControlPropertyStyleType [idx];
+      pkStyle: Result := ComboBoxControlPropertyStyleType [idx];
 //      pkExtended: Result := StaticControlPropertyExtendedType [idx];
     end
   end
@@ -308,29 +316,42 @@ begin
     case kind of
       pkStyle :
         case idx of
-          0: case Style and 3 of       // 'Type' property
-                CBS_SIMPLE: Result := 0;
-                CBS_DROPDOWN: Result := 1;
-                CBS_DROPDOWNLIST: Result := 2;
-                else
-                  Result := 0
-              end;
-                                        // OwnerDraw property
-          1: if HasStyle [CBS_OWNERDRAWFIXED] then
-                Result := 1
+          0:
+            case Style and 3 of       // 'Type' property
+              CBS_SIMPLE:
+                Result := 0;
+              CBS_DROPDOWN:
+                Result := 1;
+              CBS_DROPDOWNLIST:
+                Result := 2;
               else
-                if HasStyle [CBS_OWNERDRAWVARIABLE] then
-                  Result := 2
-                else
-                  Result := 0;
-          2: Result := HasStyle [CBS_SORT];
-          3: Result := HasStyle [WS_VSCROLL];
-          4: Result := HasStyle [CBS_NOINTEGRALHEIGHT];
-          5: Result := HasStyle [CBS_OEMCONVERT];
-          6: Result := HasStyle [CBS_AUTOHSCROLL];
-          7: Result := HasStyle [CBS_DISABLENOSCROLL];
-          8: Result := HasStyle [CBS_UPPERCASE];
-          9: Result := HasStyle [CBS_LOWERCASE];
+                Result := 0
+            end;
+                                        // OwnerDraw property
+          1:
+            if HasStyle [CBS_OWNERDRAWFIXED] then
+              Result := 1
+            else
+            if HasStyle [CBS_OWNERDRAWVARIABLE] then
+              Result := 2
+            else
+              Result := 0;
+          2:
+            Result := HasStyle [CBS_SORT];
+          3:
+            Result := HasStyle [WS_VSCROLL];
+          4:
+            Result := HasStyle [CBS_NOINTEGRALHEIGHT];
+          5:
+            Result := HasStyle [CBS_OEMCONVERT];
+          6:
+            Result := HasStyle [CBS_AUTOHSCROLL];
+          7:
+            Result := HasStyle [CBS_DISABLENOSCROLL];
+          8:
+            Result := HasStyle [CBS_UPPERCASE];
+          9:
+            Result := HasStyle [CBS_LOWERCASE];
         end
     end
   end
@@ -354,7 +375,7 @@ end;
 procedure TComboBoxControlInfo.Init;
 begin
   GetCBHandles;
-  if (FListBoxWnd <> 0) and ((fOrigStyle and WS_VSCROLL) <> 0) then
+  if (FListBoxWnd <> 0) and ((FOrigStyle and WS_VSCROLL) <> 0) then
     SetStyle(WS_VSCROLL, True)
 end;
 
@@ -371,44 +392,61 @@ begin
     recreateRequired := False;
 
     case kind of
-      pkStyle :
+      pkStyle:
         case idx of
-          0 :
+          0:
             begin
               case Value of
-                0: SetMaskedStyle(CBS_SIMPLE, 3);
-                1: SetMaskedStyle(CBS_DROPDOWN, 3);
-                2: SetMaskedStyle(CBS_DROPDOWNLIST, 3)
+                0:
+                  SetMaskedStyle(CBS_SIMPLE, 3);
+                1:
+                  SetMaskedStyle(CBS_DROPDOWN, 3);
+                2:
+                  SetMaskedStyle(CBS_DROPDOWNLIST, 3)
               end;
 
               recreateRequired := True
             end;
 
-          1 :
+          1:
             begin
               case Value of
-                0: SetMaskedStyle(0, CBS_OWNERDRAWFIXED or CBS_OWNERDRAWVARIABLE);
-                1: SetMaskedStyle(CBS_OWNERDRAWFIXED, CBS_OWNERDRAWFIXED or CBS_OWNERDRAWVARIABLE);
-                2: SetMaskedStyle(CBS_OWNERDRAWVARIABLE, CBS_OWNERDRAWFIXED or CBS_OWNERDRAWVARIABLE)
+                0:
+                  SetMaskedStyle(0, CBS_OWNERDRAWFIXED or CBS_OWNERDRAWVARIABLE);
+                1:
+                  SetMaskedStyle(CBS_OWNERDRAWFIXED, CBS_OWNERDRAWFIXED or CBS_OWNERDRAWVARIABLE);
+                2:
+                  SetMaskedStyle(CBS_OWNERDRAWVARIABLE, CBS_OWNERDRAWFIXED or CBS_OWNERDRAWVARIABLE)
               end;
 
               recreateRequired := True
             end;
 
-          2: HasStyle [CBS_SORT] := Value;
-          3: HasStyle [WS_VSCROLL] := Value;
-          4: HasStyle [CBS_NOINTEGRALHEIGHT] := Value;
-          5: HasStyle [CBS_OEMCONVERT] := Value;
-          6: HasStyle [CBS_AUTOHSCROLL] := Value;
-          7: begin HasStyle [CBS_DISABLENOSCROLL] := Value; recreateRequired := True; end;
-          8: HasStyle [CBS_UPPERCASE] := Value;
-          9: HasStyle [CBS_LOWERCASE] := Value;
+          2:
+            HasStyle [CBS_SORT] := Value;
+          3:
+            HasStyle [WS_VSCROLL] := Value;
+          4:
+            HasStyle [CBS_NOINTEGRALHEIGHT] := Value;
+          5:
+            HasStyle [CBS_OEMCONVERT] := Value;
+          6:
+            HasStyle [CBS_AUTOHSCROLL] := Value;
+          7:
+            begin
+              HasStyle [CBS_DISABLENOSCROLL] := Value;
+              recreateRequired := True;
+            end;
+          8:
+            HasStyle [CBS_UPPERCASE] := Value;
+          9:
+            HasStyle [CBS_LOWERCASE] := Value;
         end
     end;
 
     if recreateRequired then
     begin
-      fOrigStyle := Style;
+      FOrigStyle := Style;
       RecreateWnd
     end
   end

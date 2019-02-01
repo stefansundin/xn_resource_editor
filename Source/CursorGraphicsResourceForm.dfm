@@ -1,36 +1,36 @@
-inherited fmCursorGraphicsResource: TfmCursorGraphicsResource
-  Caption = 'fmCursorGraphicsResource'
+inherited FormCursorGraphicsResource: TFormCursorGraphicsResource
+  Caption = 'FormCursorGraphicsResource'
   ClientHeight = 500
   ExplicitHeight = 500
   PixelsPerInch = 96
   TextHeight = 13
-  inherited Splitter1: TSplitter
+  inherited Splitter: TSplitter
     Height = 500
     ExplicitHeight = 508
   end
-  inherited pnlLeft: TPanel
+  inherited PanelLeft: TPanel
     Height = 500
     ExplicitHeight = 500
-    inherited sbThumbnail: TScrollBox
+    inherited ScrollBoxThumbnail: TScrollBox
       Height = 495
       ExplicitHeight = 495
     end
   end
-  inherited Panel1: TPanel
+  inherited PanelMain: TPanel
     Height = 500
     ExplicitHeight = 500
-    inherited ScrollBox2: TScrollBox
+    inherited ScrollBoxBitmapEditor: TScrollBox
       Height = 500
       ExplicitHeight = 500
     end
   end
-  inherited SizingPageControl1: TSizingPageControl
+  inherited SizingPageControl: TSizingPageControl
     Height = 500
     ExplicitHeight = 500
   end
-  inherited ImageList1: TImageList
+  inherited ImageList: TImageList
     Bitmap = {
-      494C010119002800140010000F00FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010119002800280010000F00FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006900000001002000000000000069
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -903,11 +903,11 @@ inherited fmCursorGraphicsResource: TfmCursorGraphicsResource
       FFFFF25FFFE0FF01FFFFFFFFFFF0FFFFFFFFFFFFFFFFFFFF0000000000000000
       0000000000000000000000000000}
   end
-  inherited PopupMenu1: TPopupMenu
-    object SetHotspot1: TMenuItem [4]
+  inherited PopupMenu: TPopupMenu
+    object MenuItemSetHotspot: TMenuItem [4]
       Caption = 'Set &Hotspot'
       ShortCut = 106
-      OnClick = SetHotspot1Click
+      OnClick = MenuItemSetHotspotClick
     end
   end
 end

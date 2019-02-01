@@ -3,13 +3,13 @@ unit IconGraphicsResourceForm;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, IconCursorGraphicsResourceForm, Menus, ActnList, ImgList,
-  ComCtrls, cmpColorSelector, ExtCtrls, ToolWin, cmpSizingPageControl,
-  cmpBitmapEditor, cmpPropertyListBox, System.Actions, System.ImageList;
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  Menus, ActnList, ImgList, ComCtrls, Actions, ImageList, ExtCtrls, ToolWin,
+  IconCursorGraphicsResourceForm, cmpColorSelector, cmpSizingPageControl,
+  cmpBitmapEditor, cmpPropertyListBox;
 
 type
-  TfmIconGraphicsResource = class(TfmIconCursorGraphicsResource)
+  TFormIconGraphicsResource = class(TFormIconCursorGraphicsResource)
     procedure FormCreate(Sender: TObject);
   end;
 
@@ -17,11 +17,11 @@ implementation
 
 {$R *.dfm}
 
-procedure TfmIconGraphicsResource.FormCreate(Sender: TObject);
+procedure TFormIconGraphicsResource.FormCreate(Sender: TObject);
 begin
   inherited;
 
-  with TPropertyListProperty(PropertyListBox1.Properties.Add) do
+  with TPropertyListProperty(PropertyListBox.Properties.Add) do
   begin
     PropertyName := 'Hot Spot Left';
     PropertyType := ptInteger;
@@ -29,7 +29,7 @@ begin
     Color := clBlack;
     ReadOnly := False;
   end;
-  with TPropertyListProperty(PropertyListBox1.Properties.Add) do
+  with TPropertyListProperty(PropertyListBox.Properties.Add) do
   begin
     PropertyName := 'Hot Spot Top';
     PropertyType := ptInteger;

@@ -1,7 +1,7 @@
-inherited fmResource: TfmResource
+inherited FormResource: TFormResource
   Left = 247
   Top = 156
-  Caption = 'fmResource'
+  Caption = 'Resource'
   OldCreateOrder = True
   PixelsPerInch = 96
   TextHeight = 13

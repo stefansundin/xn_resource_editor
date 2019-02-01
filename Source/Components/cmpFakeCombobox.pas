@@ -136,7 +136,7 @@ begin
   FItems := TStringList.Create;
   TStringList(FItems).OnChange := StringListOnChange;
 
-  FEdit := TEdit.Create(self);
+  FEdit := TEdit.Create(Self);
   FEdit.Parent := Self;
   FEdit.Ctl3D := False;
   FEdit.BorderStyle := bsNone;
@@ -270,7 +270,7 @@ begin
       if not SpecialButton then
         ShowList(True, False)
       else
-        if Assigned (OnSpecialButtonClick) then
+        if Assigned(OnSpecialButtonClick) then
           OnSpecialButtonClick(Self);
     end
 end;
@@ -420,7 +420,7 @@ var
 begin
   if Show then
   begin
-    if not Assigned (FListBox) then
+    if not Assigned(FListBox) then
     begin
       FListBox := TListBox.Create(Self);
       FListBox.Parent := Parent;
@@ -454,7 +454,7 @@ begin
       FEdit.Text := FListBox.Items[FListBox.ItemIndex];
     FreeAndNil (FListBox);
 
-    if Assigned (OnExit) and Update then
+    if Assigned(OnExit) and Update then
       OnExit(Self);
     SetFocus
   end
@@ -479,11 +479,11 @@ begin
     if Items.Count > 0 then
       ShowList(True, False)
     else
-      if SpecialButton and Assigned (OnSpecialButtonClick) then
+      if SpecialButton and Assigned(OnSpecialButtonClick) then
         OnSpecialButtonClick(Self);
   end
   else
-    if Assigned (FOnKeyDown) then
+    if Assigned(FOnKeyDown) then
       FOnKeyDown (Self, key, shift);
 end;
 

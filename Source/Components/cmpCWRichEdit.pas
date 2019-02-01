@@ -610,24 +610,24 @@ end;
 function TCustomExRichEdit.CreateAppropriateProvider: TRichEditProvider;
 begin
   if Win32MajorVersion >= 5 then  // W2K, XP
-    Result := TRichEdit3Provider.Create(self)
+    Result := TRichEdit3Provider.Create(Self)
   else
     if Win32MajorVersion = 4 then // 95, 98, ME, NT4
     begin
       if Win32MinorVersion >= 90 then // ME
-        Result := TRichEdit3Provider.Create(self)
+        Result := TRichEdit3Provider.Create(Self)
       else
         if Win32MinorVersion >= 10 then // 98
-          Result := TRichEdit2Provider.Create(self)
+          Result := TRichEdit2Provider.Create(Self)
         else
           if Win32Platform = VER_PLATFORM_WIN32_NT then // NT 4
-            Result := TRichEdit2Provider.Create(self)
+            Result := TRichEdit2Provider.Create(Self)
           else
-            Result := TRichEdit1Provider.Create(self)
+            Result := TRichEdit1Provider.Create(Self)
     end
     else
       if Win32MajorVersion = 3 then
-        Result := TRichEdit1Provider.Create(self)
+        Result := TRichEdit1Provider.Create(Self)
       else
         raise EcwRichEdit.Create(rstInvalidOSVersion) // Impossible!
 end;
@@ -1279,7 +1279,7 @@ begin
 
     canvas := TControlCanvas.Create;
     try
-      canvas.Control := self;
+      canvas.Control := Self;
       canvas.Font.Assign(Font);
       GetTextMetrics (canvas.Handle, tm);
 
@@ -1295,7 +1295,7 @@ begin
     try
       FInFontChange := True;
       if Assigned(OnFontChange) and not (csDestroying in ComponentState) then
-        OnFontChange(self);
+        OnFontChange(Self);
     finally
       FInFontChange := False
     end

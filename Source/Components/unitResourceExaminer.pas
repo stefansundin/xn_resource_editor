@@ -449,8 +449,8 @@ var
   currentLang : TResExamLang;
   res : TResourceDetails;
   grp : TIconCursorGroupResourceDetails;
-  section : TResExamSection;
-  sectionData : PChar;
+  Section : TResExamSection;
+  SectionData : PChar;
   imp : PImageImportDirectory;
   impSection : TResExamImport;
 
@@ -462,29 +462,29 @@ begin
 
   if ExportCount > 0 then
   begin
-    sectionData := TPEModule(FResourceModule).ExportSectionData;
-    section := TExportResExamSection.Create(self, sectionData);
-    FSections.Add(section);
+    SectionData := TPEModule(FResourceModule).ExportSectionData;
+    Section := TExportResExamSection.Create(Self, SectionData);
+    FSections.Add(Section);
   end;
 
   if ImportCount > 0 then
   begin
-    sectionData := TPEModule(FResourceModule).ImportSectionData;
-    section := TResExamSection.Create('Imported Functions');
-    FSections.Add(section);
+    SectionData := TPEModule(FResourceModule).ImportSectionData;
+    Section := TResExamSection.Create('Imported Functions');
+    FSections.Add(Section);
 
     for i := 0 to ImportCount - 1 do
     begin
       imp := Import [i];
-      impSection := TResExamImport.Create(self, sectionData, imp);
-      section.FElements.Add(impSection);
+      impSection := TResExamImport.Create(Self, SectionData, imp);
+      Section.FElements.Add(impSection);
     end
   end;
 
   if ResourceCount > 0 then
   begin
-    section := TResExamSection.Create('Resources');
-    FSections.Add(section);
+    Section := TResExamSection.Create('Resources');
+    FSections.Add(Section);
 
     for i := 0 to ResourceCount - 1 do
     begin
@@ -494,8 +494,8 @@ begin
         currentName := nil;
         if res is TIconCursorResourceDetails then
           Continue;
-        currentType := TResExamType.Create(self, res.ResourceType);
-        section.FElements.Add(currentType)
+        currentType := TResExamType.Create(Self, res.ResourceType);
+        Section.FElements.Add(currentType)
       end;
 
       if (currentName = Nil) or (currentName.Name <> res.ResourceName) then
@@ -647,7 +647,7 @@ begin
   wst := FixResourceName(Value);
   AddNameToUndoList(rstChangeResourceName);
   FName := wst;
-  ReplaceChildResourceNames (self);
+  ReplaceChildResourceNames (Self);
 end;
 
 { TResExamType }
@@ -693,7 +693,7 @@ begin
   wst := FixResourceName(Value);
   AddNameToUndoList(rstChangeCustomResourceType);
   FName := wst;
-  ReplaceChildResourceTypes (self);
+  ReplaceChildResourceTypes (Self);
 end;
 
 { TResExamElement }

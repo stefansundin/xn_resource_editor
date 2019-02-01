@@ -165,9 +165,9 @@ begin
         case idx of
           0: Result := 3;
           3: Result := 4
-        end
-    end
-  end
+        end;
+    end;
+  end;
 end;
 
 function TButtonControlInfo.GetPropertyEnumName(kind: TPropertyKind; idx,
@@ -183,23 +183,30 @@ begin
     case kind of
       pkStyle :
         case idx of
-          0 :
+          0:
             case enum of
-              0: Result := rstText;
-              1: Result := rstIcon;
-              2: Result := rstBitmap
+              0:
+                Result := rstText;
+              1:
+                Result := rstIcon;
+              2:
+                Result := rstBitmap
             end;
 
-          3 :
+          3:
             case enum of
-              0: Result := rstDefault;
-              1: Result := rstLeft;
-              2: Result := rstRight;
-              3: Result := rstCenter
-            end
-        end
-    end
-  end
+              0:
+                Result := rstDefault;
+              1:
+                Result := rstLeft;
+              2:
+                Result := rstRight;
+              3:
+                Result := rstCenter
+            end;
+        end;
+    end;
+  end;
 end;
 
 function TButtonControlInfo.GetPropertyName(kind: TPropertyKind;
@@ -218,8 +225,8 @@ begin
         Result := ButtonControlPropertyStyleName[idx];
       pkExtended:
         {Result := ButtonControlPropertyExtendedName[idx]};
-    end
-  end
+    end;
+  end;
 end;
 
 function TButtonControlInfo.GetPropertyType(kind: TPropertyKind;
@@ -238,8 +245,8 @@ begin
         Result := ButtonControlPropertyStyleType[idx];
       pkExtended:
         {Result := ButtonControlPropertyExtendedType[idx]};
-    end
-  end
+    end;
+  end;
 end;
 
 function TButtonControlInfo.GetPropertyValue(kind: TPropertyKind;
@@ -254,17 +261,22 @@ begin
     case kind of
       pkGeneral :
         case idx of
-          0: Result := WindowText;
+          0:
+            Result := WindowText;
         end;
       pkStyle :
         case idx of
-          0: Result := (Style and $c0) shr 6;
-          1: Result := HasStyle[BS_FLAT];
-          2: Result := HasStyle[BS_NOTIFY];
-          3: Result := (Style and $300) shr 8
+          0:
+            Result := (Style and $c0) shr 6;
+          1:
+            Result := HasStyle[BS_FLAT];
+          2:
+            Result := HasStyle[BS_NOTIFY];
+          3:
+            Result := (Style and $300) shr 8
         end;
-    end
-  end
+    end;
+  end;
 end;
 
 procedure TButtonControlInfo.SetPropertyValue(kind: TPropertyKind;
@@ -281,17 +293,31 @@ begin
     Dec(idx, inherited GetPropertyCount(kind));
 
     case kind of
-      pkGeneral :
+      pkGeneral:
         case idx of
-          0: WindowText := Value;
+          0:
+            WindowText := Value;
         end;
 
-      pkStyle :
+      pkStyle:
         case idx of
-          0: begin SetMaskedStyle(Value shl 6, $c0); recreateRequired := True end;
-          1: begin HasStyle[BS_FLAT] := Value; frameChanged := True end;
-          2: HasStyle[BS_NOTIFY] := Value;
-          3: begin SetMaskedStyle(Value shl 8, $300); recreateRequired := True end;
+          0:
+            begin
+              SetMaskedStyle(Value shl 6, $c0);
+              recreateRequired := True
+            end;
+          1:
+            begin
+              HasStyle[BS_FLAT] := Value;
+              frameChanged := True
+            end;
+          2:
+            HasStyle[BS_NOTIFY] := Value;
+          3:
+            begin
+              SetMaskedStyle(Value shl 8, $300);
+              recreateRequired := True
+            end;
         end;
     end
   end;
@@ -301,6 +327,7 @@ begin
   if recreateRequired then
     RecreateWnd
 end;
+
 
 { TPushbuttonControlInfo }
 
@@ -357,7 +384,7 @@ begin
     Result := '';
     case kind of
 //      pkGeneral: Result := PushButtonControlPropertyGeneralName[idx];
-      pkStyle  : Result := PushButtonControlPropertyStyleName[idx];
+      pkStyle: Result := PushButtonControlPropertyStyleName[idx];
 //      pkExtended: Result := PushButtonControlPropertyExtendedName[idx];
     end
   end
@@ -374,7 +401,7 @@ begin
     Result := ptInteger;
     case kind of
 //      pkGeneral: Result := PushButtonControlPropertyGeneralType[idx];
-      pkStyle  : Result := PushButtonControlPropertyStyleType[idx];
+      pkStyle: Result := PushButtonControlPropertyStyleType[idx];
 //      pkExtended: Result := PushButtonControlPropertyExtendedType[idx];
     end
   end
@@ -390,7 +417,7 @@ begin
     Dec(idx, inherited GetPropertyCount(kind));
 
     case kind of
-      pkStyle :
+      pkStyle:
         case idx of
           0: Result := HasStyle[BS_DEFPUSHBUTTON];
         end;
@@ -411,15 +438,20 @@ begin
     Dec(idx, inherited GetPropertyCount(kind));
 
     case kind of
-      pkStyle :
+      pkStyle:
         case idx of
-          0: begin HasStyle[BS_DEFPUSHBUTTON] := Value; frameChanged := True end;
+          0:
+            begin
+              HasStyle[BS_DEFPUSHBUTTON] := Value;
+              frameChanged := True;
+            end;
         end;
     end
   end;
   if frameChanged then
     SetWindowPos(ControlHandle, 0, 0, 0, 0, 0, SWP_FRAMECHANGED or SWP_NOACTIVATE or SWP_NOMOVE or SWP_NOSIZE or SWP_NOZORDER);
 end;
+
 
 { TGroupBoxControlInfo }
 
@@ -434,6 +466,7 @@ class function TGroupBoxControlInfo.GetDescription: string;
 begin
   Result := rstGroupBox;
 end;
+
 
 { TCheckboxControlInfo }
 
@@ -595,6 +628,7 @@ begin
     RecreateWnd
 end;
 
+
 { TRadiobuttonControlInfo }
 
 class procedure TRadiobuttonControlInfo.CreateControlParams(
@@ -714,23 +748,33 @@ begin
     case kind of
       pkStyle :
         case idx of
-          0 :
-            case Boolean (Value) of
-              False: if (tp = BS_AUTORADIOBUTTON) then
-                        SetMaskedStyle(BS_RADIOBUTTON, $f);
-              True:  if (tp = BS_RADIOBUTTON) then
-                        SetMaskedStyle(BS_AUTORADIOBUTTON, $f)
+          0:
+            case Boolean(Value) of
+              False:
+                if (tp = BS_AUTORADIOBUTTON) then
+                  SetMaskedStyle(BS_RADIOBUTTON, $f);
+              True:
+                if (tp = BS_RADIOBUTTON) then
+                  SetMaskedStyle(BS_AUTORADIOBUTTON, $f)
             end;
 
-          1: begin HasStyle[BS_LEFTTEXT] := Value; recreateRequired := True end;
-          2: begin HasStyle[BS_PUSHLIKE] := Value; recreateRequired := True end;
-
+          1:
+            begin
+              HasStyle[BS_LEFTTEXT] := Value;
+              recreateRequired := True
+            end;
+          2:
+            begin
+              HasStyle[BS_PUSHLIKE] := Value;
+              recreateRequired := True
+            end;
         end;
-    end
+    end;
   end;
   if recreateRequired then
     RecreateWnd
 end;
+
 
 { TBasicButtonControlInfo }
 
@@ -769,18 +813,22 @@ begin
     Result := '';
 
     case kind of
-      pkStyle :
+      pkStyle:
         case idx of
-          0 :
+          0:
             case enum of
-              0: Result := rstDefault;
-              1: Result := rstTop;
-              2: Result := rstBottom;
-              3: Result := rstCenter
-            end
-        end
-    end
-  end
+              0:
+                Result := rstDefault;
+              1:
+                Result := rstTop;
+              2:
+                Result := rstBottom;
+              3:
+                Result := rstCenter
+            end;
+        end;
+    end;
+  end;
 end;
 
 function TBasicButtonControlInfo.GetPropertyName(kind: TPropertyKind;
@@ -794,7 +842,7 @@ begin
     Result := '';
     case kind of
 //      pkGeneral: Result := BasicButtonControlPropertyGeneralName[idx];
-      pkStyle  : Result := BasicButtonControlPropertyStyleName[idx];
+      pkStyle: Result := BasicButtonControlPropertyStyleName[idx];
 //      pkExtended: Result := BasicButtonControlPropertyExtendedName[idx];
     end
   end
@@ -811,7 +859,7 @@ begin
     Result := ptInteger;
     case kind of
 //      pkGeneral: Result := BasicButtonControlPropertyGeneralType[idx];
-      pkStyle  : Result := BasicButtonControlPropertyStyleType[idx];
+      pkStyle: Result := BasicButtonControlPropertyStyleType[idx];
 //      pkExtended: Result := BasicButtonControlPropertyExtendedType[idx];
     end
   end
@@ -859,8 +907,8 @@ begin
           2:
             HasStyle[BS_OWNERDRAW] := Value;
         end;
-    end
-  end
+    end;
+  end;
 end;
 
 end.

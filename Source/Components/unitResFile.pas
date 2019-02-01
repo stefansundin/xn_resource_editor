@@ -83,7 +83,7 @@ begin
 
     if (DataSize <> 0) or (sName <> '0') then
     begin
-      ResourceDetails := TResourceDetails.CreateResourceDetails (self, language, sName, sType, DataSize, data);
+      ResourceDetails := TResourceDetails.CreateResourceDetails(Self, language, sName, sType, DataSize, data);
       ResourceDetails.Characteristics := Characteristics;
       ResourceDetails.Version := version;
       ResourceDetails.MemoryFlags := memoryFlags;

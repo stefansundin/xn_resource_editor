@@ -98,7 +98,7 @@ type
     function GetHasText: Boolean; override;
     function FindText(const SearchStr: string; NewSearch: Boolean; Options: TStringSearchOptions; y: Integer): Boolean; override;
   public
-    constructor Create(AOwner: TMessageDisplay; AObj: TObject; codepage: Integer); override;
+    constructor Create(AOwner: TMessageDisplay; AObj: TObject; CodePage: Integer); override;
     destructor Destroy; override;
     procedure SetTextObject(objNo: Integer; obj: TObject);
     procedure AddTextObject(obj: TObject);
@@ -140,46 +140,46 @@ begin
 end;
 
 constructor TNewsStringsDisplayObjectLink.Create(AOwner: TMessageDisplay;
-  AObj: TObject;  codepage: Integer);
+  AObj: TObject;  CodePage: Integer);
 var
-  ctrl: TNewsRichEditX;
+  Ctrl: TNewsRichEditX;
   w, w1: Integer;
   tm: TTextMetric;
 begin
   FOwner := AOwner;
   FTextObjects := TList.Create;
   FTextObjects.Add(AObj);
-  ctrl := TNewsRichEditX.Create(AOwner.Owner);
-  ctrl.Parent := AOwner;
-  ctrl.CodePage := codepage;
+  Ctrl := TNewsRichEditX.Create(AOwner.Owner);
+  Ctrl.Parent := AOwner;
+  Ctrl.CodePage := CodePage;
 
   if AOwner.Parent is TScrollingWinControl then
-    ctrl.FScrollingParent := TScrollingWinControl (AOwner.Parent);
+    Ctrl.FScrollingParent := TScrollingWinControl (AOwner.Parent);
 
-  ctrl.FObjectLink := self;
-  inherited Create(AOwner, ctrl, codepage);
+  Ctrl.FObjectLink := Self;
+  inherited Create(AOwner, Ctrl, CodePage);
   BeginUpdate;
-  ctrl.BorderStyle := bsNone;
+  Ctrl.BorderStyle := bsNone;
 
-  if Assigned(ctrl.FScrollingParent) then
-    w := ctrl.FScrollingParent.Width - Margin * 2 - GetSystemMetrics (SM_CXVSCROLL)
+  if Assigned(Ctrl.FScrollingParent) then
+    w := Ctrl.FScrollingParent.Width - Margin * 2 - GetSystemMetrics (SM_CXVSCROLL)
   else
     w := AOwner.Width;
 
   GetTextMetrics (AOwner.Canvas.Handle, tm);
-  w1 := tm.tmAveCharWidth * ctrl.RightMargin;
-  if w1 > w then w := w1 else ctrl.FRightMargin := 0;
+  w1 := tm.tmAveCharWidth * Ctrl.RightMargin;
+  if w1 > w then w := w1 else Ctrl.FRightMargin := 0;
 
-  ctrl.AutoSize := True;
-  ctrl.Width := w;
-  ctrl.ReadOnly := True;
-  ctrl.WordWrap := True;
-  ctrl.ParentColor := True;
-  ctrl.AutoURLDetect := True;
-  ctrl.AutoURLExecute := True;
-  ctrl.HideSelection := False;
-  ctrl.Font.Assign(Font);
-  ctrl.OnURLMouseDown := DoOnURLMouseDown;
+  Ctrl.AutoSize := True;
+  Ctrl.Width := w;
+  Ctrl.ReadOnly := True;
+  Ctrl.WordWrap := True;
+  Ctrl.ParentColor := True;
+  Ctrl.AutoURLDetect := True;
+  Ctrl.AutoURLExecute := True;
+  Ctrl.HideSelection := False;
+  Ctrl.Font.Assign(Font);
+  Ctrl.OnURLMouseDown := DoOnURLMouseDown;
   LoadFromTextObjects
 end;
 
@@ -357,7 +357,7 @@ var
   i, j, offset, count, p, quoteLevel: Integer;
   s: TStrings;
   line, st: string;
-  ctrl: TNewsRichEditX;
+  Ctrl: TNewsRichEditX;
   rtf: Boolean;
   inHeader: Boolean;
   inQuote: Boolean;
@@ -451,7 +451,7 @@ var
 begin
   if FUpdating then Exit;
   count := 0;
-  ctrl := GetRichEdit;
+  Ctrl := GetRichEdit;
   rtf := not Owner.RawMode;
 
   inHeader := False;
@@ -620,7 +620,7 @@ end;
 
 procedure TNewsStringsDisplayObjectLink.LoadFromTextObjects;
 var
-  ctrl: TNewsRichEditX;
+  Ctrl: TNewsRichEditX;
   i: Integer;
   st: string;
   ws, ws1: WideString;
@@ -628,11 +628,11 @@ var
 
 begin
   if FUpdating then Exit;
-  ctrl := GetRichEdit;
-  ctrl.RawText := Owner.RawMode;
+  Ctrl := GetRichEdit;
+  Ctrl.RawText := Owner.RawMode;
 
   ws1 := '';
-  cp := ctrl.CodePage;
+  cp := Ctrl.CodePage;
 //  if cp = 1252 then
 //    cp := CP_ACP;
   n := 0;
@@ -653,7 +653,7 @@ begin
 
     FLastNoChunks := n;
     FLastChunkLen := lastLen;
-    ctrl.Text := ws1
+    Ctrl.Text := ws1
   end
 end;
 
@@ -661,7 +661,7 @@ procedure TNewsStringsDisplayObjectLink.Print;
 begin
   with GetRichEdit do
   begin
-    PageRect := self.PageRect;
+    PageRect := Self.PageRect;
     Print
   end
 end;
@@ -808,7 +808,7 @@ begin
   sp := FindScrollingParent;
   if not Assigned(sp) then exit;
 
-  SendMessage(handle, EM_POSFROMCHAR, Integer (@pt), self.SelStart + self.SelLength);
+  SendMessage(handle, EM_POSFROMCHAR, Integer (@pt), Self.SelStart + Self.SelLength);
 
   lineHeight := Abs (font.Height);
   if Top + pt.y + lineHeight >= sp.VertScrollBar.Position + sp.ClientHeight then
@@ -861,7 +861,7 @@ begin
       begin
         canvas := TControlCanvas.Create;
         try
-          canvas.Control := self;
+          canvas.Control := Self;
           canvas.Font.Assign(Font);
           GetTextMetrics (canvas.Handle, tm);
           width := tm.tmAveCharWidth * FRightMargin
@@ -979,7 +979,7 @@ begin
     sp := FindScrollingParent;
     if Assigned(sp) then
     begin
-      delta := self.Font.Height;
+      delta := Self.Font.Height;
       ad := Abs (FTimerScrollDelta);
       if ad < delta then
         delta := delta div 2

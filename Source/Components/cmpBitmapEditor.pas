@@ -444,7 +444,7 @@ begin
           DrawingTool := FLastDrawingTool;
           ReleaseCapture;
           if Assigned(FOnDrawToolChange) and not (csDestroying in ComponentState) then
-            OnDrawToolChange(self);
+            OnDrawToolChange(Self);
         end;
 
       dtSelectRect,
@@ -460,7 +460,7 @@ begin
         if Assigned(OnGetText) then
         begin
           FDrawBmp.Canvas.Font.Color := FDrawPen.Color;
-          OnGetText(self, FDrawBmp.Canvas.Font, st);
+          OnGetText(Self, FDrawBmp.Canvas.Font, st);
           if st <> '' then
           begin
             SetBkMode(FDrawBmp.Canvas.Handle, TRANSPARENT);
@@ -471,7 +471,7 @@ begin
               FCallEndChange := False;
               Picture.Graphic.Assign(drawBmp);
               if Assigned(OnEndChange) then
-                OnEndChange(self)
+                OnEndChange(Self)
             end
           end
         end
@@ -487,7 +487,7 @@ begin
             DrawingTool := FLastDrawingTool;
             ReleaseCapture;
             if Assigned(FOnDrawToolChange) and not (csDestroying in ComponentState) then
-              OnDrawToolChange(self);
+              OnDrawToolChange(Self);
           end
         end
 
@@ -670,7 +670,7 @@ begin
     FCallEndChange := False;
     Picture.Graphic.Assign(drawBmp);
     if Assigned(OnEndChange) then
-      OnEndChange(self)
+      OnEndChange(Self)
   end
 end;
 
@@ -806,7 +806,7 @@ begin
     Invalidate;
     Picture.Graphic.Assign(drawBmp);
     if Assigned(OnEndChange) then
-      OnEndChange(self)
+      OnEndChange(Self)
   finally
     b.Free;
     s.Free
@@ -823,7 +823,7 @@ procedure TBitmapEditor.RedrawBitmap;
 begin
   Invalidate;
   if not (csDestroying in ComponentState) and Assigned(OnChange) then
-    OnChange(self);
+    OnChange(Self);
 end;
 
 procedure TBitmapEditor.Rotate180;

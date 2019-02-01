@@ -8,58 +8,55 @@ uses
   System.Actions;
 
 type
-  TfmAcceleratorResource = class(TfmResource)
-    actAccelAdd: TAction;
-    actAccelChangeFlags: TAction;
-    actAccelChangeID: TAction;
-    actAccelDelete: TAction;
-    actAccelModify: TAction;
+  TFormAcceleratorResource = class(TFormResource)
+    ActionAccelAdd: TAction;
+    ActionAccelChangeFlags: TAction;
+    ActionAccelChangeID: TAction;
+    ActionAccelDelete: TAction;
+    ActionAccelModify: TAction;
     ActionList: TActionList;
-    MenuItemChangeAddAccelerator2: TMenuItem;
     ComboBoxKey: TComboBox;
     ComboBoxType: TComboBox;
-    MenuItemChangeFlags2: TMenuItem;
+    ListViewAccelerator: TListView;
+    MainMenuAccelMenu: TMainMenu;
+    MenuItemAccelerators: TMenuItem;
+    MenuItemAddAccelerator: TMenuItem;
+    MenuItemChangeAddAccelerator2: TMenuItem;
     MenuItemChangeChangeID2: TMenuItem;
     MenuItemChangeDeleteAccelerator2: TMenuItem;
-    ListViewAccelerator: TListView;
-    MenuItemAddAccelerator: TMenuItem;
     MenuItemChangeFlags: TMenuItem;
+    MenuItemChangeFlags2: TMenuItem;
     MenuItemChangeID: TMenuItem;
+    MenuItemChangeModifyAccelerator2: TMenuItem;
     MenuItemDeleteAccelerator: TMenuItem;
     MenuItemModifyAccelerator: TMenuItem;
-    MenuItemAccelerators: TMenuItem;
-    mnuAccelMenu: TMainMenu;
-    MenuItemChangeModifyAccelerator2: TMenuItem;
     PopupMenuAccel: TPopupMenu;
-    procedure actAccelDeleteExecute(Sender: TObject);
+    procedure ActionAccelDeleteExecute(Sender: TObject);
     procedure ComboBoxTypeExit(Sender: TObject);
     procedure ComboBoxTypeChange(Sender: TObject);
-    procedure actAccelChangeFlagsExecute(Sender: TObject);
-    procedure actAccelChangeIDExecute(Sender: TObject);
+    procedure ActionAccelChangeFlagsExecute(Sender: TObject);
+    procedure ActionAccelChangeIDExecute(Sender: TObject);
     procedure ComboBoxKeyChange(Sender: TObject);
     procedure ListViewAcceleratorEditing(Sender: TObject; Item: TListItem;
       var AllowEdit: Boolean);
     procedure FormCreate(Sender: TObject);
     procedure ListViewAcceleratorDblClick(Sender: TObject);
     procedure ComboBoxKeyExit(Sender: TObject);
-    procedure actAccelModifyExecute(Sender: TObject);
-    procedure actAccelAddExecute(Sender: TObject);
+    procedure ActionAccelModifyExecute(Sender: TObject);
+    procedure ActionAccelAddExecute(Sender: TObject);
     procedure ListViewAcceleratorEdited(Sender: TObject; Item: TListItem;
       var S: string);
   private
-    FAdding : Boolean;
-    FKeyChanged : Boolean;
-    FDetails : TAcceleratorResourceDetails;
-    FAllowEdit : Boolean;
+    FAdding: Boolean;
+    FKeyChanged: Boolean;
+    FDetails: TAcceleratorResourceDetails;
+    FAllowEdit: Boolean;
   protected
-    function GetMenuItem : TMenuItem; override;
+    function GetMenuItem: TMenuItem; override;
     procedure SetObject(const Value: TObject); override;
   public
-    procedure SaveResource(const undoDetails : string);
+    procedure SaveResource(const UndoDetails: string);
   end;
-
-var
-  fmAcceleratorResource: TfmAcceleratorResource;
 
 implementation
 
@@ -78,35 +75,35 @@ resourcestring
 
 { TfmAcceleratorResource }
 
-function AcceleratorToText(const Accel : TAccelerator) : string;
+function AcceleratorToText(const Accel: TAccelerator): string;
 begin
-  if (Accel.flags and FVIRTKEY) <> 0 then
-    Result := ShortcutToText(Accel.code)
+  if (Accel.Flags and FVIRTKEY) <> 0 then
+    Result := ShortcutToText(Accel.Code)
   else
-    if Accel.code < 32 then
-      Result := 'Ctrl+' + Char(Accel.code + Ord ('@'))
+    if Accel.Code < 32 then
+      Result := 'Ctrl+' + Char(Accel.Code + Ord ('@'))
     else
-      Result := Char(Accel.code);
+      Result := Char(Accel.Code);
 
-  if (Accel.flags and FSHIFT) <> 0 then
+  if (Accel.Flags and FSHIFT) <> 0 then
     Result := 'Shift+' + Result;
 
-  if (Accel.flags and FALT) <> 0 then
+  if (Accel.Flags and FALT) <> 0 then
     Result := 'Alt+' + Result;
 
-  if (Accel.flags and FCONTROL) <> 0 then
+  if (Accel.Flags and FCONTROL) <> 0 then
     Result :='Ctrl+' + Result
 end;
 
-procedure TextToAccelerator(const st : string; virtKey : Boolean; var code, flags : Integer);
+procedure TextToAccelerator(const st: string; VirtKey: Boolean; var Code, Flags: Integer);
 var
-  Temp : Integer;
-  Key : Word;
-  Shift : TShiftState;
-  Ok : Boolean;
+  Temp: Integer;
+  Key: Word;
+  Shift: TShiftState;
+  Ok: Boolean;
 begin
   Ok := False;
-  if not virtKey then
+  if not VirtKey then
   begin
     Temp := TextToShortcut(st);
     Key := Temp and not (scAlt or scShift or scCtrl);
@@ -114,36 +111,36 @@ begin
        (Key >= $41) and (Key <= $5A) then
     begin
       ShortcutToKey(Temp, Key, Shift);
-      code := Key;
-      flags := 0;
+      Code := Key;
+      Flags := 0;
       if ssShift in Shift then
-        flags := flags or FSHIFT;
+        Flags := Flags or FSHIFT;
       if ssAlt in Shift then
-        flags := flags or FALT;
+        Flags := Flags or FALT;
       if ssCtrl in Shift then
-        flags := flags or FCONTROL;
+        Flags := Flags or FCONTROL;
         Ok := True;
     end
   end;
 
   if not Ok then
   begin
-    code := TextToShortcut(st);
-    flags := FVIRTKEY;
-    if (code and scAlt) <> 0 then
-      flags := flags or FALT;
-    if (code and scShift) <> 0 then
-      flags := flags or FSHIFT;
-    if (code and scCtrl) <> 0 then
-      flags := flags or FCONTROL;
-    code := code and not (scAlt or scShift or scCtrl);
+    Code := TextToShortcut(st);
+    Flags := FVIRTKEY;
+    if (Code and scAlt) <> 0 then
+      Flags := Flags or FALT;
+    if (Code and scShift) <> 0 then
+      Flags := Flags or FSHIFT;
+    if (Code and scCtrl) <> 0 then
+      Flags := Flags or FCONTROL;
+    Code := Code and not (scAlt or scShift or scCtrl);
   end
 end;
 
-procedure TfmAcceleratorResource.SetObject(const Value: TObject);
+procedure TFormAcceleratorResource.SetObject(const Value: TObject);
 var
-  i : Integer;
-  Accel : TAccelerator;
+  Index: Integer;
+  Accel: TAccelerator;
 begin
   inherited;            // *Must* call inherited
   Application.ProcessMessages;
@@ -153,18 +150,18 @@ begin
   ListViewAccelerator.Items.BeginUpdate;
   try
     ListViewAccelerator.Items.Clear;
-    for i := 0 to FDetails.Count - 1 do
+    for Index := 0 to FDetails.Count - 1 do
     begin
-      Accel := FDetails.Accelerator[i];
+      Accel := FDetails.Accelerator[Index];
       with ListViewAccelerator.Items.Add do
       begin
-        Caption := IntToStr(Accel.id);
+        Caption := IntToStr(Accel.Id);
         SubItems.Add(AcceleratorToText(Accel));
-        if (Accel.flags and FVIRTKEY) <> 0 then
+        if (Accel.Flags and FVIRTKEY) <> 0 then
           SubItems.Add(rstVirtKey)
         else
           SubItems.Add(rstCharCode);
-//        SubItems.Add(IntToStr(Accel.flags))
+//        SubItems.Add(IntToStr(Accel.Flags))
       end
     end
   finally
@@ -172,64 +169,64 @@ begin
   end
 end;
 
-procedure TfmAcceleratorResource.ListViewAcceleratorEdited(Sender: TObject;
+procedure TFormAcceleratorResource.ListViewAcceleratorEdited(Sender: TObject;
   Item: TListItem; var S: string);
 var
-  newId : Integer;
-  i : Integer;
+  NewID: Integer;
+  Index: Integer;
 begin
   inherited;
   FAllowEdit := False;
-  actAccelDelete.ShortCut := actAccelDelete.Tag;    // Restore 'Delete' shortcut
-  if s <> item.Caption then
+  ActionAccelDelete.ShortCut := ActionAccelDelete.Tag;    // Restore 'Delete' shortcut
+  if s <> Item.Caption then
   try
-    newID := StrToInt(s);
+    NewID := StrToInt(s);
 
-    for i := 0 to FDetails.Count - 1 do
-      if FDetails.Accelerator[i].id = newid then
+    for Index := 0 to FDetails.Count - 1 do
+      if FDetails.Accelerator[Index].Id = NewID then
         raise Exception.Create(rstDuplicateMessageID);
 
-    item.Caption := s;          // need to do this so 'SaveResource' picks it up...
+    Item.Caption := s;          // need to do this so 'SaveResource' picks it up...
     SaveResource(rstChangeID);
   except
-    s := item.Caption;
+    s := Item.Caption;
     raise
   end
 end;
 
-function TfmAcceleratorResource.GetMenuItem: TMenuItem;
+function TFormAcceleratorResource.GetMenuItem: TMenuItem;
 begin
   Result := MenuItemAccelerators
 end;
 
-procedure TfmAcceleratorResource.actAccelAddExecute(Sender: TObject);
+procedure TFormAcceleratorResource.ActionAccelAddExecute(Sender: TObject);
 var
-  item : TListItem;
-  newID : Integer;
+  Item: TListItem;
+  NewID: Integer;
 begin
-  item := ListViewAccelerator.Items.Add;
+  Item := ListViewAccelerator.Items.Add;
 
-  // Work out string / message ID
-  if item.Index = 0 then
-    item.Caption := '1'
+  // Work out string / message Id
+  if Item.Index = 0 then
+    Item.Caption := '1'
   else
   begin
-    newId := StrToInt(ListViewAccelerator.Items[ListViewAccelerator.Items.Count - 2].Caption);
-    item.Caption := IntToStr(newId + 1)
+    NewID := StrToInt(ListViewAccelerator.Items[ListViewAccelerator.Items.Count - 2].Caption);
+    Item.Caption := IntToStr(NewID + 1)
   end;
 
-  item.SubItems.Add('');
-  item.SubItems.Add(rstVirtKey);
-  item.Selected := True;
+  Item.SubItems.Add('');
+  Item.SubItems.Add(rstVirtKey);
+  Item.Selected := True;
 
   FAdding := True;                    // Clear in mmoMessageExit
 
-  actAccelModifyExecute(Sender)
+  ActionAccelModifyExecute(Sender);
 end;
 
-procedure TfmAcceleratorResource.actAccelModifyExecute(Sender: TObject);
+procedure TFormAcceleratorResource.ActionAccelModifyExecute(Sender: TObject);
 var
-  t : Integer;
+  t: Integer;
 begin
   if Assigned(ListViewAccelerator.Selected) then
   begin
@@ -244,13 +241,13 @@ begin
     ComboBoxKey.SetFocus
   end
   else
-    actAccelAdd.Execute;
+    ActionAccelAdd.Execute;
 end;
 
-procedure TfmAcceleratorResource.ComboBoxKeyExit(Sender: TObject);
+procedure TFormAcceleratorResource.ComboBoxKeyExit(Sender: TObject);
 var
-  st : string;
-  Adding : Boolean;
+  st: string;
+  Adding: Boolean;
 begin
   Adding := FAdding;
   FAdding := False;
@@ -259,7 +256,7 @@ begin
   begin
     if FKeyChanged or FAdding then  // ie.  If it's changed
     begin
-      selected.SubItems[0] := ComboBoxKey.Text;
+      Selected.SubItems[0] := ComboBoxKey.Text;
 
       if Adding then
         st := rstAddAccelerator
@@ -272,37 +269,37 @@ begin
   FKeyChanged := False
 end;
 
-procedure TfmAcceleratorResource.SaveResource(const undoDetails: string);
+procedure TFormAcceleratorResource.SaveResource(const UndoDetails: string);
 var
-  i, flags, code, id : Integer;
-  item : TListItem;
-  virtKey : Boolean;
+  Index, Flags, Code, Id: Integer;
+  Item: TListItem;
+  VirtKey: Boolean;
 begin
-  AddUndoEntry(undoDetails);
-  for i := 0 to ListViewAccelerator.Items.Count - 1 do
+  AddUndoEntry(UndoDetails);
+  for Index := 0 to ListViewAccelerator.Items.Count - 1 do
   begin
-    item := ListViewAccelerator.Items[i];
-    id := StrToInt(item.Caption);
-    virtKey := item.SubItems[1] = rstVirtKey;
-    TextToAccelerator(item.SubItems[0], virtKey, code, flags);
+    Item := ListViewAccelerator.Items[Index];
+    Id := StrToInt(Item.Caption);
+    VirtKey := Item.SubItems[1] = rstVirtKey;
+    TextToAccelerator(Item.SubItems[0], VirtKey, Code, Flags);
 
-    if not virtKey and ((flags and FVIRTKEY) <> 0) then
-      item.SubItems[1] := rstVirtKey;
+    if not VirtKey and ((Flags and FVIRTKEY) <> 0) then
+      Item.SubItems[1] := rstVirtKey;
 
-    if i < FDetails.Count then
-      FDetails.SetAccelDetails(i, flags, code, id)
+    if Index < FDetails.Count then
+      FDetails.SetAccelDetails(Index, Flags, Code, Id)
     else
-      FDetails.Add(flags, code, id)
+      FDetails.Add(Flags, Code, Id)
   end;
 
-  i := ListViewAccelerator.Items.Count;
-  while i < FDetails.Count do
-    FDetails.Delete(i);
+  Index := ListViewAccelerator.Items.Count;
+  while Index < FDetails.Count do
+    FDetails.Delete(Index);
 end;
 
-procedure TfmAcceleratorResource.ListViewAcceleratorDblClick(Sender: TObject);
+procedure TFormAcceleratorResource.ListViewAcceleratorDblClick(Sender: TObject);
 var
-  p : TPoint;
+  p: TPoint;
 begin
   if Assigned(ListViewAccelerator.Selected) then
   begin
@@ -310,22 +307,22 @@ begin
     MapWindowPoints(HWND_DESKTOP, ListViewAccelerator.Handle, p, 1);
 
     if p.x > ListViewAccelerator.Columns[0].Width + ListViewAccelerator.Columns[1].Width then
-      actAccelChangeFlags.Execute
+      ActionAccelChangeFlags.Execute
     else
     if p.x > ListViewAccelerator.Columns[0].Width then
-      actAccelModify.Execute
+      ActionAccelModify.Execute
     else
-      actAccelChangeID.Execute
+      ActionAccelChangeID.Execute
   end
   else
-    actAccelAdd.Execute
+    ActionAccelAdd.Execute
 end;
 
-procedure TfmAcceleratorResource.FormCreate(Sender: TObject);
+procedure TFormAcceleratorResource.FormCreate(Sender: TObject);
 
-  procedure AddShortcutRange(const st : string; lowRange, highRange : char);
+  procedure AddShortcutRange(const st: string; lowRange, highRange: char);
   var
-    ch : char;
+    ch: char;
   begin
     for ch := lowRange to highRange do
       ComboBoxKey.Items.Add(st + ch)
@@ -362,33 +359,33 @@ begin
   ComboBoxType.Items.Add(rstCharCode);
 end;
 
-procedure TfmAcceleratorResource.ListViewAcceleratorEditing(Sender: TObject;
+procedure TFormAcceleratorResource.ListViewAcceleratorEditing(Sender: TObject;
   Item: TListItem; var AllowEdit: Boolean);
 begin
   inherited;
   AllowEdit := FAllowEdit;
-  actAccelDelete.Tag := actAccelDelete.ShortCut;    // Suspend 'Delete' shortcut.
-  actAccelDelete.ShortCut := 0;
+  ActionAccelDelete.Tag := ActionAccelDelete.ShortCut;    // Suspend 'Delete' shortcut.
+  ActionAccelDelete.ShortCut := 0;
 end;
 
-procedure TfmAcceleratorResource.ComboBoxKeyChange(Sender: TObject);
+procedure TFormAcceleratorResource.ComboBoxKeyChange(Sender: TObject);
 begin
   inherited;
   FKeyChanged := True;
 end;
 
-procedure TfmAcceleratorResource.actAccelChangeIDExecute(Sender: TObject);
+procedure TFormAcceleratorResource.ActionAccelChangeIDExecute(Sender: TObject);
 begin
   if Assigned(ListViewAccelerator.Selected) then
   begin
-    FAllowEdit := true;
-    ListViewAccelerator.Selected.EditCaption
+    FAllowEdit := True;
+    ListViewAccelerator.Selected.EditCaption;
   end
 end;
 
-procedure TfmAcceleratorResource.actAccelChangeFlagsExecute(Sender: TObject);
+procedure TFormAcceleratorResource.ActionAccelChangeFlagsExecute(Sender: TObject);
 var
-  t : Integer;
+  t: Integer;
 begin
   if Assigned(ListViewAccelerator.Selected) then
   begin
@@ -404,19 +401,19 @@ begin
   end
 end;
 
-procedure TfmAcceleratorResource.ComboBoxTypeChange(Sender: TObject);
+procedure TFormAcceleratorResource.ComboBoxTypeChange(Sender: TObject);
 begin
   FKeyChanged := True;
 end;
 
-procedure TfmAcceleratorResource.ComboBoxTypeExit(Sender: TObject);
+procedure TFormAcceleratorResource.ComboBoxTypeExit(Sender: TObject);
 begin
   ComboBoxType.Visible := False;
   with ListViewAccelerator do if Assigned(Selected) then
   begin
     if FKeyChanged then  // ie.  If it's changed
     begin
-      selected.SubItems[1] := ComboBoxType.Text;
+      Selected.SubItems[1] := ComboBoxType.Text;
 
       SaveResource(rstChangeAcceleratorType);
     end
@@ -424,23 +421,23 @@ begin
   FKeyChanged := False
 end;
 
-procedure TfmAcceleratorResource.actAccelDeleteExecute(Sender: TObject);
+procedure TFormAcceleratorResource.ActionAccelDeleteExecute(Sender: TObject);
 var
-  idx : Integer;
+  Index: Integer;
 begin
   if Assigned(ListViewAccelerator.Selected) then
   begin
-    idx := ListViewAccelerator.Selected.Index;
+    Index := ListViewAccelerator.Selected.Index;
     ListViewAccelerator.Selected.Free;
 
     // Select next string
-    if idx < ListViewAccelerator.Items.Count then
-      ListViewAccelerator.Selected := ListViewAccelerator.Items[idx]
+    if Index < ListViewAccelerator.Items.Count then
+      ListViewAccelerator.Selected := ListViewAccelerator.Items[Index]
     else
     begin
-      Dec(idx);
-      if idx >= 0 then
-        ListViewAccelerator.Selected := ListViewAccelerator.Items[idx]
+      Dec(Index);
+      if Index >= 0 then
+        ListViewAccelerator.Selected := ListViewAccelerator.Items[Index]
     end;
 
    SaveResource(rstDeleteAccelerator)

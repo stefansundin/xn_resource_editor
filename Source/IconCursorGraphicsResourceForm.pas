@@ -3,13 +3,13 @@ unit IconCursorGraphicsResourceForm;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, GraphicsResourceForm, Menus, ActnList, ImgList, ComCtrls,
-  cmpColorSelector, ExtCtrls, ToolWin, cmpSizingPageControl,
-  cmpBitmapEditor, cmpPropertyListBox, System.Actions, System.ImageList;
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  Menus, ActnList, ImgList, ComCtrls, ExtCtrls, ToolWin, Actions, ImageList,
+  GraphicsResourceForm, cmpColorSelector, cmpSizingPageControl,
+  cmpBitmapEditor, cmpPropertyListBox;
 
 type
-  TfmIconCursorGraphicsResource = class(TfmGraphicsResource)
+  TFormIconCursorGraphicsResource = class(TFormGraphicsResource)
   end;
 
 implementation

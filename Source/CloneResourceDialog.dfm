@@ -1,4 +1,4 @@
-object dlgCloneResource: TdlgCloneResource
+object DialogCloneResource: TDialogCloneResource
   Left = 0
   Top = 0
   Caption = 'Clone Resource'
@@ -21,7 +21,7 @@ object dlgCloneResource: TdlgCloneResource
     185)
   PixelsPerInch = 96
   TextHeight = 13
-  object Label1: TLabel
+  object LabelDescription: TLabel
     Left = 16
     Top = 16
     Width = 305
@@ -31,7 +31,7 @@ object dlgCloneResource: TdlgCloneResource
     Caption = 'Please specify a new name or language for the cloned resource'
     WordWrap = True
   end
-  object cbLanguage: TComboBox
+  object ComboBoxLanguage: TComboBox
     Left = 96
     Top = 108
     Width = 226
@@ -40,7 +40,7 @@ object dlgCloneResource: TdlgCloneResource
     Sorted = True
     TabOrder = 2
   end
-  object btnOK: TButton
+  object ButtonOK: TButton
     Left = 169
     Top = 146
     Width = 75
@@ -51,7 +51,7 @@ object dlgCloneResource: TdlgCloneResource
     ModalResult = 1
     TabOrder = 3
   end
-  object btnCancel: TButton
+  object ButtonCancel: TButton
     Left = 247
     Top = 146
     Width = 75
@@ -62,7 +62,7 @@ object dlgCloneResource: TdlgCloneResource
     ModalResult = 2
     TabOrder = 4
   end
-  object rbByName: TRadioButton
+  object RadioButtonByName: TRadioButton
     Left = 16
     Top = 70
     Width = 65
@@ -72,7 +72,7 @@ object dlgCloneResource: TdlgCloneResource
     TabOrder = 0
     TabStop = True
   end
-  object rbByLanguage: TRadioButton
+  object RadioButtonByLanguage: TRadioButton
     Left = 16
     Top = 110
     Width = 73
@@ -80,7 +80,7 @@ object dlgCloneResource: TdlgCloneResource
     Caption = '&Language'
     TabOrder = 1
   end
-  object ntedName: TEdit
+  object EditName: TEdit
     Left = 96
     Top = 68
     Width = 225

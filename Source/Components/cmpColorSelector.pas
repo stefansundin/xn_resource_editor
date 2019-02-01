@@ -167,7 +167,7 @@ begin
     FSelectedIdx := selectedIdx;
     FSelectedColor := selectedColor;
     if Assigned(FOnColorSelect) and changed and not (csDestroying in ComponentState) then
-      OnColorSelect(self)
+      OnColorSelect(Self)
   end
 end;
 

@@ -4,12 +4,12 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  ResourceForm, ExtCtrls;
+  ExtCtrls, ResourceForm;
 
 type
-  TfmGroupResource = class(TfmResource)
-    ScrollBox1: TScrollBox;
-    Image1: TImage;
+  TFormGroupResource = class(TFormResource)
+    ScrollBox: TScrollBox;
+    Image: TImage;
   protected
     procedure SetObject(const Value: TObject); override;
     function GetImportExportType: TImportExportType; override;
@@ -21,35 +21,35 @@ type
 implementation
 
 uses
-  ClipBrd, unitResourceGraphics;
+  Clipbrd, unitResourceGraphics;
 
 {$R *.DFM}
 
 { TfmGroupResource }
 
-procedure TfmGroupResource.Copy;
+procedure TFormGroupResource.Copy;
 begin
-  Clipboard.Assign(Image1.Picture.Graphic);
+  Clipboard.Assign(Image.Picture.Graphic);
 end;
 
-function TfmGroupResource.GetCanCopy: Boolean;
+function TFormGroupResource.GetCanCopy: Boolean;
 begin
-  Result := True
+  Result := True;
 end;
 
-function TfmGroupResource.GetImportExportType: TImportExportType;
+function TFormGroupResource.GetImportExportType: TImportExportType;
 begin
-  Result := ixPicture
+  Result := ixPicture;
 end;
 
-procedure TfmGroupResource.SetObject(const Value: TObject);
+procedure TFormGroupResource.SetObject(const Value: TObject);
 var
-  details : TIconCursorGroupResourceDetails;
+  Details: TIconCursorGroupResourceDetails;
 begin
   inherited;
   
-  details := obj as TIconCursorGroupResourceDetails;
-  details.GetImage(Image1.Picture);
+  Details := obj as TIconCursorGroupResourceDetails;
+  Details.GetImage(Image.Picture);
 end;
 
 end.

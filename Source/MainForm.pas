@@ -40,126 +40,126 @@ const
 type
 
 //======================================================================
-// TfmMain
-  TfmMain = class(TForm)
-    mnuMain: TMainMenu;
-    ilMain: TImageList;
-    alMain: TActionList;
-    actHelpContents: THelpContents;
-    actHelpHelpOnHelp: THelpOnHelp;
-    actHelpTopicSearch: THelpTopicSearch;
-    mnuEdit: TMenuItem;
-    mnuHelp: TMenuItem;
-    mnuEditUndo: TMenuItem;
+// TFormMain
+  TFormMain = class(TForm)
+    MainMenuMain: TMainMenu;
+    ImageListMain: TImageList;
+    ActionListMain: TActionList;
+    ActionHelpContents: THelpContents;
+    ActionHelpHelpOnHelp: THelpOnHelp;
+    ActionHelpTopicSearch: THelpTopicSearch;
+    MenuItemEdit: TMenuItem;
+    MenuItemHelp: TMenuItem;
+    MenuItemEditUndo: TMenuItem;
     N1: TMenuItem;
-    mnuEditCut: TMenuItem;
-    mnuEditCopy: TMenuItem;
-    mnuEditPaste: TMenuItem;
-    mnuEditSelectAll: TMenuItem;
-    mnuHelpContents: TMenuItem;
-    mnuHelpHelpOnHelp: TMenuItem;
-    mnuHelpTopicSearch: TMenuItem;
-    actFileNew: TAction;
-    actFileOpenFile: TAction;
-    actFileSave: TAction;
-    actFileSaveAs: TAction;
-    actFilePrint: TAction;
-    mnuFile: TMenuItem;
-    mnuFileNew: TMenuItem;
-    mnuFileSave: TMenuItem;
-    mnuFileSaveAs: TMenuItem;
+    MenuItemEditCut: TMenuItem;
+    MenuItemEditCopy: TMenuItem;
+    MenuItemEditPaste: TMenuItem;
+    MenuItemEditSelectAll: TMenuItem;
+    MenuItemHelpContents: TMenuItem;
+    MenuItemHelpHelpOnHelp: TMenuItem;
+    MenuItemHelpTopicSearch: TMenuItem;
+    ActionFileNew: TAction;
+    ActionFileOpenFile: TAction;
+    ActionFileSave: TAction;
+    ActionFileSaveAs: TAction;
+    ActionFilePrint: TAction;
+    MenuItemFile: TMenuItem;
+    MenuItemFileNew: TMenuItem;
+    MenuItemFileSave: TMenuItem;
+    MenuItemFileSaveAs: TMenuItem;
     N2: TMenuItem;
-    mnuFilePrint: TMenuItem;
+    MenuItemFilePrint: TMenuItem;
     N3: TMenuItem;
-    actFileExit: TAction;
-    mnuFileExit: TMenuItem;
-    sbMain: TStatusBar;
+    ActionFileExit: TAction;
+    MenuItemFileExit: TMenuItem;
+    StatusBarMain: TStatusBar;
     OpenDialog: TOpenDialog;
     SaveDialog: TSaveDialog;
     PrintDialog: TPrintDialog;
-    Splitter1: TSplitter;
-    MRUList1: TMRUList;
-    PersistentPosition1: TPersistentPosition;
-    StandardSystemMenu1: TStandardSystemMenu;
-    pomMRU: TPopupMenu;
-    pnlResource: TPanel;
-    mnuResource: TMenuItem;
-    actResourceAddResource: TAction;
-    actResourceDeleteResource: TAction;
-    mnuResourceAddResource: TMenuItem;
-    mnuResourceDeleteResource: TMenuItem;
+    Splitter: TSplitter;
+    MRUList: TMRUList;
+    PersistentPosition: TPersistentPosition;
+    StandardSystemMenu: TStandardSystemMenu;
+    PopupMenuMRU: TPopupMenu;
+    PanelResource: TPanel;
+    MenuItemResource: TMenuItem;
+    ActionResourceAddResource: TAction;
+    ActionResourceDeleteResource: TAction;
+    MenuItemResourceAddResource: TMenuItem;
+    MenuItemResourceDeleteResource: TMenuItem;
     N4: TMenuItem;
-    actViewToolbar: TAction;
-    actViewStatusbar: TAction;
-    actViewProperties: TAction;
-    mnuView: TMenuItem;
-    mnuViewToolbar: TMenuItem;
-    mnuViewStatusbar: TMenuItem;
+    ActionViewToolbar: TAction;
+    ActionViewStatusbar: TAction;
+    ActionViewProperties: TAction;
+    MenuItemView: TMenuItem;
+    MenuItemViewToolbar: TMenuItem;
+    MenuItemViewStatusbar: TMenuItem;
     N5: TMenuItem;
-    mnuViewProperties: TMenuItem;
-    actEditCopy: TAction;
-    actEditPaste: TAction;
-    actEditCut: TAction;
-    actEditSelectAll: TAction;
-    actEditUndo: TAction;
-    actEditRedo: TAction;
-    mnuEditRedo: TMenuItem;
-    Open1: TMenuItem;
-    actHelpAbout: TAction;
+    MenuItemViewProperties: TMenuItem;
+    ActionEditCopy: TAction;
+    ActionEditPaste: TAction;
+    ActionEditCut: TAction;
+    ActionEditSelectAll: TAction;
+    ActionEditUndo: TAction;
+    ActionEditRedo: TAction;
+    MenuItemEditRedo: TMenuItem;
+    MenuItemOpen: TMenuItem;
+    ActionHelpAbout: TAction;
     N6: TMenuItem;
-    mnuHelpAbout: TMenuItem;
-    NTAboutBox1: TNTAboutBox;
-    actResourceExportResource: TAction;
-    ExportResource1: TMenuItem;
-    ilResources: TImageList;
-    actResourceImportResource: TAction;
-    N7: TMenuItem;
-    OpenPictureDialog1: TOpenPictureDialog;
-    actResourceProperties: TAction;
+    MenuItemHelpAbout: TMenuItem;
+    NTAboutBox: TNTAboutBox;
+    ActionResourceExportResource: TAction;
+    MenuItemExportResource1: TMenuItem;
+    ImageListResources: TImageList;
+    ActionResourceImportResource: TAction;
+    MenuItemImportImageResource: TMenuItem;
+    OpenPictureDialog: TOpenPictureDialog;
+    ActionResourceProperties: TAction;
     N8: TMenuItem;
-    mnuResourceProperties: TMenuItem;
-    pomResources: TPopupMenu;
-    AddResource1: TMenuItem;
-    DeleteResource1: TMenuItem;
+    MenuItemResourceProperties: TMenuItem;
+    PopupMenuResources: TPopupMenu;
+    MenuItemAddResource: TMenuItem;
+    MenuItemDeleteResource: TMenuItem;
     N9: TMenuItem;
-    ImportResource1: TMenuItem;
-    ExportResource2: TMenuItem;
+    MenuItemImportResource: TMenuItem;
+    MenuItemExportResource: TMenuItem;
     N10: TMenuItem;
-    Properties1: TMenuItem;
-    actEditDelete: TAction;
-    mnuEditDelete: TMenuItem;
-    actResourceGrab: TAction;
-    Grab1: TMenuItem;
-    GrabBitmap1: TMenuItem;
-    SavePictureDialog1: TSavePictureDialog;
-    ApplicationEvents1: TApplicationEvents;
-    actResourceImportRCDataResource: TAction;
-    ImportRCDataResource1: TMenuItem;
-    ImportRCDataResource2: TMenuItem;
-    OpenDialog1: TOpenDialog;
-    actResourceImportOtherResource: TAction;
-    ImportUserResource1: TMenuItem;
+    MenuItemProperties: TMenuItem;
+    ActionEditDelete: TAction;
+    MenuItemEditDelete: TMenuItem;
+    ActionResourceGrab: TAction;
+    MenuItemGrab: TMenuItem;
+    MenuItemGrabBitmap: TMenuItem;
+    SavePictureDialog: TSavePictureDialog;
+    ApplicationEvents: TApplicationEvents;
+    ActionResourceImportRCDataResource: TAction;
+    MenuItemImportRCDataResource2: TMenuItem;
+    MenuItemImportRCDataResource: TMenuItem;
+    OpenDialogAnyFile: TOpenDialog;
+    ActionResourceImportOtherResource: TAction;
+    MenuItemImportUserResource2: TMenuItem;
     N11: TMenuItem;
-    ImportUserResource2: TMenuItem;
+    MenuItemImportUserResource: TMenuItem;
     N12: TMenuItem;
-    actResourceClone: TAction;
-    CloneResource1: TMenuItem;
+    ActionResourceClone: TAction;
+    MenuItemCloneResource: TMenuItem;
     vstResources: TExVirtualStringTree;
-    XPManifest1: TXPManifest;
-    tbMenu: TToolBar;
-    btnFile: TToolButton;
-    btnEdit: TToolButton;
-    ToolButton2: TToolButton;
-    ToolButton1: TToolButton;
-    btnResourceObject: TToolButton;
-    btnHelp: TToolButton;
-    tbMain: TToolBar;
-    btnFileNew: TToolButton;
-    btnFileOpen: TToolButton;
-    btnFileSave: TToolButton;
-    ToolButton3: TToolButton;
-    ToolButton4: TToolButton;
-    ToolButton5: TToolButton;
+    XPManifest: TXPManifest;
+    ToolbarMenu: TToolBar;
+    ToolButtonFile: TToolButton;
+    ToolButtonEdit: TToolButton;
+    ToolButtonView: TToolButton;
+    ToolButtonResource: TToolButton;
+    ToolButtonResourceObject: TToolButton;
+    ToolButtonHelp: TToolButton;
+    ToolbarMain: TToolBar;
+    ToolButtonFileNew: TToolButton;
+    ToolButtonFileOpen: TToolButton;
+    ToolButtonFileSave: TToolButton;
+    ToolButtonSplitter: TToolButton;
+    ToolButtonAddResource: TToolButton;
+    ToolButtonDeleteResource: TToolButton;
     procedure vstResourcesNewText(Sender: TBaseVirtualTree; Node: PVirtualNode;
       Column: TColumnIndex; NewText: string);
     procedure vstResourcesEditing(Sender: TBaseVirtualTree; Node: PVirtualNode;
@@ -175,43 +175,43 @@ type
       Column: TColumnIndex; TextType: TVSTTextType; var CellText: string);
     procedure vstResourcesInitNode(Sender: TBaseVirtualTree; ParentNode,
       Node: PVirtualNode; var InitialStates: TVirtualNodeInitStates);
-    procedure actResourceGrabExecute(Sender: TObject);
-    procedure actResourceCloneExecute(Sender: TObject);
-    procedure actFileOpenFileExecute(Sender: TObject);
-    procedure actFileSaveAsExecute(Sender: TObject);
-    procedure actFilePrintExecute(Sender: TObject);
-    procedure actFileNewExecute(Sender: TObject);
-    procedure actFileExitExecute(Sender: TObject);
+    procedure ActionResourceGrabExecute(Sender: TObject);
+    procedure ActionResourceCloneExecute(Sender: TObject);
+    procedure ActionFileOpenFileExecute(Sender: TObject);
+    procedure ActionFileSaveAsExecute(Sender: TObject);
+    procedure ActionFilePrintExecute(Sender: TObject);
+    procedure ActionFileNewExecute(Sender: TObject);
+    procedure ActionFileExitExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure MRUList1PopupMenuClick(Sender: TObject);
-    procedure actEditDeleteExecute(Sender: TObject);
-    procedure actFileSaveExecute(Sender: TObject);
-    procedure actEditCutExecute(Sender: TObject);
-    procedure actViewToolbarExecute(Sender: TObject);
-    procedure actViewStatusbarExecute(Sender: TObject);
-    procedure actViewPropertiesExecute(Sender: TObject);
-    procedure actEditUndoExecute(Sender: TObject);
-    procedure actEditRedoExecute(Sender: TObject);
-    procedure mnuEditClick(Sender: TObject);
-    procedure actHelpAboutExecute(Sender: TObject);
-    procedure actResourceExportResourceExecute(Sender: TObject);
-    procedure actResourceAddResourceExecute(Sender: TObject);
-    procedure actResourceDeleteResourceExecute(Sender: TObject);
+    procedure MRUListPopupMenuClick(Sender: TObject);
+    procedure ActionEditDeleteExecute(Sender: TObject);
+    procedure ActionFileSaveExecute(Sender: TObject);
+    procedure ActionEditCutExecute(Sender: TObject);
+    procedure ActionViewToolbarExecute(Sender: TObject);
+    procedure ActionViewStatusbarExecute(Sender: TObject);
+    procedure ActionViewPropertiesExecute(Sender: TObject);
+    procedure ActionEditUndoExecute(Sender: TObject);
+    procedure ActionEditRedoExecute(Sender: TObject);
+    procedure MenuItemEditClick(Sender: TObject);
+    procedure ActionHelpAboutExecute(Sender: TObject);
+    procedure ActionResourceExportResourceExecute(Sender: TObject);
+    procedure ActionResourceAddResourceExecute(Sender: TObject);
+    procedure ActionResourceDeleteResourceExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure actResourceImportResourceExecute(Sender: TObject);
-    procedure actResourcePropertiesExecute(Sender: TObject);
-    procedure actEditSelectAllExecute(Sender: TObject);
-    procedure actEditCopyExecute(Sender: TObject);
-    procedure actEditPasteExecute(Sender: TObject);
+    procedure ActionResourceImportResourceExecute(Sender: TObject);
+    procedure ActionResourcePropertiesExecute(Sender: TObject);
+    procedure ActionEditSelectAllExecute(Sender: TObject);
+    procedure ActionEditCopyExecute(Sender: TObject);
+    procedure ActionEditPasteExecute(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
-    procedure actResourceImportRCDataResourceExecute(Sender: TObject);
+    procedure ActionResourceImportRCDataResourceExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure actResourceImportOtherResourceExecute(Sender: TObject);
-    procedure ApplicationEvents1Message(var Msg: tagMSG;
+    procedure ActionResourceImportOtherResourceExecute(Sender: TObject);
+    procedure ApplicationEventsMessage(var Msg: tagMSG;
       var Handled: Boolean);
-    function ApplicationEvents1Help(Command: Word; Data: NativeInt;
+    function ApplicationEventsHelp(Command: Word; Data: NativeInt;
       var CallHelp: Boolean): Boolean;
   private
     FResourceModule: TResourceModule;
@@ -223,7 +223,7 @@ type
 
     procedure SetCaption;
     procedure UpdateDisplay(selectDetails: TResourceDetails);
-    procedure OpenFile(const fileName: string);
+    procedure OpenFile(const FileName: string);
     procedure SwitchView (ResourceDetails: TObject);
     procedure WmInitialize(var msg: TMessage); message WM_INITIALIZE;
     procedure WmStatusBar (var Msg: TMessage); message WM_STATUSBAR;
@@ -241,7 +241,7 @@ type
     function GetNodeResourceDetails (node: PVirtualNode): TResourceDetails;
     function GetResourceDetailsNode(ResourceDetails: TResourceDetails): PVirtualNode;
     function SelectedResourceDetails: TResourceDetails;
-    function ResourceForm: TfmResource;
+    function ResourceForm: TFormResource;
     procedure CheckDetails (p: PVirtualNode; Param: Integer; var Continue: Boolean);
 
     property FileName: string read FFileName write SetFileName;
@@ -261,11 +261,11 @@ type
 
 //----------------------------------------------------------------------
 var
-  fmMain: TfmMain;
+  FormMain: TFormMain;
 
 //----------------------------------------------------------------------
-procedure AttachMenu(const buttonCaption: string; menu: TMenuItem);
-procedure DetachMenu(const buttonCaption: string);
+procedure AttachMenu(const ButtonCaption: string; Menu: TMenuItem);
+procedure DetachMenu(const ButtonCaption: string);
 function GetTypeImage(const tp: string): Integer;
 
 implementation
@@ -292,7 +292,7 @@ uses
   unitResourceAccelerator,           //    "     "    "  Accelerator tables
   unitResourceToolbar,
 
-  GroupResourceForm,                 // Display form for Icons & cursor groups
+  GroupResourceForm,                 // Display Form for Icons & cursor groups
   IconGraphicsResourceForm,          // Editor   "   "  Icons
   CursorGraphicsResourceForm,        // Editor   "   "  Cursors
   GraphicsResourceForm,              // Editor   "   "  Other graphics - bitmaps etc.
@@ -365,26 +365,26 @@ const
  |                                                                      |
  | Global procedure - attaches a menu to a button (the ...Object one)   |
  *----------------------------------------------------------------------*)
-procedure AttachMenu(const buttonCaption: string; menu: TMenuItem);
+procedure AttachMenu(const ButtonCaption: string; Menu: TMenuItem);
 var
   i: Integer;
   btn: TToolButton;
 begin
   Exit;
-  if csDestroying in fmMain.ComponentState then
+  if csDestroying in FormMain.ComponentState then
     Exit;
 
   btn := nil;
-  for i := 0 to fmMain.tbMenu.ButtonCount - 1 do
-    if fmMain.tbMenu.Buttons[i].Caption = buttonCaption then
+  for i := 0 to FormMain.ToolbarMenu.ButtonCount - 1 do
+    if FormMain.ToolbarMenu.Buttons[i].Caption = ButtonCaption then
     begin
-      btn := fmMain.tbMenu.Buttons[i];
+      btn := FormMain.ToolbarMenu.Buttons[i];
       break
     end;
 
   if Assigned(btn) then
   begin
-    btn.MenuItem := menu;
+    btn.MenuItem := Menu;
     btn.Visible := True
   end
 end;
@@ -394,19 +394,19 @@ end;
  |                                                                      |
  | Global procedure - detaches a menu to a button (the ...Object one)   |
  *----------------------------------------------------------------------*)
-procedure DetachMenu(const buttonCaption: string);
+procedure DetachMenu(const ButtonCaption: string);
 var
   i: Integer;
   btn: TToolButton;
 begin
-  if csDestroying in fmMain.ComponentState then
+  if csDestroying in FormMain.ComponentState then
     Exit;
 
   btn := nil;
-  for i := 0 to fmMain.tbMenu.ButtonCount - 1 do
-    if fmMain.tbMenu.Buttons[i].Caption = buttonCaption then
+  for i := 0 to FormMain.ToolBarMenu.ButtonCount - 1 do
+    if FormMain.ToolBarMenu.Buttons[i].Caption = ButtonCaption then
     begin
-      btn := fmMain.tbMenu.Buttons[i];
+      btn := FormMain.ToolBarMenu.Buttons[i];
       break
     end;
 
@@ -456,7 +456,7 @@ end;
  |                                                                      |
  | The function returns the graphics class                              |
  *----------------------------------------------------------------------*)
-function GetGraphicsClass (Ext: string): TGraphicClass;
+function GetGraphicsClass(Ext: string): TGraphicClass;
 begin
   Ext := UpperCase(Ext);
   if (Ext <> '') and (Ext [1] = '.') then
@@ -522,63 +522,63 @@ begin
         gif := TGifImage(Result);      // a special case, so that these get used
         gif.DitherMode := dmFloydSteinberg;
         gif.ColorReduction := rmQuantizeWindows;
-        Result.Assign (graphic);
+        Result.Assign(graphic);
       end
       else
-        Result.Assign (graphic)
+        Result.Assign(graphic);
   except
-    FreeAndNil (Result)
+    FreeAndNil(Result);
   end
 end;
 {$endregion}
 
-{ TfmMain }
+{ TFormMain }
 
 (*----------------------------------------------------------------------*
- | TfmMain.actEditCopyExecute                                           |
+ | TFormMain.actEditCopyExecute                                           |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actEditCopyExecute(Sender: TObject);
+procedure TFormMain.ActionEditCopyExecute(Sender: TObject);
 begin
   if ResourceForm <> nil then
-    ResourceForm.Copy
+    ResourceForm.Copy;
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.actEditCutExecute                                            |
+ | TFormMain.actEditCutExecute                                            |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actEditCutExecute(Sender: TObject);
+procedure TFormMain.ActionEditCutExecute(Sender: TObject);
 begin
   if ResourceForm <> nil then
-    ResourceForm.Cut
+    ResourceForm.Cut;
 end;
 
 (*----------------------------------------------------------------------*
- | procedure TfmMain.actEditDeleteExecute                               |
+ | procedure TFormMain.actEditDeleteExecute                               |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actEditDeleteExecute(Sender: TObject);
+procedure TFormMain.ActionEditDeleteExecute(Sender: TObject);
 begin
   if ResourceForm <> nil then
-    ResourceForm.EditDelete
+    ResourceForm.EditDelete;
 end;
 
 
 (*----------------------------------------------------------------------*
- | TfmMain.actEditPasteExecute                                          |
+ | TFormMain.actEditPasteExecute                                          |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actEditPasteExecute(Sender: TObject);
+procedure TFormMain.ActionEditPasteExecute(Sender: TObject);
 begin
   if ResourceForm <> nil then
-    ResourceForm.Paste
+    ResourceForm.Paste;
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.actEditRedoExecute                                           |
+ | TFormMain.actEditRedoExecute                                           |
  |                                                                      |
- | Handler for Edit/Redo.  Tell the form to redo changes.               |
+ | Handler for Edit/Redo.  Tell the Form to redo changes.               |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actEditRedoExecute(Sender: TObject);
+procedure TFormMain.ActionEditRedoExecute(Sender: TObject);
 var
-  ResForm: TfmResource;
+  ResForm: TFormResource;
   Element: TResExamElement;
 begin
   ResForm := ResourceForm;
@@ -600,22 +600,22 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.actEditSelectAll                                             |
+ | TFormMain.ActionEditSelectAll                                             |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actEditSelectAllExecute(Sender: TObject);
+procedure TFormMain.ActionEditSelectAllExecute(Sender: TObject);
 begin
   if ResourceForm <> nil then
     ResourceForm.SelectAll
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.actEditUndoExecute                                           |
+ | TFormMain.actEditUndoExecute                                           |
  |                                                                      |
- | Handler for Edit/Undo.  Tell the form to undo changes.               |
+ | Handler for Edit/Undo.  Tell the Form to undo changes.               |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actEditUndoExecute(Sender: TObject);
+procedure TFormMain.ActionEditUndoExecute(Sender: TObject);
 var
-  ResForm: TfmResource;
+  ResForm: TFormResource;
   Element: TResExamElement;
 begin
   ResForm := ResourceForm;
@@ -641,21 +641,21 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | procedure TfmMain.actFileExitExecute                                 |
+ | procedure TFormMain.actFileExitExecute                                 |
  |                                                                      |
  | FileExit action handler                                              |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actFileExitExecute(Sender: TObject);
+procedure TFormMain.ActionFileExitExecute(Sender: TObject);
 begin
   Close
 end;
 
 (*----------------------------------------------------------------------*
- | procedure TfmMain.actFileNewExecute                                  |
+ | procedure TFormMain.actFileNewExecute                                  |
  |                                                                      |
  | FileNew action handler                                               |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actFileNewExecute(Sender: TObject);
+procedure TFormMain.ActionFileNewExecute(Sender: TObject);
 begin
   if SaveChanges then
   begin
@@ -668,71 +668,71 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | procedure TfmMain.actFileOpenExecute                                 |
+ | procedure TFormMain.actFileOpenExecute                                 |
  |                                                                      |
  | FileOpen action handler.                                             |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actFileOpenFileExecute(Sender: TObject);
+procedure TFormMain.ActionFileOpenFileExecute(Sender: TObject);
 begin
   Application.ProcessMessages;  // Ensures that toolbar button doesn't temporarily disappear
 
-  OpenDialog.InitialDir := MRUList1.MRUDirectory;
+  OpenDialog.InitialDir := MRUList.MRUDirectory;
   if OpenDialog.Execute then
     OpenFile(OpenDialog.FileName);
 end;
 
 (*----------------------------------------------------------------------*
- | procedure TfmMain.actFilePrintExecute                                |
+ | procedure TFormMain.actFilePrintExecute                                |
  |                                                                      |
  | FilePrint action handler                                             |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actFilePrintExecute(Sender: TObject);
+procedure TFormMain.ActionFilePrintExecute(Sender: TObject);
 begin
   if PrintDialog.Execute then
 end;
 
 (*----------------------------------------------------------------------*
- | procedure TfmMain.actFileSaveAsExecute                               |
+ | procedure TFormMain.actFileSaveAsExecute                               |
  |                                                                      |
  | FileSaveAs action handler                                            |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actFileSaveAsExecute(Sender: TObject);
+procedure TFormMain.ActionFileSaveAsExecute(Sender: TObject);
 begin
   SaveFileAs;
 end;
 
 (*----------------------------------------------------------------------*
- | procedure TfmMain.actFileSaveExecute                                 |
+ | procedure TFormMain.actFileSaveExecute                                 |
  |                                                                      |
  | File/Save handler.  If we know the file Name, overwrite it.          |
  | Otherwise do File/Save As instead.                                   |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actFileSaveExecute(Sender: TObject);
+procedure TFormMain.ActionFileSaveExecute(Sender: TObject);
 begin
   SaveFile;
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.actHelpAboutExecute                                          |
+ | TFormMain.actHelpAboutExecute                                          |
  |                                                                      |
  | Display/execute the about box.                                       |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actHelpAboutExecute(Sender: TObject);
+procedure TFormMain.ActionHelpAboutExecute(Sender: TObject);
 begin
-  NTAboutBox1.Execute;
+  NTAboutBox.Execute;
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.actResourceAddResourceExecute                                |
+ | TFormMain.actResourceAddResourceExecute                                |
  |                                                                      |
  | Display/execute the Add Resource dialog.                             |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actResourceAddResourceExecute(Sender: TObject);
+procedure TFormMain.ActionResourceAddResourceExecute(Sender: TObject);
 var
-  Dialog: TdlgAddResource;
+  Dialog: TDialogAddResource;
   ResourceDetails: TResourceDetails;
 begin
-  Dialog := TdlgAddResource.Create(nil);
+  Dialog := TDialogAddResource.Create(nil);
   try
     if Dialog.ShowModal = mrOk then
     begin
@@ -747,12 +747,12 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.actResourceDeleteResourceExecute                             |
+ | TFormMain.actResourceDeleteResourceExecute                             |
  |                                                                      |
  | Delete the selected resource, and delete the node(s) that refer to   |
  | it.                                                                  |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actResourceDeleteResourceExecute(Sender: TObject);
+procedure TFormMain.ActionResourceDeleteResourceExecute(Sender: TObject);
 var
   p: PVirtualNode;
   ResourceDetails: TResourceDetails;
@@ -786,13 +786,13 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.actResourceExportResourceExecute                             |
+ | TFormMain.actResourceExportResourceExecute                             |
  |                                                                      |
  | Display/execute the 'export resource' dialog.  This is either a      |
  | 'save' dialog, or a 'save picture' dialog, depending on the          |
  | resource to be exported.                                             |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actResourceExportResourceExecute(Sender: TObject);
+procedure TFormMain.ActionResourceExportResourceExecute(Sender: TObject);
 var
   Pict: TPicture;
   cls, cls1: TGraphicClass;
@@ -819,29 +819,29 @@ begin
   try
     if Assigned(Pict.Graphic) then
     begin
-      SavePictureDialog1.InitialDir := PersistDirectoryName ['Export'];
+      SavePictureDialog.InitialDir := PersistDirectoryName ['Export'];
 
       cls := TGraphicClass (Pict.Graphic.ClassType);
-      SavePictureDialog1.DefaultExt := GraphicExtension (cls);
+      SavePictureDialog.DefaultExt := GraphicExtension (cls);
 
-      if SavePictureDialog1.Execute then
+      if SavePictureDialog.Execute then
       begin
-        Ext := ExtractFileExt(SavePictureDialog1.FileName);
+        Ext := ExtractFileExt(SavePictureDialog.FileName);
         cls1 := GetGraphicsClass (Ext);
 
         if cls <> cls1 then
         begin
           newGraphic := CreateCompatibleGraphic (Pict.Graphic, cls1);
           try
-            newGraphic.SaveToFile(SavePictureDialog1.FileName);
+            newGraphic.SaveToFile(SavePictureDialog.FileName);
           finally
             newGraphic.Free
           end
         end
         else
-          Pict.SaveToFile(SavePictureDialog1.FileName);
+          Pict.SaveToFile(SavePictureDialog.FileName);
 
-        PersistDirectoryName ['Export'] := ExtractFilePath(SavePictureDialog1.FileName)
+        PersistDirectoryName ['Export'] := ExtractFilePath(SavePictureDialog.FileName)
       end
     end
   finally
@@ -858,27 +858,27 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.actResourceImportOtherResourceExecute                        |
+ | TFormMain.actResourceImportOtherResourceExecute                        |
  |                                                                      |
  | Import a 'User' resource                                             |
  |                                                                      |
  | Get the resource Name and type from the file Name and extension      |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actResourceImportOtherResourceExecute(Sender: TObject);
+procedure TFormMain.ActionResourceImportOtherResourceExecute(Sender: TObject);
 var
   ResourceDetails: TResourceDetails;
   MemoryStream: TMemoryStream;
   ResType, ResName: string;
 begin
-  OpenDialog1.InitialDir := PersistDirectoryName ['Import'];
+  OpenDialogAnyFile.InitialDir := PersistDirectoryName ['Import'];
 
-  if OpenDialog1.Execute then
+  if OpenDialogAnyFile.Execute then
   begin
     MemoryStream := TMemoryStream.Create;
     try
-      MemoryStream.LoadFromFile(OpenDialog1.FileName);
+      MemoryStream.LoadFromFile(OpenDialogAnyFile.FileName);
 
-      ResType := UpperCase(ExtractFileName(OpenDialog1.FileName));
+      ResType := UpperCase(ExtractFileName(OpenDialogAnyFile.FileName));
       ResName := SplitString ('.', ResType);
 
       if ResType = '' then
@@ -900,7 +900,7 @@ begin
 
       ResourceDetails.Dirty := True;
 
-      PersistDirectoryName ['Import'] := ExtractFilePath(OpenDialog1.FileName);
+      PersistDirectoryName ['Import'] := ExtractFilePath(OpenDialogAnyFile.FileName);
 
       FResourceModule.SortResources;
       UpdateDisplay(ResourceDetails);
@@ -911,21 +911,21 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.actResourceImportRCDataResourceExecute                       |
+ | TFormMain.actResourceImportRCDataResourceExecute                       |
  |                                                                      |
  | Import an RC Data resource                                           |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actResourceImportRCDataResourceExecute(Sender: TObject);
+procedure TFormMain.ActionResourceImportRCDataResourceExecute(Sender: TObject);
 var
   ResourceDetails: TResourceDetails;
   MemoryStream: TMemoryStream;
 begin
-  OpenDialog1.InitialDir := PersistDirectoryName ['Import'];
-  if OpenDialog1.Execute then
+  OpenDialogAnyFile.InitialDir := PersistDirectoryName ['Import'];
+  if OpenDialogAnyFile.Execute then
   begin
     MemoryStream := TMemoryStream.Create;
     try
-      MemoryStream.LoadFromFile(OpenDialog1.FileName);
+      MemoryStream.LoadFromFile(OpenDialogAnyFile.FileName);
 
       ResourceDetails := TResourceDetails.CreateResourceDetails (
         FResourceModule, 0,
@@ -937,7 +937,7 @@ begin
 
       ResourceDetails.Dirty := True;
 
-      PersistDirectoryName ['Import'] := ExtractFilePath(OpenDialog1.FileName);
+      PersistDirectoryName ['Import'] := ExtractFilePath(OpenDialogAnyFile.FileName);
 
       FResourceModule.SortResources;
       UpdateDisplay(ResourceDetails)
@@ -948,22 +948,22 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.actResourceImportResourceExecute                             |
+ | TFormMain.actResourceImportResourceExecute                             |
  |                                                                      |
  | Import a graphic resource                                            |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actResourceImportResourceExecute(Sender: TObject);
+procedure TFormMain.ActionResourceImportResourceExecute(Sender: TObject);
 var
   ResourceDetailsClass: TResourcedetailsClass;
   Ext: string;
   ResourceDetails: TResourceDetails;
   Image: TPicture;
 begin
-  OpenPictureDialog1.InitialDir := PersistDirectoryName ['Import'];
+  OpenPictureDialog.InitialDir := PersistDirectoryName ['Import'];
 
-  if OpenPictureDialog1.Execute then
+  if OpenPictureDialog.Execute then
   begin
-    Ext := UpperCase(ExtractFileExt(OpenPictureDialog1.FileName));
+    Ext := UpperCase(ExtractFileExt(OpenPictureDialog.FileName));
 
     if Ext = '.ICO' then
       ResourceDetailsClass := TIconGroupResourceDetails
@@ -983,19 +983,19 @@ begin
     ResourceDetails.Dirty := True;
 
     if ResourceDetails is TIconCursorGroupResourceDetails then
-      TIconCursorGroupResourceDetails (ResourceDetails).LoadImage(OpenPictureDialog1.FileName)
+      TIconCursorGroupResourceDetails(ResourceDetails).LoadImage(OpenPictureDialog.FileName)
     else
     begin
       Image := TPicture.Create;
       try
-        Image.LoadFromFile(OpenPictureDialog1.FileName);
-        TGraphicsResourceDetails (ResourceDetails).SetImage(Image);
+        Image.LoadFromFile(OpenPictureDialog.FileName);
+        TGraphicsResourceDetails(ResourceDetails).SetImage(Image);
       finally
         Image.Free
       end
     end;
 
-    PersistDirectoryName ['Import'] := ExtractFilePath(OpenPictureDialog1.FileName);
+    PersistDirectoryName ['Import'] := ExtractFilePath(OpenPictureDialog.FileName);
 
     FResourceModule.SortResources;
     UpdateDisplay(ResourceDetails);
@@ -1003,10 +1003,10 @@ begin
 
 end;
 
-procedure TfmMain.actResourcePropertiesExecute(Sender: TObject);
+procedure TFormMain.ActionResourcePropertiesExecute(Sender: TObject);
 var
   Dialog: TdlgResourceProperties;
-  fm: TfmResource;
+  fm: TFormResource;
   NewLanguage: LCID;
   NewName: WideString;
   ResourceDetails, r: TResourceDetails;
@@ -1061,43 +1061,43 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.actViewPropertiesExecute                                     |
+ | TFormMain.actViewPropertiesExecute                                     |
  |                                                                      |
  | Display/execute the 'Properties' dialog                              |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actViewPropertiesExecute(Sender: TObject);
+procedure TFormMain.ActionViewPropertiesExecute(Sender: TObject);
 var
-  Dialog: TfmProperties;
+  Dialog: TFormProperties;
 begin
-  Dialog := TfmProperties.Create(nil);
+  Dialog := TFormProperties.Create(nil);
   try
-    Dialog.ShowModal
+    Dialog.ShowModal;
   finally
     Dialog.Free
   end
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.actViewStatusbarExecute                                      |
+ | TFormMain.actViewStatusbarExecute                                      |
  |                                                                      |
  | Turn the status bar on/off                                           |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actViewStatusbarExecute(Sender: TObject);
+procedure TFormMain.ActionViewStatusbarExecute(Sender: TObject);
 begin
   gProperties.ShowStatusBar := not gProperties.ShowStatusBar
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.actViewToolbarExecute                                        |
+ | TFormMain.actViewToolbarExecute                                        |
  |                                                                      |
  | Turn the toolbar on/off.                                             |
  *----------------------------------------------------------------------*)
-procedure TfmMain.actViewToolbarExecute(Sender: TObject);
+procedure TFormMain.ActionViewToolbarExecute(Sender: TObject);
 begin
   gProperties.ShowToolbar := not gProperties.ShowToolbar;
 end;
 
-function TfmMain.ApplicationEvents1Help(Command: Word; Data: NativeInt;
+function TFormMain.ApplicationEventsHelp(Command: Word; Data: NativeInt;
   var CallHelp: Boolean): Boolean;
 begin
   CallHelp := not (command = HELP_FINDER);
@@ -1106,19 +1106,19 @@ begin
   Result := False
 end;
 
-procedure TfmMain.ApplicationEvents1Message(var Msg: tagMSG;
+procedure TFormMain.ApplicationEventsMessage(var Msg: tagMSG;
   var Handled: Boolean);
 begin
   Handled := not HHPreTranslateMessage(Msg);
 end;
 
-procedure TfmMain.CheckDetails(p: PVirtualNode; Param: Integer;
+procedure TFormMain.CheckDetails(p: PVirtualNode; Param: Integer;
   var Continue: Boolean);
 begin
   Continue := Integer (GetNodeResourceDetails (p)) <> Param
 end;
 
-function TfmMain.CloneResource(ResourceDetails: TResourceDetails; NewName: string; NewLanguage: Integer): TResourceDetails;
+function TFormMain.CloneResource(ResourceDetails: TResourceDetails; NewName: string; NewLanguage: Integer): TResourceDetails;
 var
   i: Integer;
   icg, clicg: TIconCursorGroupResourceDetails;
@@ -1165,24 +1165,24 @@ begin
   FResourceModule.AddResource(Result);
 end;
 
-procedure TfmMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+procedure TFormMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   CanClose := SaveChanges
 end;
 
 (*----------------------------------------------------------------------*
- | procedure TfmMain.FormDestroy                                        |
+ | procedure TFormMain.FormDestroy                                        |
  |                                                                      |
  | Tidy up                                                              |
  *----------------------------------------------------------------------*)
-procedure TfmMain.FormDestroy(Sender: TObject);
+procedure TFormMain.FormDestroy(Sender: TObject);
 begin
   FResourceModule.Free;
   gProperties.Free;
   FExaminer.Free
 end;
 
-procedure TfmMain.FormKeyDown(Sender: TObject; var Key: Word;
+procedure TFormMain.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if Assigned(fmResourceObject) then
@@ -1192,21 +1192,21 @@ begin
   end
 end;
 
-procedure TfmMain.FormKeyPress(Sender: TObject; var Key: Char);
+procedure TFormMain.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if FIgnoreChar then
     Key := #0
 end;
 
-procedure TfmMain.FormShow(Sender: TObject);
+procedure TFormMain.FormShow(Sender: TObject);
 begin
   InitializeHTMLHelp;
-  tbMenu.Font := Screen.MenuFont;
+  ToolBarMenu.Font := Screen.MenuFont;
   UseInternationalFont(vstresources.Font);
 end;
 
 
-function TfmMain.GetNodeElement(node: PVirtualNode;
+function TFormMain.GetNodeElement(node: PVirtualNode;
   var Element: TResExamElement): Boolean;
 var
   obj: TObject;
@@ -1219,7 +1219,7 @@ begin
     Element := nil;
 end;
 
-function TfmMain.GetNodeResourceDetails(node: PVirtualNode): TResourceDetails;
+function TFormMain.GetNodeResourceDetails(node: PVirtualNode): TResourceDetails;
 var
   Element: TResExamElement;
 begin
@@ -1229,26 +1229,26 @@ begin
     Result := nil;
 end;
 
-function TfmMain.GetPersistDirectoryName(section: string): string;
+function TFormMain.GetPersistDirectoryName(section: string): string;
 var
   Registry: TRegistry;
 begin
   Result := '';
   Registry := TRegistry.Create(KEY_READ);
   try
-    if Registry.OpenKey('\' + PersistentPosition1.ApplicationKey + '\Directories', False) then
+    if Registry.OpenKey('\' + PersistentPosition.ApplicationKey + '\Directories', False) then
       Result := Registry.ReadString (section);
   finally
     Registry.Free;
   end;
 end;
 
-function TfmMain.GetResourceDetailsNode(ResourceDetails: TResourceDetails): PVirtualNode;
+function TFormMain.GetResourceDetailsNode(ResourceDetails: TResourceDetails): PVirtualNode;
 begin
   Result := vstResources.ForEach(CheckDetails, Integer (ResourceDetails))
 end;
 
-function TfmMain.IsDirty: Boolean;
+function TFormMain.IsDirty: Boolean;
 begin
   if Assigned(FResourceModule) then
     Result := FResourceModule.Dirty
@@ -1257,28 +1257,28 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.Loaded                                                       |
+ | TFormMain.Loaded                                                       |
  |                                                                      |
  | Initialize.                                                          |
  *----------------------------------------------------------------------*)
-procedure TfmMain.Loaded;
+procedure TFormMain.Loaded;
 begin
   inherited;
   SetCaption;
-  gProperties := TPEResourceExplorerProperties.Create(self);
+  gProperties := TPEResourceExplorerProperties.Create(Self);
   PostMessage(handle, WM_INITIALIZE, 0, 0);
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.mnuEditClick                                                 |
+ | TFormMain.mnuEditClick                                                 |
  |                                                                      |
- | Before displaying the 'Edit' menu, set the undo and redo             |
+ | Before displaying the 'Edit' Menu, set the undo and redo             |
  | descriptions                                                         |
  *----------------------------------------------------------------------*)
-procedure TfmMain.mnuEditClick(Sender: TObject);
+procedure TFormMain.MenuItemEditClick(Sender: TObject);
 var
   s: string;
-  ResForm: TfmResource;
+  ResForm: TFormResource;
   Element: TResExamElement;
   Name: TResExamName;
 begin
@@ -1288,16 +1288,16 @@ begin
     s := ResForm.UndoDescription;
 
     if s = '' then
-      mnuEditUndo.Caption := FUndo
+      MenuItemEditUndo.Caption := FUndo
     else
-      mnuEditUndo.Caption := Format(rstUndo, [s]);
+      MenuItemEditUndo.Caption := Format(rstUndo, [s]);
 
     s := ResForm.RedoDescription;
 
     if s = '' then
-      mnuEditRedo.Caption := FRedo
+      MenuItemEditRedo.Caption := FRedo
     else
-      mnuEditRedo.Caption := Format(rstRedo, [s])
+      MenuItemEditRedo.Caption := Format(rstRedo, [s])
   end
   else
   begin
@@ -1307,33 +1307,33 @@ begin
       Name := TResExamName(Element);
       s := Name.UndoDescription;
       if s = '' then
-        mnuEditUndo.Caption := FUndo
+        MenuItemEditUndo.Caption := FUndo
       else
-        mnuEditUndo.Caption := Format(rstUndo, [s]);
+        MenuItemEditUndo.Caption := Format(rstUndo, [s]);
 
       s := Name.RedoDescription;
 
       if s = '' then
-        mnuEditRedo.Caption := FRedo
+        MenuItemEditRedo.Caption := FRedo
       else
-        mnuEditRedo.Caption := Format(rstRedo, [s]);
+        MenuItemEditRedo.Caption := Format(rstRedo, [s]);
     end;
   end;
 end;
 
 (*----------------------------------------------------------------------*
- | procedure TfmMain.MRUList1PopupMenuClick                             |
+ | procedure TFormMain.MRUList1PopupMenuClick                             |
  |                                                                      |
  | Open a file from the MRU list popup.                                 |
  *----------------------------------------------------------------------*)
-procedure TfmMain.MRUList1PopupMenuClick(Sender: TObject);
+procedure TFormMain.MRUListPopupMenuClick(Sender: TObject);
 var
   Item: TMenuItem;
   p: Integer;
 begin
   if Sender is TMenuItem then
   begin
-    Item := TMenuItem (sender);
+    Item := TMenuItem (Sender);
     p := Pos (' ', Item.Caption);
     if p > 0 then
       OpenFile(Copy(Item.Caption, p + 1, MaxInt))
@@ -1341,11 +1341,11 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | procedure TfmMain.OpenFile                                           |
+ | procedure TFormMain.OpenFile                                           |
  |                                                                      |
  | Open the specified module or .ResourceDetails file                               |
  *----------------------------------------------------------------------*)
-procedure TfmMain.OpenFile(const fileName: string);
+procedure TFormMain.OpenFile(const FileName: string);
 var
   Ext: string;
 begin
@@ -1354,7 +1354,7 @@ begin
     FreeAndNil (FResourceModule);
     ClearUndoDetails;
 
-    Ext := UpperCase(ExtractFileExt(fileName));
+    Ext := UpperCase(ExtractFileExt(FileName));
     if (Ext = '.RES') or (Ext = '.DCR') then
       FResourceModule := TResModule.Create
     else
@@ -1369,22 +1369,22 @@ begin
         else
           FResourceModule := TPEResourceModule.Create;
 
-    FResourceModule.LoadFromFile(fileName);
+    FResourceModule.LoadFromFile(FileName);
     Self.FileName := FileName;
-    MRUList1.AddFile(fileName);
+    MRUList.AddFile(FileName);
     UpdateDisplay(Nil);
   end
 end;
 
-function TfmMain.ResourceForm: TfmResource;
+function TFormMain.ResourceForm: TFormResource;
 begin
-  if Assigned(fmResourceObject) and (fmResourceObject is TfmResource) then
-    Result := TfmResource(fmResourceObject)
+  if Assigned(fmResourceObject) and (fmResourceObject is TFormResource) then
+    Result := TFormResource(fmResourceObject)
   else
     Result := Nil
 end;
 
-function TfmMain.SaveChanges: Boolean;
+function TFormMain.SaveChanges: Boolean;
 var
   s: string;
 begin
@@ -1405,7 +1405,7 @@ begin
     Result := True
 end;
 
-function TfmMain.SaveFile: Boolean;
+function TFormMain.SaveFile: Boolean;
 begin
   if FFileName = '' then
     Result := SaveFileAs
@@ -1417,9 +1417,9 @@ begin
   end
 end;
 
-function TfmMain.SaveFileAs: Boolean;
+function TFormMain.SaveFileAs: Boolean;
 var
-  s, fName: string;
+  s, FilName: string;
   NewModule: TResModule;
   p: Integer;
   ResourceDetails: TResourceDetails;
@@ -1430,28 +1430,28 @@ begin
   Application.ProcessMessages;  // Ensures that toolbar button doesn't temporarily disappear
   if Assigned(FResourceModule) then
   begin
-    fName := FileName;
+    FilName := FileName;
     if FResourceModule is TRCModule then
     begin
-      p := Length(fName);
+      p := Length(FilName);
       while p > 0 do
-        if fName [p] = '.' then
+        if FilName [p] = '.' then
           break
         else
           Dec(p);
 
       if p = 0 then
-        fName := fName + '.res'
+        FilName := FilName + '.res'
       else
-        fName := Copy(s, 1, p - 1) + '.res';
+        FilName := Copy(s, 1, p - 1) + '.res';
     end;
 
-    SaveDialog.FileName := fName;
+    SaveDialog.FileName := FilName;
 
     s := '';
-    if fName <> '' then
+    if FilName <> '' then
     begin
-      s := ExtractFileExt(fName);
+      s := ExtractFileExt(FilName);
       if Length(s) > 0 then
         s := Copy(s, 2, MaxInt);
     end
@@ -1497,23 +1497,23 @@ begin
       end;
       FResourceModule.SaveToFile(SaveDialog.FileName);
       FileName := SaveDialog.FileName;
-      MRUList1.AddFile(fileName);
+      MRUList.AddFile(FileName);
       Result := True;
     end
   end
 end;
 
-function TfmMain.SelectedResourceDetails: TResourceDetails;
+function TFormMain.SelectedResourceDetails: TResourceDetails;
 begin
   Result := GetNodeResourceDetails (vstResources.FocusedNode);
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.SetCaption                                                   |
+ | TFormMain.SetCaption                                                   |
  |                                                                      |
  | Set the caption to display the loaded file.                          |
  *----------------------------------------------------------------------*)
-procedure TfmMain.SetCaption;
+procedure TFormMain.SetCaption;
 var
   st: string;
 begin
@@ -1530,11 +1530,11 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.SetFileName                                                  |
+ | TFormMain.SetFileName                                                  |
  |                                                                      |
  | Set the file Name.                                                   |
  *----------------------------------------------------------------------*)
-procedure TfmMain.SetFileName(const Value: string);
+procedure TFormMain.SetFileName(const Value: string);
 begin
   if FileName <> Value then
   begin
@@ -1544,36 +1544,36 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.SetFormMenuButton                                            |
+ | TFormMain.SetFormMenuButton                                            |
  |                                                                      |
- | Turn on or off the '...object' menu button.  This is set to the      |
- | form's menu item.                                                    |
+ | Turn on or off the '...object' Menu button.  This is set to the      |
+ | Form's menu item.                                                    |
  *----------------------------------------------------------------------*)
-procedure TfmMain.SetFormMenuButton(Item: TMenuItem);
+procedure TFormMain.SetFormMenuButton(Item: TMenuItem);
 begin
   if Assigned(Item) then
   begin
-    btnResourceObject.Caption := Item.Caption;
-    btnResourceObject.MenuItem := Item;
-    btnResourceObject.Visible := True;
+    ToolButtonResourceObject.Caption := Item.Caption;
+    ToolButtonResourceObject.MenuItem := Item;
+    ToolButtonResourceObject.Visible := True;
   end
   else
   begin
-    btnResourceObject.Visible := False;
-    btnResourceObject.MenuItem := nil;
-    btnResourceObject.Caption := '...object'
+    ToolButtonResourceObject.Visible := False;
+    ToolButtonResourceObject.MenuItem := nil;
+    ToolButtonResourceObject.Caption := '...object'
   end
 end;
 
 
-procedure TfmMain.SetPersistDirectoryName(section: string;
+procedure TFormMain.SetPersistDirectoryName(section: string;
   const Value: string);
 var
   Registry: TRegistry;
 begin
   Registry := TRegistry.Create(KEY_READ or KEY_WRITE);
   try
-    if Registry.OpenKey('\' + PersistentPosition1.ApplicationKey + '\Directories', True) then
+    if Registry.OpenKey('\' + PersistentPosition.ApplicationKey + '\Directories', True) then
       Registry.WriteString (section, Value)
   finally
     Registry.Free
@@ -1583,7 +1583,7 @@ end;
 type
   TObjectFormRec = record
     ResourceDetails: TClass;
-    form: TResourceObjectFormClass;
+    Form: TResourceObjectFormClass;
   end;
 
 const
@@ -1592,31 +1592,31 @@ const
 
 var
   ObjectForms: array [0..NoObjectDetails - 1] of TObjectFormRec = (
-    (ResourceDetails: TIconResourceDetails;                    form: TfmIconGraphicsResource),
-    (ResourceDetails: TCursorResourceDetails;                  form: TfmCursorGraphicsResource),
-    (ResourceDetails: TGraphicsResourceDetails;                form: TfmGraphicsResource),
-    (ResourceDetails: TTextResourceDetails;                    form: TfmTextResource),
-    (ResourceDetails: TIconCursorGroupResourceDetails;         form: TfmGroupResource),
-    (ResourceDetails: TVersionInfoResourceDetails;             form: TfmVersionResource),
-    (ResourceDetails: TMenuResourceDetails;                    form: TfmMenuResource),
-    (ResourceDetails: TDialogResourceDetails;                  Form: TfmDialogResource),
-    (ResourceDetails: TRCDataDescriptionResourceDetails;       Form: TfmRCDataDescriptionResource),
-    (ResourceDetails: TRCDataPackagesResourceDetails;          Form: TfmPackagesResource),
-    (ResourceDetails: TRCDataFormResourceDetails;              Form: TfmRCDataFormResource),
-    (ResourceDetails: TXPManifestResourceDetails;              Form: TfmXPManifestResource),
-    (ResourceDetails: TAcceleratorResourceDetails;             Form: TfmAcceleratorResource),
-    (ResourceDetails: TResourceDetails;                        form: TfmRawResource)  // Must be last entry!
+    (ResourceDetails: TIconResourceDetails;                    Form: TFormIconGraphicsResource),
+    (ResourceDetails: TCursorResourceDetails;                  Form: TFormCursorGraphicsResource),
+    (ResourceDetails: TGraphicsResourceDetails;                Form: TFormGraphicsResource),
+    (ResourceDetails: TTextResourceDetails;                    Form: TFormTextResource),
+    (ResourceDetails: TIconCursorGroupResourceDetails;         Form: TFormGroupResource),
+    (ResourceDetails: TVersionInfoResourceDetails;             Form: TFormVersionResource),
+    (ResourceDetails: TMenuResourceDetails;                    Form: TFormMenuResource),
+    (ResourceDetails: TDialogResourceDetails;                  Form: TFormDialogResource),
+    (ResourceDetails: TRCDataDescriptionResourceDetails;       Form: TFormRCDataDescriptionResource),
+    (ResourceDetails: TRCDataPackagesResourceDetails;          Form: TFormPackagesResource),
+    (ResourceDetails: TRCDataFormResourceDetails;              Form: TFormRCDataFormResource),
+    (ResourceDetails: TXPManifestResourceDetails;              Form: TFormXPManifestResource),
+    (ResourceDetails: TAcceleratorResourceDetails;             Form: TFormAcceleratorResource),
+    (ResourceDetails: TResourceDetails;                        Form: TFormRawResource)  // Must be last entry!
   );
 
 (*----------------------------------------------------------------------*
- | procedure TfmMain.SwitchView (ResourceDetails: TObject)                     |
+ | procedure TFormMain.SwitchView (ResourceDetails: TObject)                     |
  |                                                                      |
  | 'details' can be:                                                    |
  |                                                                      |
  |   *  A TResourceDetails object                                       |
  |   *  Nil                                                             |
  *----------------------------------------------------------------------*)
-procedure TfmMain.SwitchView(ResourceDetails: TObject);
+procedure TFormMain.SwitchView(ResourceDetails: TObject);
 
 var
   i: Integer;
@@ -1629,26 +1629,26 @@ begin { SwitchView }
     for i := 0 to NoObjectDetails - 1 do
       if ResourceDetails is ObjectForms[i].ResourceDetails then
       begin
-        FormClass := ObjectForms[i].form;
+        FormClass := ObjectForms[i].Form;
         break
       end
   end;
 
-  // FormClass is now a valid form class - or Nil
+  // FormClass is now a valid Form class - or Nil
 
   if not Assigned(fmResourceObject) or not Assigned(FormClass) or not (fmResourceObject.ClassType = FormClass) then
   begin
 
-    if Assigned(fmResourceObject) then  // Get rid of the old resource form
+    if Assigned(fmResourceObject) then  // Get rid of the old resource Form
     begin
       SetFormMenuButton (Nil);
       FreeAndNil (fmResourceObject);
     end;
 
-    if Assigned(FormClass) then         // Create the new resource form
+    if Assigned(FormClass) then         // Create the new resource Form
     begin
       fmResourceObject := FormClass.Create(Nil);
-      fmResourceObject.Parent := pnlResource;
+      fmResourceObject.Parent := PanelResource;
       fmResourceObject.TabStop := True;
       fmResourceObject.ResourceModule := FResourceModule;
       SetFormMenuButton (fmResourceObject.Menu);
@@ -1664,15 +1664,15 @@ begin { SwitchView }
 end;
 
 (*----------------------------------------------------------------------*
- | procedure TfmMain.UpdateActions                                      |
+ | procedure TFormMain.UpdateActions                                      |
  |                                                                      |
  | Update the action list, depending on the state.                      |
  *----------------------------------------------------------------------*)
-procedure TfmMain.UpdateActions;
+procedure TFormMain.UpdateActions;
 var
   ResourceDetails: TResourceDetails;
   Element: TResExamElement;
-  ResForm: TfmResource;
+  ResForm: TFormResource;
 begin
   GetNodeElement(vstResources.FocusedNode, Element);
   if (Element is TResExamResource) then
@@ -1680,50 +1680,50 @@ begin
   else
     ResourceDetails := nil;
 
-  actResourceDeleteResource.Enabled := ResourceDetails <> nil;
+  ActionResourceDeleteResource.Enabled := ResourceDetails <> nil;
   ResForm := ResourceForm;
   if Assigned(ResForm) then
   begin
-    actEditUndo.Enabled := ResForm.CanUndo;
-    actEditRedo.Enabled := ResForm.CanRedo;
+    ActionEditUndo.Enabled := ResForm.CanUndo;
+    ActionEditRedo.Enabled := ResForm.CanRedo;
 
-    actEditCut.Enabled := ResForm.CanCut;
-    actEditCopy.Enabled := ResForm.CanCopy;
-    actEditPaste.Enabled := ResForm.CanPaste;
-    actEditSelectAll.Enabled := ResForm.CanSelectAll;
-    actEditDelete.Enabled := ResForm.CanDelete;
+    ActionEditCut.Enabled := ResForm.CanCut;
+    ActionEditCopy.Enabled := ResForm.CanCopy;
+    ActionEditPaste.Enabled := ResForm.CanPaste;
+    ActionEditSelectAll.Enabled := ResForm.CanSelectAll;
+    ActionEditDelete.Enabled := ResForm.CanDelete;
 
-    actResourceExportResource.Enabled := Assigned(ResourceDetails);
-    actResourceClone.Enabled := Assigned(ResourceDetails);
-    actResourceProperties.Enabled := Assigned(ResourceDetails) and not (ResourceDetails is TIconCursorResourceDetails);
+    ActionResourceExportResource.Enabled := Assigned(ResourceDetails);
+    ActionResourceClone.Enabled := Assigned(ResourceDetails);
+    ActionResourceProperties.Enabled := Assigned(ResourceDetails) and not (ResourceDetails is TIconCursorResourceDetails);
   end
   else
   begin
     if Element is TResExamName then
     begin
-      actEditUndo.Enabled := TResExamName(Element).CanUndo;
-      actEditRedo.Enabled := TResExamName(Element).CanRedo
+      ActionEditUndo.Enabled := TResExamName(Element).CanUndo;
+      ActionEditRedo.Enabled := TResExamName(Element).CanRedo
     end
     else
     begin
-      actEditUndo.Enabled := False;
-      actEditRedo.Enabled := False;
+      ActionEditUndo.Enabled := False;
+      ActionEditRedo.Enabled := False;
     end;
 
-    actEditCut.Enabled := False;
-    actEditCopy.Enabled := False;
-    actEditPaste.Enabled := False;
-    actEditSelectAll.Enabled := False;
-    actResourceExportResource.Enabled := False;
-    actResourceProperties.Enabled := False;
-    actResourceClone.Enabled := False;
-    actEditDelete.Enabled := False;
+    ActionEditCut.Enabled := False;
+    ActionEditCopy.Enabled := False;
+    ActionEditPaste.Enabled := False;
+    ActionEditSelectAll.Enabled := False;
+    ActionResourceExportResource.Enabled := False;
+    ActionResourceProperties.Enabled := False;
+    ActionResourceClone.Enabled := False;
+    ActionEditDelete.Enabled := False;
   end;
 
   if FResourceModule is TRCModule then
-    actFileSave.Enabled := False
+    ActionFileSave.Enabled := False
   else
-    actFileSave.Enabled := IsDirty;
+    ActionFileSave.Enabled := IsDirty;
 
   if FWasDirty <> IsDirty then
   begin
@@ -1736,11 +1736,11 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | procedure TfmMain.UpdateDisplay                                      |
+ | procedure TFormMain.UpdateDisplay                                      |
  |                                                                      |
  | Update the display by building the tree view.                        |
  *----------------------------------------------------------------------*)
-procedure TfmMain.UpdateDisplay(selectDetails: TResourceDetails);
+procedure TFormMain.UpdateDisplay(selectDetails: TResourceDetails);
 var
   ResSection: TResExamSection;
 begin { UpdateDisplay }
@@ -1775,7 +1775,7 @@ begin { UpdateDisplay }
   end
 end;
 
-procedure TfmMain.WmAddImageResource(var msg: TMessage);
+procedure TFormMain.WmAddImageResource(var msg: TMessage);
 var
   o: TResourceDetails;
   grp: TIconCursorGroupResourceDetails;
@@ -1809,67 +1809,67 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | procedure TfmMain.WmInitialize                                       |
+ | procedure TFormMain.WmInitialize                                       |
  |                                                                      |
  | WM_INITIALIZE handler.  Start with a blank .ResourceDetails file.                |
  *----------------------------------------------------------------------*)
-procedure TfmMain.WmInitialize(var msg: TMessage);
+procedure TFormMain.WmInitialize(var msg: TMessage);
 begin
-  FUndo := actEditUndo.Caption;
-  FRedo := actEditRedo.Caption;
+  FUndo := ActionEditUndo.Caption;
+  FRedo := ActionEditRedo.Caption;
   FExaminer := TResourceExaminer.Create(nil);
 
   if ParamCount = 0 then
-    actFileNew.Execute
+    ActionFileNew.Execute
   else
     OpenFile(ParamStr (1))
 end;
 
 (*----------------------------------------------------------------------*
- | TfmMain.WmPropertiesChanged                                          |
+ | TFormMain.WmPropertiesChanged                                          |
  |                                                                      |
  | Handle our 'WM_PROPERTIESCHANGED' message.  Apply persistent         |
  | properties                                                           |
  *----------------------------------------------------------------------*)
-procedure TfmMain.WmPropertiesChanged(var msg: TMessage);
+procedure TFormMain.WmPropertiesChanged(var msg: TMessage);
 begin
-  tbMain.Visible := gProperties.ShowToolbar;
-  actViewToolbar.Checked := tbMain.Visible;
+  ToolbarMain.Visible := gProperties.ShowToolbar;
+  ActionViewToolbar.Checked := ToolbarMain.Visible;
 
-  sbMain.Visible := gProperties.ShowStatusBar;
-  actViewStatusbar.Checked := sbMain.Visible;
+  StatusBarMain.Visible := gProperties.ShowStatusBar;
+  ActionViewStatusbar.Checked := StatusBarMain.Visible;
   UseInternationalFont(vstResources.Font);
 
   if Assigned(fmResourceObject) then
     fmResourceObject.UpdateFonts
 end;
 
-procedure TfmMain.WmStatusBar(var Msg: TMessage);
+procedure TFormMain.WmStatusBar(var Msg: TMessage);
 begin
   if Msg.lParam <> 0 then
-    sbMain.Panels[1].Text := PChar (Msg.lParam) + '     ';
+    StatusBarMain.Panels[1].Text := PChar(Msg.lParam) + '     ';
 
   if Msg.wParam <> 0 then
-    sbMain.Panels[0].Text := PChar (Msg.wParam);
+    StatusBarMain.Panels[0].Text := PChar(Msg.wParam);
 end;
 
-procedure TfmMain.actResourceCloneExecute(Sender: TObject);
+procedure TFormMain.ActionResourceCloneExecute(Sender: TObject);
 var
   ResourceDetails: TResourceDetails;
-  Dialog: TdlgCloneResource;
+  Dialog: TDialogCloneResource;
 begin
   ResourceDetails := SelectedResourceDetails;
   if Assigned(ResourceDetails) then
   begin
-    Dialog := TdlgCloneResource.Create(nil);
+    Dialog := TDialogCloneResource.Create(nil);
     try
       Dialog.ResourceDetails := ResourceDetails;
       if Dialog.ShowModal = mrOk then
       begin
-        if Dialog.rbByLanguage.Checked then
+        if Dialog.RadioButtonByLanguage.Checked then
           ResourceDetails := CloneResource(ResourceDetails, '', Dialog.Language)
         else
-          ResourceDetails := CloneResource(ResourceDetails, Dialog.ntedName.Text, -1);
+          ResourceDetails := CloneResource(ResourceDetails, Dialog.EditName.Text, -1);
         FResourceModule.SortResources;
         UpdateDisplay(ResourceDetails)
       end
@@ -1879,18 +1879,18 @@ begin
   end
 end;
 
-procedure TfmMain.actResourceGrabExecute(Sender: TObject);
+procedure TFormMain.ActionResourceGrabExecute(Sender: TObject);
 begin
 //
 end;
 
-procedure TfmMain.vstResourcesFocusChanged(Sender: TBaseVirtualTree;
+procedure TFormMain.vstResourcesFocusChanged(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex);
 begin
   SwitchView (GetNodeResourceDetails (Node));
 end;
 
-procedure TfmMain.vstResourcesGetImageIndex(Sender: TBaseVirtualTree;
+procedure TFormMain.vstResourcesGetImageIndex(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Kind: TVTImageKind; Column: TColumnIndex;
   var Ghosted: Boolean; var ImageIndex: TImageIndex);
 var
@@ -1909,7 +1909,7 @@ begin
       ImageIndex := imgClosedFolder
 end;
 
-procedure TfmMain.vstResourcesGetText(Sender: TBaseVirtualTree;
+procedure TFormMain.vstResourcesGetText(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType;
   var CellText: string);
 var
@@ -1919,7 +1919,7 @@ begin
     CellText := Element.DisplayName
 end;
 
-procedure TfmMain.vstResourcesInitChildren(Sender: TBaseVirtualTree;
+procedure TFormMain.vstResourcesInitChildren(Sender: TBaseVirtualTree;
   Node: PVirtualNode; var ChildCount: Cardinal);
 var
   Element: TResExamElement;
@@ -1930,7 +1930,7 @@ begin
     ChildCount := 0
 end;
 
-procedure TfmMain.vstResourcesInitNode(Sender: TBaseVirtualTree; ParentNode,
+procedure TFormMain.vstResourcesInitNode(Sender: TBaseVirtualTree; ParentNode,
   Node: PVirtualNode; var InitialStates: TVirtualNodeInitStates);
 var
   Element, pelem: TResExamElement;
@@ -1949,7 +1949,7 @@ begin
   end
 end;
 
-procedure TfmMain.vstResourcesNewText(Sender: TBaseVirtualTree;
+procedure TFormMain.vstResourcesNewText(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex; NewText: string);
 var
   Element: TResExamElement;
@@ -1964,13 +1964,13 @@ begin
   vstResources.InvalidateNode(node)
 end;
 
-procedure TfmMain.vstResourcesEditing(Sender: TBaseVirtualTree;
+procedure TFormMain.vstResourcesEditing(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex; var Allowed: Boolean);
 begin
   Allowed := EditAllowed (Node);
 end;
 
-function TfmMain.EditAllowed(node: PVirtualNode): Boolean;
+function TFormMain.EditAllowed(node: PVirtualNode): Boolean;
 var
   Element: TResExamElement;
   tp: TResExamType;
@@ -1996,7 +1996,7 @@ begin
       end
 end;
 
-procedure TfmMain.UpdateResourceNodes(ResourceDetails: TResourceDetails;
+procedure TFormMain.UpdateResourceNodes(ResourceDetails: TResourceDetails;
   node: PVirtualNode);
 var
   nm, tp: WideString;
@@ -2026,7 +2026,6 @@ begin
     end
   end
 end;
-
 
 
 end.

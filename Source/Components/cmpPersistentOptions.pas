@@ -272,8 +272,8 @@ end;
 constructor TPersistentOptions.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  FOptions := TOptions.Create(self, TOption);
-  FSections := TSections.Create(self, TSection);
+  FOptions := TOptions.Create(Self, TOption);
+  FSections := TSections.Create(Self, TSection);
 end;
 
 (*----------------------------------------------------------------------*
@@ -394,21 +394,21 @@ begin
   p := StrRScan (PChar (path), '\');
 
   s := nil;
-  if Assigned (p) then
+  if Assigned(p) then
   begin
     n := Integer (p) - Integer (PChar (path)) + 1;
     s := Sections.SectionByName [Trim (Copy(path, 1, n - 1))];
     path := Trim (Copy(path, n + 1, MaxInt));
   end;
 
-  if Assigned (s) then
+  if Assigned(s) then
     Result := s.Options.OptionByName [path]
   else
     Result := Options.OptionByName [path];
 
   if Result = Nil then
   begin
-    if Assigned (s) then
+    if Assigned(s) then
       secName := s.Name
     else
       secName := '[Default]';
@@ -582,20 +582,20 @@ begin
   if not Persist then Exit;
 
   f := GetFileName;
-  appSave := self.Application;
-  manSave := self.Application;
-  verSave := self.Application;
+  appSave := Self.Application;
+  manSave := Self.Application;
+  verSave := Self.Application;
   try
-    self.FApplication := application;
-    self.FManufacturer := manufacturer;
-    self.FVersion := version;
+    Self.FApplication := application;
+    Self.FManufacturer := manufacturer;
+    Self.FVersion := version;
 
     if GetFileName <> f then
       DeleteFile(GetFileName)
   finally
-    self.FApplication := application;
-    self.FManufacturer := manSave;
-    self.FVersion := verSave
+    Self.FApplication := application;
+    Self.FManufacturer := manSave;
+    Self.FVersion := verSave
   end
 end;
 
@@ -1253,7 +1253,7 @@ begin
   if OptionType = otBoolean then
     Result := FBoolVal
   else
-    raise EOptionTypeMismatch(self)
+    raise EOptionTypeMismatch(Self)
 end;
 
 (*----------------------------------------------------------------------*
@@ -1267,7 +1267,7 @@ begin
   if OptionType = otEnum then
     Result := EnumValues[FIntVal]
   else
-    raise EOptionTypeMismatch(self)
+    raise EOptionTypeMismatch(Self)
 end;
 
 (*----------------------------------------------------------------------*
@@ -1281,7 +1281,7 @@ begin
   if OptionType = otInteger then
     Result := FIntVal
   else
-    raise EOptionTypeMismatch(self)
+    raise EOptionTypeMismatch(Self)
 end;
 
 (*----------------------------------------------------------------------*
@@ -1295,7 +1295,7 @@ begin
   if OptionType = otString then
     Result := FStrVal
   else
-    raise EOptionTypeMismatch(self)
+    raise EOptionTypeMismatch(Self)
 end;
 
 (*----------------------------------------------------------------------*
@@ -1360,7 +1360,7 @@ end;
 procedure TOption.SetAsBoolean(const Value: Boolean);
 begin
   if OptionType <> otBoolean then
-    raise EOptionTypeMismatch(self);
+    raise EOptionTypeMismatch(Self);
 
   if Value <> FBoolVal then
   begin
@@ -1395,7 +1395,7 @@ end;
 procedure TOption.SetAsInteger(const Value: Integer);
 begin
   if OptionType <> otInteger then
-    raise EOptionTypeMismatch(self);
+    raise EOptionTypeMismatch(Self);
 
   if Value <> FIntVal then
   begin
@@ -1414,7 +1414,7 @@ end;
 procedure TOption.SetAsString(const Value: string);
 begin
   if OptionType <> otString then
-    raise EOptionTypeMismatch(self);
+    raise EOptionTypeMismatch(Self);
 
   if Value <> FStrVal then
   begin
@@ -1471,8 +1471,8 @@ constructor TSection.Create(Collection: TCollection);
 begin
   inherited;
 
-  FOptions := TOptions.Create(self, TOption);
-  FSections := TSections.Create(self, TSection);
+  FOptions := TOptions.Create(Self, TOption);
+  FSections := TSections.Create(Self, TSection);
 end;
 
 (*----------------------------------------------------------------------*
@@ -1553,7 +1553,7 @@ begin
   if p > 0 then
   begin
     s := SectionByName [Trim (Copy(name, 1, p - 1))];
-    if Assigned (s) then
+    if Assigned(s) then
       Result := s.Sections.SectionByName [Trim (Copy(name, p + 1, MaxInt))]
     else
       raise EOptionError.CreateFmt(rstSectionNotFound, [s.Name]);
@@ -1569,7 +1569,7 @@ begin
     end
   end;
 
-  if not Assigned (Result) then
+  if not Assigned(Result) then
     raise EOptionError.CreateFmt(rstSectionNotFound, [name])
 end;
 

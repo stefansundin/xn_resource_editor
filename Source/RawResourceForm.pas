@@ -7,8 +7,8 @@ uses
   ResourceForm, cmpHexDump, unitResourceDetails;
 
 type
-  TfmRawResource = class(TfmResource)
-    HexDump1: THexDump;
+  TFormRawResource = class(TFormResource)
+    HexDump: THexDump;
   protected
     procedure SetObject(const Value: TObject); override;
   end;
@@ -19,7 +19,7 @@ implementation
 
 { TfmRawResource }
 
-procedure TfmRawResource.SetObject(const Value: TObject);
+procedure TFormRawResource.SetObject(const Value: TObject);
 var
   Details: TResourceDetails;
 begin
@@ -27,8 +27,8 @@ begin
 
   Details := obj as TResourceDetails;
 
-  HexDump1.Address := details.Data.Memory;
-  HexDump1.DataSize := details.Data.Size
+  HexDump.Address := Details.Data.Memory;
+  HexDump.DataSize := Details.Data.Size
 end;
 
 end.

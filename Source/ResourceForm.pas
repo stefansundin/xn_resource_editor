@@ -1,7 +1,7 @@
 (*======================================================================*
  | ResourceForm                                                         |
  |                                                                      |
- | Contains TfmResource base class for all resource editor forms.       |
+ | Contains TFormResource base class for all resource editor forms.       |
  |                                                                      |
  | 1.  Provides derived forms with 'ResourceDetails' property           |
  | 2.  Handles unlimited undo/redo functionallity                       |
@@ -25,9 +25,9 @@ type
   TImportExportType = (ixNone, ixFile, ixPicture);
 
 //=======================================================================
-// TfmResource class
+// TFormResource class
 
-  TfmResource = class(TfmResourceObject)
+  TFormResource = class(TFormResourceObject)
   private
     function GetResourceDetails: TResourceDetails;
     function GetCanRedo: Boolean;
@@ -139,11 +139,11 @@ end;
 
 procedure UseInternationalFont(font: TFont);
 begin
-  if not Assigned (gInternationalFont) then
+  if not Assigned(gInternationalFont) then
     CreateInternationalFont;
 
-  if Assigned (gInternationalFont) then
-    font.Assign(gInternationalFont)
+  if Assigned(gInternationalFont) then
+    Font.Assign(gInternationalFont)
 end;
 
 procedure SetInternationalFont(const name: TFontName; height: Integer);
@@ -153,16 +153,16 @@ begin
   gProperties.InternationalFontHeight := height;
 end;
 
-{ TfmResource }
+{ TFormResource }
 
 //=======================================================================
-// TfmResource methods
+// TFormResource methods
 
 (*----------------------------------------------------------------------*
- | TfmResource.AddUndoEntry                                             |
+ | TFormResource.AddUndoEntry                                             |
  |                                                                      |
  *----------------------------------------------------------------------*)
-procedure TfmResource.AddUndoEntry(const undoDetails: string);
+procedure TFormResource.AddUndoEntry(const undoDetails: string);
 var
   Details: TUndoDetails;
 begin
@@ -182,48 +182,48 @@ begin
   Details.AddUndoEntry(undoDetails);
 end;
 
-procedure TfmResource.Copy;
+procedure TFormResource.Copy;
 begin
 // Stub
 end;
 
-procedure TfmResource.Cut;
+procedure TFormResource.Cut;
 begin
 // Stub
 end;
 
-procedure TfmResource.EditDelete;
+procedure TFormResource.EditDelete;
 begin
 // stub
 end;
 
-function TfmResource.GetCanCopy: Boolean;
+function TFormResource.GetCanCopy: Boolean;
 begin
   Result := False
 end;
 
-function TfmResource.GetCanCut: Boolean;
+function TFormResource.GetCanCut: Boolean;
 begin
   Result := False
 end;
 
-function TfmResource.GetCanDelete: Boolean;
+function TFormResource.GetCanDelete: Boolean;
 begin
   Result := False
 end;
 
-function TfmResource.GetCanPaste: Boolean;
+function TFormResource.GetCanPaste: Boolean;
 begin
   Result := False
 end;
 
 (*----------------------------------------------------------------------*
- | TfmResource.GetCanRedo                                               |
+ | TFormResource.GetCanRedo                                               |
  |                                                                      |
  | 'Get' handler for CanRedo property.  Returns true if the resource    |
  | Details has items in it's redo list                                  |
  *----------------------------------------------------------------------*)
-function TfmResource.GetCanRedo: Boolean;
+function TFormResource.GetCanRedo: Boolean;
 var
   Details: TUndoDetails;
 begin
@@ -237,17 +237,17 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | TfmResource.GetCanUndo                                               |
+ | TFormResource.GetCanUndo                                               |
  |                                                                      |
  | 'Get' handler for CanUndo property.  Returns true if the resource    |
  | Details has items in it's undo list                                  |
  *----------------------------------------------------------------------*)
-function TfmResource.GetCanSelectAll: Boolean;
+function TFormResource.GetCanSelectAll: Boolean;
 begin
   Result := False
 end;
 
-function TfmResource.GetCanUndo: Boolean;
+function TFormResource.GetCanUndo: Boolean;
 var
   Details: TUndoDetails;
 begin
@@ -261,26 +261,26 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | TfmResource.GetImportExportType                                      |
+ | TFormResource.GetImportExportType                                      |
  |                                                                      |
  | 'Get' handler for ExportType property.  Determine whether the        |
  | resource form can export it's contents                               |
  *----------------------------------------------------------------------*)
-function TfmResource.GetImportExportType: TImportExportType;
+function TFormResource.GetImportExportType: TImportExportType;
 begin
   Result := ixNone
 end;
 
 (*----------------------------------------------------------------------*
- | TfmResource.GetRedoDescription                                       |
+ | TFormResource.GetRedoDescription                                       |
  |                                                                      |
  | 'Get' handler for RedoDescription property.  Return the description  |
  | for the entry at the top of the redo stack.                          |
  *----------------------------------------------------------------------*)
-function TfmResource.GetRedoDescription: string;
+function TFormResource.GetRedoDescription: string;
 var
   Details: TUndoDetails;
-  entry: TUndoEntry;
+  Entry: TUndoEntry;
 begin
   Result := '';
   if ResourceDetails.Tag <> 0 then
@@ -288,32 +288,32 @@ begin
     Details := TUndoDetails (ResourceDetails.Tag);
     if Details.FRedoStack.Count > 0 then
     begin
-      entry := TUndoEntry(Details.FRedoStack.Peek);
+      Entry := TUndoEntry(Details.FRedoStack.Peek);
 
-      if Assigned (entry) then
-        Result := entry.FDetails
+      if Assigned(Entry) then
+        Result := Entry.FDetails
     end
   end
 end;
 
 (*----------------------------------------------------------------------*
- | TfmResource.GetResourceDetails                                       |
+ | TFormResource.GetResourceDetails                                       |
  |                                                                      |
  | 'Get' method for ResourceDetails property.  Check 'Obj' is really    |
  | TResourceDetails, and return it.                                     |
  *----------------------------------------------------------------------*)
-function TfmResource.GetResourceDetails: TResourceDetails;
+function TFormResource.GetResourceDetails: TResourceDetails;
 begin
   Result := Obj as TResourceDetails
 end;
 
 (*----------------------------------------------------------------------*
- | TfmResource.GetUndoDescription                                       |
+ | TFormResource.GetUndoDescription                                       |
  |                                                                      |
  | 'Get' handler for UndoDescription property.  Return the description  |
  | for the entry at the top of the redo stack.                          |
  *----------------------------------------------------------------------*)
-function TfmResource.GetUndoDescription: string;
+function TFormResource.GetUndoDescription: string;
 var
   Details: TUndoDetails;
   entry: TUndoEntry;
@@ -324,25 +324,25 @@ begin
     Details := TUndoDetails (ResourceDetails.Tag);
     if Details.FUndoStack.Count > 0 then
     begin
-      entry := TUndoEntry(Details.FUndoStack.Peek);
+      Entry := TUndoEntry(Details.FUndoStack.Peek);
 
-      if Assigned (entry) then
-        Result := entry.FDetails
+      if Assigned(Entry) then
+        Result := Entry.FDetails
     end
   end
 end;
 
-procedure TfmResource.Paste;
+procedure TFormResource.Paste;
 begin
 
 end;
 
 (*----------------------------------------------------------------------*
- | TfmResource.Redo                                                     |
+ | TFormResource.Redo                                                     |
  |                                                                      |
  | 'Redo' the last change for the resource Details.                     |
  *----------------------------------------------------------------------*)
-procedure TfmResource.Redo;
+procedure TFormResource.Redo;
 var
   Details: TUndoDetails;
 begin
@@ -354,22 +354,22 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | TfmResource.SetObject                                                |
+ | TFormResource.SetObject                                                |
  |                                                                      |
  | 'Set' property handler overridden to initialize the Details undo     |
  | stack.  Note that the redo stack is cleared here to prevent          |
  | unlimited memory usage.                                              |
  *----------------------------------------------------------------------*)
-procedure TfmResource.SelectAll;
+procedure TFormResource.SelectAll;
 begin
 // Stub
 end;
 
-procedure TfmResource.SetObject(const Value: TObject);
+procedure TFormResource.SetObject(const Value: TObject);
 var
   Details: TUndoDetails;
 begin
-  if Assigned (Obj) and (Value <> Obj) then
+  if Assigned(Obj) and (Value <> Obj) then
     if ResourceDetails.Tag <> 0 then
     begin
       Details := TUndoDetails (ResourceDetails.Tag);  // ie.   The *old* object's
@@ -387,11 +387,11 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | TfmResource.Undo                                                     |
+ | TFormResource.Undo                                                     |
  |                                                                      |
  | 'Undo' the last change.                                              |
  *----------------------------------------------------------------------*)
-procedure TfmResource.Undo;
+procedure TFormResource.Undo;
 var
   Details: TUndoDetails;
 begin

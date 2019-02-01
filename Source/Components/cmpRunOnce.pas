@@ -61,7 +61,7 @@ end;
 
 destructor TRunOnce.Destroy;
 begin
-  if Assigned (FObjectInstance) then
+  if Assigned(FObjectInstance) then
     Classes.FreeObjectInstance(FObjectInstance);
 
 
@@ -88,7 +88,7 @@ begin
       try
         ProcessParameters (wParam, lParam)
       except
-        Application.HandleException (self)
+        Application.HandleException(Self)
       end
       else
         Result := CallWindowProc (FOldOwnerWindowProc, TForm (Owner).Handle, msg, wParam, lParam);
@@ -120,7 +120,7 @@ begin
     if FMutex = 0 then
     begin
       Sleep (100);
-      EnumWindows (@EnumWindowsProc, LPARAM (self));
+      EnumWindows (@EnumWindowsProc, LPARAM (Self));
 
       if FOtherWindowHandle <> 0 then
       begin
@@ -180,7 +180,7 @@ begin
       paramPtr := MapViewOfFile(memHandle, FILE_MAP_READ, 0, 0, 65536);
       if paramPtr <> Nil then
       try
-        if Assigned (FOnOtherInstance) and not (csDestroying in ComponentState) then
+        if Assigned(FOnOtherInstance) and not (csDestroying in ComponentState) then
         begin
           p := paramPtr;
           paramCount := 0;
@@ -199,7 +199,7 @@ begin
             Inc(i);
           end;
 
-          OnOtherInstance(self, paramCount - 1, params)
+          OnOtherInstance(Self, paramCount - 1, params)
         end
       finally
         UnmapViewOfFile(paramPtr)

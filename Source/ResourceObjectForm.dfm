@@ -1,9 +1,9 @@
-object fmResourceObject: TfmResourceObject
+object FormResourceObject: TFormResourceObject
   Left = 209
   Top = 103
   Align = alClient
   BorderStyle = bsNone
-  Caption = 'fmResourceObject'
+  Caption = 'Resource Object'
   ClientHeight = 455
   ClientWidth = 701
   Color = clBtnFace

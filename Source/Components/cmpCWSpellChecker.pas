@@ -31,8 +31,8 @@ var
   Suggestions: TStrings;
 begin
   Result := mrOK;
-  if not Assigned (ExRichEdit) then Exit;
-  if Assigned (fmSpellChecker) then Exit;
+  if not Assigned(ExRichEdit) then Exit;
+  if Assigned(fmSpellChecker) then Exit;
 
   Txt := ExRichEdit.Text;
   Suggestions := TStringList.Create;
@@ -41,7 +41,7 @@ begin
     begin
       fmSpellChecker := TfmSpellChecker.Create(Owner);
       fmSpellChecker.QuoteChars := QuoteChars;
-      fmSpellChecker.Initialize(self, ss, se, Suggestions);
+      fmSpellChecker.Initialize(Self, ss, se, Suggestions);
       Result := fmSpellChecker.ShowModal
     end
   finally
@@ -51,7 +51,7 @@ end;
 
 destructor TCWSpellChecker.Destroy;
 begin
-  if Assigned (fmSpellChecker) then
+  if Assigned(fmSpellChecker) then
     fmSpellChecker.Close;
 
   inherited;

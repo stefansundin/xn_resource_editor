@@ -35,11 +35,12 @@ const
 type
   TPropertyKind = (pkGeneral, pkStyle, pkExtended);
 
-  TDropControl = (drNone, drPicture, drStatic, drEdit, drGroupBox, drButton, drCheckBox,
-                  drRadioButton, drComboBox, drListBox, drHScroll, drVScroll, drUpDown,
-                  drProgressBar, drSlider, drHotKey, drListCtrl, drTreeCtrl, drPageCtrl,
-                  drAnimate, drRichEdit, drDateTimePicker, drMonthCal, drIPAddress, drCustom,
-                  drExtComboBox);
+  TDropControl = (
+    drNone, drPicture, drStatic, drEdit, drGroupBox, drButton, drCheckBox,
+    drRadioButton, drComboBox, drListBox, drHScroll, drVScroll, drUpDown,
+    drProgressBar, drSlider, drHotKey, drListCtrl, drTreeCtrl, drPageCtrl,
+    drAnimate, drRichEdit, drDateTimePicker, drMonthCal, drIPAddress, drCustom,
+    drExtComboBox);
 
   TPropertyType = (ptString, ptInteger, ptBoolean, ptEnum, ptSpecial);
 
@@ -1384,7 +1385,7 @@ var
 begin
   oldStyle := GetStyle;
   SetWindowLong (FControlHWND, GWL_STYLE, (oldStyle and not mask) or Style);
-  if Assigned (FOwner.FResizeControl) and (FOwner.FResizeControl.FControlHWND = FControlHWND) then
+  if Assigned(FOwner.FResizeControl) and (FOwner.FResizeControl.FControlHWND = FControlHWND) then
     FOwner.FResizeControl.RecalcSize;
   FGotStyle := False;
 end;
@@ -1665,7 +1666,7 @@ begin
       InvalidateRect(parentWindow, nil, True)
     end;
 
-    if Assigned (FControl.FOwner.OnControlResize) then
+    if Assigned(FControl.FOwner.OnControlResize) then
       FControl.FOwner.OnControlResize(FControl.FOwner, FControl, FControl.WindowRect);
   end
 end;
@@ -2392,7 +2393,7 @@ end;
 
 procedure TDialogEditor.WmCtrlPropertyChange(var Msg: TMessage);
 begin
-  if Assigned (FOnControlPropertyChange) then
+  if Assigned(FOnControlPropertyChange) then
     OnControlPropertyChange(Self, TControlInfo (Msg.wParam))
 end;
 
@@ -2405,7 +2406,7 @@ begin
     SelectedControl := DialogInfo;
     Wnd := Control.FControlHWND;
     FControlInfoList.Remove(Control);
-    if Assigned (OnDeleteControl) then
+    if Assigned(OnDeleteControl) then
       OnDeleteControl (Self, Control);
     Control.Free;
     DestroyWindow (Wnd);

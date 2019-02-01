@@ -1,8 +1,8 @@
-inherited fmAcceleratorResource: TfmAcceleratorResource
+inherited FormAcceleratorResource: TFormAcceleratorResource
   Left = 283
   Top = 201
   ActiveControl = ListViewAccelerator
-  Caption = 'fmAcceleratorResource'
+  Caption = 'FormAcceleratorResource'
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
@@ -61,72 +61,72 @@ inherited fmAcceleratorResource: TfmAcceleratorResource
   object ActionList: TActionList
     Left = 496
     Top = 32
-    object actAccelAdd: TAction
+    object ActionAccelAdd: TAction
       Category = 'Accelerators'
       Caption = '&Add Accelerator'
       ShortCut = 45
-      OnExecute = actAccelAddExecute
+      OnExecute = ActionAccelAddExecute
     end
-    object actAccelDelete: TAction
+    object ActionAccelDelete: TAction
       Category = 'Accelerators'
       Caption = '&Delete Accelerator'
       ShortCut = 46
-      OnExecute = actAccelDeleteExecute
+      OnExecute = ActionAccelDeleteExecute
     end
-    object actAccelModify: TAction
+    object ActionAccelModify: TAction
       Category = 'Accelerators'
       Caption = '&Modify Accelerator'
-      OnExecute = actAccelModifyExecute
+      OnExecute = ActionAccelModifyExecute
     end
-    object actAccelChangeID: TAction
+    object ActionAccelChangeID: TAction
       Category = 'Accelerators'
       Caption = '&Change ID'
-      OnExecute = actAccelChangeIDExecute
+      OnExecute = ActionAccelChangeIDExecute
     end
-    object actAccelChangeFlags: TAction
+    object ActionAccelChangeFlags: TAction
       Category = 'Accelerators'
       Caption = 'Change &Type'
-      OnExecute = actAccelChangeFlagsExecute
+      OnExecute = ActionAccelChangeFlagsExecute
     end
   end
   object PopupMenuAccel: TPopupMenu
     Left = 496
     Top = 80
     object MenuItemAddAccelerator: TMenuItem
-      Action = actAccelAdd
+      Action = ActionAccelAdd
     end
     object MenuItemModifyAccelerator: TMenuItem
-      Action = actAccelModify
+      Action = ActionAccelModify
     end
     object MenuItemDeleteAccelerator: TMenuItem
-      Action = actAccelDelete
+      Action = ActionAccelDelete
     end
     object MenuItemChangeID: TMenuItem
-      Action = actAccelChangeID
+      Action = ActionAccelChangeID
     end
     object MenuItemChangeFlags: TMenuItem
-      Action = actAccelChangeFlags
+      Action = ActionAccelChangeFlags
     end
   end
-  object mnuAccelMenu: TMainMenu
+  object MainMenuAccelMenu: TMainMenu
     Left = 496
     Top = 128
     object MenuItemAccelerators: TMenuItem
       Caption = 'Accelerators'
       object MenuItemChangeAddAccelerator2: TMenuItem
-        Action = actAccelAdd
+        Action = ActionAccelAdd
       end
       object MenuItemChangeModifyAccelerator2: TMenuItem
-        Action = actAccelModify
+        Action = ActionAccelModify
       end
       object MenuItemChangeDeleteAccelerator2: TMenuItem
-        Action = actAccelDelete
+        Action = ActionAccelDelete
       end
       object MenuItemChangeChangeID2: TMenuItem
-        Action = actAccelChangeID
+        Action = ActionAccelChangeID
       end
       object MenuItemChangeFlags2: TMenuItem
-        Action = actAccelChangeFlags
+        Action = ActionAccelChangeFlags
       end
     end
   end

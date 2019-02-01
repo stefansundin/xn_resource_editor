@@ -3,7 +3,7 @@
  |                                                                      |
  | Remember:                                                            |
  |                                                                      |
- | The thumbnail image(Image1) contains the master image.  It is in    |
+ | The thumbnail image(Image) contains the master image.  It is in    |
  | the correct format, has the correct palette, is the correct graphic  |
  | type, etc.                                                           |
  |                                                                      |
@@ -32,124 +32,124 @@ const
   WM_ADDIMAGERESOURCE = WM_USER + $204;
 
 type
-  TfmGraphicsResource = class(TfmResource)
-    pnlLeft: TPanel;
-    Splitter1: TSplitter;
+  TFormGraphicsResource = class(TFormResource)
+    ActionImageAddImage: TAction;
+    ActionImageColorsPalette: TAction;
+    ActionImageToolsPalette: TAction;
+    ActionImageZoomIn: TAction;
+    ActionImageZoomOut: TAction;
+    ActionList: TActionList;
+    BitmapEditor: TBitmapEditor;
+    ColorDialog: TColorDialog;
+    ColorSelector: TColorSelector;
+    Image: TImage;
+    ImageList: TImageList;
+    MainMenu: TMainMenu;
+    MenuItemAddImage1: TMenuItem;
+    MenuItemAddImage2: TMenuItem;
+    MenuItemColorsPalette1: TMenuItem;
+    MenuItemColorsPalette2: TMenuItem;
+    MenuItemDrawingToolsPalette1: TMenuItem;
+    MenuItemDrawingToolsPalette2: TMenuItem;
+    MenuItemImage: TMenuItem;
+    MenuItemToolPalettes1: TMenuItem;
+    MenuItemToolPalettes2: TMenuItem;
+    MenuItemZoomIn1: TMenuItem;
+    MenuItemZoomIn2: TMenuItem;
+    MenuItemZoomOut1: TMenuItem;
+    MenuItemZoomOut2: TMenuItem;
+    N1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    PanelMain: TPanel;
+    PanelColors: TPanel;
+    PanelGraphics: TPanel;
+    PanelLeft: TPanel;
+    PanelTransparent: TPanel;
+    PopupMenu: TPopupMenu;
+    ScrollBoxThumbnail: TScrollBox;
+    ScrollBoxBitmapEditor: TScrollBox;
+    ShapeBack: TShape;
+    ShapeFore: TShape;
+    SizingPageControl: TSizingPageControl;
+    Splitter: TSplitter;
     Splitter2: TSplitter;
-    sbThumbnail: TScrollBox;
-    Image1: TImage;
-    Panel1: TPanel;
-    ScrollBox2: TScrollBox;
-    BitmapEditor1: TBitmapEditor;
-    SizingPageControl1: TSizingPageControl;
-    pnlGraphics: TPanel;
-    ImageList1: TImageList;
-    pnlColours: TPanel;
-    shpBack: TShape;
-    shpFore: TShape;
-    ColorSelector1: TColorSelector;
-    pnlTransparent: TPanel;
-    TrackBar1: TTrackBar;
-    ToolBar1: TToolBar;
-    tbSelectRect: TToolButton;
-    tbSelectShape: TToolButton;
+    tbAirbrush: TToolButton;
+    tbBrush: TToolButton;
     tbDropper: TToolButton;
+    tbEllipse: TToolButton;
     tbEraser: TToolButton;
+    tbFillEllipse: TToolButton;
+    tbFillRect: TToolButton;
+    tbFillRoundRect: TToolButton;
     tbFloodFill: TToolButton;
+    tbFrameEllipse: TToolButton;
+    tbFrameRect: TToolButton;
+    tbFrameRoundRect: TToolButton;
     tbMagnifier: TToolButton;
     tbPencil: TToolButton;
-    tbBrush: TToolButton;
-    tbAirbrush: TToolButton;
-    ToolButton10: TToolButton;
-    ToolButton12: TToolButton;
-    tbFrameRect: TToolButton;
-    tbFillRect: TToolButton;
     tbRect: TToolButton;
-    tbFrameRoundRect: TToolButton;
-    tbFillRoundRect: TToolButton;
     tbRoundRect: TToolButton;
-    tbFrameEllipse: TToolButton;
-    tbFillEllipse: TToolButton;
-    tbEllipse: TToolButton;
-    MainMenu1: TMainMenu;
-    ActionList1: TActionList;
-    mnuImage: TMenuItem;
-    actImageZoomIn: TAction;
-    actImageZoomOut: TAction;
-    ZoomIn1: TMenuItem;
-    ZoomOut1: TMenuItem;
-    ColorDialog1: TColorDialog;
-    actImageToolsPalette: TAction;
-    actImageColorsPalette: TAction;
-    N1: TMenuItem;
-    ToolPalettes1: TMenuItem;
-    ColorsPalette1: TMenuItem;
-    ToolsPalette1: TMenuItem;
-    actImageAddImage: TAction;
-    AddImage1: TMenuItem;
-    N2: TMenuItem;
-    PopupMenu1: TPopupMenu;
-    AddImage2: TMenuItem;
-    N3: TMenuItem;
-    ZoomIn2: TMenuItem;
-    ZoomOut2: TMenuItem;
-    N4: TMenuItem;
-    ToolPalettes2: TMenuItem;
-    ColorsPalette2: TMenuItem;
-    DrawingToolsPalette1: TMenuItem;
+    tbSelectRect: TToolButton;
+    tbSelectShape: TToolButton;
+    ToolBar: TToolBar;
     ToolButton1: TToolButton;
     ToolButton2: TToolButton;
     ToolButton3: TToolButton;
     ToolButton4: TToolButton;
-    procedure BitmapEditor1GetText(sender: TObject; font: TFont;
+    ToolButton10: TToolButton;
+    ToolButton12: TToolButton;
+    TrackBar: TTrackBar;
+    procedure BitmapEditorGetText(Sender: TObject; Font: TFont;
       var txt: WideString);
     procedure FormShow(Sender: TObject);
-    procedure SizingPageControl1DockDrop(Sender: TObject;
+    procedure SizingPageControlDockDrop(Sender: TObject;
       Source: TDragDockObject; X, Y: Integer);
-    procedure SizingPageControl1UnDock(Sender: TObject; Client: TControl;
+    procedure SizingPageControlUnDock(Sender: TObject; Client: TControl;
       NewTarget: TWinControl; var Allow: Boolean);
-    procedure ColorSelector1ColorSelect(Sender: TObject);
+    procedure ColorSelectorColorSelect(Sender: TObject);
     procedure tbPencilClick(Sender: TObject);
-    procedure actImageZoomInExecute(Sender: TObject);
-    procedure actImageZoomOutExecute(Sender: TObject);
-    procedure ColorSelector1DblClick(Sender: TObject);
-    procedure BitmapEditor1EndChange(Sender: TObject);
-    procedure BitmapEditor1Change(Sender: TObject);
-    procedure pnlTransparentMouseDown(Sender: TObject;
+    procedure ActionImageZoomInExecute(Sender: TObject);
+    procedure ActionImageZoomOutExecute(Sender: TObject);
+    procedure ColorSelectorDblClick(Sender: TObject);
+    procedure BitmapEditorEndChange(Sender: TObject);
+    procedure BitmapEditorChange(Sender: TObject);
+    procedure PanelTransparentMouseDown(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure pnlTransparentDblClick(Sender: TObject);
-    procedure BitmapEditor1DrawToolChange(Sender: TObject);
-    procedure PropertyListBox1PropertyChanged(Sender: TObject);
-    procedure TrackBar1Change(Sender: TObject);
-    procedure actImageColorsPaletteExecute(Sender: TObject);
-    procedure actImageToolsPaletteExecute(Sender: TObject);
-    procedure mnuImageClick(Sender: TObject);
-    procedure BitmapEditor1SelectionRectChange(Sender: TObject);
-    procedure PopupMenu1Popup(Sender: TObject);
-    procedure actImageAddImageExecute(Sender: TObject);
+    procedure PanelTransparentDblClick(Sender: TObject);
+    procedure BitmapEditorDrawToolChange(Sender: TObject);
+    procedure TrackBarChange(Sender: TObject);
+    procedure ActionImageColorsPaletteExecute(Sender: TObject);
+    procedure ActionImageToolsPaletteExecute(Sender: TObject);
+    procedure MenuItemImageClick(Sender: TObject);
+    procedure BitmapEditorSelectionRectChange(Sender: TObject);
+    procedure PopupMenuPopup(Sender: TObject);
+    procedure ActionImageAddImageExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
-    FPCWidth : Integer;
+    FPCWidth: Integer;
     FPropertyListBox: TPropertyListBox;
-    FDetails : TGraphicsResourceDetails;
+    FDetails: TGraphicsResourceDetails;
 
-    procedure SetPaletteForPixelFormat(reset : Boolean);
+    procedure SetPaletteForPixelFormat(reset: Boolean);
   protected
     procedure SetObject(const Value: TObject); override;
-    function GetMenuItem : TMenuItem; override;
+    function GetMenuItem: TMenuItem; override;
     function GetImportExportType: TImportExportType; override;
 
-    function GetCanCut : Boolean; override;
-    function GetCanCopy : Boolean; override;
-    function GetCanPaste : Boolean; override;
-    function GetCanSelectAll : Boolean; override;
-    function GetCanDelete : Boolean; override;
+    function GetCanCut: Boolean; override;
+    function GetCanCopy: Boolean; override;
+    function GetCanPaste: Boolean; override;
+    function GetCanSelectAll: Boolean; override;
+    function GetCanDelete: Boolean; override;
     procedure UpdateActions; override;
 
+    procedure PropertyListBoxPropertyChanged(Sender: TObject); virtual;
   public
-    PropertyListBox1: TPropertyListBox;
-    procedure PreviewKey(var key : Word; shift : TShiftState); override;
-    procedure SaveResource(const undoDetails : string); virtual;
+    PropertyListBox: TPropertyListBox;
+    procedure PreviewKey(var key: Word; shift: TShiftState); override;
+    procedure SaveResource(const undoDetails: string); virtual;
     procedure SelectAll; override;
     procedure EditDelete; override;
     procedure Copy; override;
@@ -158,7 +158,7 @@ type
   end;
 
 var
-  fmGraphicsResource: TfmGraphicsResource;
+  fmGraphicsResource: TFormGraphicsResource;
 
 implementation
 
@@ -191,13 +191,13 @@ const
   taHeight = 1;
   taPixelFormat = 2;
 
-function GetPixelFormat(graphic : TGraphic) : TPixelFormat;
+function GetPixelFormat(graphic: TGraphic): TPixelFormat;
 begin
   if graphic is TGifImage then
   begin
     case TGifImage(graphic).BitsPerPixel of
-      1 : Result := pf1Bit;
-      4 : Result := pf4Bit;
+      1: Result := pf1Bit;
+      4: Result := pf4Bit;
       else Result := pf8Bit;
     end
   end
@@ -211,13 +211,13 @@ end;
  | Resize a picture, handling anomolies like JPEG                       |
  |                                                                      |
  | Parameters:                                                          |
- |   p : TPicture;        The picture to resize                         |
- |   newWidth : Integer   The new width                                 |
- |   newHeight : Integer  The new height                                |
+ |   p: TPicture;        The picture to resize                         |
+ |   newWidth: Integer   The new width                                 |
+ |   newHeight: Integer  The new height                                |
  *----------------------------------------------------------------------*)
-procedure ResizePicture(p : TPicture; newWidth, newHeight : Integer);
+procedure ResizePicture(p: TPicture; newWidth, newHeight: Integer);
 var
-  b : TBitmap;
+  b: TBitmap;
 begin
   if (p.graphic is TJPegImage) or (p.Graphic is TGifImage) then
   begin
@@ -239,18 +239,18 @@ begin
   end
 end;
 
-{ TfmGraphicsResource }
+{ TFormGraphicsResource }
 
 (*----------------------------------------------------------------------*
- | TfmGraphicsResource.SetObject                                        |
+ | TFormGraphicsResource.SetObject                                        |
  |                                                                      |
  | Called when the resource changes - when a new one is loaded, or      |
  | after undo/redo.                                                     |
  *----------------------------------------------------------------------*)
-procedure TfmGraphicsResource.SetObject(const Value: TObject);
+procedure TFormGraphicsResource.SetObject(const Value: TObject);
 var
-  NewImage : Boolean;
-  Transp : Boolean;
+  NewImage: Boolean;
+  Transp: Boolean;
 begin
   NewImage := Value <> Obj;                     // If 'obj' hasn't changed, it must
                                                 // be after an 'Undo'  Try to preserve
@@ -259,60 +259,60 @@ begin
   inherited;                                    // Must call inherited to set
                                                 // up underlying stuff.
 
-  PropertyListBox1.Reset;
+  PropertyListBox.Reset;
   FDetails := obj as TGraphicsResourceDetails;
 
-  FDetails.GetImage(Image1.Picture);            // Set the thumbnail picture
-  if Image1.Picture.Graphic is TGifImage then
+  FDetails.GetImage(Image.Picture);            // Set the thumbnail picture
+  if Image.Picture.Graphic is TGifImage then
   begin
-//    Transp := TGIFImage(Image1.Picture.Graphic).IsTransparent;
+//    Transp := TGIFImage(Image.Picture.Graphic).IsTransparent;
     Transp := False;                            // Can't get transparent GIFs
                                                 // to work in initial D2006 release
-    Image1.Transparent := Transp
+    Image.Transparent := Transp
   end
   else
-    Transp := Image1.Picture.Graphic.Transparent;
+    Transp := Image.Picture.Graphic.Transparent;
 
-  BitmapEditor1.Picture := Image1.Picture;      // Set the editor picture
+  BitmapEditor.Picture := Image.Picture;      // Set the editor picture
 
-                                                // Setting BitmapEditor1.Picture may
-                                                // change the TransparentColor...
+                                                // Setting BitmapEditor.Picture may
+                                                // Change the TransparentColor...
 
-  sbThumbnail.Cursor := crDefault;
+  ScrollBoxThumbnail.Cursor := crDefault;
 
   if Transp then     // Set the 'Transparent' Color panel
   begin
-    pnlTransparent.Color := BitmapEditor1.TransparentColor;
-    pnlTransparent.Visible := True
+    PanelTransparent.Color := BitmapEditor.TransparentColor;
+    PanelTransparent.Visible := True
   end
   else
-    pnlTransparent.Visible := False;
+    PanelTransparent.Visible := False;
 
-  with PropertyListBox1 do                      // Set the properties
+  with PropertyListBox do                      // Set the properties
   begin
 
     with FindProperty(rstWidth) do
     begin
       Tag := taWidth;                           // Save taWidth constant in properties
-      PropertyValue := Image1.Picture.Width     // tag so we can use the 'OnPropertyChanged' event
+      PropertyValue := Image.Picture.Width     // tag so we can use the 'OnPropertyChanged' event
     end;
 
     with FindProperty(rstHeight) do
     begin
       Tag := taHeight;
-      PropertyValue := Image1.Picture.Height
+      PropertyValue := Image.Picture.Height
     end;
 
     with FindProperty(rstPixelFormat) do
     begin
       Tag := taPixelFormat;
 
-      case GetPixelFormat(Image1.Picture.Graphic) of
-        pf1Bit : PropertyValue := 0;
-        pf4Bit : PropertyValue := 1;
-        pf8Bit : PropertyValue := 2;
-        pf24Bit : PropertyValue := 3;
-        pf32Bit : propertyValue := 4;
+      case GetPixelFormat(Image.Picture.Graphic) of
+        pf1Bit: PropertyValue := 0;
+        pf4Bit: PropertyValue := 1;
+        pf8Bit: PropertyValue := 2;
+        pf24Bit: PropertyValue := 3;
+        pf32Bit: propertyValue := 4;
         else
           PropertyValue := 3; // 24 bit ??
       end;
@@ -323,25 +323,25 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | TfmGraphicsResource.FormShow                                         |
+ | TFormGraphicsResource.FormShow                                         |
  |                                                                      |
  | Initialize the form.                                                 |
  *----------------------------------------------------------------------*)
-procedure TfmGraphicsResource.FormCreate(Sender: TObject);
+procedure TFormGraphicsResource.FormCreate(Sender: TObject);
 begin
-  PropertyListBox1 := TPropertyListBox.Create(pnlLeft);
-  PropertyListBox1.Name := 'PropertyListBox1';
-  PropertyListBox1.Parent := pnlLeft;
-  PropertyListBox1.Left := 1;
-  PropertyListBox1.Top := 1;
-  PropertyListBox1.Width := 183;
-  PropertyListBox1.Height := 120;
-  PropertyListBox1.Align := alTop;
-  PropertyListBox1.BorderStyle := bsNone;
-  PropertyListBox1.PopupMenu := PopupMenu1;
-  PropertyListBox1.TabOrder := 1;
-  PropertyListBox1.TabStop := False;
-  with TPropertyListProperty(PropertyListBox1.Properties.Add) do
+  PropertyListBox := TPropertyListBox.Create(PanelLeft);
+  PropertyListBox.Name := 'PropertyListBox1';
+  PropertyListBox.Parent := PanelLeft;
+  PropertyListBox.Left := 1;
+  PropertyListBox.Top := 1;
+  PropertyListBox.Width := 183;
+  PropertyListBox.Height := 120;
+  PropertyListBox.Align := alTop;
+  PropertyListBox.BorderStyle := bsNone;
+  PropertyListBox.PopupMenu := PopupMenu;
+  PropertyListBox.TabOrder := 1;
+  PropertyListBox.TabStop := False;
+  with TPropertyListProperty(PropertyListBox.Properties.Add) do
   begin
     PropertyName := 'Width';
     PropertyType := ptInteger;
@@ -350,7 +350,7 @@ begin
     Color := clBlack;
     ReadOnly := False;
   end;
-  with TPropertyListProperty(PropertyListBox1.Properties.Add) do
+  with TPropertyListProperty(PropertyListBox.Properties.Add) do
   begin
     PropertyName := 'Height';
     PropertyType := ptInteger;
@@ -359,7 +359,7 @@ begin
     Color := clBlack;
     ReadOnly := False;
   end;
-  with TPropertyListProperty(PropertyListBox1.Properties.Add) do
+  with TPropertyListProperty(PropertyListBox.Properties.Add) do
   begin
     PropertyName := 'Pixel Format';
     PropertyType := ptEnum;
@@ -373,47 +373,47 @@ begin
     Color := clBlack;
     ReadOnly := False;
   end;
-  PropertyListBox1.ActualValueColWidth := 0;
-  PropertyListBox1.OnPropertyChanged := PropertyListBox1PropertyChanged;
+  PropertyListBox.ActualValueColWidth := 0;
+  PropertyListBox.OnPropertyChanged := PropertyListBoxPropertyChanged;
 end;
 
-procedure TfmGraphicsResource.FormShow(Sender: TObject);
+procedure TFormGraphicsResource.FormShow(Sender: TObject);
 begin
-  sbThumbnail.DoubleBuffered := True;
+  ScrollBoxThumbnail.DoubleBuffered := True;
 
-  ColorSelector1.ForegroundColor := clWhite;    // Set the initial drawing colours
-  ColorSelector1.BackgroundColor := clBlack;
+  ColorSelector.ForegroundColor := clWhite;    // Set the initial drawing colours
+  ColorSelector.BackgroundColor := clBlack;
 
-  shpFore.Brush.Color := ColorSelector1.ForegroundColor;
-  shpBack.Brush.Color := ColorSelector1.BackgroundColor;
+  ShapeFore.Brush.Color := ColorSelector.ForegroundColor;
+  ShapeBack.Brush.Color := ColorSelector.BackgroundColor;
 
-  BitmapEditor1.DrawPen.Color := ColorSelector1.ForegroundColor;
-  BitmapEditor1.DrawBrush.Color := ColorSelector1.BackgroundColor;
-  BitmapEditor1.DrawingTool := dtPencil;
+  BitmapEditor.DrawPen.Color := ColorSelector.ForegroundColor;
+  BitmapEditor.DrawBrush.Color := ColorSelector.BackgroundColor;
+  BitmapEditor.DrawingTool := dtPencil;
                                                 // Save the palette panel Width,
                                                 // so we can restore it if we dock.
-  FPCWidth := pnlGraphics.Width;
-  if pnlColours.Width > FPCWidth then
-    FPCWidth := pnlColours.Width;
+  FPCWidth := PanelGraphics.Width;
+  if PanelColors.Width > FPCWidth then
+    FPCWidth := PanelColors.Width;
 
 
                                                 // Manually dock the panels
-  pnlGraphics.ManualDock(SizingPageControl1, Nil, alNone);
-  pnlColours.ManualDock(SizingPageControl1, Nil, alNone);
+  PanelGraphics.ManualDock(SizingPageControl, nil, alNone);
+  PanelColors.ManualDock(SizingPageControl, nil, alNone);
 end;
 
 (*----------------------------------------------------------------------*
- | TfmGraphicsResource.SizingPageControl1DockDrop                       |
+ | TFormGraphicsResource.SizingPageControl1DockDrop                       |
  |                                                                      |
  | When a panel is dropped on the page control (which creates a new     |
  | tab) - set the tab's caption                                         |
  *----------------------------------------------------------------------*)
-procedure TfmGraphicsResource.SizingPageControl1DockDrop(Sender: TObject;
+procedure TFormGraphicsResource.SizingPageControlDockDrop(Sender: TObject;
   Source: TDragDockObject; X, Y: Integer);
 var
-  i : Integer;
+  i: Integer;
 begin
-  with SizingPageControl1 do
+  with SizingPageControl do
   begin
     for i := 0 to PageCount - 1 do
       Pages[i].Caption := TPanel (Pages[i].Controls[0]).Caption;
@@ -424,247 +424,247 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | TfmGraphicsResource.SizingPageControl1UnDock                         |
+ | TFormGraphicsResource.SizingPageControl1UnDock                         |
  |                                                                      |
  | A panel is being undocked.  Set size to 0 if it's the last one.      |
  *----------------------------------------------------------------------*)
-procedure TfmGraphicsResource.SizingPageControl1UnDock(Sender: TObject;
+procedure TFormGraphicsResource.SizingPageControlUnDock(Sender: TObject;
   Client: TControl; NewTarget: TWinControl; var Allow: Boolean);
 begin
                                 // If we're undocking the last tab, set the
                                 // width to 0
-  if SizingPageControl1.PageCount = 1 then
-    SizingPageControl1.Width := 0;
+  if SizingPageControl.PageCount = 1 then
+    SizingPageControl.Width := 0;
 end;
 
 (*----------------------------------------------------------------------*
- | TfmGraphicsResource.ColorSelector1ColorSelect                        |
+ | TFormGraphicsResource.ColorSelector1ColorSelect                        |
  |                                                                      |
  | A new color (foreground or background) colour has been selected...   |
  *----------------------------------------------------------------------*)
-procedure TfmGraphicsResource.ColorSelector1ColorSelect(Sender: TObject);
+procedure TFormGraphicsResource.ColorSelectorColorSelect(Sender: TObject);
 begin
-  BitmapEditor1.DrawPen.Color := ColorSelector1.ForegroundColor;
-  BitmapEditor1.DrawBrush.Color := ColorSelector1.BackgroundColor;
-  shpFore.Brush.Color := ColorSelector1.ForegroundColor;
-  shpBack.Brush.Color := ColorSelector1.BackgroundColor;
+  BitmapEditor.DrawPen.Color := ColorSelector.ForegroundColor;
+  BitmapEditor.DrawBrush.Color := ColorSelector.BackgroundColor;
+  ShapeFore.Brush.Color := ColorSelector.ForegroundColor;
+  ShapeBack.Brush.Color := ColorSelector.BackgroundColor;
 end;
 
 (*----------------------------------------------------------------------*
- | TfmGraphicsResource.tbPencilClick                                    |
+ | TFormGraphicsResource.tbPencilClick                                    |
  |                                                                      |
  | Not just the pencil - used by all drawing tool buttons.              |
  *----------------------------------------------------------------------*)
-procedure TfmGraphicsResource.tbPencilClick(Sender: TObject);
+procedure TFormGraphicsResource.tbPencilClick(Sender: TObject);
 begin
   if Sender is TToolButton then
-    BitmapEditor1.DrawingTool := TDrawingTool (TToolButton (sender).Tag);
+    BitmapEditor.DrawingTool := TDrawingTool (TToolButton (Sender).Tag);
 end;
 
 (*----------------------------------------------------------------------*
- | TfmGraphicsResource.actImageZoomInExecute                            |
+ | TFormGraphicsResource.actImageZoomInExecute                            |
  |                                                                      |
  | Zoom In                                                              |
  *----------------------------------------------------------------------*)
-procedure TfmGraphicsResource.actImageZoomInExecute(Sender: TObject);
+procedure TFormGraphicsResource.ActionImageZoomInExecute(Sender: TObject);
 begin
-  BitmapEditor1.ZoomIn
+  BitmapEditor.ZoomIn
 end;
 
 (*----------------------------------------------------------------------*
- | TfmGraphicsResource.actImageZoomOutExecute                           |
+ | TFormGraphicsResource.actImageZoomOutExecute                           |
  |                                                                      |
  | Zoom out.                                                            |
  *----------------------------------------------------------------------*)
-procedure TfmGraphicsResource.actImageZoomOutExecute(Sender: TObject);
+procedure TFormGraphicsResource.ActionImageZoomOutExecute(Sender: TObject);
 begin
-  BitmapEditor1.ZoomOut
+  BitmapEditor.ZoomOut
 end;
 
 (*----------------------------------------------------------------------*
- | TfmGraphicsResource.GetMenuItem                                      |
+ | TFormGraphicsResource.GetMenuItem                                      |
  |                                                                      |
  | Return the main menu item to merge                                   |
  *----------------------------------------------------------------------*)
-function TfmGraphicsResource.GetMenuItem: TMenuItem;
+function TFormGraphicsResource.GetMenuItem: TMenuItem;
 begin
-  Result := mnuImage
+  Result := MenuItemImage
 end;
 
 (*----------------------------------------------------------------------*
- | TfmGraphicsResource.ColorSelector1DblClick                           |
+ | TFormGraphicsResource.ColorSelector1DblClick                           |
  |                                                                      |
  | Colour selector double clicked.  Execute the color dialog so they    |
- | change the palette.                                                  |
+ | Change the palette.                                                  |
  *----------------------------------------------------------------------*)
-procedure TfmGraphicsResource.ColorSelector1DblClick(Sender: TObject);
+procedure TFormGraphicsResource.ColorSelectorDblClick(Sender: TObject);
 begin
-  ColorDialog1.Color := BitmapEditor1.DrawPen.Color;
-  if ColorDialog1.Execute then
+  ColorDialog.Color := BitmapEditor.DrawPen.Color;
+  if ColorDialog.Execute then
   begin
                         // Adjust the palette in the colour selector
 
-    ColorSelector1.SetSelectedPaletteColor (ColorDialog1.Color);
+    ColorSelector.SetSelectedPaletteColor (ColorDialog.Color);
 
                         // Change the thumbnail palette...
-    Image1.Picture.Graphic.Palette := ColorSelector1.Palette;
+    Image.Picture.Graphic.Palette := ColorSelector.Palette;
                         // Reload the editor to show the changed thumbnail
-    BitmapEditor1.Picture := Image1.Picture;
+    BitmapEditor.Picture := Image.Picture;
                         // Update the resource
     SaveResource(rstPaletteChange);
 
                         // Update the pen
-    BitmapEditor1.DrawPen.Color := ColorSelector1.GetSelectedPaletteColor;
-    shpFore.Brush.Color := ColorSelector1.GetSelectedPaletteColor;
+    BitmapEditor.DrawPen.Color := ColorSelector.GetSelectedPaletteColor;
+    ShapeFore.Brush.Color := ColorSelector.GetSelectedPaletteColor;
 
-    BitmapEditor1.Invalidate;
+    BitmapEditor.Invalidate;
   end
 end;
 
 (*----------------------------------------------------------------------*
- | TfmGraphicsResource.SaveResource                                     |
+ | TFormGraphicsResource.SaveResource                                     |
  |                                                                      |
  | Take an undo snapshot, then update the image in the resource         |
  *----------------------------------------------------------------------*)
-procedure TfmGraphicsResource.SaveResource(const undoDetails: string);
+procedure TFormGraphicsResource.SaveResource(const undoDetails: string);
 var
-  FDetails : TGraphicsResourceDetails;
+  FDetails: TGraphicsResourceDetails;
 begin
   AddUndoEntry(undoDetails);           // Call inherited to take undo snapshot
   FDetails := obj as TGraphicsResourceDetails;
-  FDetails.SetImage(BitmapEditor1.Picture);
-  FDetails.GetImage(Image1.Picture);    // Make sure the thumnail *really*
+  FDetails.SetImage(BitmapEditor.Picture);
+  FDetails.GetImage(Image.Picture);    // Make sure the thumnail *really*
                                         // relflects what we've got..
 end;
 
 (*----------------------------------------------------------------------*
- | TfmGraphicsResource.BitmapEditor1EndChange                           |
+ | TFormGraphicsResource.BitmapEditor1EndChange                           |
  |                                                                      |
  | Update the resource graphic only at end of a drawing.  That way we   |
  | don't get an 'undo' for every pixel changed.                         |
  *----------------------------------------------------------------------*)
-procedure TfmGraphicsResource.BitmapEditor1EndChange(Sender: TObject);
+procedure TFormGraphicsResource.BitmapEditorEndChange(Sender: TObject);
 begin
-  SaveResource(BitmapEditor1.GetDrawingChangeDescription);
+  SaveResource(BitmapEditor.GetDrawingChangeDescription);
 end;
 
-procedure TfmGraphicsResource.BitmapEditor1GetText(sender: TObject; font: TFont;
+procedure TFormGraphicsResource.BitmapEditorGetText(Sender: TObject; Font: TFont;
   var txt: WideString);
 var
-  frm : TfmTextInput;
+  TextInputForm: TFormTextInput;
 begin
-  frm := TfmTextInput.Create(nil);
+  TextInputForm := TFormTextInput.Create(nil);
   try
-    frm.mmoText.Font.Assign(font);
-    if frm.ShowModal = mrOK then
+    TextInputForm.mmoText.Font.Assign(Font);
+    if TextInputForm.ShowModal = mrOK then
     begin
-      txt := frm.mmoText.Text;
-      font.Assign (frm.mmoText.Font)
+      txt := TextInputForm.mmoText.Text;
+      Font.Assign (TextInputForm.mmoText.Font)
     end
     else
       txt := ''
   finally
-    frm.Free
+    TextInputForm.Free
   end;
 end;
 
 (*----------------------------------------------------------------------*
- | TfmGraphicsResource.BitmapEditor1Change                              |
+ | TFormGraphicsResource.BitmapEditor1Change                              |
  |                                                                      |
  | While we're drawing, update the thumbnail too (but not the           |
  | underlying graphic resource.                                         |
  *----------------------------------------------------------------------*)
-procedure TfmGraphicsResource.BitmapEditor1Change(Sender: TObject);
+procedure TFormGraphicsResource.BitmapEditorChange(Sender: TObject);
 begin
   inherited;
-  Image1.Picture.Graphic.Assign (BitmapEditor1.DrawBmp);
+  Image.Picture.Graphic.Assign (BitmapEditor.DrawBmp);
 end;
 
 (*----------------------------------------------------------------------*
- | TfmGraphicsResource.pnlTransparentMouseDown                          |
+ | TFormGraphicsResource.pnlTransparentMouseDown                          |
  |                                                                      |
  | Select the transparent color if the 'transparent color' panel is     |
  | clicked.                                                             |
  *----------------------------------------------------------------------*)
-procedure TfmGraphicsResource.pnlTransparentMouseDown(Sender: TObject;
+procedure TFormGraphicsResource.PanelTransparentMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
-  tc : TColor;
+  tc: TColor;
 begin
-  tc := BitmapEditor1.TransparentColor;
+  tc := BitmapEditor.TransparentColor;
   if Button = mbLeft then
-    BitmapEditor1.DrawPen.Color := tc
+    BitmapEditor.DrawPen.Color := tc
   else
     if Button = mbRight then
-      BitmapEditor1.DrawBrush.Color := tc;
+      BitmapEditor.DrawBrush.Color := tc;
 
-  shpFore.Brush.Color := BitmapEditor1.DrawPen.Color;
-  shpBack.Brush.Color := BitmapEditor1.DrawBrush.Color;
+  ShapeFore.Brush.Color := BitmapEditor.DrawPen.Color;
+  ShapeBack.Brush.Color := BitmapEditor.DrawBrush.Color;
 
-  ColorSelector1.ForegroundColor := shpFore.Brush.Color;
-  ColorSelector1.BackgroundColor := shpBack.Brush.Color;
+  ColorSelector.ForegroundColor := ShapeFore.Brush.Color;
+  ColorSelector.BackgroundColor := ShapeBack.Brush.Color;
 end;
 
 (*----------------------------------------------------------------------*
- | TfmGraphicsResource.pnlTransparentDblClick                           |
+ | TFormGraphicsResource.pnlTransparentDblClick                           |
  |                                                                      |
- | Allow them to change the color displayed in 'transparent' areas.     |
+ | Allow them to Change the color displayed in 'transparent' areas.     |
  *----------------------------------------------------------------------*)
-procedure TfmGraphicsResource.pnlTransparentDblClick(Sender: TObject);
+procedure TFormGraphicsResource.PanelTransparentDblClick(Sender: TObject);
 begin
   inherited;
-  ColorDialog1.Color := BitmapEditor1.TransparentColor;
-  if ColorDialog1.Execute then
+  ColorDialog.Color := BitmapEditor.TransparentColor;
+  if ColorDialog.Execute then
   begin
-    BitmapEditor1.TransparentColor := ColorDialog1.Color;
-    pnlTransparent.Color := ColorDialog1.Color
+    BitmapEditor.TransparentColor := ColorDialog.Color;
+    PanelTransparent.Color := ColorDialog.Color
   end
 end;
 
 (*----------------------------------------------------------------------*
- | TfmGraphicsResource.BitmapEditor1DrawToolChange                      |
+ | TFormGraphicsResource.BitmapEditor1DrawToolChange                      |
  |                                                                      |
  | The bitmap editor has (itself) changed the drawing tool.  (After     |
  | using the dropper it reverts back to the previous tool...)           |
  *----------------------------------------------------------------------*)
-procedure TfmGraphicsResource.BitmapEditor1DrawToolChange(Sender: TObject);
+procedure TFormGraphicsResource.BitmapEditorDrawToolChange(Sender: TObject);
 var
-  dt : TDrawingTool;
-  i : Integer;
+  dt: TDrawingTool;
+  i: Integer;
 begin
-  dt := BitmapEditor1.DrawingTool;
+  dt := BitmapEditor.DrawingTool;
 
                         // Make sure the new drawing tool's button is pressed
-  for i := 0 to Toolbar1.ControlCount - 1 do
-    if (Toolbar1.Controls[i] is TToolButton) and (Toolbar1.Controls[i].Tag = Ord (dt)) then
+  for i := 0 to Toolbar.ControlCount - 1 do
+    if (Toolbar.Controls[i] is TToolButton) and (Toolbar.Controls[i].Tag = Ord (dt)) then
     begin
-      TToolButton (Toolbar1.Controls[i]).Down := True;
+      TToolButton (Toolbar.Controls[i]).Down := True;
       break
     end;
 
-                        // Using the dropper causes the colour to change, too
-  shpFore.Brush.Color := BitmapEditor1.DrawPen.Color;
-  shpBack.Brush.Color := BitmapEditor1.DrawBrush.Color;
+                        // Using the dropper causes the colour to Change, too
+  ShapeFore.Brush.Color := BitmapEditor.DrawPen.Color;
+  ShapeBack.Brush.Color := BitmapEditor.DrawBrush.Color;
 end;
 
-function CreatePaletteBitmap (pf : TPixelFormat) : TBitmap;
+function CreatePaletteBitmap (pf: TPixelFormat): TBitmap;
 var
-  i : Integer;
-  colorCount : DWORD;
-  paletteEntries : array [0..255] of TPaletteEntry;
-  pal : HPalette;
+  i: Integer;
+  ColorCount: DWORD;
+  paletteEntries: array [0..255] of TPaletteEntry;
+  pal: HPalette;
 begin
   Result := nil;
   case pf of
-    pf1Bit : pal := SystemPalette2;
-    pf4Bit : pal := SystemPalette16;
-    pf8Bit : pal := SystemPalette256;
+    pf1Bit: pal := SystemPalette2;
+    pf4Bit: pal := SystemPalette16;
+    pf8Bit: pal := SystemPalette256;
     else
       Exit;
   end;
 
-  colorCount := 0;
-  if GetObject(pal, SizeOf(colorCount), @colorCount) = 0 then
+  ColorCount := 0;
+  if GetObject(pal, SizeOf(ColorCount), @ColorCount) = 0 then
     RaiseLastOSError;
 
   if ColorCount = 0 then
@@ -683,105 +683,105 @@ begin
   Result.Palette := CopyPalette(pal);
 
   Result.Height := 1;
-  Result.Width := colorCount;
+  Result.Width := ColorCount;
 
   for i := 0 to ColorCount - 1 do
     Result.Canvas.Pixels[i, 0] := RGB (paletteEntries[i].peRed, paletteEntries[i].peGreen, paletteEntries[i].peBlue);
 end;
 
 (*----------------------------------------------------------------------*
- | TfmGraphicsResource.PropertyListBox1PropertyChanged                  |
+ | TFormGraphicsResource.PropertyListBox1PropertyChanged                  |
  |                                                                      |
  | A property(width, height, pixelformat) has been changed.  Update    |
  |the image                                                             |
  *----------------------------------------------------------------------*)
-procedure TfmGraphicsResource.PropertyListBox1PropertyChanged(
+procedure TFormGraphicsResource.PropertyListBoxPropertyChanged(
   Sender: TObject);
 var
-  prop : TPropertyListProperty;
-  change : string;
-  oldPf, newPf : TPixelFormat;
-  b1, bmp, b2 : TBitmap;
-  l : TList;
-  pal : HPalette;
+  Prop: TPropertyListProperty;
+  Change: string;
+  OldPixelFormat, NewPixelFormat: TPixelFormat;
+  b1, bmp, b2: TBitmap;
+  l: TList;
+  pal: HPalette;
 begin
-  with PropertyListBox1 do
-    prop := Properties[SelectedPropertyNo];
+  with PropertyListBox do
+    Prop := Properties[SelectedPropertyNo];
 
-  change := '';
-  newPf := pfDevice;
+  Change := '';
+  NewPixelFormat := pfDevice;
 
-  case prop.Tag of
-    taWidth : if Image1.Picture.Graphic.Width <> prop.PropertyValue then
+  case Prop.Tag of
+    taWidth: if Image.Picture.Graphic.Width <> Prop.PropertyValue then
               begin
-                change := rstWidthChanged;
-                ResizePicture(Image1.Picture, prop.PropertyValue, Image1.Picture.Graphic.Height);
+                Change := rstWidthChanged;
+                ResizePicture(Image.Picture, Prop.PropertyValue, Image.Picture.Graphic.Height);
               end;
 
-    taHeight : if Image1.Picture.Graphic.Height <> prop.PropertyValue then
+    taHeight: if Image.Picture.Graphic.Height <> Prop.PropertyValue then
                begin
-                 change := rstHeightChanged;
-                 ResizePicture(Image1.Picture, Image1.Picture.Graphic.Width, prop.PropertyValue);
+                 Change := rstHeightChanged;
+                 ResizePicture(Image.Picture, Image.Picture.Graphic.Width, Prop.PropertyValue);
                end;
 
     taPixelFormat :
                begin
-                 oldPf := GetPixelFormat(Image1.Picture.Graphic);
-                 case prop.PropertyValue of
-                   0 : newPf := pf1Bit;
-                   1 : newPf := pf4Bit;
-                   2 : newPf := pf8Bit;
-                   3 : newPf := pf24Bit;
-                   4 : newPf := pf32Bit;
+                 OldPixelFormat := GetPixelFormat(Image.Picture.Graphic);
+                 case Prop.PropertyValue of
+                   0: NewPixelFormat := pf1Bit;
+                   1: NewPixelFormat := pf4Bit;
+                   2: NewPixelFormat := pf8Bit;
+                   3: NewPixelFormat := pf24Bit;
+                   4: NewPixelFormat := pf32Bit;
                  end;
-                 if oldPf <> newPf then
+                 if OldPixelFormat <> NewPixelFormat then
                  begin
-                   change := rstPixelFormatChanged;
+                   Change := rstPixelFormatChanged;
 
-                   if Image1.Picture.Graphic is TBitmap then
+                   if Image.Picture.Graphic is TBitmap then
                    begin
-                     bmp := TBitmap (Image1.Picture.Graphic);
+                     bmp := TBitmap (Image.Picture.Graphic);
 
-                     if newPf in [pf1Bit..pf8Bit] then
+                     if NewPixelFormat in [pf1Bit..pf8Bit] then
                      begin
                        b1 := nil;
                        b2 := nil;
                        try
-                         if (newPf = pf8Bit) and (oldPf > pf8Bit) and not bmp.Empty then
+                         if (NewPixelFormat = pf8Bit) and (OldPixelFormat > pf8Bit) and not bmp.Empty then
                          begin
-                           b1:= ReduceColors (bmp, rmQuantizeWindows, dmFloydSteinberg, GetPixelFormatBitCount(newPf), 0);
+                           b1:= ReduceColors (bmp, rmQuantizeWindows, dmFloydSteinberg, GetPixelFormatBitCount(NewPixelFormat), 0);
                          end
                          else
                          begin
                            // ReduceColors always returns a pf8Bit bitmap...
                            b1 := TBitmap.Create;
-                           b1.PixelFormat := newPF;
-                           case newPF of
-                             pf1Bit : b1.Palette := SystemPalette2;
-                             pf4Bit : b1.Palette := SystemPalette16;
-                             pf8Bit : b1.Palette := CopyPalette(SystemPalette256); // unitExIcon.WebPalette
+                           b1.PixelFormat := NewPixelFormat;
+                           case NewPixelFormat of
+                             pf1Bit: b1.Palette := SystemPalette2;
+                             pf4Bit: b1.Palette := SystemPalette16;
+                             pf8Bit: b1.Palette := CopyPalette(SystemPalette256); // unitExIcon.WebPalette
                            end;
 
                            b1.Width := bmp.Width;
                            b1.Height := bmp.Height;
                            b1.Canvas.Draw(0, 0, bmp);
                          end;
-                         Image1.Picture.Graphic := b1;
-                         bmp := TBitmap (Image1.Picture.Graphic);
+                         Image.Picture.Graphic := b1;
+                         bmp := TBitmap (Image.Picture.Graphic);
                        finally
                          b1.Free;
                          b2.Free
                        end
                      end
                      else
-                       bmp.PixelFormat := newPf;
+                       bmp.PixelFormat := NewPixelFormat;
 
-                     bmp.IgnorePalette := newPf > pf8Bit;
+                     bmp.IgnorePalette := NewPixelFormat > pf8Bit;
                    end
                    else
-                     if Image1.Picture.Graphic is TExIconCursor then
-                       if newPf in [pf24Bit, pf32Bit] then
-                         TExIconCursor (Image1.Picture.Graphic).PixelFormat := newPf
+                     if Image.Picture.Graphic is TExIconCursor then
+                       if NewPixelFormat in [pf24Bit, pf32Bit] then
+                         TExIconCursor (Image.Picture.Graphic).PixelFormat := NewPixelFormat
                        else
                        begin
                          pal := 0;
@@ -789,11 +789,11 @@ begin
                          l := TList.Create;
                          try
                            bmp := TBitmap.Create;
-                           bmp.Assign(Image1.Picture.Graphic);
+                           bmp.Assign(Image.Picture.Graphic);
                            l.Add (bmp);
-                           l.Add (CreatePaletteBitmap (newPF));
-                           pal := CreateOptimizedPaletteFromManyBitmaps (l, GetPixelFormatNumColors (newPf), GetPixelFormatBitCount(newPF), False);
-                           TExIconCursor (Image1.Picture.Graphic).Palette := pal;
+                           l.Add (CreatePaletteBitmap (NewPixelFormat));
+                           pal := CreateOptimizedPaletteFromManyBitmaps (l, GetPixelFormatNumColors (NewPixelFormat), GetPixelFormatBitCount(NewPixelFormat), False);
+                           TExIconCursor (Image.Picture.Graphic).Palette := pal;
                          finally
                            l.Free;
                            bmp.Free;
@@ -803,170 +803,170 @@ begin
                        end
                  end;
 
-                 SetPaletteForPixelFormat(newPf < oldPf);
+                 SetPaletteForPixelFormat(NewPixelFormat < OldPixelFormat);
                end
   end;
 
-  if change <> '' then
+  if Change <> '' then
   begin
-    BitmapEditor1.Picture := Image1.Picture;      // Set the editor picture
-    SaveResource(change);
+    BitmapEditor.Picture := Image.Picture;      // Set the editor picture
+    SaveResource(Change);
   end
 end;
 
-procedure TfmGraphicsResource.TrackBar1Change(Sender: TObject);
+procedure TFormGraphicsResource.TrackBarChange(Sender: TObject);
 begin
-  ColorSelector1.Luminescence := 240 - TrackBar1.Position
+  ColorSelector.Luminescence := 240 - TrackBar.Position
 end;
 
-function TfmGraphicsResource.GetImportExportType: TImportExportType;
+function TFormGraphicsResource.GetImportExportType: TImportExportType;
 begin
   Result := ixPicture
 end;
 
-procedure TfmGraphicsResource.SetPaletteForPixelFormat(reset: Boolean);
+procedure TFormGraphicsResource.SetPaletteForPixelFormat(reset: Boolean);
 var
-  fc, bc : TColor;
-  pf : TPixelFormat;
+  fc, bc: TColor;
+  pf: TPixelFormat;
 begin
   fc := clWhite;
   bc := clBlack;
-  pf := GetPixelFormat(Image1.Picture.Graphic);
+  pf := GetPixelFormat(Image.Picture.Graphic);
   if pf in [pf1Bit..pf8Bit] then
   begin
-    ColorSelector1.Palette := Image1.Picture.Graphic.Palette;
-    fc := ColorSelector1.Color [ColorSelector1.ColorCount - 1];
-    bc := ColorSelector1.Color [0]
+    ColorSelector.Palette := Image.Picture.Graphic.Palette;
+    fc := ColorSelector.Color [ColorSelector.ColorCount - 1];
+    bc := ColorSelector.Color [0]
   end
   else
-    ColorSelector1.Palette := 0;
+    ColorSelector.Palette := 0;
 
-  BitmapEditor1.ClipboardPalette := ColorSelector1.Palette;
-  BitmapEditor1.ClipboardPixelFormat := pf;
+  BitmapEditor.ClipboardPalette := ColorSelector.Palette;
+  BitmapEditor.ClipboardPixelFormat := pf;
                                                 // Adjust colour selector Size, etc.
-  if ColorSelector1.ColorCount = -1 then
-    TrackBar1.Visible := True
+  if ColorSelector.ColorCount = -1 then
+    TrackBar.Visible := True
   else
   begin
-    TrackBar1.Visible := False;
-    if ColorSelector1.ColorCount <= 16 then
-      ColorSelector1.ColumnCount := 4
+    TrackBar.Visible := False;
+    if ColorSelector.ColorCount <= 16 then
+      ColorSelector.ColumnCount := 4
     else
-      ColorSelector1.ColumnCount := 8
+      ColorSelector.ColumnCount := 8
   end;
 
   if reset then
   begin
-    ColorSelector1.ForegroundColor := fc;
-    ColorSelector1.BackgroundColor := bc;
+    ColorSelector.ForegroundColor := fc;
+    ColorSelector.BackgroundColor := bc;
 
-    shpFore.Brush.Color := fc;
-    shpBack.Brush.Color := bc;
+    ShapeFore.Brush.Color := fc;
+    ShapeBack.Brush.Color := bc;
 
-    BitmapEditor1.DrawPen.Color := fc;
-    BitmapEditor1.DrawBrush.Color := bc
+    BitmapEditor.DrawPen.Color := fc;
+    BitmapEditor.DrawBrush.Color := bc
   end
 end;
 
-function TfmGraphicsResource.GetCanCopy: Boolean;
+function TFormGraphicsResource.GetCanCopy: Boolean;
 begin
-  Result := BitmapEditor1.SelectionValid
+  Result := BitmapEditor.SelectionValid
 end;
 
-function TfmGraphicsResource.GetCanCut: Boolean;
+function TFormGraphicsResource.GetCanCut: Boolean;
 begin
-  Result := BitmapEditor1.SelectionValid
+  Result := BitmapEditor.SelectionValid
 end;
 
-function TfmGraphicsResource.GetCanPaste: Boolean;
+function TFormGraphicsResource.GetCanPaste: Boolean;
 begin
   Result := Clipboard.HasFormat(CF_METAFILEPICT) or Clipboard.HasFormat(CF_BITMAP) or Clipboard.HasFormat(CF_PICTURE)
 end;
 
-function TfmGraphicsResource.GetCanSelectAll: Boolean;
+function TFormGraphicsResource.GetCanSelectAll: Boolean;
 begin
   Result := True
 end;
 
-procedure TfmGraphicsResource.SelectAll;
+procedure TFormGraphicsResource.SelectAll;
 begin
-  BitmapEditor1.SelectAll
+  BitmapEditor.SelectAll
 end;
 
-function TfmGraphicsResource.GetCanDelete: Boolean;
+function TFormGraphicsResource.GetCanDelete: Boolean;
 begin
-  Result := BitmapEditor1.SelectionValid
+  Result := BitmapEditor.SelectionValid
 end;
 
-procedure TfmGraphicsResource.EditDelete;
+procedure TFormGraphicsResource.EditDelete;
 begin
   SaveResource(rstDeleteImage);
-  BitmapEditor1.DeleteSelection
+  BitmapEditor.DeleteSelection
 end;
 
-procedure TfmGraphicsResource.Copy;
+procedure TFormGraphicsResource.Copy;
 begin
-  BitmapEditor1.CopySelection
+  BitmapEditor.CopySelection
 end;
 
-procedure TfmGraphicsResource.Cut;
+procedure TFormGraphicsResource.Cut;
 begin
   SaveResource(rstCutImage);
-  BitmapEditor1.CutSelection
+  BitmapEditor.CutSelection
 end;
 
-procedure TfmGraphicsResource.Paste;
+procedure TFormGraphicsResource.Paste;
 begin
-  if not BitmapEditor1.SelectionValid then
-    BitmapEditor1.SelectAll;
-  BitmapEditor1.PasteSelection;
+  if not BitmapEditor.SelectionValid then
+    BitmapEditor.SelectAll;
+  BitmapEditor.PasteSelection;
   SaveResource(rstPasteImage);
 end;
 
-procedure TfmGraphicsResource.PreviewKey(var key: Word;
+procedure TFormGraphicsResource.PreviewKey(var key: Word;
   shift: TShiftState);
 begin
 
   case key of
     VK_ADD :
       begin
-        actImageZoomIn.Execute;
+        ActionImageZoomIn.Execute;
         key := 0
       end;
 
     VK_SUBTRACT :
       begin
-        actImageZoomOut.Execute;
+        ActionImageZoomOut.Execute;
         key := 0
       end
   end
 
 end;
 
-procedure TfmGraphicsResource.actImageColorsPaletteExecute(
+procedure TFormGraphicsResource.ActionImageColorsPaletteExecute(
   Sender: TObject);
 begin
-  pnlColours.Visible := not pnlColours.Visible;
+  PanelColors.Visible := not PanelColors.Visible;
 end;
 
-procedure TfmGraphicsResource.actImageToolsPaletteExecute(Sender: TObject);
+procedure TFormGraphicsResource.ActionImageToolsPaletteExecute(Sender: TObject);
 begin
-  pnlGraphics.Visible := not pnlGraphics.Visible
+  PanelGraphics.Visible := not PanelGraphics.Visible
 end;
 
-procedure TfmGraphicsResource.mnuImageClick(Sender: TObject);
+procedure TFormGraphicsResource.MenuItemImageClick(Sender: TObject);
 begin
-  actImageToolsPalette.Checked := pnlGraphics.Visible;
-  actImageColorsPalette.Checked := pnlColours.Visible
+  ActionImageToolsPalette.Checked := PanelGraphics.Visible;
+  ActionImageColorsPalette.Checked := PanelColors.Visible
 end;
 
-procedure TfmGraphicsResource.BitmapEditor1SelectionRectChange(
+procedure TFormGraphicsResource.BitmapEditorSelectionRectChange(
   Sender: TObject);
 var
-  Msg : string;
+  Msg: string;
 begin
-  if BitmapEditor1.SelectionValid then
-    with BitmapEditor1.SelectionRect do
+  if BitmapEditor.SelectionValid then
+    with BitmapEditor.SelectionRect do
       Msg := Format('%d,%d %dx%d', [Left, Top, Right - Left + 1, Bottom - Top + 1])
   else
     Msg := '';
@@ -974,20 +974,20 @@ begin
   SendMessage(Application.MainForm.Handle, WM_STATUSBAR, 0, Integer (PChar (Msg)))
 end;
 
-procedure TfmGraphicsResource.PopupMenu1Popup(Sender: TObject);
+procedure TFormGraphicsResource.PopupMenuPopup(Sender: TObject);
 begin
-  actImageToolsPalette.Checked := pnlGraphics.Visible;
-  actImageColorsPalette.Checked := pnlColours.Visible
+  ActionImageToolsPalette.Checked := PanelGraphics.Visible;
+  ActionImageColorsPalette.Checked := PanelColors.Visible
 end;
 
-procedure TfmGraphicsResource.actImageAddImageExecute(Sender: TObject);
+procedure TFormGraphicsResource.ActionImageAddImageExecute(Sender: TObject);
 var
-  tp : Integer;
+  tp: Integer;
 begin
-  if Image1.Picture.Graphic is TExCursor then
+  if Image.Picture.Graphic is TExCursor then
     tp := 0
   else
-    if Image1.Picture.Graphic is TExIcon then
+    if Image.Picture.Graphic is TExIcon then
       tp := 1
     else
       tp := -1;
@@ -995,23 +995,22 @@ begin
   SendMessage(Application.MainForm.Handle, WM_ADDIMAGERESOURCE, tp, 0);
 end;
 
-procedure TfmGraphicsResource.UpdateActions;
+procedure TFormGraphicsResource.UpdateActions;
 var
-  dt : Boolean;
+  dt: Boolean;
 begin
-  actImageAddImage.Enabled := ResourceDetails is TIconCursorResourceDetails;
-
+  ActionImageAddImage.Enabled := ResourceDetails is TIconCursorResourceDetails;
 
   // Disable the right-click popup menu if the dropper or
   // magnifier is selected.
 
-  dt := BitmapEditor1.DrawingTool in [dtDropper, dtMagnifier];
+  dt := BitmapEditor.DrawingTool in [dtDropper, dtMagnifier];
   if dt then
-    PopupMenu1.AutoPopup := False
+    PopupMenu.AutoPopup := False
   else
-    if PopupMenu1.AutoPopup = False then
+    if PopupMenu.AutoPopup = False then
       if not (ssRight in KeyboardStateToShiftState) then
-        PopupMenu1.AutoPopup := True
+        PopupMenu.AutoPopup := True
 end;
 
 end.

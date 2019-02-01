@@ -3,28 +3,30 @@ unit FormTextInput;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls;
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls;
 
 type
-  TfmTextInput = class(TForm)
+  TFormTextInput = class(TForm)
     mmoText: TMemo;
-    Button1: TButton;
-    Button2: TButton;
-    Button3: TButton;
-    FontDialog1: TFontDialog;
-    procedure Button2Click(Sender: TObject);
+    ButtonOK: TButton;
+    ButtonSelectFont: TButton;
+    ButtonCancel: TButton;
+    FontDialog: TFontDialog;
+    procedure ButtonSelectFontClick(Sender: TObject);
   end;
 
 implementation
 
 {$R *.dfm}
 
-procedure TfmTextInput.Button2Click(Sender: TObject);
+{ TfmTextInput }
+
+procedure TFormTextInput.ButtonSelectFontClick(Sender: TObject);
 begin
-  FontDialog1.Font.Assign(mmoText.Font);
-  if FontDialog1.Execute then
-    mmoText.Font.Assign (FontDialog1.Font)
+  FontDialog.Font.Assign(mmoText.Font);
+  if FontDialog.Execute then
+    mmoText.Font.Assign(FontDialog.Font)
 end;
 
 end.

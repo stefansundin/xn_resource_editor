@@ -7,77 +7,74 @@ uses
   ResourceForm, ComCtrls, ExtCtrls, cmpPropertyListBox, unitResourceRCData;
 
 type
-  TfmPackagesResource = class(TfmResource)
-    pcRequiresContains: TPageControl;
-    TabSheet2: TTabSheet;
-    TabSheet3: TTabSheet;
-    Panel1: TPanel;
-    plbFlags: TPropertyListBox;
-    Splitter1: TSplitter;
-    lvRequires: TListView;
-    lvContains: TListView;
+  TFormPackagesResource = class(TFormResource)
+    ListViewContains: TListView;
+    ListViewRequires: TListView;
+    PageControlRequiresContains: TPageControl;
+    Panel: TPanel;
+    PropertyListBoxFlags: TPropertyListBox;
+    Splitter: TSplitter;
+    TabSheetContains: TTabSheet;
+    TabSheetRequires: TTabSheet;
     procedure FormShow(Sender: TObject);
   private
-    fDetails : TRCDataPackagesResourceDetails;
+    FDetails: TRCDataPackagesResourceDetails;
   public
     procedure SetObject(const Value: TObject); override;
   end;
-
-var
-  fmPackagesResource: TfmPackagesResource;
 
 implementation
 
 {$R *.DFM}
 
-{ TfmPackagesResource }
+{ TFormPackagesResource }
 
-procedure TfmPackagesResource.SetObject(const Value: TObject);
+procedure TFormPackagesResource.SetObject(const Value: TObject);
 var
-  prop : TPropertyListProperty;
-  i : Integer;
-  st : string;
-  flgs : Integer;
+  Prop: TPropertyListProperty;
+  i: Integer;
+  st: string;
+  Flgs: Integer;
 begin
   inherited;
 
-  fDetails := Obj as TRCDataPackagesResourceDetails;
+  FDetails := Obj as TRCDataPackagesResourceDetails;
 
-  prop := plbFlags.FindProperty('Environment');
-  prop.PropertyValue := fDetails.Environment;
+  Prop := PropertyListBoxFlags.FindProperty('Environment');
+  Prop.PropertyValue := FDetails.Environment;
 
-  prop := plbFlags.FindProperty('Module Type');
-  prop.PropertyValue := fDetails.ModuleType;
+  Prop := PropertyListBoxFlags.FindProperty('Module Type');
+  Prop.PropertyValue := FDetails.ModuleType;
 
-  prop := plbFlags.FindProperty('Never Build');
-  prop.PropertyValue := fDetails.NeverBuild;
+  Prop := PropertyListBoxFlags.FindProperty('Never Build');
+  Prop.PropertyValue := FDetails.NeverBuild;
 
-  prop := plbFlags.FindProperty('Design Only');
-  prop.PropertyValue := fDetails.DesignTimeOnly;
+  Prop := PropertyListBoxFlags.FindProperty('Design Only');
+  Prop.PropertyValue := FDetails.DesignTimeOnly;
 
-  prop := plbFlags.FindProperty('Runtime Only');
-  prop.PropertyValue := fDetails.RuntimeOnly;
+  Prop := PropertyListBoxFlags.FindProperty('Runtime Only');
+  Prop.PropertyValue := FDetails.RuntimeOnly;
 
-  prop := plbFlags.FindProperty('Check Duplicates');
-  prop.PropertyValue := fDetails.CheckForDuplicates;
+  Prop := PropertyListBoxFlags.FindProperty('Check Duplicates');
+  Prop.PropertyValue := FDetails.CheckForDuplicates;
 
-  lvRequires.Items.BeginUpdate;
+  ListViewRequires.Items.BeginUpdate;
   try
-    for i := 0 to fDetails.RequiresCount - 1 do
-      with lvRequires.Items.Add do
-        Caption := fDetails.Requires[i];
-    if lvRequires.Items.Count > 0 then
-      lvRequires.ItemIndex := 0;
+    for i := 0 to FDetails.RequiresCount - 1 do
+      with ListViewRequires.Items.Add do
+        Caption := FDetails.Requires[i];
+    if ListViewRequires.Items.Count > 0 then
+      ListViewRequires.ItemIndex := 0;
   finally
-    lvRequires.Items.EndUpdate
+    ListViewRequires.Items.EndUpdate
   end;
 
-  lvContains.Items.BeginUpdate;
+  ListViewContains.Items.BeginUpdate;
   try
-    for i := 0 to fDetails.ContainsCount - 1 do
-      with lvContains.Items.Add do
+    for i := 0 to FDetails.ContainsCount - 1 do
+      with ListViewContains.Items.Add do
       begin
-        Caption := fDetails.Contains[i];
+        Caption := FDetails.Contains[i];
   { PackageUnitFlags:
     bit      meaning
     -----------------------------------------------------------------------------------------
@@ -88,33 +85,32 @@ begin
     4      | implicitly imported
     5..7   | reserved
   }
-        flgs := fDetails.ContainsFlag [i];
+        Flgs := FDetails.ContainsFlag [i];
 
         st := '';
-        if (flgs and  1) <> 0 then st := st + ', main unit';
-        if (flgs and  2) <> 0 then st := st + ', package unit';
-        if (flgs and  4) <> 0 then st := st + ', $WEAKPACKAGEUNIT unit';
-        if (flgs and  8) <> 0 then st := st + ', original containment of $WEAKPACKAGEUNIT';
-        if (flgs and 16) <> 0 then st := st + ', implictly imported';
+        if (Flgs and  1) <> 0 then st := st + ', main unit';
+        if (Flgs and  2) <> 0 then st := st + ', package unit';
+        if (Flgs and  4) <> 0 then st := st + ', $WEAKPACKAGEUNIT unit';
+        if (Flgs and  8) <> 0 then st := st + ', original containment of $WEAKPACKAGEUNIT';
+        if (Flgs and 16) <> 0 then st := st + ', implictly imported';
 
         system.Delete(st, 1, 2);
         SubItems.Add (st)
       end;
 
-      if lvContains.Items.Count > 0 then
-        lvContains.ItemIndex := 0
-
+      if ListViewContains.Items.Count > 0 then
+        ListViewContains.ItemIndex := 0
 
   finally
-    lvContains.Items.EndUpdate
+    ListViewContains.Items.EndUpdate
   end
 end;
 
-procedure TfmPackagesResource.FormShow(Sender: TObject);
+procedure TFormPackagesResource.FormShow(Sender: TObject);
 begin
   inherited;
 
-  pcRequiresContains.ActivePageIndex := 0;
+  PageControlRequiresContains.ActivePageIndex := 0;
 end;
 
 end.

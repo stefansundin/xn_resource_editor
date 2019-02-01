@@ -125,7 +125,7 @@ begin
   else
   begin
     ctrl := ResizeControl;
-    if Assigned (ctrl) then
+    if Assigned(ctrl) then
       if Align in [alLeft, alRight] then
         Result := ctrl.Width
       else
@@ -178,7 +178,7 @@ begin
     Shrunken := not Shrunken
   else
   begin
-    if Assigned (ResizeControl) then
+    if Assigned(ResizeControl) then
       if Align in [alLeft, alRight] then
         FSaveSize := ResizeControl.Width
       else
@@ -246,7 +246,7 @@ begin
 
     ctrl := ResizeControl;
 
-    if Assigned (ctrl) then
+    if Assigned(ctrl) then
     begin
       if Value then
         if Align in [alLeft, alRight] then
@@ -280,7 +280,7 @@ begin
   inherited;
 
   Resized := False;
-  if Assigned (ResizeControl) then
+  if Assigned(ResizeControl) then
     if Align in [alLeft, alRight] then
       Resized := ResizeControl.Width <> FSaveSize
     else

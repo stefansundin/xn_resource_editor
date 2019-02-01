@@ -1,16 +1,10 @@
-inherited fmIconGraphicsResource: TfmIconGraphicsResource
-  Caption = 'fmIconGraphicsResource'
+inherited FormIconGraphicsResource: TFormIconGraphicsResource
+  Caption = 'Icon Graphics Resource'
   PixelsPerInch = 96
   TextHeight = 13
-  inherited pnlLeft: TPanel
-    inherited sbThumbnail: TScrollBox
-      ExplicitTop = 4
-      ExplicitHeight = 502
-    end
-  end
-  inherited ImageList1: TImageList
+  inherited ImageList: TImageList
     Bitmap = {
-      494C010119002000100010000F00FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010119002000200010000F00FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006900000001002000000000000069
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

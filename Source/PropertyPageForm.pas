@@ -3,8 +3,8 @@ unit PropertyPageForm;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, StdCtrls;
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  ExtCtrls, StdCtrls;
 
 type
   TPropertyPageData = class
@@ -38,10 +38,10 @@ type
 
   TPropertyPageDataClass = class of TPropertyPageData;
 
-  TfmPropertyPage = class(TForm)
-    Panel1: TPanel;
-    Bevel1: TBevel;
-    stSectionDetails: TLabel;
+  TFormPropertyPage = class(TForm)
+    PanelSectionDetails: TPanel;
+    Bevel: TBevel;
+    StaticTextSectionDetails: TLabel;
   private
     FAltKeyword: string;
   protected
@@ -53,25 +53,22 @@ type
     property AltKeyword: string read FAltKeyword;
   end;
 
-  TPropertyPageClass = class of TfmPropertyPage;
-
-var
-  fmPropertyPage: TfmPropertyPage;
+  TPropertyPageClass = class of TFormPropertyPage;
 
 implementation
 
 {$R *.dfm}
 
-{ TfmPropertyPage }
+{ TFormPropertyPage }
 
-procedure TfmPropertyPage.PopulateControls (AData: TPropertyPageData);
+procedure TFormPropertyPage.PopulateControls (AData: TPropertyPageData);
 begin
   if not AData.FInitialized then
   begin
     AData.Initialize;
     AData.FInitialized := True
   end;
-  stSectionDetails.Caption := AData.HelpText;
+  StaticTextSectionDetails.Caption := AData.HelpText;
   FAltKeyword := AData.HelpKeyword;
 end;
 

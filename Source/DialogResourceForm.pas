@@ -12,98 +12,95 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  Menus, ImgList, ComCtrls, ToolWin, StdCtrls, ExtCtrls, ResourceForm,
-  cmpSizingPageControl, cmpDialogBox, cmpRuler, cmpPropertyListBox,
-  cmpDialogEditor, unitResourceDialogs, System.ImageList;
+  Menus, ImgList, ComCtrls, ToolWin, StdCtrls, ExtCtrls, ImageList,
+  ResourceForm, cmpSizingPageControl, cmpDialogBox, cmpRuler,
+  cmpPropertyListBox, cmpDialogEditor, unitResourceDialogs;
 
 type
-  TfmDialogResource = class(TfmResource)
-    pnlProperties: TPanel;
-    Splitter1: TSplitter;
-    ScrollBox1: TScrollBox;
-    pnlPropertyCombo: TPanel;
-    cbControls: TComboBox;
-    Panel3: TPanel;
-    Panel4: TPanel;
-    DialogEditor1: TDialogEditor;
-    Ruler1: TRuler;
-    Ruler2: TRuler;
-    tcPropertyKind: TTabControl;
-    SizingPageControl1: TSizingPageControl;
-    pnlPalette: TPanel;
-    ImageList1: TImageList;
-    Panel1: TPanel;
-    ToolBar1: TToolBar;
+  TFormDialogResource = class(TFormResource)
+    ComboBoxControls: TComboBox;
+    DialogEditor: TDialogEditor;
+    FontDialog: TFontDialog;
+    ImageList: TImageList;
+    PanelInnerPalette: TPanel;
+    PanelPalette: TPanel;
+    PanelProperties: TPanel;
+    PanelPropertyCombo: TPanel;
+    PanelRulerLeft: TPanel;
+    PanelRulerTop: TPanel;
+    PropertyListBox: TPropertyListBox;
+    RulerLeft: TRuler;
+    RulerTop: TRuler;
+    ScrollBox: TScrollBox;
+    SizingPageControl: TSizingPageControl;
+    Splitter: TSplitter;
+    TabControlPropertyKind: TTabControl;
+    ToolBar: TToolBar;
     ToolButton1: TToolButton;
     ToolButton2: TToolButton;
     ToolButton3: TToolButton;
     ToolButton4: TToolButton;
     ToolButton5: TToolButton;
     ToolButton6: TToolButton;
-    ToolButton7: TToolButton;
-    ToolButton8: TToolButton;
-    ToolButton9: TToolButton;
-    ToolButton10: TToolButton;
-    ToolButton11: TToolButton;
-    ToolButton12: TToolButton;
     ToolButton13: TToolButton;
     ToolButton14: TToolButton;
-    ToolButton15: TToolButton;
     ToolButton16: TToolButton;
     ToolButton17: TToolButton;
     ToolButton18: TToolButton;
-    ToolButton19: TToolButton;
-    ToolButton20: TToolButton;
     ToolButton21: TToolButton;
     ToolButton22: TToolButton;
-    ToolButton23: TToolButton;
     ToolButton24: TToolButton;
     ToolButton25: TToolButton;
     ToolButton26: TToolButton;
-    FontDialog1: TFontDialog;
-    PropertyListBox1: TPropertyListBox;
-    procedure DialogEditor1Resize(Sender: TObject);
-    procedure DialogEditor1DesignModeSelectedItemChange(Sender: TObject);
-    procedure DialogEditor1Show(Sender: TObject);
-    procedure cbControlsChange(Sender: TObject);
-    procedure PropertyListBox1PropertyChanged(Sender: TObject);
-    procedure tcPropertyKindChange(Sender: TObject);
-    procedure DialogEditor1ControlResize(Sender: TObject;
+    ToolButtonCheckBox: TToolButton;
+    ToolButtonCursor: TToolButton;
+    ToolButtonFont: TToolButton;
+    ToolButtonImage: TToolButton;
+    ToolButtonRadioButton: TToolButton;
+    ToolButtonTable: TToolButton;
+    ToolButtonTabs: TToolButton;
+    ToolButtonText: TToolButton;
+    ToolButtonTrackbar: TToolButton;
+    ToolButtonVideo: TToolButton;
+    procedure DialogEditorResize(Sender: TObject);
+    procedure DialogEditorDesignModeSelectedItemChange(Sender: TObject);
+    procedure DialogEditorShow(Sender: TObject);
+    procedure ComboBoxControlsChange(Sender: TObject);
+    procedure PropertyListBoxPropertyChanged(Sender: TObject);
+    procedure TabControlPropertyKindChange(Sender: TObject);
+    procedure DialogEditorControlResize(Sender: TObject;
       ctrlInfo: TControlInfo; newRect: TRect);
-    procedure DialogEditor1ControlPropertyChange(Sender: TObject;
+    procedure DialogEditorControlPropertyChange(Sender: TObject;
       ctrlInfo: TControlInfo);
     procedure FormShow(Sender: TObject);
-    procedure SizingPageControl1UnDock(Sender: TObject; Client: TControl;
+    procedure SizingPageControlUnDock(Sender: TObject; Client: TControl;
       NewTarget: TWinControl; var Allow: Boolean);
-    procedure SizingPageControl1DockDrop(Sender: TObject;
+    procedure SizingPageControlDockDrop(Sender: TObject;
       Source: TDragDockObject; X, Y: Integer);
-    procedure ToolButton2Click(Sender: TObject);
-    procedure DialogEditor1DesignModeDropControl(sender: TObject; x,
-      y: Integer; ctrl: TControlInfo);
-    procedure DialogEditor1DeleteControl(Sender: TObject;
-      ctrl: TControlInfo);
-    procedure ToolButton1Click(Sender: TObject);
-    procedure DialogEditor1GetControlImage(Sender: TObject; tp: Integer;
+    procedure ToolButtonImageClick(Sender: TObject);
+    procedure DialogEditorDesignModeDropControl(Sender: TObject; x,
+      y: Integer; Ctrl: TControlInfo);
+    procedure DialogEditorDeleteControl(Sender: TObject;
+      Ctrl: TControlInfo);
+    procedure ToolButtonCursorClick(Sender: TObject);
+    procedure DialogEditorGetControlImage(Sender: TObject; tp: Integer;
       const id: string; var Handle: HGDIOBJ);
 
-    procedure DoSpecialButtonClick(Sender : TObject);
+    procedure DoSpecialButtonClick(Sender: TObject);
   private
-    FDetails : TDialogResourceDetails;
-    FPCWidth : Integer;
+    FDetails: TDialogResourceDetails;
+    FPCWidth: Integer;
 
-    procedure FillPropertyBox (info : TControlInfo; reset : Boolean);
-    procedure SaveResource(const UndoDetails : string);
+    procedure FillPropertyBox (info: TControlInfo; reset: Boolean);
+    procedure SaveResource(const UndoDetails: string);
 
   protected
     procedure SetObject(const Value: TObject); override;
-    function GetCanDelete : Boolean; override;
+    function GetCanDelete: Boolean; override;
   public
     procedure EditDelete; override;
     procedure UpdateFonts; override;
   end;
-
-var
-  fmDialogResource: TfmDialogResource;
 
 implementation
 
@@ -120,57 +117,57 @@ resourcestring
 
 {$R *.DFM}
 
-{ TfmDialogResource }
+{ TFormDialogResource }
 
 (*----------------------------------------------------------------------*
- | TfmDialogResource.SetObject                                          |
+ | TFormDialogResource.SetObject                                          |
  |                                                                      |
  | Set to display a new dialog object                                   |
  *----------------------------------------------------------------------*)
-procedure TfmDialogResource.SetObject(const Value: TObject);
+procedure TFormDialogResource.SetObject(const Value: TObject);
 begin
   inherited;
   FDetails := obj as TDialogResourceDetails;
 
-  DialogEditor1.ResourceTemplate := FDetails.Data.Memory;
-  tcPropertyKind.TabIndex := 0
+  DialogEditor.ResourceTemplate := FDetails.Data.Memory;
+  TabControlPropertyKind.TabIndex := 0
 end;
 
 
 (*----------------------------------------------------------------------*
- | TfmDialogResource.DialogEditor1Resize                                |
+ | TFormDialogResource.DialogEditor1Resize                                |
  |                                                                      |
  | Dialog box has been resized.  Adjust the rulers                      |
  *----------------------------------------------------------------------*)
-procedure TfmDialogResource.DialogEditor1Resize(Sender: TObject);
+procedure TFormDialogResource.DialogEditorResize(Sender: TObject);
 begin
   inherited;
 
-  Ruler1.Width := DialogEditor1.Width;
-  Ruler2.Height := DialogEditor1.Height;
+  RulerTop.Width := DialogEditor.Width;
+  RulerLeft.Height := DialogEditor.Height;
 end;
 
 (*----------------------------------------------------------------------*
- | TfmDialogResource.DialogEditor1DesignModeSelectedItemChange          |
+ | TFormDialogResource.DialogEditor1DesignModeSelectedItemChange          |
  |                                                                      |
  | A control has been selected.   Find the control in the 'Controls'    |
  | combo, and set the properties to match the contol's                  |
  *----------------------------------------------------------------------*)
-procedure TfmDialogResource.DialogEditor1DesignModeSelectedItemChange(
+procedure TFormDialogResource.DialogEditorDesignModeSelectedItemChange(
   Sender: TObject);
 var
-  info : TControlInfo;
-  i : Integer;
+  info: TControlInfo;
+  i: Integer;
 begin
-  info := DialogEditor1.SelectedControl;
+  info := DialogEditor.SelectedControl;
 
-  if Assigned (info) then
+  if Assigned(info) then
   begin
-    for i := 0 to cbControls.Items.Count - 1 do
-      if info = TControlInfo (cbControls.Items.Objects[i]) then
+    for i := 0 to ComboBoxControls.Items.Count - 1 do
+      if info = TControlInfo(ComboBoxControls.Items.Objects[i]) then
       begin
-        cbControls.ItemIndex := i;
-        cbControls.Hint := cbControls.Text;
+        ComboBoxControls.ItemIndex := i;
+        ComboBoxControls.Hint := ComboBoxControls.Text;
         break
       end;
 
@@ -184,9 +181,9 @@ end;
  | Get the description for a control to display in the 'controls'       |
  | combo.                                                               |
  *----------------------------------------------------------------------*)
-function GetInfoDescription (info : TControlInfo) : string;
+function GetInfoDescription (info: TControlInfo): string;
 var
-  idx : Integer;
+  idx: Integer;
 begin
   idx := Info.FindProperty(pkGeneral, 'Text');
   if idx = -1 then
@@ -199,205 +196,210 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | TfmDialogResource.DialogEditor1Show                                  |
+ | TFormDialogResource.DialogEditor1Show                                  |
  |                                                                      |
  | OnShow handler for the dialog editor.  Called when the dialog editor |
  | has created the dialog box, so we can read it's info and initialize  |
  | accordingly.  NB  We can't do this in 'SetObject' - the dialog box   |
  | hasn't been created then.                                            |
  *----------------------------------------------------------------------*)
-procedure TfmDialogResource.DialogEditor1Show(Sender: TObject);
+procedure TFormDialogResource.DialogEditorShow(Sender: TObject);
 var
-  i : Integer;
-  info : TControlInfo;
+  i: Integer;
+  info: TControlInfo;
 begin
-  Ruler1.DialogBox := DialogEditor1.DialogHandle;
-  Ruler2.DialogBox := DialogEditor1.DialogHandle;
+  RulerTop.DialogBox := DialogEditor.DialogHandle;
+  RulerLeft.DialogBox := DialogEditor.DialogHandle;
 
-  cbControls.Items.Clear;               // Fill in the Controls combo
-  cbControls.Items.BeginUpdate;
+  ComboBoxControls.Items.Clear;               // Fill in the Controls combo
+  ComboBoxControls.Items.BeginUpdate;
   try
-    info := DialogEditor1.DialogInfo;
-    cbControls.Items.AddObject(GetInfoDescription (info), info);
+    info := DialogEditor.DialogInfo;
+    ComboBoxControls.Items.AddObject(GetInfoDescription (info), info);
 
-    for i := 0 to DialogEditor1.ControlInfoCount - 1 do
+    for i := 0 to DialogEditor.ControlInfoCount - 1 do
     begin
-      info := DialogEditor1.ControlInfo [i];
-      cbControls.Items.AddObject(GetInfoDescription (info), info);
+      info := DialogEditor.ControlInfo [i];
+      ComboBoxControls.Items.AddObject(GetInfoDescription (info), info);
     end
   finally
-    cbControls.Items.EndUpdate
+    ComboBoxControls.Items.EndUpdate
   end;
 
-  cbControls.ItemIndex := 0;
-  cbControls.Hint := cbControls.Text;
+  ComboBoxControls.ItemIndex := 0;
+  ComboBoxControls.Hint := ComboBoxControls.Text;
 end;
 
 (*----------------------------------------------------------------------*
- | TfmDialogResource.cbControlsChange                                   |
+ | TFormDialogResource.cbControlsChange                                   |
  |                                                                      |
  | Select a control, based on the controls combo                        |
  *----------------------------------------------------------------------*)
-procedure TfmDialogResource.cbControlsChange(Sender: TObject);
+procedure TFormDialogResource.ComboBoxControlsChange(Sender: TObject);
 var
-  info : TControlInfo;
+  info: TControlInfo;
 begin
-  info := TControlInfo (cbControls.Items.Objects[cbControls.ItemIndex]);
-  cbControls.Hint := cbControls.Text;
-  DialogEditor1.SelectedControl := info
+  info := TControlInfo (ComboBoxControls.Items.Objects[ComboBoxControls.ItemIndex]);
+  ComboBoxControls.Hint := ComboBoxControls.Text;
+  DialogEditor.SelectedControl := info
 end;
 
 (*----------------------------------------------------------------------*
- | TfmDialogResource.PropertyListBox1PropertyChanged                    |
+ | TFormDialogResource.PropertyListBox1PropertyChanged                    |
  |                                                                      |
  | A property has been changed in the property list box.  Update the    |
  | dialog editor.                                                       |
  *----------------------------------------------------------------------*)
-procedure TfmDialogResource.PropertyListBox1PropertyChanged(
+procedure TFormDialogResource.PropertyListBoxPropertyChanged(
   Sender: TObject);
 var
-  info : TControlInfo;
-  prop : TPropertyListProperty;
-  idx : Integer;
-  kind : TPropertyKind;
-  st : string;
+  ControlInfo: TControlInfo;
+  Prop: TPropertyListProperty;
+  Index: Integer;
+  Kind: TPropertyKind;
+  PropertyName: string;
 begin
-  info := TControlInfo (cbControls.Items.Objects[cbControls.ItemIndex]);
+  ControlInfo := TControlInfo (ComboBoxControls.Items.Objects[ComboBoxControls.ItemIndex]);
 
-  prop := PropertyListBox1.Properties[PropertyListBox1.SelectedPropertyNo];
+  Prop := PropertyListBox.Properties[PropertyListBox.SelectedPropertyNo];
 
 
-  case tcPropertyKind.TabIndex of
-    1 : kind := pkStyle;
-    2 : kind := pkExtended
+  case TabControlPropertyKind.TabIndex of
+    1:
+      Kind := pkStyle;
+    2:
+      Kind := pkExtended;
     else
-      kind := pkGeneral
+      Kind := pkGeneral;
   end;
 
-  st := prop.PropertyName;
-  idx := info.FindProperty(kind, st);
-  info.PropertyValue [kind, idx] := prop.PropertyValue;  // nb. May make 'prop' invalid!!
+  PropertyName := Prop.PropertyName;
+  Index := ControlInfo.FindProperty(Kind, PropertyName);
+  ControlInfo.PropertyValue [Kind, Index] := Prop.PropertyValue;  // nb. May make 'prop' invalid!!
 
-  st := Format(rstChangeProperty, [st]);
+  PropertyName := Format(rstChangeProperty, [PropertyName]);
 
-  idx := cbControls.ItemIndex;
-  cbControls.Items[idx] := GetInfoDescription (info);
-  cbControls.ItemIndex := idx;
+  Index := ComboBoxControls.ItemIndex;
+  ComboBoxControls.Items[Index] := GetInfoDescription (ControlInfo);
+  ComboBoxControls.ItemIndex := Index;
 
-  SaveResource(st);
+  SaveResource(PropertyName);
 end;
 
 (*----------------------------------------------------------------------*
- | TfmDialogResource.FillPropertyBox                                    |
+ | TFormDialogResource.FillPropertyBox                                    |
  |                                                                      |
  | Fill the property list box with properties and their values for the  |
  | control.                                                             |
  *----------------------------------------------------------------------*)
-procedure TfmDialogResource.FillPropertyBox(info: TControlInfo; reset : Boolean);
+procedure TFormDialogResource.FillPropertyBox(info: TControlInfo; reset: Boolean);
 var
-  kind : TPropertyKind;
-  i, j : Integer;
-  prop : TPropertyListProperty;
-  propName : string;
-  idx : Integer;
-  val : Variant;
+  Kind: TPropertyKind;
+  i, j: Integer;
+  Prop: TPropertyListProperty;
+  PropName: string;
+  Index: Integer;
+  Val: Variant;
 begin
 
-  case tcPropertyKind.TabIndex of       // Get the property kind
-    1 : kind := pkStyle;
-    2 : kind := pkExtended
+  case TabControlPropertyKind.TabIndex of       // Get the property Kind
+    1:
+      Kind := pkStyle;
+    2:
+      Kind := pkExtended;
     else
-      kind := pkGeneral
+      Kind := pkGeneral
   end;
 
-  idx := PropertyListBox1.SelectedPropertyNo;
+  Index := PropertyListBox.SelectedPropertyNo;
 
-  PropertyListBox1.Properties.Clear;
-  PropertyListBox1.Properties.BeginUpdate;
+  PropertyListBox.Properties.Clear;
+  PropertyListBox.Properties.BeginUpdate;
   try
-    for i := 0 to info.PropertyCount [kind] - 1 do
+    for i := 0 to info.PropertyCount [Kind] - 1 do
     begin
-                                        // Add each property.
+      // Add each property.
+      Prop := TPropertyListProperty(PropertyListBox.Properties.Add);
+      PropName := info.PropertyName [Kind, i];
+      Prop.PropertyName := PropName;
+      Val := info.PropertyValue [Kind, i];
+      Prop.Enabled := not VarIsEmpty(Val);
 
-      prop := TPropertyListProperty(PropertyListBox1.Properties.Add);
-      propName := info.PropertyName [kind, i];
-      prop.PropertyName := propName;
-      val := info.PropertyValue [kind, i];
-      prop.Enabled := not VarIsEmpty(val);
-
-      case info.PropertyType [kind, i] of
-        ptString  : prop.PropertyType := cmpPropertyListBox.ptString;
-        ptInteger : prop.PropertyType := cmpPropertyListBox.ptInteger;
-        ptBoolean : prop.PropertyType := cmpPropertyListBox.ptBoolean;
-        ptSpecial :
+      case info.PropertyType [Kind, i] of
+        ptString:
+          Prop.PropertyType := cmpPropertyListBox.ptString;
+        ptInteger:
+          Prop.PropertyType := cmpPropertyListBox.ptInteger;
+        ptBoolean:
+          Prop.PropertyType := cmpPropertyListBox.ptBoolean;
+        ptSpecial:
           begin
-            prop.PropertyType := cmpPropertyListBox.ptSpecial;
-            prop.OnSpecialButtonClick := DoSpecialButtonClick
+            Prop.PropertyType := cmpPropertyListBox.ptSpecial;
+            Prop.OnSpecialButtonClick := DoSpecialButtonClick
           end;
-
-        ptEnum    :
+        ptEnum:
           begin
-                                        // Add enumerated property values
-            prop.PropertyType := cmpPropertyListBox.ptEnum;
-            prop.EnumValues.Clear;
-            prop.EnumValues.BeginUpdate;
+            // Add enumerated property values
+            Prop.PropertyType := cmpPropertyListBox.ptEnum;
+            Prop.EnumValues.Clear;
+            Prop.EnumValues.BeginUpdate;
             try
-              for j := 0 to info.PropertyEnumCount [kind, i] - 1 do
-                prop.EnumValues.Add (info.PropertyEnumName [kind, i, j])
+              for j := 0 to info.PropertyEnumCount [Kind, i] - 1 do
+                Prop.EnumValues.Add (info.PropertyEnumName [Kind, i, j])
             finally
-              prop.EnumValues.EndUpdate
+              Prop.EnumValues.EndUpdate
             end
           end
       end;
                                         // Set the property value
-      if not VarIsEmpty(val) then
-        prop.PropertyValue := val
+      if not VarIsEmpty(Val) then
+        Prop.PropertyValue := Val
     end
   finally
-    PropertyListBox1.Properties.EndUpdate
+    PropertyListBox.Properties.EndUpdate
   end;
 
   if reset then
                                         // Select first property
-    PropertyListBox1.SelectedPropertyNo := 0
+    PropertyListBox.SelectedPropertyNo := 0
   else
-    PropertyListBox1.SelectedPropertyNo := idx;
+    PropertyListBox.SelectedPropertyNo := Index;
 end;
 
 (*----------------------------------------------------------------------*
- | TfmDialogResource.tcPropertyKindChange                               |
+ | TFormDialogResource.tcPropertyKindChange                               |
  |                                                                      |
  | A different propery tab has been selected.  Display the appropriate  |
  | properties.                                                          |
  *----------------------------------------------------------------------*)
-procedure TfmDialogResource.tcPropertyKindChange(Sender: TObject);
+procedure TFormDialogResource.TabControlPropertyKindChange(Sender: TObject);
 var
-  info : TControlInfo;
+  info: TControlInfo;
 begin
-  info := DialogEditor1.SelectedControl;
+  info := DialogEditor.SelectedControl;
 
   FillPropertyBox (info, True)
 end;
 
 (*----------------------------------------------------------------------*
- | TfmDialogResource.SaveResource                                       |
+ | TFormDialogResource.SaveResource                                       |
  |                                                                      |
  | Get and save a new resource template from the editor.                |
  *----------------------------------------------------------------------*)
-procedure TfmDialogResource.SaveResource(const UndoDetails: string);
+procedure TFormDialogResource.SaveResource(const UndoDetails: string);
 begin
   AddUndoEntry(UndoDetails);
 
   FDetails.Data.Clear;
-  DialogEditor1.SaveToStream (FDetails.Data);
+  DialogEditor.SaveToStream (FDetails.Data);
 end;
 
 (*----------------------------------------------------------------------*
- | TfmDialogResource.DialogEditor1ControlResize                         |
+ | TFormDialogResource.DialogEditor1ControlResize                         |
  |                                                                      |
  | Update the display when a control is resized by dragging             |
  *----------------------------------------------------------------------*)
-procedure TfmDialogResource.DialogEditor1ControlResize(Sender: TObject;
+procedure TFormDialogResource.DialogEditorControlResize(Sender: TObject;
   ctrlInfo: TControlInfo; newRect: TRect);
 begin
   FillPropertyBox (ctrlInfo, False);
@@ -405,61 +407,61 @@ begin
 end;
 
 (*----------------------------------------------------------------------*
- | TfmDialogResource.DialogEditor1ControlPropertyChange                 |
+ | TFormDialogResource.DialogEditor1ControlPropertyChange                 |
  |                                                                      |
  | Update the property display when a control property changes          |
  | 'magically' - eg, when setting Show Maximize Box, automagically      |
  | changes 'Show System Menu'                                           |
  *----------------------------------------------------------------------*)
-procedure TfmDialogResource.DialogEditor1ControlPropertyChange(
+procedure TFormDialogResource.DialogEditorControlPropertyChange(
   Sender: TObject; ctrlInfo: TControlInfo);
 begin
   FillPropertyBox (ctrlInfo, False);
 end;
 
-procedure TfmDialogResource.FormShow(Sender: TObject);
+procedure TFormDialogResource.FormShow(Sender: TObject);
 var
-  i : Integer;
-  dc : TDropControl;
-  ic : TControlInfoClass;
+  i: Integer;
+  dc: TDropControl;
+  ic: TControlInfoClass;
 begin
-  Ruler1.Left := DialogEditor1.Left + DialogEditor1.Margin;
-  Ruler2.Top := DialogEditor1.Top + DialogEditor1.Margin - Panel3.Height;
-  Ruler1.Width := DialogEditor1.Width - 2 * DialogEditor1.Margin;
-  Ruler2.Height := DialogEditor1.Height - 2 * DialogEditor1.Margin;
-  FPCWidth := pnlPalette.Width;
-  pnlPalette.ManualDock(SizingPageControl1, Nil, alNone);
+  RulerTop.Left := DialogEditor.Left + DialogEditor.Margin;
+  RulerLeft.Top := DialogEditor.Top + DialogEditor.Margin - PanelRulerTop.Height;
+  RulerTop.Width := DialogEditor.Width - 2 * DialogEditor.Margin;
+  RulerLeft.Height := DialogEditor.Height - 2 * DialogEditor.Margin;
+  FPCWidth := PanelPalette.Width;
+  PanelPalette.ManualDock(SizingPageControl, nil, alNone);
 
-  for i := 0 to ToolBar1.ButtonCount - 1 do
+  for i := 0 to ToolBar.ButtonCount - 1 do
   begin
-    dc := TDropControl (ToolBar1.Buttons[i].Tag);
+    dc := TDropControl (ToolBar.Buttons[i].Tag);
 
     if dc <> drNone then
     begin
       ic := GetControlInfoClass (dc);
-      if Assigned (ic) then
-        ToolBar1.Buttons[i].Hint := ic.GetDescription
+      if Assigned(ic) then
+        ToolBar.Buttons[i].Hint := ic.GetDescription
       else
-        ToolBar1.Buttons[i].ShowHint := False
+        ToolBar.Buttons[i].ShowHint := False;
     end
     else
-      ToolBar1.Buttons[i].ShowHint := False
+      ToolBar.Buttons[i].ShowHint := False;
   end;
 end;
 
-procedure TfmDialogResource.SizingPageControl1UnDock(Sender: TObject;
+procedure TFormDialogResource.SizingPageControlUnDock(Sender: TObject;
   Client: TControl; NewTarget: TWinControl; var Allow: Boolean);
 begin
-  if SizingPageControl1.PageCount = 1 then
-    SizingPageControl1.Width := 0;
+  if SizingPageControl.PageCount = 1 then
+    SizingPageControl.Width := 0;
 end;
 
-procedure TfmDialogResource.SizingPageControl1DockDrop(Sender: TObject;
+procedure TFormDialogResource.SizingPageControlDockDrop(Sender: TObject;
   Source: TDragDockObject; X, Y: Integer);
 var
-  i : Integer;
+  i: Integer;
 begin
-  with SizingPageControl1 do
+  with SizingPageControl do
   begin
     for i := 0 to PageCount - 1 do
       Pages[i].Caption := TPanel (Pages[i].Controls[0]).Caption;
@@ -469,64 +471,64 @@ begin
   end
 end;
 
-procedure TfmDialogResource.ToolButton2Click(Sender: TObject);
+procedure TFormDialogResource.ToolButtonImageClick(Sender: TObject);
 begin
-  DialogEditor1.DropControl := TDropControl ((Sender as TToolButton).Tag)
+  DialogEditor.DropControl := TDropControl((Sender as TToolButton).Tag)
 end;
 
-procedure TfmDialogResource.UpdateFonts;
+procedure TFormDialogResource.UpdateFonts;
 begin
-  UseInternationalFont(PropertyListBox1.Font);
+  UseInternationalFont(PropertyListBox.Font);
 end;
 
-procedure TfmDialogResource.DialogEditor1DesignModeDropControl(
-  sender: TObject; x, y: Integer; ctrl: TControlInfo);
+procedure TFormDialogResource.DialogEditorDesignModeDropControl(
+  Sender: TObject; x, y: Integer; Ctrl: TControlInfo);
 var
-  idx : Integer;
+  idx: Integer;
 begin
-  idx := cbControls.Items.AddObject(GetInfoDescription (ctrl), ctrl);
-  cbControls.ItemIndex := idx;
+  idx := ComboBoxControls.Items.AddObject(GetInfoDescription (Ctrl), Ctrl);
+  ComboBoxControls.ItemIndex := idx;
   SaveResource(rstAddControl);
-  ToolButton1.Down := True;
-  DialogEditor1.SelectedControl := ctrl
+  ToolButtonCursor.Down := True;
+  DialogEditor.SelectedControl := Ctrl
 end;
 
-function TfmDialogResource.GetCanDelete: Boolean;
+function TFormDialogResource.GetCanDelete: Boolean;
 begin
-  Result := Assigned (DialogEditor1.SelectedControl);
+  Result := Assigned(DialogEditor.SelectedControl);
 end;
 
-procedure TfmDialogResource.EditDelete;
+procedure TFormDialogResource.EditDelete;
 begin
-  DialogEditor1.DeleteControl (DialogEditor1.SelectedControl);
+  DialogEditor.DeleteControl (DialogEditor.SelectedControl);
 end;
 
-procedure TfmDialogResource.DialogEditor1DeleteControl(Sender: TObject;
-  ctrl: TControlInfo);
+procedure TFormDialogResource.DialogEditorDeleteControl(Sender: TObject;
+  Ctrl: TControlInfo);
 var
-  i : Integer;
+  i: Integer;
 begin
   i := 0;
-  while i < cbControls.Items.Count do
-    if cbControls.Items.Objects[i] = ctrl then
-      cbControls.Items.Delete(i)
+  while i < ComboBoxControls.Items.Count do
+    if ComboBoxControls.Items.Objects[i] = Ctrl then
+      ComboBoxControls.Items.Delete(i)
     else
       Inc(i);
 
   SaveResource(rstDeleteControl)
 end;
 
-procedure TfmDialogResource.ToolButton1Click(Sender: TObject);
+procedure TFormDialogResource.ToolButtonCursorClick(Sender: TObject);
 begin
-  DialogEditor1.DropControl := drNone
+  DialogEditor.DropControl := drNone
 end;
 
-procedure TfmDialogResource.DialogEditor1GetControlImage(Sender: TObject;
+procedure TFormDialogResource.DialogEditorGetControlImage(Sender: TObject;
   tp: Integer; const id: string; var Handle: HGDIOBJ);
 var
-  details : TResourceDetails;
-  picture : TPicture;
-  resType : Integer;
+  details: TResourceDetails;
+  picture: TPicture;
+  resType: Integer;
 begin
   if tp = IMAGE_ICON then
     resType := Integer (RT_GROUP_ICON)
@@ -537,7 +539,7 @@ begin
       resType := 0;
 
   details := FDetails.Parent.FindResource(IntToStr (resType), id, FDetails.ResourceLanguage);
-  if Assigned (details) then
+  if Assigned(details) then
   begin
     picture := TPicture.Create;
     try
@@ -558,10 +560,10 @@ begin
   end
 end;
 
-procedure TfmDialogResource.DoSpecialButtonClick(Sender: TObject);
+procedure TFormDialogResource.DoSpecialButtonClick(Sender: TObject);
 var
-  prop : TPropertyListProperty;
-  st : string;
+  prop: TPropertyListProperty;
+  st: string;
 begin
   prop := TPropertyListProperty(Sender);
 
@@ -569,12 +571,12 @@ begin
 
   if st = 'Font' then
   begin
-    FontDialog1.Font.Handle := DialogEditor1.FontHandle;
-    if FontDialog1.Execute then
+    FontDialog.Font.Handle := DialogEditor.FontHandle;
+    if FontDialog.Execute then
     begin
-      DialogEditor1.SetTemplateFont(FontDialog1.Font);
+      DialogEditor.SetTemplateFont(FontDialog.Font);
       SaveResource(rstSetFont);
-      DialogEditor1.ResourceTemplate := FDetails.Data.Memory;
+      DialogEditor.ResourceTemplate := FDetails.Data.Memory;
     end
   end
 end;

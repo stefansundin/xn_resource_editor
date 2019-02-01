@@ -252,7 +252,7 @@ procedure TCustomExVirtualStringTree.SelectAndFocusNode(Node: PVirtualNode; Clea
 begin
   if ClearSel then
     ClearSelection;
-  if Assigned (Node) then
+  if Assigned(Node) then
   begin
     Selected [Node] := True;
     FocusedNode := Node
@@ -265,7 +265,7 @@ var
   obj: PObject;
 begin
   obj := GetNodeData(Node);
-  if Assigned (obj) and Assigned (obj^) then
+  if Assigned(obj) and Assigned(obj^) then
     Result := obj^
   else
     Result := nil
@@ -354,7 +354,7 @@ var
   obj: PObject;
 begin
   obj := GetNodeData(Node);
-  if Assigned (obj) then
+  if Assigned(obj) then
     obj^ := Value
 end;
 

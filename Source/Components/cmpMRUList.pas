@@ -22,7 +22,7 @@ type
     function GetStrings: TStrings;
     procedure SetPopupMenu(const Value: TPopupMenu);
     procedure PopulateMenu;
-    procedure PopupMenuItemOnClick(sender: TObject);
+    procedure PopupMenuItemOnClick(Sender: TObject);
     procedure SetAppSection(const Value: string);
     function GetMRUDirectory: string;
     function GetMRUFile: string;
@@ -159,7 +159,7 @@ var
 begin
   if not (csDesigning in ComponentState) then
   begin
-    if Assigned (FPopupMenu) then
+    if Assigned(FPopupMenu) then
     begin
       FPopupMenu.Items.Clear;
       for i := 0 to Strings.Count - 1 do
@@ -173,10 +173,10 @@ begin
   end
 end;
 
-procedure TMRUList.PopupMenuItemOnClick(sender: TObject);
+procedure TMRUList.PopupMenuItemOnClick(Sender: TObject);
 begin
-  if Assigned (OnPopupMenuClick) then
-    OnPopupMenuClick(sender);
+  if Assigned(OnPopupMenuClick) then
+    OnPopupMenuClick(Sender);
 end;
 
 procedure TMRUList.SaveList;

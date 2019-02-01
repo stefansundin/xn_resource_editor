@@ -52,5 +52,4 @@ begin
   Result := bsearch(0, NO_CONTEXTS - 1)
 end;
 
-
 end.

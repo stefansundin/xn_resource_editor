@@ -1,10 +1,10 @@
-inherited fmRCDataDescriptionResource: TfmRCDataDescriptionResource
+inherited FormRCDataDescriptionResource: TFormRCDataDescriptionResource
   Left = 330
   Top = 200
-  Caption = 'fmRCDataDescriptionResource'
+  Caption = 'RC Data Description Resource'
   PixelsPerInch = 96
   TextHeight = 13
-  object Label1: TLabel
+  object LabelDescription: TLabel
     Left = 16
     Top = 16
     Width = 81
@@ -12,12 +12,12 @@ inherited fmRCDataDescriptionResource: TfmRCDataDescriptionResource
     AutoSize = False
     Caption = '&Description'
   end
-  object ntedDescription: TEdit
+  object EditDescription: TEdit
     Left = 112
     Top = 12
     Width = 185
     Height = 21
     TabOrder = 0
-    OnExit = ntedDescriptionExit
+    OnExit = EditDescriptionExit
   end
 end

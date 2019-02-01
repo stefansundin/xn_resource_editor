@@ -8,7 +8,7 @@ uses
   ExtCtrls;
 
 type
-  TfmProperties = class(TfmPropertyBase)
+  TFormProperties = class(TFormPropertyBase)
     procedure FormDestroy(Sender: TObject);
   public
     constructor Create(AOwner : TComponent); override;
@@ -21,18 +21,18 @@ uses
 
 {$R *.DFM}
 
-{ TfmProperties }
+{ TFormProperties }
 
-constructor TfmProperties.Create(AOwner: TComponent);
+constructor TFormProperties.Create(AOwner: TComponent);
 begin
   inherited;
 
   gProperties.BeginUpdate;
-  AddPropertyPageDetails (TfmPropertyPageProgramSettings, Nil);
-  AddPropertyPageDetails (TfmPropertyPageRCSettings, Nil);
+  AddPropertyPageDetails (TFormPropertyPageProgramSettings, nil);
+  AddPropertyPageDetails (TFormPropertyPageRCSettings, nil);
 end;
 
-procedure TfmProperties.FormDestroy(Sender: TObject);
+procedure TFormProperties.FormDestroy(Sender: TObject);
 begin
   inherited;
   gProperties.EndUpdate

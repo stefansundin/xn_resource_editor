@@ -1,4 +1,4 @@
-object fmPropertyPage: TfmPropertyPage
+object FormPropertyPage: TFormPropertyPage
   Left = 335
   Top = 221
   BorderStyle = bsNone
@@ -14,7 +14,7 @@ object fmPropertyPage: TfmPropertyPage
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
-  object Panel1: TPanel
+  object PanelSectionDetails: TPanel
     Left = 0
     Top = 0
     Width = 373
@@ -25,7 +25,7 @@ object fmPropertyPage: TfmPropertyPage
     DesignSize = (
       373
       41)
-    object Bevel1: TBevel
+    object Bevel: TBevel
       Left = 0
       Top = 38
       Width = 373
@@ -33,7 +33,7 @@ object fmPropertyPage: TfmPropertyPage
       Align = alBottom
       Shape = bsBottomLine
     end
-    object stSectionDetails: TLabel
+    object StaticTextSectionDetails: TLabel
       Left = 8
       Top = 6
       Width = 361

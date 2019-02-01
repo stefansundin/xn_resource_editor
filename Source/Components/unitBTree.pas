@@ -477,7 +477,7 @@ end;
  *----------------------------------------------------------------------*)
 function TRawBTree.CreateNewPage: TPage;
 begin
-  Result := TPage.Create(self, FFileInfo.PageCount);
+  Result := TPage.Create(Self, FFileInfo.PageCount);
   if FFileInfo.FirstDeletedPage <> -1 then
   begin
     Result.FIdx := FFileInfo.FirstDeletedPage;
@@ -978,7 +978,7 @@ begin
   end
   else
   begin
-    Result := TPage.Create(self, pageNo);
+    Result := TPage.Create(Self, pageNo);
     Result.Load;
     FPageCache.Add(Result);
   end
@@ -1021,7 +1021,7 @@ begin
                                         // Create file info page and empty root page
       id := 'BTWoozle';
       Move(id [1], FFileInfo.id [0], 8);
-      page0 := TPage.Create(self, 0);
+      page0 := TPage.Create(Self, 0);
       try
         page0.Flags[flgDirty] := True;
         page0.Save;
@@ -1261,7 +1261,7 @@ end;
 procedure TRawBTree.SaveFileInfo;
 begin
   if FUpdateCount > 0 then Exit;
-  if Assigned (FFileStream) then
+  if Assigned(FFileStream) then
   begin
     FFileStream.Seek(0, soFromBeginning);
     FFileStream.Write(FFileInfo, SizeOf(FFileInfo))
@@ -1278,7 +1278,7 @@ procedure TRawBTree.SetCaseSensitive(const Value: Boolean);
 begin
   if Value <> CaseSensitive then
   begin
-    if Assigned (FFileStream) then
+    if Assigned(FFileStream) then
       if RootPage.NodeCount > 0 then
         raise EBTree.Create(rstMustBeEmpty);
 
@@ -1287,7 +1287,7 @@ begin
     else
       FFileInfo.Flags := FFileInfo.Flags and (not fflgCaseSensitive);
 
-    if Assigned (FFileStream) then
+    if Assigned(FFileStream) then
       SaveFileInfo
   end
 end;
@@ -1302,7 +1302,7 @@ procedure TRawBTree.SetDuplicates(const Value: TBTreeDuplicates);
 begin
   if Value <> Duplicates then
   begin
-    if Assigned (FFileStream) then
+    if Assigned(FFileStream) then
       if RootPage.NodeCount > 0 then
         raise EBTree.Create(rstMustBeEmpty);
 
@@ -1314,7 +1314,7 @@ begin
       dupReplace: FFileInfo.Flags := FFileInfo.Flags or fflgDupReplace;
     end;
 
-    if Assigned (FFileStream) then
+    if Assigned(FFileStream) then
       SaveFileInfo
   end
 end;
@@ -1496,9 +1496,9 @@ begin
   Owner.FFileStream.Read(pr, SizeOf(pr));
 
         // Get headeer info
-  self.FFlags := pr.Header.Flags;
-  self.FPrevPage := pr.Header.PrevPage;
-  self.FPrevPageHeight := pr.Header.PrevPageHeight;
+  Self.FFlags := pr.Header.Flags;
+  Self.FPrevPage := pr.Header.PrevPage;
+  Self.FPrevPageHeight := pr.Header.PrevPageHeight;
 
   p := @pr.Data [0];
   if pr.Header.KeysOnPage > Length(FNodes) then
@@ -1804,7 +1804,7 @@ begin
       until False
   end;
 
-  if Assigned (node) then                       // Did we find a next node?
+  if Assigned(node) then                       // Did we find a next node?
   begin
     FStack.Push(node);                          // Push it, for next 'next' or 'prev'
     key := pg.Node [node.FKeyIdx].key;
@@ -1980,7 +1980,7 @@ begin
 
   BeginUpdate;
   try
-    while Assigned (pg) do
+    while Assigned(pg) do
     begin
       if pg.FindNode(k, idx) then
       begin

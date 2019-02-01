@@ -1,9 +1,9 @@
-inherited fmRCDataFormResource: TfmRCDataFormResource
-  ActiveControl = Memo1
-  Caption = 'fmRCDataFormResource'
+inherited FormRCDataFormResource: TFormRCDataFormResource
+  ActiveControl = Memo
+  Caption = 'RC Dataform Resource'
   PixelsPerInch = 96
   TextHeight = 13
-  object Memo1: TMemo
+  object Memo: TMemo
     Left = 0
     Top = 0
     Width = 701
@@ -17,6 +17,6 @@ inherited fmRCDataFormResource: TfmRCDataFormResource
     ParentFont = False
     ScrollBars = ssBoth
     TabOrder = 0
-    OnExit = Memo1Exit
+    OnExit = MemoExit
   end
 end

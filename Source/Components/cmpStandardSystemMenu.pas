@@ -141,10 +141,10 @@ end;
  *----------------------------------------------------------------------*)
 destructor TStandardSystemMenu.Destroy;
 begin
-  if Assigned (FObjectInstance) then
+  if Assigned(FObjectInstance) then
     Classes.FreeObjectInstance(FObjectInstance);
 
-  if Assigned (FSysObjectInstance) then
+  if Assigned(FSysObjectInstance) then
     Classes.FreeObjectInstance(FSysObjectInstance);
 
   inherited;

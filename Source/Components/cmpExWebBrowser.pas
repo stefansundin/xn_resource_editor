@@ -142,7 +142,7 @@ constructor TExWebBrowser.Create(AOwner: TComponent);
 //  Factory : IClassFactory;
 begin
   inherited Create(AOwner);
-  FUIProperties := TUIProperties.Create(self);
+  FUIProperties := TUIProperties.Create(Self);
   OleCheck(CoInternetGetSession (0, FInternetSession, 0));
 
   if FInternetSession <> Nil then
@@ -252,7 +252,7 @@ begin
   if (csDesigning in ComponentState) then
     Result := FURL
   else
-    Result := self.LocationURL
+    Result := Self.LocationURL
 end;
 
 function TExWebBrowser.HideUI: HRESULT;
@@ -391,7 +391,7 @@ begin
   else
   begin
     Result := S_OK;
-    if Assigned (PopupMenu) then
+    if Assigned(PopupMenu) then
       PopupMenu.Popup(ppt.X, ppt.Y)
   end;
 end;

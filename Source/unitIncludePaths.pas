@@ -137,7 +137,7 @@ var
   i : Integer;
 begin
   for i := 0 to gRegisteredPackages.Count - 1 do
-    if self is gRegisteredPackages.Classes[i] then
+    if Self is gRegisteredPackages.Classes[i] then
     begin
       Result := gRegisteredPackages.Strings[i];
       break

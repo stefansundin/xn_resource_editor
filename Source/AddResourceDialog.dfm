@@ -1,4 +1,4 @@
-object dlgAddResource: TdlgAddResource
+object DialogAddResource: TDialogAddResource
   Left = 268
   Top = 226
   HelpContext = 1000
@@ -41,7 +41,7 @@ object dlgAddResource: TdlgAddResource
     ViewStyle = vsReport
     OnDblClick = ListViewDblClick
   end
-  object btnOK: TButton
+  object ButtonOK: TButton
     Left = 106
     Top = 280
     Width = 75
@@ -51,9 +51,9 @@ object dlgAddResource: TdlgAddResource
     Default = True
     ModalResult = 1
     TabOrder = 1
-    OnClick = btnOKClick
+    OnClick = ButtonOKClick
   end
-  object btnCancel: TButton
+  object ButtonCancel: TButton
     Left = 190
     Top = 280
     Width = 75

@@ -302,8 +302,8 @@ begin
   // Now save each image Section in the FSectionList
   for i := 0 to FCOFFHeader.NumberOfSections - 1 do
   begin
-    sectionHeader := PImageSectionHeader (PChar (memory) + Offset);
-    FSectionList.Add (TImageSection.Create(self, sectionHeader^, PChar (memory) + sectionHeader^.PointertoRawData));
+    sectionHeader := PImageSectionHeader(PChar (memory) + Offset);
+    FSectionList.Add (TImageSection.Create(Self, sectionHeader^, PChar (memory) + sectionHeader^.PointertoRawData));
     Inc(Offset, SizeOf(TImageSectionHeader));
   end;
 
@@ -1033,7 +1033,7 @@ var
       begin
                                              // It's a leaf node - create resource details
         dataEntry := PResourceDataEntry(PChar (Section.FRawData.Memory) + entry^.RVA);
-        details := TResourceDetails.CreateResourceDetails (self, lang, name, tp, dataEntry^.Size, PChar (Section.FRawData.Memory) + dataEntry^.OffsetToData - Section.FSectionHeader.VirtualAddress);
+        details := TResourceDetails.CreateResourceDetails (Self, lang, name, tp, dataEntry^.Size, PChar (Section.FRawData.Memory) + dataEntry^.OffsetToData - Section.FSectionHeader.VirtualAddress);
         details.CodePage := dataEntry^.CodePage;
         details.Characteristics := table^.characteristics;
         details.DataVersion := DWORD (table^.versionMajor) * 65536 + DWORD (table^.versionMinor);

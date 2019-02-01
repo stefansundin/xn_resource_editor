@@ -4185,7 +4185,7 @@ begin
   end else
   begin
     Next := ReducibleNodes[Level];
-    ReducibleNodes[Level] := self;
+    ReducibleNodes[Level] := Self;
   end;
 end;
 
@@ -5185,7 +5185,7 @@ end;
 
 procedure TGIFItem.Warning(Severity: TGIFSeverity; Message: string);
 begin
-  FGIFImage.Warning(self, Severity, Message);
+  FGIFImage.Warning(Self, Severity, Message);
 end;
 
 function TGIFItem.GetVersion: TGIFVersion;
@@ -5318,7 +5318,7 @@ end;
 
 procedure TGIFList.Warning(Severity: TGIFSeverity; Message: string);
 begin
-  Image.Warning(self, Severity, Message);
+  Image.Warning(Self, Severity, Message);
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -5348,7 +5348,7 @@ end;
 
 procedure TGIFGlobalColorMap.Warning(Severity: TGIFSeverity; Message: string);
 begin
-  FHeader.Image.Warning(self, Severity, Message);
+  FHeader.Image.Warning(Self, Severity, Message);
 end;
 
 procedure TGIFGlobalColorMap.BuildHistogram(var Histogram: TColormapHistogram);
@@ -5367,7 +5367,7 @@ begin
   end;
 
   for i := 0 to FHeader.Image.Images.Count-1 do
-    if (FHeader.Image.Images[i].ActiveColorMap = self) then
+    if (FHeader.Image.Images[i].ActiveColorMap = Self) then
     begin
       Pixel := FHeader.Image.Images[i].Data;
       LastPixel := Pixel + FHeader.Image.Images[i].Width * FHeader.Image.Images[i].Height;
@@ -5390,7 +5390,7 @@ var
   i: Integer;
 begin
   for i := 0 to FHeader.Image.Images.Count-1 do
-    if (FHeader.Image.Images[i].ActiveColorMap = self) then
+    if (FHeader.Image.Images[i].ActiveColorMap = Self) then
     begin
       Pixel := FHeader.Image.Images[i].Data;
       LastPixel := Pixel + FHeader.Image.Images[i].Width * FHeader.Image.Images[i].Height;
@@ -5435,7 +5435,7 @@ end;
 constructor TGIFHeader.Create(GIFImage: TGIFImage);
 begin
   inherited Create(GIFImage);
-  FColorMap := TGIFGlobalColorMap.Create(self);
+  FColorMap := TGIFGlobalColorMap.Create(Self);
   Clear;
 end;
 
@@ -5617,7 +5617,7 @@ end;
 
 procedure TGIFLocalColorMap.Warning(Severity: TGIFSeverity; Message: string);
 begin
-  FSubImage.Image.Warning(self, Severity, Message);
+  FSubImage.Image.Warning(Self, Severity, Message);
 end;
 
 procedure TGIFLocalColorMap.BuildHistogram(var Histogram: TColormapHistogram);
@@ -6319,7 +6319,7 @@ begin
         n := FStream.Read(FBuffer, size);
         if (n = FBufferCount) then
         begin
-          Warning(self, gsWarning, sOutOfData);
+          Warning(Self, gsWarning, sOutOfData);
           break;
         end;
       end else
@@ -6633,7 +6633,7 @@ begin
       Output(EOFCode);
     end else
       // Output the final code(and nothing else).
-      TGIFEncoder(self).Output(EOFCode);
+      TGIFEncoder(Self).Output(EOFCode);
   finally
     GIFStream.Free;
   end;
@@ -7146,7 +7146,7 @@ constructor TGIFSubImage.Create(GIFImage: TGIFImage);
 begin
   inherited Create(GIFImage);
   FExtensions := TGIFExtensionList.Create(GIFImage);
-  FColorMap := TGIFLocalColorMap.Create(self);
+  FColorMap := TGIFLocalColorMap.Create(Self);
   FImageDescriptor.Separator := bsImageDescriptor;
   FImageDescriptor.Left := 0;
   FImageDescriptor.Top := 0;
@@ -7166,7 +7166,7 @@ end;
 destructor TGIFSubImage.Destroy;
 begin
   if (FGIFImage <> nil) then
-    FGIFImage.Images.Remove(self);
+    FGIFImage.Images.Remove(Self);
   Clear;
   FExtensions.Free;
   FColorMap.Free;
@@ -7918,7 +7918,7 @@ var
   b: Byte;
 begin
   Clear;
-  FExtensions.LoadFromStream(Stream, self);
+  FExtensions.LoadFromStream(Stream, Self);
   // Check for extension without image
   if (Stream.Read(b, 1) <> 1) then
     exit;
@@ -8203,7 +8203,7 @@ var
     // Add a Graphic Control Extension if any part of the mask was transparent
     if (WasTransparent) then
     begin
-      GCE := TGIFGraphicControlExtension.Create(self);
+      GCE := TGIFGraphicControlExtension.Create(Self);
       GCE.Transparent := True;
       GCE.TransparentColorIndex := TransparentIndex;
       Extensions.Add(GCE);
@@ -8279,7 +8279,7 @@ var
   end;
 
 begin
-  if (Source = self) then
+  if (Source = Self) then
     exit;
   if (Source = nil) then
   begin
@@ -8862,7 +8862,7 @@ var
     begin
       // Are any other frames using the global color map for transparency
       for i := 0 to Image.Images.Count-1 do
-        if (Image.Images[i] <> self) and (Image.Images[i].Transparent) and
+        if (Image.Images[i] <> Self) and (Image.Images[i].Transparent) and
           (Image.Images[i].ColorMap.Count = 0) then
         begin
           // Use the same transparency color as the other frame
@@ -8953,7 +8953,7 @@ begin
   begin
     if (GraphicControlExtension = nil) then
     begin
-      GCE := TGIFGraphicControlExtension.Create(self);
+      GCE := TGIFGraphicControlExtension.Create(Self);
       Extensions.Add(GCE);
     end else
       GCE := GraphicControlExtension;
@@ -9122,7 +9122,7 @@ end;
 
 class function TGIFExtension.FindSubExtension(Stream: TStream): TGIFExtensionClass;
 begin
-  Result := self;
+  Result := Self;
 end;
 
 constructor TGIFExtension.Create(ASubImage: TGIFSubImage);
@@ -9134,7 +9134,7 @@ end;
 destructor TGIFExtension.Destroy;
 begin
   if (FSubImage <> nil) then
-    FSubImage.Extensions.Remove(self);
+    FSubImage.Extensions.Remove(Self);
   inherited Destroy;
 end;
 
@@ -9187,7 +9187,7 @@ begin
   FGCExtension.TransparentColorIndex := 0;
   FGCExtension.Terminator := 0;
   if (ASubImage.FGCE = nil) then
-    ASubImage.FGCE := self;
+    ASubImage.FGCE := Self;
 end;
 
 destructor TGIFGraphicControlExtension.Destroy;
@@ -9196,7 +9196,7 @@ begin
   if (Transparent) then
     SubImage.FTransparent := False;
 
-  if (SubImage.FGCE = self) then
+  if (SubImage.FGCE = Self) then
     SubImage.FGCE := nil;
 
   inherited Destroy;
@@ -9659,7 +9659,7 @@ begin
   Stream.Seek(i, soFromCurrent);
 
   // ***FIXME***
-  // If self class is TGIFApplicationExtension, this will cause an "abstract
+  // If Self class is TGIFApplicationExtension, this will cause an "abstract
   // error".
   // TGIFApplicationExtension.LoadData should read and ignore rest of block.
   LoadData(Stream);
@@ -9904,7 +9904,7 @@ begin
   Create(AImage, ACanvas, ARect, Options);
   PainterRef := Painter;
   if (PainterRef <> nil) then
-    PainterRef^ := self;
+    PainterRef^ := Self;
 end;
 
 constructor TGIFPainter.Create(AImage: TGIFImage; ACanvas: TCanvas; ARect: TRect;
@@ -9999,7 +9999,7 @@ begin
   // OnTerminate isn't called if we are running in main thread, so we must call
   // it manually
   if not (goAsync in DrawOptions) then
-    DoOnTerminate(self);
+    DoOnTerminate(Self);
   // Reraise any exptions that were eaten in the Execute method
   if (ExceptObject <> nil) then
     raise ExceptObject at ExceptAddress;
@@ -10052,15 +10052,15 @@ begin
   begin  // 2001.02.23
   with Image.Painters.LockList do
     try
-      // Zap Pointer to self and remove from painter list
-      if (PainterRef <> nil) and (PainterRef^ = self) then
+      // Zap Pointer to Self and remove from painter list
+      if (PainterRef <> nil) and (PainterRef^ = Self) then
         PainterRef^ := nil;
 
     finally
       Image.Painters.UnLockList;
     end;
 
-  Image.Painters.Remove(self);
+  Image.Painters.Remove(Self);
   FImage := nil;
   end;  // 2001.02.23
 
@@ -10082,7 +10082,7 @@ end;
 procedure TGIFPainter.DoEvent;
 begin
   if (Assigned(FEvent)) then
-    FEvent(self);
+    FEvent(Self);
 end;
 
 // Non-buffered paint - Executed in main thread
@@ -10568,7 +10568,7 @@ begin
       // Fire OnEndPaint event
       FireEvent(FOnEndPaint);
     finally
-      // If we are running in the main thread we will have to zap our self
+      // If we are running in the main thread we will have to zap our Self
       if not (goAsync in DrawOptions) then
         Free;
     end;
@@ -11149,8 +11149,8 @@ end;
 constructor TGIFImage.Create;
 begin
   inherited Create;
-  FImages := TGIFImageList.Create(self);
-  FHeader := TGIFHeader.Create(self);
+  FImages := TGIFImageList.Create(Self);
+  FHeader := TGIFHeader.Create(Self);
   FPainters := TThreadList.Create;
   FGlobalPalette := 0;
   // Load defaults
@@ -11282,7 +11282,7 @@ begin
   FDrawOptions := Value;
   // Zap all bitmaps
   Pack;
-  Changed(self);
+  Changed(Self);
 end;
 
 procedure TGIFImage.SetAnimationSpeed(Value: Integer);
@@ -11318,7 +11318,7 @@ procedure TGIFImage.OptimizeColorMap;
 var
   ColorMapOptimizer: TColorMapOptimizer;
 begin
-  ColorMapOptimizer := TColorMapOptimizer.Create(self);
+  ColorMapOptimizer := TColorMapOptimizer.Create(Self);
   try
     ColorMapOptimizer.Optimize;
   finally
@@ -11571,7 +11571,7 @@ begin
     // Write images
     FImages.SaveToStream(Stream);
     // Write trailer
-    with TGIFTrailer.Create(self) do
+    with TGIFTrailer.Create(Self) do
       try
         SaveToStream(Stream);
       finally
@@ -11600,9 +11600,9 @@ begin
       // Read header
       FHeader.LoadFromStream(Stream);
       // Read images
-      FImages.LoadFromStream(Stream, self);
+      FImages.LoadFromStream(Stream, Self);
       // Read trailer
-      with TGIFTrailer.Create(self) do
+      with TGIFTrailer.Create(Self) do
         try
           LoadFromStream(Stream);
         finally
@@ -11687,7 +11687,7 @@ begin
   Image := nil; // To avoid compiler warning - not needed.
   if (Source is TGraphic) then
   begin
-    Image := TGIFSubImage.Create(self);
+    Image := TGIFSubImage.Create(Self);
     try
       Image.Assign(Source);
       // ***FIXME*** Documentation should explain the inconsistency here:
@@ -11706,7 +11706,7 @@ begin
   Result := FImages.Add(Image);
 
   FreeBitmap;
-  Changed(self);
+  Changed(Self);
 end;
 
 function TGIFImage.GetEmpty: Boolean;
@@ -11740,7 +11740,7 @@ end;
 
 function TGIFImage.Equals(Graphic: TGraphic): Boolean;
 begin
-  Result := (Graphic = self);
+  Result := (Graphic = Self);
 end;
 
 function TGIFImage.GetPalette: HPALETTE;
@@ -11822,7 +11822,7 @@ begin
   begin
     Header.Height := Value;
     FreeBitmap;
-    Changed(self);
+    Changed(Self);
   end;
 end;
 
@@ -11837,7 +11837,7 @@ begin
   begin
     Header.Width := Value;
     FreeBitmap;
-    Changed(self);
+    Changed(Self);
   end;
 end;
 
@@ -11863,7 +11863,7 @@ var
   i: Integer;
   Image: TGIFSubImage;
 begin
-  if (Source = self) then
+  if (Source = Self) then
     exit;
   if (Source = nil) then
   begin
@@ -11891,7 +11891,7 @@ begin
 
         for i := 0 to TGIFImage(Source).Images.Count-1 do
         begin
-          Image := TGIFSubImage.Create(self);
+          Image := TGIFSubImage.Create(Self);
           Image.Assign(TGIFImage(Source).Images[i]);
           Add(Image);
           Progress(Self, psRunning, MulDiv((i+1), 100, TGIFImage(Source).Images.Count),
@@ -11915,7 +11915,7 @@ begin
   //
   begin
     Clear;
-    Image := TGIFSubImage.Create(self);
+    Image := TGIFSubImage.Create(Self);
     try
       Image.Assign(Source);
       Add(Image);
@@ -12250,7 +12250,7 @@ begin
   if (Images.Count = 1) then
     Options := Options - [goAsync, goAnimate];
 
-  Result := TGIFPainter.CreateRef(Painter, self, ACanvas, Rect, Options);
+  Result := TGIFPainter.CreateRef(Painter, Self, ACanvas, Rect, Options);
   FPainters.Add(Result);
   Result.OnStartPaint := FOnStartPaint;
   Result.OnPaint := FOnPaint;
@@ -12331,7 +12331,7 @@ begin
             exit;
 
           // Signal painters to terminate
-          // Painters will attempt to remove them self from the
+          // Painters will attempt to remove them Self from the
           // painter list when they die
           Ghosts := Count;
           for i := Ghosts-1 downto 0 do

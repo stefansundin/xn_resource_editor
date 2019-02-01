@@ -253,12 +253,12 @@ end;
 
 function TDialogBox.DialogPointToPoint(pt: TPoint): TPoint;
 begin
-  if fBaseUnitX = 0 then
+  if FBaseUnitX = 0 then
     Result := pt
   else
   begin
-    Result.x := Round(pt.x * fBaseUnitX / 4);
-    Result.y := Round(pt.y * fBaseUnitY / 8)
+    Result.x := Round(pt.x * FBaseUnitX / 4);
+    Result.y := Round(pt.y * FBaseUnitY / 8)
   end
 end;
 
@@ -296,26 +296,29 @@ begin
   else
     if ctrlClass.Id = STATIC_ID then
     case Style and SS_TYPEMASK of
-      SS_ICON: Tp := IMAGE_ICON;
-      SS_BITMAP: Tp := IMAGE_BITMAP;
-      SS_ENHMETAFILE: Tp := IMAGE_ENHMETAFILE
+      SS_ICON:
+        Tp := IMAGE_ICON;
+      SS_BITMAP:
+        Tp := IMAGE_BITMAP;
+      SS_ENHMETAFILE:
+        Tp := IMAGE_ENHMETAFILE
     end;
 end;
 
 procedure TDialogBox.HandleDlgMessage(var Msg: TMessage);
 var
   p: PWindowPos;
-  continueProcessing: Boolean;
+  ContinueProcessing: Boolean;
   r: TRect;
 
-  procedure GetFontBaseUnits(var baseX, baseY: Double);
+  procedure GetFontBaseUnits(var BaseX, BaseY: Double);
   var
     r: TRect;
   begin
     r := Rect(0, 0, 4, 8);
     MapDialogRect(FHwndDlg, r);
-    baseX := r.Right;
-    baseY := r.Bottom;
+    BaseX := r.Right;
+    BaseY := r.Bottom;
   end;
 
 begin
@@ -323,10 +326,10 @@ begin
   if Assigned(FOnDlgMessage) and not (csDestroying in ComponentState) then
   begin
     Msg.Result := Ord(False);
-    OnDlgMessage(self, Msg, ContinueProcessing)
+    OnDlgMessage(Self, Msg, ContinueProcessing)
   end;
 
-  if continueProcessing then
+  if ContinueProcessing then
   begin
     Msg.Result := Ord(True);
     case Msg.Msg of
@@ -336,8 +339,8 @@ begin
           try
             GetWindowRect(FHwndDlg, r);
             MapWindowPoints(HWND_DESKTOP, Parent.Handle, r, 2);
-            with r do SetBounds(Self.Left, self.Top, right - left, bottom - top);
-            GetFontBaseUnits(fBaseUnitX, fBaseUnitY)
+            with r do SetBounds(Self.Left, Self.Top, Right - Left, Bottom - Top);
+            GetFontBaseUnits(FBaseUnitX, FBaseUnitY)
           finally
             FInitializing := False
           end
@@ -412,7 +415,7 @@ var
   FontItalic: Boolean;
   ExtraCount: Word;
   Tp: Integer;
-  gdiobj: HGDIOBJ;
+  GdiObj: HGDIOBJ;
   szId, FontName: string;
   IsBtn: Boolean;
 begin
@@ -476,10 +479,10 @@ begin
     else
       szId := dlgMenu.sz;
 
-    gdiObj := 0;
-    OnGetControlImage(Self, -1, szId, gdiobj);
+    GdiObj := 0;
+    OnGetControlImage(Self, -1, szId, GdiObj);
     FreeAndNil(FMenu);
-    FMenu := TMenuItem(gdiObj);
+    FMenu := TMenuItem(GdiObj);
   end;
 
   for i := 0 to ctrlCount - 1 do
@@ -555,12 +558,12 @@ end;
  *----------------------------------------------------------------------*)
 function TDialogBox.PointToDialogPoint(pt: TPoint): TPoint;
 begin
-  if fBaseUnitX = 0 then
+  if FBaseUnitX = 0 then
     Result := pt
   else
   begin
-    Result.x := Round(pt.x * 4 / fBaseUnitX);
-    Result.y := Round(pt.y * 8 / fBaseUnitY)
+    Result.x := Round(pt.x * 4 / FBaseUnitX);
+    Result.y := Round(pt.y * 8 / FBaseUnitY)
   end
 end;
 
@@ -571,14 +574,14 @@ end;
  *----------------------------------------------------------------------*)
 function TDialogBox.RectToDialogRect(r: TRect): TRect;
 begin
-  if fBaseUnitX = 0 then
+  if FBaseUnitX = 0 then
     Result := r
   else
   begin
-    Result.Left := Round(r.Left * 4 / fBaseUnitX);
-    Result.Top := Round(r.Top * 8 / fBaseUnitY);
-    Result.Right := Round(r.Right * 4 / fBaseUnitX);
-    Result.Bottom := Round(r.Bottom * 8 / fBaseUnitY)
+    Result.Left := Round(r.Left * 4 / FBaseUnitX);
+    Result.Top := Round(r.Top * 8 / FBaseUnitY);
+    Result.Right := Round(r.Right * 4 / FBaseUnitX);
+    Result.Bottom := Round(r.Bottom * 8 / FBaseUnitY)
   end
 end;
 
@@ -624,20 +627,20 @@ end;
 procedure TDialogBox.SetCtrlImage1(HwndCtrl: HWND; IsBtn: Boolean;
   Tp: Integer; Id: TszOrID);
 var
-  gdiObj: HGDIOBJ;
+  GdiObj: HGDIOBJ;
   szId: string;
   pszId: PWideChar;
 begin
   if Tp <> -1 then
   begin
-    gdiobj := 0;
+    GdiObj := 0;
     if Assigned(OnGetControlImage) then
     begin
       if Id.isID then
         szId := IntToStr(Id.Id)
       else
         szId := Id.sz;
-      OnGetControlImage(Self, Tp, szId, gdiobj)
+      OnGetControlImage(Self, Tp, szId, GdiObj)
     end
     else
     begin
@@ -646,10 +649,10 @@ begin
       else
         pszId := PWideChar(Id.sz);
 
-      gdiobj := LoadImageW(hInstance, pszId, Tp, 0, 0, 0);
+      GdiObj := LoadImageW(hInstance, pszId, Tp, 0, 0, 0);
     end;
 
-    SetCtrlImage(HwndCtrl, IsBtn, Tp, gdiObj)
+    SetCtrlImage(HwndCtrl, IsBtn, Tp, GdiObj)
   end
 end;
 
@@ -825,7 +828,7 @@ begin { SetResourceTemplate }
     s := CreateAdjustedResourceTemplate;
     try
       // Create the dialog window.
-      if CreateDialogIndirectParamW(hInstance, PDlgTemplate(s.Memory)^, handle, @DialogProc, LPARAM(self)) = 0 then
+      if CreateDialogIndirectParamW(hInstance, PDlgTemplate(s.Memory)^, handle, @DialogProc, LPARAM(Self)) = 0 then
         RaiseLastOSError;
     finally
       s.Free

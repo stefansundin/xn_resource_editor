@@ -854,7 +854,7 @@ begin
 
       Images[fCurrentImage].Release;
       fImages[fCurrentImage] := Image;
-      Changed (self);
+      Changed(Self);
     except
       image.Free;
       raise
@@ -887,7 +887,7 @@ begin
     bmp.TransparentColor := TransparentColor;
     bmp.Canvas.Brush.Color := TransparentColor;
     bmp.Canvas.FillRect(RECt(0, 0, Width, Height));
-    bmp.Canvas.Draw (0, 0, self);
+    bmp.Canvas.Draw (0, 0, Self);
   end
   else
     inherited AssignTo (dest)
@@ -904,7 +904,7 @@ begin
   FTransparentColor := RGB ($fe, $e6, $f8);
   SetLength(FImages, 1);
   FImages[0] := TExIconImage.Create;
-  FImages[0].FIsIcon := self is TExIcon;
+  FImages[0].FIsIcon := Self is TExIcon;
   Images[0].Reference;
 end;
 
@@ -939,7 +939,7 @@ var
 
 begin
   with fImages[fCurrentImage] do
-    if Assigned (fMemoryImage) then
+    if Assigned(fMemoryImage) then
     begin
       info := GetBitmapInfo;
       hdr := @info^.bmiHeader;
@@ -1241,7 +1241,7 @@ var
 begin
   Stream.Read (hdr, SizeOf(hdr));
 
-  if (self is TExIcon) <> (hdr.wType = 1) then
+  if (Self is TExIcon) <> (hdr.wType = 1) then
     raise EInvalidGraphic.Create(rstInvalidIcon);
 
   ReleaseImages;  // Get rid of existing images
@@ -1255,7 +1255,7 @@ begin
   for i := 0 to hdr.wCount - 1 do
   begin
     fImages[i] := TExIconImage.Create;
-    fImages[i].FIsIcon := self is TExIcon;
+    fImages[i].FIsIcon := Self is TExIcon;
     fImages[i].FMemoryImage := TMemoryStream.Create;
     fImages[i].Reference;
 
@@ -1309,7 +1309,7 @@ var
 begin
   stream.read (hdr, SizeOf(hdr));
 
-  if (self is TExIcon) <> (hdr.wType = 1) then
+  if (Self is TExIcon) <> (hdr.wType = 1) then
     raise EInvalidGraphic.Create(rstInvalidIcon);
 
   ReleaseImages;  // Get rid of existing images
@@ -1323,7 +1323,7 @@ begin
     strm1 := TResourceStream.CreateFromID (Instance, resDir.wNameOrdinal, RT_ICON);
     try
       fImages[i] := TExIconImage.Create;
-      fImages[i].FIsIcon := self is TExIcon;
+      fImages[i].FIsIcon := Self is TExIcon;
       fImages[i].FMemoryImage := TMemoryStream.Create;
       fImages[i].Reference;
 
@@ -1387,7 +1387,7 @@ var
   stream : TStream;
 begin
   hdr.wReserved := 0;
-  if not (self is TExCursor) then
+  if not (Self is TExCursor) then
     hdr.wType := 1
   else
     hdr.wType := 2;
@@ -1485,7 +1485,7 @@ var
   oldCurrentImage : Integer;
 begin
   hdr.wReserved := 0;
-  if not (self is TExCursor) then
+  if not (Self is TExCursor) then
     hdr.wType := 1
   else
     hdr.wType := 2;
@@ -1539,7 +1539,7 @@ begin
   if fCurrentImage <> value then
   begin
     fCurrentImage := Value;
-    Changed (self)
+    Changed (Self)
   end
 end;
 
@@ -1554,7 +1554,7 @@ begin
     image := TExIconImage.Create;
     try
       InitializeBitmapInfoHeader (iconInfo.hbmColor, BI, pfDevice);
-      image.FIsIcon := self is TExIcon;
+      image.FIsIcon := Self is TExIcon;
       image.FWidth := BI.biWidth;
       image.FHeight := BI.biHeight;
       image.FPixelFormat := GetBitmapInfoPixelFormat(BI);
@@ -1662,7 +1662,7 @@ begin
     FImages[FCurrentImage].FGotPalette := True
   end;
 
-  AssignFromGraphic (self)
+  AssignFromGraphic (Self)
 end;
 
 procedure TExIconCursor.SetWidth(Value: Integer);
@@ -1695,7 +1695,7 @@ end;
 
 function TExIconImage.GetBitmapInfo: PBitmapInfo;
 begin
-  if Assigned (FMemoryImage) then
+  if Assigned(FMemoryImage) then
     if FIsIcon then
       Result := PBitmapInfo (FMemoryImage.Memory)
     else

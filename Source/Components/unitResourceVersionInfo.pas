@@ -345,7 +345,7 @@ var
           Inc(p);
 
         if codePage = 0 then
-          codePage := self.codePage;
+          codePage := Self.codePage;
         FChildStrings.Add (TVersionStringValue.Create(key, Value, langID, codePage));
       end
     end;

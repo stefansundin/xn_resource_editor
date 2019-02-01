@@ -384,7 +384,7 @@ procedure TRCModule.LoadFromStream(stream: TStream);
 var
   Parser: TRCParser;
 begin
-  Parser := TRCParser.Create(stream, self);
+  Parser := TRCParser.Create(Stream, Self);
   Parser.PathName := ExtractFilePath(FFileName);
 
   // Add identifiers so that MSVC resource script load correctly
@@ -475,7 +475,7 @@ begin
   ValidKeywords := [];
   if KeyID in SupportedKeywords then
   begin
-    Result := TResourceOptions.Create(self, SupportedKeywords);
+    Result := TResourceOptions.Create(Self, SupportedKeywords);
     Result.FLanguage := FLangId;
     ValidKeywords := [kwLanguage];
 

@@ -764,7 +764,7 @@ begin
   begin
     FChanges := True;
     if Assigned(OnChanges) then
-      OnChanges(self)
+      OnChanges(Self)
   end
 end;
 

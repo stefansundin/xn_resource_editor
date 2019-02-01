@@ -241,9 +241,9 @@ begin
   FNameColWidth := 90;
   Height := 120;
   FCanvas := TControlCanvas.Create;
-  TControlCanvas (FCanvas).Control := Self;
+  TControlCanvas(FCanvas).Control := Self;
   FProperties := TPropertyListProperties.Create(Self, TPropertyListProperty);
-  FProperties.FParent := self;
+  FProperties.FParent := Self;
   DoubleBuffered := True;  // Get rid of ghastly flicker!
 end;
 
@@ -316,7 +316,7 @@ begin
   if FSelectedPropertyNo = -1 then
     SelectedPropertyNo := 0
   else
-    if Assigned (FPropertyEdit) then
+    if Assigned(FPropertyEdit) then
       FPropertyEdit.SetFocus
 end;
 
@@ -363,14 +363,14 @@ var
   prop : TPropertyListProperty;
   st : string;
 begin
-  if Assigned (FPropertyEdit) then
+  if Assigned(FPropertyEdit) then
   begin
     if FSelectedPropertyNo >= FProperties.Count then Exit;
 
     prop := FProperties[FSelectedPropertyNo];
     st := GetPropertyEditText;
 
-    if Assigned (OnEndPropertyEdit) then
+    if Assigned(OnEndPropertyEdit) then
       OnEndPropertyEdit(Self, prop);
 
     if prop.ValueAsStr <> st then
@@ -408,7 +408,7 @@ begin
 
     else
     begin
-      if Assigned (OnBeginPropertyEdit) then
+      if Assigned(OnBeginPropertyEdit) then
         OnBeginPropertyEdit(Self, nil);
       key := saveKey
     end
@@ -430,7 +430,7 @@ begin
   prop := FProperties[FSelectedPropertyNo];
   if prop.ReadOnly then Exit;
 
-  if Assigned (prop.OnSpecialButtonClick) then
+  if Assigned(prop.OnSpecialButtonClick) then
     prop.OnSpecialButtonClick(prop)
 end;
 
@@ -484,7 +484,7 @@ var
   prop : TPropertyListProperty;
 begin
   prop := FindProperty(propName);
-  if Assigned (prop) then
+  if Assigned(prop) then
     Result := prop.PropertyValue
   else
     raise Exception.Create('Property ' + propName + ' not found');
@@ -506,7 +506,7 @@ begin
   while(ctrl <> Self) and (ctrl <> nil) do
     ctrl := ctrl.Parent;
 
-  if not Assigned (ctrl) then           // We're not active - and neither are our children
+  if not Assigned(ctrl) then           // We're not active - and neither are our children
     if SelectedPropertyNo = 0 then      // So tidy up display glitch!
       FSelectedPropertyNo := -1;
 
@@ -746,13 +746,13 @@ var
 begin
   if FSelectedPropertyNo >= FProperties.Count then exit;
   prop := FProperties[FSelectedPropertyNo];
-  if Assigned (FPropertyEdit) then
+  if Assigned(FPropertyEdit) then
     PropertyEditText := prop.ValueAsStr;
 
   Invalidate;
 
-  if Assigned (OnPropertyChanged) and not (csDestroying in ComponentState) then
-    OnPropertyChanged (self)
+  if Assigned(OnPropertyChanged) and not (csDestroying in ComponentState) then
+    OnPropertyChanged (Self)
 end;
 
 (*----------------------------------------------------------------------*
@@ -801,7 +801,7 @@ begin
   begin
     FActualValueColWidth := Value;
 
-    if Assigned (FPropertyEdit) then
+    if Assigned(FPropertyEdit) then
     begin
       FPropertyEdit.Left := FActualValueColWidth + FNameColWidth + 2;
       FPropertyEdit.Width := ClientWidth - FNameColWidth - FActualValueColWidth - 2;
@@ -835,7 +835,7 @@ begin
   if (value <> FNameColWidth) and (Value > 0) and (Value < ClientWidth) then
   begin
     FNameColWidth := Value;
-    if Assigned (FPropertyEdit) then
+    if Assigned(FPropertyEdit) then
     begin
       FPropertyEdit.Left := FActualValueColWidth + FNameColWidth + 2;
       FPropertyEdit.Width := ClientWidth - FNameColWidth - FActualValueColWidth - 2;
@@ -862,7 +862,7 @@ var
   parentForm : TCustomForm;
 begin
   parentForm := GetParentForm (Self);
-  if Assigned (parentForm) and (parentForm.ActiveControl = Self) then
+  if Assigned(parentForm) and (parentForm.ActiveControl = Self) then
   begin
     FreeAndNil (FPropertyEdit);
 
@@ -938,7 +938,7 @@ var
   prop : TPropertyListProperty;
 begin
   prop := FindProperty(propName);
-  if Assigned (prop) then
+  if Assigned(prop) then
     prop.PropertyValue := Value
   else
     raise Exception.Create('Property ' + propName + ' not found');
@@ -1011,7 +1011,7 @@ procedure TPropertyListBox.WMSize(var Message: TWMSize);
 begin
   inherited;
 
-  if Assigned (FPropertyEdit) then
+  if Assigned(FPropertyEdit) then
     FPropertyEdit.Width := ClientWidth - FNameColWidth - 2;
 end;
 
@@ -1328,7 +1328,7 @@ begin
 
     p := TPropertyListProperties (Collection).Parent;
     if p.FSelectedPropertyNo = Index then
-      if Assigned (p.FPropertyEdit) then
+      if Assigned(p.FPropertyEdit) then
         p.PropertyEditText := ValueAsStr;
 
     TPropertyListProperties (collection).Parent.Invalidate

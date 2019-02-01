@@ -1,7 +1,7 @@
-inherited fmGraphicsResource: TfmGraphicsResource
+inherited FormGraphicsResource: TFormGraphicsResource
   Left = 256
   Top = 154
-  Caption = 'fmGraphicsResource'
+  Caption = 'Graphics Resource'
   ClientHeight = 507
   ClientWidth = 732
   KeyPreview = True
@@ -12,13 +12,13 @@ inherited fmGraphicsResource: TfmGraphicsResource
   ExplicitHeight = 507
   PixelsPerInch = 96
   TextHeight = 13
-  object Splitter1: TSplitter
+  object Splitter: TSplitter
     Left = 185
     Top = 0
     Height = 507
     ExplicitHeight = 447
   end
-  object pnlLeft: TPanel
+  object PanelLeft: TPanel
     Left = 0
     Top = 0
     Width = 185
@@ -36,7 +36,7 @@ inherited fmGraphicsResource: TfmGraphicsResource
       Align = alTop
       ExplicitTop = 121
     end
-    object sbThumbnail: TScrollBox
+    object ScrollBoxThumbnail: TScrollBox
       Left = 1
       Top = 4
       Width = 183
@@ -44,21 +44,19 @@ inherited fmGraphicsResource: TfmGraphicsResource
       HorzScrollBar.Tracking = True
       VertScrollBar.Tracking = True
       Align = alClient
-      PopupMenu = PopupMenu1
+      PopupMenu = PopupMenu
       TabOrder = 0
-      ExplicitTop = 124
-      ExplicitHeight = 382
-      object Image1: TImage
+      object Image: TImage
         Left = 8
         Top = 8
         Width = 105
         Height = 105
         AutoSize = True
-        PopupMenu = PopupMenu1
+        PopupMenu = PopupMenu
       end
     end
   end
-  object Panel1: TPanel
+  object PanelMain: TPanel
     Left = 188
     Top = 0
     Width = 458
@@ -67,7 +65,7 @@ inherited fmGraphicsResource: TfmGraphicsResource
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 1
-    object ScrollBox2: TScrollBox
+    object ScrollBoxBitmapEditor: TScrollBox
       Left = 0
       Top = 0
       Width = 458
@@ -75,9 +73,9 @@ inherited fmGraphicsResource: TfmGraphicsResource
       HorzScrollBar.Tracking = True
       VertScrollBar.Tracking = True
       Align = alClient
-      PopupMenu = PopupMenu1
+      PopupMenu = PopupMenu
       TabOrder = 0
-      object BitmapEditor1: TBitmapEditor
+      object BitmapEditor: TBitmapEditor
         Left = 8
         Top = 8
         Width = 130
@@ -85,17 +83,17 @@ inherited fmGraphicsResource: TfmGraphicsResource
         Cursor = crArrow
         TransparentColor = 16770815
         DoubleBuffered = True
-        PopupMenu = PopupMenu1
+        PopupMenu = PopupMenu
         DrawingTool = dtNone
-        OnChange = BitmapEditor1Change
-        OnEndChange = BitmapEditor1EndChange
-        OnDrawToolChange = BitmapEditor1DrawToolChange
-        OnSelectionRectChange = BitmapEditor1SelectionRectChange
-        OnGetText = BitmapEditor1GetText
+        OnChange = BitmapEditorChange
+        OnEndChange = BitmapEditorEndChange
+        OnDrawToolChange = BitmapEditorDrawToolChange
+        OnSelectionRectChange = BitmapEditorSelectionRectChange
+        OnGetText = BitmapEditorGetText
       end
     end
   end
-  object SizingPageControl1: TSizingPageControl
+  object SizingPageControl: TSizingPageControl
     Left = 646
     Top = 0
     Width = 86
@@ -104,10 +102,10 @@ inherited fmGraphicsResource: TfmGraphicsResource
     DockSite = True
     MultiLine = True
     TabOrder = 2
-    OnDockDrop = SizingPageControl1DockDrop
-    OnUnDock = SizingPageControl1UnDock
+    OnDockDrop = SizingPageControlDockDrop
+    OnUnDock = SizingPageControlUnDock
   end
-  object pnlGraphics: TPanel
+  object PanelGraphics: TPanel
     Left = 520
     Top = 8
     Width = 81
@@ -125,7 +123,7 @@ inherited fmGraphicsResource: TfmGraphicsResource
     Font.Style = []
     ParentFont = False
     TabOrder = 3
-    object ToolBar1: TToolBar
+    object ToolBar: TToolBar
       Left = 6
       Top = 6
       Width = 69
@@ -138,7 +136,7 @@ inherited fmGraphicsResource: TfmGraphicsResource
       Constraints.MinWidth = 69
       GradientEndColor = clBtnFace
       GradientStartColor = clBtnHighlight
-      Images = ImageList1
+      Images = ImageList
       TabOrder = 0
       object tbSelectRect: TToolButton
         Tag = 15
@@ -382,7 +380,7 @@ inherited fmGraphicsResource: TfmGraphicsResource
       end
     end
   end
-  object pnlColours: TPanel
+  object PanelColors: TPanel
     Left = 652
     Top = 191
     Width = 89
@@ -390,7 +388,7 @@ inherited fmGraphicsResource: TfmGraphicsResource
     AutoSize = True
     BevelOuter = bvLowered
     BorderWidth = 5
-    Caption = 'Colours'
+    Caption = 'Colors'
     DragKind = dkDock
     DragMode = dmAutomatic
     FullRepaint = False
@@ -401,30 +399,30 @@ inherited fmGraphicsResource: TfmGraphicsResource
     Font.Style = []
     ParentFont = False
     TabOrder = 4
-    object shpBack: TShape
+    object ShapeBack: TShape
       Left = 19
       Top = 17
       Width = 13
       Height = 14
     end
-    object shpFore: TShape
+    object ShapeFore: TShape
       Left = 12
       Top = 6
       Width = 13
       Height = 14
       Brush.Color = clBlack
     end
-    object ColorSelector1: TColorSelector
+    object ColorSelector: TColorSelector
       Left = 6
       Top = 36
       Width = 60
       Height = 230
       ForegroundColor = clBlack
       BackgroundColor = clBlack
-      OnColorSelect = ColorSelector1ColorSelect
-      OnDblClick = ColorSelector1DblClick
+      OnColorSelect = ColorSelectorColorSelect
+      OnDblClick = ColorSelectorDblClick
     end
-    object pnlTransparent: TPanel
+    object PanelTransparent: TPanel
       Left = 52
       Top = 16
       Width = 13
@@ -436,10 +434,10 @@ inherited fmGraphicsResource: TfmGraphicsResource
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 1
-      OnDblClick = pnlTransparentDblClick
-      OnMouseDown = pnlTransparentMouseDown
+      OnDblClick = PanelTransparentDblClick
+      OnMouseDown = PanelTransparentMouseDown
     end
-    object TrackBar1: TTrackBar
+    object TrackBar: TTrackBar
       Left = 71
       Top = 27
       Width = 12
@@ -450,15 +448,15 @@ inherited fmGraphicsResource: TfmGraphicsResource
       TabOrder = 2
       ThumbLength = 10
       TickStyle = tsNone
-      OnChange = TrackBar1Change
+      OnChange = TrackBarChange
     end
   end
-  object ImageList1: TImageList
+  object ImageList: TImageList
     Height = 15
     Left = 376
     Top = 89
     Bitmap = {
-      494C010119002000080010000F00FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010119002000200010000F00FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006900000001002000000000000069
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1331,102 +1329,102 @@ inherited fmGraphicsResource: TfmGraphicsResource
       FFFFF25FFFE0FF01FFFFFFFFFFF0FFFFFFFFFFFFFFFFFFFF0000000000000000
       0000000000000000000000000000}
   end
-  object MainMenu1: TMainMenu
+  object MainMenu: TMainMenu
     Left = 344
     Top = 120
-    object mnuImage: TMenuItem
+    object MenuItemImage: TMenuItem
       Caption = '&Image'
-      OnClick = mnuImageClick
-      object AddImage1: TMenuItem
-        Action = actImageAddImage
+      OnClick = MenuItemImageClick
+      object MenuItemAddImage1: TMenuItem
+        Action = ActionImageAddImage
       end
       object N2: TMenuItem
         Caption = '-'
       end
-      object ZoomIn1: TMenuItem
-        Action = actImageZoomIn
+      object MenuItemZoomIn1: TMenuItem
+        Action = ActionImageZoomIn
       end
-      object ZoomOut1: TMenuItem
-        Action = actImageZoomOut
+      object MenuItemZoomOut1: TMenuItem
+        Action = ActionImageZoomOut
       end
       object N1: TMenuItem
         Caption = '-'
       end
-      object ToolPalettes1: TMenuItem
+      object MenuItemToolPalettes1: TMenuItem
         Caption = 'Tool Palettes'
-        object ColorsPalette1: TMenuItem
-          Action = actImageColorsPalette
+        object MenuItemColorsPalette1: TMenuItem
+          Action = ActionImageColorsPalette
         end
-        object ToolsPalette1: TMenuItem
-          Action = actImageToolsPalette
+        object MenuItemDrawingToolsPalette2: TMenuItem
+          Action = ActionImageToolsPalette
         end
       end
     end
   end
-  object ActionList1: TActionList
+  object ActionList: TActionList
     Left = 440
     Top = 88
-    object actImageZoomIn: TAction
+    object ActionImageZoomIn: TAction
       Category = 'Image'
       Caption = 'Zoom &In'
       ShortCut = 107
-      OnExecute = actImageZoomInExecute
+      OnExecute = ActionImageZoomInExecute
     end
-    object actImageZoomOut: TAction
+    object ActionImageZoomOut: TAction
       Category = 'Image'
       Caption = 'Zoom &Out'
       ShortCut = 109
-      OnExecute = actImageZoomOutExecute
+      OnExecute = ActionImageZoomOutExecute
     end
-    object actImageToolsPalette: TAction
+    object ActionImageToolsPalette: TAction
       Category = 'Image'
       Caption = '&Drawing Tools Palette'
       Checked = True
-      OnExecute = actImageToolsPaletteExecute
+      OnExecute = ActionImageToolsPaletteExecute
     end
-    object actImageColorsPalette: TAction
+    object ActionImageColorsPalette: TAction
       Category = 'Image'
       Caption = '&Colors Palette'
       Checked = True
-      OnExecute = actImageColorsPaletteExecute
+      OnExecute = ActionImageColorsPaletteExecute
     end
-    object actImageAddImage: TAction
+    object ActionImageAddImage: TAction
       Category = 'Image'
       Caption = '&Add Image'
-      OnExecute = actImageAddImageExecute
+      OnExecute = ActionImageAddImageExecute
     end
   end
-  object ColorDialog1: TColorDialog
+  object ColorDialog: TColorDialog
     Options = [cdFullOpen]
     Left = 408
     Top = 88
   end
-  object PopupMenu1: TPopupMenu
-    OnPopup = PopupMenu1Popup
+  object PopupMenu: TPopupMenu
+    OnPopup = PopupMenuPopup
     Left = 344
     Top = 88
-    object AddImage2: TMenuItem
-      Action = actImageAddImage
+    object MenuItemAddImage2: TMenuItem
+      Action = ActionImageAddImage
     end
     object N3: TMenuItem
       Caption = '-'
     end
-    object ZoomIn2: TMenuItem
-      Action = actImageZoomIn
+    object MenuItemZoomIn2: TMenuItem
+      Action = ActionImageZoomIn
     end
-    object ZoomOut2: TMenuItem
-      Action = actImageZoomOut
+    object MenuItemZoomOut2: TMenuItem
+      Action = ActionImageZoomOut
     end
     object N4: TMenuItem
       Caption = '-'
     end
-    object ToolPalettes2: TMenuItem
+    object MenuItemToolPalettes2: TMenuItem
       Caption = '&Tool Palettes'
-      object ColorsPalette2: TMenuItem
-        Action = actImageColorsPalette
+      object MenuItemColorsPalette2: TMenuItem
+        Action = ActionImageColorsPalette
       end
-      object DrawingToolsPalette1: TMenuItem
-        Action = actImageToolsPalette
+      object MenuItemDrawingToolsPalette1: TMenuItem
+        Action = ActionImageToolsPalette
       end
     end
   end
