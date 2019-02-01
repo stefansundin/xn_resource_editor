@@ -136,8 +136,7 @@ uses
   unitSearchString in 'Components\unitSearchString.pas',
   unitStreamTextReader in 'Components\unitStreamTextReader.pas',
   unitVersionInfo in 'Components\unitVersionInfo.pas',
-  unitVirtualMemory in 'Components\unitVirtualMemory.pas',
-  WTSAPI32 in 'Components\WTSAPI32.pas';
+  unitVirtualMemory in 'Components\unitVirtualMemory.pas';
 
 {$R i.res}
 

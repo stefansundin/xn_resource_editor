@@ -128,7 +128,6 @@ contains
   unitStreamTextReader in '..\..\Source\Components\unitStreamTextReader.pas',
   unitVersionInfo in '..\..\Source\Components\unitVersionInfo.pas',
   unitVirtualMemory in '..\..\Source\Components\unitVirtualMemory.pas',
-  WTSAPI32 in '..\..\Source\Components\WTSAPI32.pas',
   XFace in '..\..\Source\Components\XFace.pas';
 
 end.
