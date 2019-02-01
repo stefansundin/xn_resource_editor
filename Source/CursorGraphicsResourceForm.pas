@@ -4,10 +4,10 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, IconCursorGraphicsResourceForm, Menus, ActnList, ImgList,
-  ComCtrls, cmpColorSelector, ExtCtrls, ToolWin, cmpSizingPageControl,
-  cmpBitmapEditor, cmpPropertyListBox, unitExIcon, System.Actions,
-  System.ImageList;
+  Dialogs, IconCursorGraphicsResourceForm, Menus, ActnList, Actions, ImgList,
+  ComCtrls, ExtCtrls, ToolWin, ImageList, ComponentColorSelector,
+  ComponentSizingPageControl, ComponentBitmapEditor, ComponentPropertyListBox,
+  unitExIcon;
 
 type
   TFormCursorGraphicsResource = class(TFormIconCursorGraphicsResource)

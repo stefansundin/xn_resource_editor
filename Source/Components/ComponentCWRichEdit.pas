@@ -1,5 +1,5 @@
 (*======================================================================*
- | cmpCWRichEdit                                                        |
+ | ComponentCWRichEdit                                                  |
  |                                                                      |
  | Rich edit control with support for version 2 & 3.  Supports custom   |
  | character formatting for descendant objects.                         |
@@ -22,7 +22,7 @@
  *======================================================================*)
 
 
-unit cmpCWRichEdit;
+unit ComponentCWRichEdit;
 
 interface
 

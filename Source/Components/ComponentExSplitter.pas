@@ -1,5 +1,5 @@
 (*======================================================================*
- | cmpExSplitter                                                        |
+ | ComponentExSplitter                                                  |
  |                                                                      |
  | Splitters with 'minimize' arrows.                                    |
  |                                                                      |
@@ -8,7 +8,7 @@
  | 1.0      15/11/2001  CPWW  Original                                  |
  *======================================================================*)
 
-unit cmpExSplitter;
+unit ComponentExSplitter;
 
 interface
 

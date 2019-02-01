@@ -3,9 +3,9 @@ unit SpellCheckerForm;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ComCtrls, cmpCWRichEdit, cmpCWSpellChecker,
-  cmpPersistentPosition;
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, ComCtrls, ComponentCWSpellChecker, ComponentPersistentPosition,
+  ComponentCWRichEdit;
 
 const
   WM_SETUP = WM_USER + $200;

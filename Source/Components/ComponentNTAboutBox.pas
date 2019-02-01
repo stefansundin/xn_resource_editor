@@ -1,12 +1,12 @@
 // 21/06/2001  Use 'sysutils' version info instead of calling GetVersionInfoEx
 
-unit cmpNTAboutBox;
+unit ComponentNTAboutBox;
 
 interface
 
 uses
   Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, ComCtrls, cmpHyperlinkButton;
+  Buttons, ExtCtrls, ComCtrls, ComponentHyperlinkButton;
 
 type
   TfmNTAboutBox = class(TForm)

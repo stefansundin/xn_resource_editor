@@ -1,4 +1,4 @@
-unit cmpMRUList;
+unit ComponentMRUList;
 
 interface
 

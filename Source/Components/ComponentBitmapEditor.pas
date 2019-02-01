@@ -1,4 +1,4 @@
-unit cmpBitmapEditor;
+unit ComponentBitmapEditor;
 
 interface
 
@@ -141,7 +141,7 @@ implementation
 {$R BitmapEditorCursors.res}
 
 uses
-  GraphFlip, Clipbrd, cmpGradientShape;
+  GraphFlip, Clipbrd, ComponentGradientShape;
 
 { TBitmapEditor }
 

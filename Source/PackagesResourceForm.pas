@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  ResourceForm, ComCtrls, ExtCtrls, cmpPropertyListBox, unitResourceRCData;
+  ComCtrls, ExtCtrls, ResourceForm, ComponentPropertyListBox,
+  unitResourceRCData;
 
 type
   TFormPackagesResource = class(TFormResource)

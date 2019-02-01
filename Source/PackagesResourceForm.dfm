@@ -22,6 +22,10 @@ inherited FormPackagesResource: TFormPackagesResource
     object TabSheetRequires: TTabSheet
       Caption = 'Requires'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object ListViewRequires: TListView
         Left = 0
         Top = 0
@@ -45,6 +49,10 @@ inherited FormPackagesResource: TFormPackagesResource
     object TabSheetContains: TTabSheet
       Caption = 'Contains'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object ListViewContains: TListView
         Left = 0
         Top = 0

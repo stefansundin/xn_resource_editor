@@ -1,4 +1,4 @@
-unit cmpRuler;
+unit ComponentRuler;
 
 interface
 

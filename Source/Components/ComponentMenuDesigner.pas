@@ -1,5 +1,5 @@
 (*===========================================================================*
- | unit cmpMenuDesigner                                                      |
+ | unit ComponentMenuDesigner                                                |
  |                                                                           |
  | Menu Designer Component                                                   |
  |                                                                           |
@@ -8,7 +8,7 @@
  | 1.0      05/07/00  CPWW  Original                                         |
  *===========================================================================*)
 
-unit cmpMenuDesigner;
+unit ComponentMenuDesigner;
 
 interface
 

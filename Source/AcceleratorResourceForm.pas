@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Menus, Graphics, Controls, Forms,
-  Dialogs, ResourceForm, ComCtrls, unitResourceAccelerator, StdCtrls, ActnList,
-  System.Actions;
+  Dialogs, Actions, ComCtrls, StdCtrls, ActnList, ResourceForm,
+  unitResourceAccelerator;
 
 type
   TFormAcceleratorResource = class(TFormResource)

@@ -1,8 +1,8 @@
 (*======================================================================*
- | cmpStandardSystemMenu unit for MiscUnits package                     |
+ | ComponentStandardSystemMenu unit for MiscUnits package               |
  |                                                                      |
  | Drop one of these on your application's main form, and you get all   |
- | five items in the task bar icon menu(Restore, Move, Size, Minimize, |
+ | five items in the task bar icon menu(Restore, Move, Size, Minimize,  |
  | Maximize Close) instead of the measly three items that Windows gives |
  | you by default                                                       |
  |                                                                      |
@@ -25,7 +25,7 @@
  | 1.1      26/02/2002  CPWW  Fixed design-time problems                |
  *======================================================================*)
 
-unit cmpStandardSystemMenu;
+unit ComponentStandardSystemMenu;
 
 interface
 

@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  PropertyBaseForm, Menus, cmpPersistentPosition, StdCtrls, VirtualTrees,
-  ExtCtrls;
+  Menus, StdCtrls, ExtCtrls, VirtualTrees, PropertyBaseForm,
+  ComponentPersistentPosition;
 
 type
   TFormProperties = class(TFormPropertyBase)

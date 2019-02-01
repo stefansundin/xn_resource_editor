@@ -1,5 +1,5 @@
 (*======================================================================*
- | cmpDialogEditor unit for PEResourceExplorer                          |
+ | ComponentDialogEditor unit for PEResourceExplorer                    |
  |                                                                      |
  | Dialog editor component.  Ouch.  This one hurt!                      |
  |                                                                      |
@@ -20,13 +20,13 @@
  | 1.1      14/02/2002  CPWW  Original                                  |
  *======================================================================*)
 
-unit cmpDialogEditor;
+unit ComponentDialogEditor;
 
 interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  CommCtrl, RichEdit, cmpDialogBox, ExtCtrls, DialogConsts;
+  CommCtrl, RichEdit, ExtCtrls, ComponentDialogBox, DialogConsts;
 
 const
   WM_RECREATEDLG = WM_USER + $212;

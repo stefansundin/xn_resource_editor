@@ -22,9 +22,10 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  ResourceForm, ExtCtrls, ComCtrls, ImgList, ToolWin, ActnList, Menus,
-  GifImage, Actions, ImageList, cmpSizingPageControl, cmpPropertyListBox,
-  cmpBitmapEditor, unitResourceGraphics, cmpColorSelector, unitExIcon;
+  ExtCtrls, ComCtrls, ImgList, ToolWin, ActnList, Menus, Actions, ImageList,
+  ResourceForm, GifImage, ComponentSizingPageControl,
+  ComponentPropertyListBox, ComponentBitmapEditor, ComponentColorSelector,
+  unitResourceGraphics, unitExIcon;
 
 const
   WM_STATUSBAR = WM_USER + $203;

@@ -15,7 +15,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ResourceForm, StdCtrls, ComCtrls, ExtCtrls, Menus, ActnList, Actions,
-  cmpPropertyListBox, unitResourceVersionInfo, cmpCWRichEdit;
+  ComponentPropertyListBox, ComponentCWRichEdit, unitResourceVersionInfo;
 
 //=======================================================================
 // TFormVersionResource class

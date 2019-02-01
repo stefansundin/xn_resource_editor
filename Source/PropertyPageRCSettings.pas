@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  PropertyPageForm, Menus, cmpPersistentPosition, StdCtrls, VirtualTrees,
-  ExtCtrls, unitIncludePaths;
+  ExtCtrls, Menus, StdCtrls, VirtualTrees, PropertyPageForm,
+  ComponentPersistentPosition, unitIncludePaths;
 
 type
   TPropertyPageRCSettingsData = class(TPropertyPageData)

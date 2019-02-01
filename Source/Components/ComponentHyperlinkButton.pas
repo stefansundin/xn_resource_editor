@@ -1,18 +1,19 @@
-unit cmpHyperlinkButton;
+unit ComponentHyperlinkButton;
 
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, ImgList;
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  ImgList;
 
 type
   THyperlinkButton = class(TGraphicControl)
   private
     FImageIndex: Integer;
     FImages: TImageList;
-    FMouseInControl : Boolean;
-    FFontColor : TColor;
-    FFontStyles : TFontStyles;
+    FMouseInControl: Boolean;
+    FFontColor: TColor;
+    FFontStyles: TFontStyles;
     FInPlace: Boolean;
     FLink: string;
     FAutoLink: Boolean;
@@ -20,7 +21,7 @@ type
     FSelectedFont: TFont;
     FSelectedFontColor: TColor;
     FSelectedFontStyles: TFontStyles;
-    FSelected : Boolean;
+    FSelected: Boolean;
     FOnEndCapture: TNotifyEvent;
     FOnPainted: TNotifyEvent;
     procedure CMTextChanged(var Message: TMessage); message CM_TEXTCHANGED;
@@ -37,7 +38,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     procedure Click; override;
-    property ParentObj : IUnknown read FParentObj write FParentObj;
+    property ParentObj: IUnknown read FParentObj write FParentObj;
     property Canvas;
 
   published
@@ -47,19 +48,19 @@ type
     property Caption;
     property Color;
     property Font;
-    property Images : TImageList read FImages write SetImages;
-    property ImageIndex : Integer read FImageIndex write SetImageIndex;
+    property Images: TImageList read FImages write SetImages;
+    property ImageIndex: Integer read FImageIndex write SetImageIndex;
     property ParentColor;
     property ParentFont;
-    property SelectedFontColor : TColor read FSelectedFontColor write FSelectedFontColor;
-    property SelectedFontStyles : TFontStyles read FSelectedFontStyles write FSelectedFontStyles;
-    property Transparent : Boolean read GetTransparent write SetTransparent default False;
+    property SelectedFontColor: TColor read FSelectedFontColor write FSelectedFontColor;
+    property SelectedFontStyles: TFontStyles read FSelectedFontStyles write FSelectedFontStyles;
+    property Transparent: Boolean read GetTransparent write SetTransparent default False;
     property Visible;
-    property Link : string read FLink write FLink;
-    property AutoLink : Boolean read FAutoLink write FAutoLink;
-    property InPlace : Boolean read FInPlace write FInPlace;
-    property OnEndCapture : TNotifyEvent read FOnEndCapture write FOnEndCapture;
-    property OnPainted : TNotifyEvent read FOnPainted write FOnPainted;
+    property Link: string read FLink write FLink;
+    property AutoLink: Boolean read FAutoLink write FAutoLink;
+    property InPlace: Boolean read FInPlace write FInPlace;
+    property OnEndCapture: TNotifyEvent read FOnEndCapture write FOnEndCapture;
+    property OnPainted: TNotifyEvent read FOnPainted write FOnPainted;
   end;
 
 implementation
@@ -71,14 +72,14 @@ uses
 
 procedure THyperlinkButton.Click;
 var
-  ext, url : string;
-  done : Boolean;
-  f : system.Text;
-  cmd, param : string;
-  pp : PChar;
-  p : Integer;
-  inQuote : Boolean;
-  ch : char;
+  ext, url: string;
+  done: Boolean;
+  f: system.Text;
+  cmd, param: string;
+  pp: PChar;
+  p: Integer;
+  inQuote: Boolean;
+  ch: char;
 begin
   inherited;
 

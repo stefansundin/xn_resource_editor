@@ -1,9 +1,9 @@
-unit cmpCWSpellChecker;
+unit ComponentCWSpellChecker;
 
 interface
 
 uses
-  SysUtils, Classes, Controls, cmpSpellChecker, cmpCWRichEdit;
+  SysUtils, Classes, Controls, ComponentSpellChecker, ComponentCWRichEdit;
 
 type
   TCWSpellChecker = class(TSpellChecker)

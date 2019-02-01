@@ -1,5 +1,5 @@
 (*======================================================================*
- | cmpPropertyListBox unit Resource Editor Components                   |
+ | ComponentPropertyListBox unit Resource Editor Components             |
  |                                                                      |
  | Display/Edit a list of properties                                    |
  |                                                                      |
@@ -20,13 +20,13 @@
  | 1.0      08/02/2002  CPWW  Original                                  |
  *======================================================================*)
 
-unit cmpPropertyListBox;
+unit ComponentPropertyListBox;
 
 interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, Buttons, cmpFakeCombobox;
+  StdCtrls, ExtCtrls, Buttons, ComponentFakeCombobox;
 
 const
   WM_INIT = WM_USER + $201;

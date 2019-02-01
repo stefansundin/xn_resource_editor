@@ -1,5 +1,5 @@
 (*======================================================================*
- | cmpPersistentPosition unit for MiscUnits package                     |
+ | ComponentPersistentPosition unit for MiscUnits package               |
  |                                                                      |
  | Drop one on your main form, and it will run in the same position     |
  | as when it was previously closed.                                    |
@@ -27,7 +27,7 @@
  |                            Now restores 'minimized' state            |
  *======================================================================*)
 
-unit cmpPersistentPosition;
+unit ComponentPersistentPosition;
 
 interface
 

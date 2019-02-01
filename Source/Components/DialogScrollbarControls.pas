@@ -25,7 +25,7 @@ unit DialogScrollbarControls;
 interface
 
 uses
-  Windows, Messages, Classes, SysUtils, cmpDialogEditor, DialogConsts;
+  Windows, Messages, Classes, SysUtils, ComponentDialogEditor, DialogConsts;
 
 type
   TScrollbarControlInfo = class (TStandardControlInfo)

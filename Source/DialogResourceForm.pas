@@ -13,8 +13,8 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   Menus, ImgList, ComCtrls, ToolWin, StdCtrls, ExtCtrls, ImageList,
-  ResourceForm, cmpSizingPageControl, cmpDialogBox, cmpRuler,
-  cmpPropertyListBox, cmpDialogEditor, unitResourceDialogs;
+  ResourceForm, ComponentSizingPageControl, ComponentDialogBox, ComponentRuler,
+  ComponentPropertyListBox, ComponentDialogEditor, unitResourceDialogs;
 
 type
   TFormDialogResource = class(TFormResource)
@@ -327,20 +327,20 @@ begin
 
       case info.PropertyType [Kind, i] of
         ptString:
-          Prop.PropertyType := cmpPropertyListBox.ptString;
+          Prop.PropertyType := ComponentPropertyListBox.ptString;
         ptInteger:
-          Prop.PropertyType := cmpPropertyListBox.ptInteger;
+          Prop.PropertyType := ComponentPropertyListBox.ptInteger;
         ptBoolean:
-          Prop.PropertyType := cmpPropertyListBox.ptBoolean;
+          Prop.PropertyType := ComponentPropertyListBox.ptBoolean;
         ptSpecial:
           begin
-            Prop.PropertyType := cmpPropertyListBox.ptSpecial;
+            Prop.PropertyType := ComponentPropertyListBox.ptSpecial;
             Prop.OnSpecialButtonClick := DoSpecialButtonClick
           end;
         ptEnum:
           begin
             // Add enumerated property values
-            Prop.PropertyType := cmpPropertyListBox.ptEnum;
+            Prop.PropertyType := ComponentPropertyListBox.ptEnum;
             Prop.EnumValues.Clear;
             Prop.EnumValues.BeginUpdate;
             try

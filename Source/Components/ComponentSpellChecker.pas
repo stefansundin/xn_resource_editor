@@ -1,5 +1,5 @@
 (*======================================================================*
- | cmpSpellChecker                                                      |
+ | ComponentSpellChecker                                                |
  |                                                                      |
  | ISpell spell checker component.                                      |
  |                                                                      |
@@ -21,7 +21,7 @@
  *======================================================================*)
 
 
-unit cmpSpellChecker;
+unit ComponentSpellChecker;
 
 interface
 

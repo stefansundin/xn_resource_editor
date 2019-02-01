@@ -1,4 +1,4 @@
-unit cmpExWebBrowser;
+unit ComponentExWebBrowser;
 
 interface
 

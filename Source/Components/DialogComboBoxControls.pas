@@ -29,7 +29,7 @@ unit DialogComboBoxControls;
 interface
 
 uses
-  Windows, Messages, Classes, SysUtils, cmpDialogEditor, DialogConsts;
+  Windows, Messages, Classes, SysUtils, ComponentDialogEditor, DialogConsts;
 
 type
   //----------------------------------------------------------------

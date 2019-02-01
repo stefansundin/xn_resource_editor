@@ -3,7 +3,7 @@ unit DialogButtonControls;
 interface
 
 uses
-  Windows, Classes, SysUtils, cmpDialogEditor, DialogConsts;
+  Windows, Classes, SysUtils, ComponentDialogEditor, DialogConsts;
 
 type
   TButtonControlInfo = class (TStandardControlInfo)

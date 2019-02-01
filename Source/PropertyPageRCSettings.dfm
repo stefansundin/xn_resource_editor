@@ -43,7 +43,7 @@ inherited FormPropertyPageRCSettings: TFormPropertyPageRCSettings
     Columns = <
       item
         Position = 0
-        Width = 227
+        Width = 231
         WideText = 'Include Header Packages'
       end>
   end

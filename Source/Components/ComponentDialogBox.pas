@@ -8,7 +8,7 @@
  | 1.0      30/05/2001  CPWW  Original                                  |
  *======================================================================*)
 
-unit cmpDialogBox;
+unit ComponentDialogBox;
 
 interface
 

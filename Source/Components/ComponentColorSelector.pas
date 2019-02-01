@@ -1,4 +1,4 @@
-unit cmpColorSelector;
+unit ComponentColorSelector;
 
 interface
 

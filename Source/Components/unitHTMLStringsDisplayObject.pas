@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Classes, SysUtils, Graphics, Forms, OleCtrls, SHDocVw, ComObj,
-  ActiveX, ShlObj, MSHTML, ShellAPI, cmpMessageDisplay;
+  ActiveX, ShlObj, MSHTML, ShellAPI, ComponentMessageDisplay;
 
 type                                                     
   THTMLStringsDisplayObjectLink = class (TWinControlObjectLink)
@@ -37,7 +37,7 @@ type
 implementation
 
 uses
-  cmpExWebBrowser;
+  ComponentExWebBrowser;
 
 resourcestring
   rstCantSetHeight = 'Can''t set height of this object';

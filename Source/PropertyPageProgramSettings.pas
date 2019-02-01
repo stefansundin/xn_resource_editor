@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, Menus, ExtCtrls, VirtualTrees, PropertyPageForm,
-  cmpPersistentPosition;
+  ComponentPersistentPosition;
 
 type
   TPropertyPageProgramSettingsData = class (TPropertyPageData)

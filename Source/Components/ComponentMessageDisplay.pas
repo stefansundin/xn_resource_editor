@@ -1,5 +1,5 @@
 (*======================================================================*
- | cmpMessageDisplay unit for MiscUnits                                 |
+ | ComponentMessageDisplay unit for MiscUnits                           |
  |                                                                      |
  | Displays messages containing objects - eg. TStrings, TGraphic        |
  | TWinControl, etc.                                                    |
@@ -21,12 +21,13 @@
  | 1.0      09/04/2002  CPWW  Original                                  |
  *======================================================================*)
 
-unit cmpMessageDisplay;
+unit ComponentMessageDisplay;
 
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Controls, Graphics, Forms, Contnrs, Math, StrUtils, StdActns, ShellAPI, Dialogs;
+  Windows, Messages, SysUtils, Classes, Controls, Graphics, Forms, Contnrs,
+  Math, StrUtils, StdActns, ShellAPI, Dialogs;
 
 type
   TMessageDisplay = class;

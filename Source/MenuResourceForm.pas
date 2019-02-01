@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  ResourceForm, Menus, ExtCtrls, ActnList, Actions,
-  cmpPropertyListBox, unitResourceMenus, cmpMenuDesigner;
+  Menus, ExtCtrls, ActnList, Actions, ResourceForm, ComponentPropertyListBox,
+  ComponentMenuDesigner, unitResourceMenus;
 
 type
   TFormMenuResource = class(TFormResource)

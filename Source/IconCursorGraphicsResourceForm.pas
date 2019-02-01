@@ -5,8 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   Menus, ActnList, ImgList, ComCtrls, ExtCtrls, ToolWin, Actions, ImageList,
-  GraphicsResourceForm, cmpColorSelector, cmpSizingPageControl,
-  cmpBitmapEditor, cmpPropertyListBox;
+  GraphicsResourceForm, ComponentColorSelector, ComponentSizingPageControl,
+  ComponentBitmapEditor, ComponentPropertyListBox;
 
 type
   TFormIconCursorGraphicsResource = class(TFormGraphicsResource)

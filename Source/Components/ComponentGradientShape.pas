@@ -1,4 +1,4 @@
-unit cmpGradientShape;
+unit ComponentGradientShape;
 
 interface
 

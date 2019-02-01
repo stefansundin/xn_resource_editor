@@ -1,5 +1,5 @@
 (*======================================================================*
- | cmpFakeCombobox                                                      |
+ | ComponentFakeCombobox                                                |
  |                                                                      |
  | Fake a combobox, providing additional capabilities.                  |
  |                                                                      |
@@ -8,7 +8,7 @@
  | 1.0      31/05/2001  CPWW  Original                                  |
  *======================================================================*)
 
-unit cmpFakeCombobox;
+unit ComponentFakeCombobox;
 
 interface
 

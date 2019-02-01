@@ -1,5 +1,5 @@
 (*======================================================================*
- | cmpPersistentOptions                                                 |
+ | ComponentPersistentOptions                                           |
  |                                                                      |
  | TRegistryPersistentOptions & TIniFilePersistentOptions components    |
  |                                                                      |
@@ -23,7 +23,7 @@
  |                            for the logged-on user.                   |
  *======================================================================*)
 
-unit cmpPersistentOptions;
+unit ComponentPersistentOptions;
 
 interface
 

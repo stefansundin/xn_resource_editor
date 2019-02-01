@@ -3,7 +3,7 @@ unit DialogStaticControls;
 interface
 
 uses
-  Windows, Classes, SysUtils, cmpDialogEditor, DialogConsts;
+  Windows, Classes, SysUtils, ComponentDialogEditor, DialogConsts;
 
 type
   TStaticControlInfo = class (TStandardControlInfo)
@@ -53,7 +53,7 @@ type
 implementation
 
 uses
-  cmpDialogBox, variants, DialogStrings;
+  ComponentDialogBox, Variants, DialogStrings;
 
 const
   SS_REALSIZECONTROL = $40;

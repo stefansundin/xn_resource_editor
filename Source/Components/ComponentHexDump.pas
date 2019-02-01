@@ -1,4 +1,4 @@
-unit cmpHexDump;
+unit ComponentHexDump;
 
 interface
 

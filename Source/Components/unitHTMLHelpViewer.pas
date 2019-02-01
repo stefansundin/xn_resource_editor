@@ -5,7 +5,7 @@ interface
 uses
   Windows, Classes, SysUtils;
 
-function HHPreTranslateMessage(var Msg : TMsg) : Boolean;
+function HHPreTranslateMessage(var Msg: TMsg): Boolean;
 procedure InitializeHTMLHelp;
 
 implementation
@@ -18,14 +18,14 @@ type
 
   THTMLHelpViewer = class(TInterfacedObject, ICustomHelpViewer, IExtendedHelpViewer, IHelpSelector)
   private
-    FViewerID : Integer;
+    FViewerID: Integer;
     FLastCommandType: TWHCommandType;
   public
     FHelpManager: IHelpManager;
     procedure InternalShutDown;
 
     { ICustomHelpViewer }
-    function GetViewerName : String;
+    function GetViewerName: String;
     function UnderstandsKeyword(const HelpString: String): Integer;
     function GetHelpStrings(const HelpString: String): TStringList;
     function CanShowTableOfContents: Boolean;
@@ -39,31 +39,31 @@ type
     function UnderstandsTopic(const Topic: String): Boolean;
     procedure DisplayTopic(const Topic: String);
     function UnderstandsContext(const ContextID: THelpContext;
-                               const HelpFileName: String): Boolean;
+      const HelpFileName: String): Boolean;
     procedure DisplayHelpByContext(const ContextID: THelpContext;
-                                  const HelpFileName: String);
+      const HelpFileName: String);
 
 
-    property HelpManager : IHelpManager read FHelpManager write FHelpManager;
-    property ViewerID : Integer read fViewerID;
+    property HelpManager: IHelpManager read FHelpManager write FHelpManager;
+    property ViewerID: Integer read FViewerID;
 
     { IHelpSelector}
-    function SelectKeyword(Keywords: TStrings) : Integer;
+    function SelectKeyword(Keywords: TStrings): Integer;
     function TableOfContents(Contents: TStrings): Integer;
   end;
 
 var
-  HTMLHelpViewer : THTMLHelpViewer;
-  HelpSystem : IHelpSystem;
-  dwHHCookie : DWORD;
-  gInitialized : Boolean = False;
+  HTMLHelpViewer: THTMLHelpViewer;
+  HelpSystem: IHelpSystem;
+  dwHHCookie: DWORD;
+  gInitialized: Boolean = False;
 
 resourcestring
   rstHTMLHelp = 'HTML Help';
 
 { THTMLHelpViewer }
 
-function HHPreTranslateMessage(var Msg : TMsg) : Boolean;
+function HHPreTranslateMessage(var Msg: TMsg): Boolean;
 begin
   Result := HtmlHelp (0, Nil, HH_PRETRANSLATEMESSAGE, DWORD (@Msg)) = 0
 end;
@@ -89,12 +89,12 @@ end;
 procedure THTMLHelpViewer.DisplayHelpByContext(const ContextID: THelpContext;
   const HelpFileName: String);
 begin
-
+  // stub
 end;
 
 procedure THTMLHelpViewer.DisplayTopic(const Topic: String);
 begin
-
+  // stub
 end;
 
 function THTMLHelpViewer.GetHelpStrings(
@@ -121,13 +121,13 @@ end;
 
 procedure THTMLHelpViewer.NotifyID(const ViewerID: Integer);
 begin
-  fViewerID := ViewerID;
+  FViewerID := ViewerID;
 end;
 
 function THTMLHelpViewer.SelectKeyword(Keywords: TStrings): Integer;
 var
-  p : Integer;
-  st : string;
+  p: Integer;
+  st: string;
 begin
   Result := 0;
   while Result < keywords.Count do
@@ -152,7 +152,7 @@ end;
 
 procedure THTMLHelpViewer.ShowTableOfContents;
 var
-  fn, pn : string;
+  fn, pn: string;
 begin
   fn := FHelpManager.GetHelpFile;
   pn := ExtractFilePath(ParamStr (0));
@@ -192,8 +192,8 @@ end;
 function THTMLHelpViewer.UnderstandsKeyword(
   const HelpString: String): Integer;
 var
-  params : THHAKlink;
-  fn, pn : string;
+  params: THHAKlink;
+  fn, pn: string;
 begin
   fn := FHelpManager.GetHelpFile;
   pn := ExtractFilePath(ParamStr (0));
@@ -218,6 +218,7 @@ begin
 end;
 
 initialization
+
 finalization
   if gInitialized then
   begin

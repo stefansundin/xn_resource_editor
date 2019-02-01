@@ -3,7 +3,7 @@ unit DialogListViewControls;
 interface
 
 uses
-  Windows, Classes, SysUtils, cmpDialogEditor, Graphics, CommCtrl, Controls,
+  Windows, Classes, SysUtils, ComponentDialogEditor, Graphics, CommCtrl, Controls,
   DialogConsts;
 
 type

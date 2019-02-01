@@ -21,9 +21,9 @@ uses
   Dialogs, ComCtrls, Menus, ToolWin, ExtCtrls, ImgList, StdActns, ActnList,
   XPMan, Actions, ImageList, StdCtrls, ShellApi, AppEvnts, ActnMan, ActnCtrls,
   ActnMenus, XPStyleActnCtrls, ExtDlgs, Jpeg, PngImage, unitResourceDetails,
-  cmpStandardSystemMenu, cmpPersistentPosition, cmpMRUList, cmpNTAboutBox,
-  ResourceForm, GifImage, unitCREdProperties, unitHTMLHelpViewer,
-  unitResourceExaminer, VirtualTrees, ExVirtualStringTree;
+  ComponentStandardSystemMenu, ComponentPersistentPosition, ComponentMRUList,
+  ComponentNTAboutBox, ResourceForm, GifImage, unitCREdProperties,
+  unitHTMLHelpViewer, unitResourceExaminer, VirtualTrees, ExVirtualStringTree;
 {$endregion}
 
 {$region 'Constant Definitions'}

@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  ResourceForm, cmpHexDump, unitResourceDetails;
+  ResourceForm, ComponentHexDump, unitResourceDetails;
 
 type
   TFormRawResource = class(TFormResource)

@@ -3,7 +3,7 @@ unit DialogListboxControls;
 interface
 
 uses
-  Windows, Classes, SysUtils, cmpDialogEditor, DialogConsts;
+  Windows, Classes, SysUtils, ComponentDialogEditor, DialogConsts;
 
 type
   TListboxControlInfo = class (TStandardControlInfo)
