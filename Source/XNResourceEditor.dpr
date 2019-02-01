@@ -100,8 +100,6 @@ uses
   unitHTMLStringsDisplayObject in 'Components\unitHTMLStringsDisplayObject.pas',
   unitIncludePathPackages in 'unitIncludePathPackages.pas',
   unitIncludePaths in 'unitIncludePaths.pas',
-  unitMidiGlobals in 'unitMidiGlobals.pas',
-  unitMidiTrackStream in 'unitMidiTrackStream.pas',
   unitNTModule in 'Components\unitNTModule.pas',
   unitObjectCache in 'Components\unitObjectCache.pas',
   unitParser in 'Components\unitParser.pas',
