@@ -142,7 +142,6 @@
         <DCCReference Include="..\..\Source\Components\ExVirtualStringTree.pas"/>
         <DCCReference Include="..\..\Source\Components\GIFImage.pas"/>
         <DCCReference Include="..\..\Source\Components\GraphFlip.pas"/>
-        <DCCReference Include="..\..\Source\Components\MMPropZLIB.pas"/>
         <DCCReference Include="..\..\Source\Components\MultiLanguage_TLB.pas"/>
         <DCCReference Include="..\..\Source\Components\RichOle.pas"/>
         <DCCReference Include="..\..\Source\Components\SpellCheckerForm.pas">
@@ -153,7 +152,7 @@
         <DCCReference Include="..\..\Source\Components\unitCharsetMap.pas"/>
         <DCCReference Include="..\..\Source\Components\unitClipExRegistry.pas"/>
         <DCCReference Include="..\..\Source\Components\unitDefRegistry.pas"/>
-        <DCCReference Include="..\..\Source\Components\unitEXGraphics.pas"/>
+        <DCCReference Include="..\..\Source\Components\unitExGraphics.pas"/>
         <DCCReference Include="..\..\Source\Components\unitExIcon.pas"/>
         <DCCReference Include="..\..\Source\Components\unitExRegistry.pas"/>
         <DCCReference Include="..\..\Source\Components\unitHTMLHelp.pas"/>
@@ -165,8 +164,8 @@
         <DCCReference Include="..\..\Source\Components\unitRCFile.pas"/>
         <DCCReference Include="..\..\Source\Components\unitResFile.pas"/>
         <DCCReference Include="..\..\Source\Components\unitResourceAccelerator.pas"/>
-        <DCCReference Include="..\..\Source\Components\unitResourceDetails.pas"/>
         <DCCReference Include="..\..\Source\Components\unitResourceDialogs.pas"/>
+        <DCCReference Include="..\..\Source\Components\unitResourceDetails.pas"/>
         <DCCReference Include="..\..\Source\Components\unitResourceExaminer.pas"/>
         <DCCReference Include="..\..\Source\Components\unitResourceGIF.pas"/>
         <DCCReference Include="..\..\Source\Components\unitResourceGraphics.pas"/>

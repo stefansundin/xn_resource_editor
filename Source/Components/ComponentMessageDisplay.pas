@@ -272,7 +272,7 @@ procedure RegisterDisplayObjectLink(dispObj: TDisplayObjectLinkClass; Position: 
 implementation
 
 uses
-  ClipBrd, unitCharsetMap, Printers, unitHTMLStringsDisplayObject;
+  ClipBrd, Printers, unitCharsetMap, unitHTMLStringsDisplayObject;
 
 //----------------------------------------------------------------------------
 // Keep details of registered display objects

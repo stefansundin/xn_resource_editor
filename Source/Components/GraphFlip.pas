@@ -72,10 +72,10 @@ begin
       pr := PRGBTriple(PChar (pr1) + bpsr * x); 
       Inc(pr, y); 
       pr^ := ps^; 
-      Inc(ps) 
-    end 
-  end; 
-  GDIFlush 
+      Inc(ps);
+    end;
+  end;
+  GDIFlush;
 end; 
  
 function RotateBitmap90(const Bitmap: TBitmap): TBitmap;
@@ -107,10 +107,10 @@ begin
       pr := PRGBTriple(PChar (pr1) - bpsr * x); 
       Inc(pr, y); 
       pr^ := ps^; 
-      Inc(ps) 
-    end 
-  end; 
-  GDIFlush 
+      Inc(ps);
+    end
+  end;
+  GDIFlush;
 end; 
  
 

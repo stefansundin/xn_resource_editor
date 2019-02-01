@@ -21,7 +21,7 @@
  | 2.0      23/2/2000   CPWW  Original                                      |
  *======================================================================*)
 
-unit unitEXGraphics;
+unit unitExGraphics;
 
 interface
 
@@ -44,7 +44,7 @@ const
   RGBMAX = 255;
   UNDEFINED = HLSMAX * 2 div 3;
 
-function HueToRGB(n1,n2,hue: Integer): word;
+function HueToRGB(n1, n2, hue: Integer): Word;
 begin
   while hue > hlsmax do
     Dec(hue, HLSMAX);
