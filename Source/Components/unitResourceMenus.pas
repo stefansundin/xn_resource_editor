@@ -6,9 +6,9 @@ uses
   Windows, Classes, SysUtils, Contnrs, Menus, unitResourceDetails;
 
 type
-TMenuResourceDetails = class (TResourceDetails)
+  TMenuResourceDetails = class(TResourceDetails)
   private
-    fHelpID: Integer;                    // Extended menu's help ID
+    FHelpID: Integer;                    // Extended menu's help ID
   protected
     constructor Create(AParent: TResourceModule; ALanguage: Integer; const AName, AType: WideString; ASize: Integer; AData: pointer); override;
 
@@ -21,7 +21,7 @@ TMenuResourceDetails = class (TResourceDetails)
     procedure InitNew; override;
     procedure GetItems (items: TMenuItem);
     procedure SetItems (items: TMenuItem);
-end;
+  end;
 
 implementation
 
@@ -50,7 +50,6 @@ type
 procedure TMenuResourceDetails.ChangeData(newData: TMemoryStream);
 begin
   inherited;
-
 end;
 
 constructor TMenuResourceDetails.Create(AParent: TResourceModule;
@@ -192,7 +191,7 @@ begin
         if PMenuHeader (p)^.cbHeaderSize = 4 then
         begin
           Inc(p, SizeOf(TMenuHeader));
-          fHelpID := PDWORD (p)^;
+          FHelpID := PDWORD (p)^;
           Inc(p, SizeOf(DWORD));
           GetExtendedItems (items);
         end
@@ -364,7 +363,7 @@ begin
             SaveOldStyleMenu(items.Items[i], i = items.Count - 1);
       1 :
         begin
-          st.Write(fHelpId, SizeOf(fHelpID));
+          st.Write(FHelpID, SizeOf(FHelpID));
           for i := 0 to items.Count - 1 do
             SaveNewStyleMenu(items.Items[i], i = items.Count - 1);
         end
@@ -384,5 +383,3 @@ initialization
 finalization
   UnregisterResourceDetails (TMenuResourceDetails);
 end.
-
-

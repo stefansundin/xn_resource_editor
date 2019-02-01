@@ -80,7 +80,7 @@ type
 
   TIconCursorGroupResourceDetails = class (TResourceDetails)
   private
-    fDeleting: Boolean;
+    FDeleting: Boolean;
     function GetResourceCount: Integer;
     function GetResourceDetails(idx: Integer): TIconCursorResourceDetails;
   protected
@@ -161,17 +161,16 @@ const
 implementation
 
 type
-
-TResourceDirectory = packed record
-  Details: packed record case Boolean of
-    False: (CursorWidth, cursorHeight: word);
-    True: (IconWidth, IconHeight, IconColorCount, IconReserved: BYTE)
+  TResourceDirectory = packed record
+    Details: packed record case Boolean of
+      False: (CursorWidth, cursorHeight: word);
+      True: (IconWidth, IconHeight, IconColorCount, IconReserved: BYTE)
+    end;
+    wPlanes, wBitCount: word;
+    lBytesInRes: DWORD;
+    wNameOrdinal: word
   end;
-  wPlanes, wBitCount: word;
-  lBytesInRes: DWORD;
-  wNameOrdinal: word
-end;
-PResourceDirectory = ^TResourceDirectory;
+  PResourceDirectory = ^TResourceDirectory;
 
 resourcestring
   rstCursors = 'Cursors';
@@ -605,12 +604,12 @@ end;
 
 procedure TIconCursorGroupResourceDetails.BeforeDelete;
 begin
-  fDeleting := True;
+  FDeleting := True;
   try
     while ResourceCount > 0 do
       Parent.DeleteResource(Parent.IndexOfResource(ResourceDetails[0]));
   finally
-    fDeleting := False
+    FDeleting := False
   end
 end;
 
@@ -922,7 +921,7 @@ begin
 
         Data.Size := Data.Size - SizeOf(TResourceDirectory);
         PIconHeader (Data.Memory)^.wCount := Count - 1;
-        if (Count = 1) and not fDeleting then
+        if (Count = 1) and not FDeleting then
           Parent.DeleteResource(Parent.IndexOfResource(Self));
         break
       end

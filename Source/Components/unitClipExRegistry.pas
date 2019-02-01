@@ -29,19 +29,19 @@ uses
   ClipBrd;
 
 type
-TKeyData = record
-  noValues: DWORD;
-  valuesOffset: DWORD;
-  noSubkeys: DWORD;
-  subKeysOffset: DWORD;
-end;
-PKeyData = ^TKeyData;
+  TKeyData = record
+    noValues: DWORD;
+    valuesOffset: DWORD;
+    noSubkeys: DWORD;
+    subKeysOffset: DWORD;
+  end;
+  PKeyData = ^TKeyData;
 
-TValueData = record
-  dataLen: DWORD;
-  valueType: DWORD;
-end;
-PValueData = ^TValueData;
+  TValueData = record
+    dataLen: DWORD;
+    valueType: DWORD;
+  end;
+  PValueData = ^TValueData;
 
 function ClipboardHasRegEdtValue: Boolean;
 begin

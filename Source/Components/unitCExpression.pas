@@ -14,7 +14,6 @@ type
     rVal: extended
   end;
 
-
   TStrValue = class
   private
     RValue: string;
@@ -23,15 +22,16 @@ type
     property Value: string read RValue;
   end;
 
-procedure CalcExpression (const st: string; defines: TStringList; var value: TValue);
+procedure CalcExpression(const st: string; defines: TStringList; var value: TValue);
 
 implementation
 
 type
   TOperator = (opNop, opEq, opNotEq, opLessEq, opGtrEq, opLess, opGtr,
-               opAdd, opSub, opLor, opOr, opMult, opDiv, opIDiv, opMod, oplAnd, opAnd, opNot);
+               opAdd, opSub, opLor, opOr, opMult, opDiv, opIDiv, opMod,
+               oplAnd, opAnd, opNot);
 
-procedure DoOp (op: TOperator; var x: TValue; y: TValue);
+procedure DoOp(op: TOperator; var x: TValue; y: TValue);
 
   procedure AssignBool (bool, rev: Boolean);
   begin

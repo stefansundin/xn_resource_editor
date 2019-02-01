@@ -6,30 +6,29 @@ uses
   Windows, Classes, SysUtils, unitResourceDetails, DialogConsts;
 
 type
-TDialogResourceDetails = class (TResourceDetails)
-public
-  class function GetBaseType : WideString; override;
-  procedure InitNew; override;
+  TDialogResourceDetails = class (TResourceDetails)
+  public
+    class function GetBaseType: WideString; override;
+    procedure InitNew; override;
 
-  procedure BeginInit(x, y, cx, cy : Integer; Style, ExStyle : DWORD; menu, cls, title : TSzOrID; fontSize : DWORD; const faceName : string);
-  procedure BeginInitEx (x, y, cx, cy : Integer; Style, ExStyle, helpID : DWORD; menu, cls, title : TSzOrID; fontSize, fontWeight, fontItalic, fontCharset : DWORD; const faceName : string);
-  procedure InitAddControl (cls : TSzOrID; id : DWORD; const text : TSzOrID; x, y, cx, cy : Integer; Style, ExStyle : DWORD; dataLen : DWORD; const dat);
-  procedure InitAddControlEx (cls : TSzOrID; id : DWORD; const text : TSzOrID; x, y, cx, cy : Integer; Style, ExStyle, helpId : DWORD; dataLen : DWORD; const dat);
-  procedure EndInit(ctrlCount : DWORD);
-  procedure EndInitEx (ctrlCount : DWORD);
-
-end;
+    procedure BeginInit(x, y, cx, cy: Integer; Style, ExStyle: DWORD; menu, cls, title: TSzOrID; fontSize: DWORD; const faceName: string);
+    procedure BeginInitEx (x, y, cx, cy: Integer; Style, ExStyle, helpID: DWORD; menu, cls, title: TSzOrID; fontSize, fontWeight, fontItalic, fontCharset: DWORD; const faceName: string);
+    procedure InitAddControl (cls: TSzOrID; id: DWORD; const text: TSzOrID; x, y, cx, cy: Integer; Style, ExStyle: DWORD; dataLen: DWORD; const dat);
+    procedure InitAddControlEx (cls: TSzOrID; id: DWORD; const text: TSzOrID; x, y, cx, cy: Integer; Style, ExStyle, helpId: DWORD; dataLen: DWORD; const dat);
+    procedure EndInit(ctrlCount: DWORD);
+    procedure EndInitEx (ctrlCount: DWORD);
+  end;
 
 implementation
 
 { TDialogResourceDetails }
 
-procedure TDialogResourceDetails.BeginInit(x, y, cx, cy : Integer; Style,
-  ExStyle: DWORD; menu, cls, title : TSzOrID; fontSize : DWORD; const faceName : string);
+procedure TDialogResourceDetails.BeginInit(x, y, cx, cy: Integer; Style,
+  ExStyle: DWORD; menu, cls, title: TSzOrID; fontSize: DWORD; const faceName: string);
 var
-  template : TDlgTemplate;
-  w : word;
-  wFace : WideString;
+  template: TDlgTemplate;
+  w: word;
+  wFace: WideString;
 begin
   Data.Clear;
   if faceName <> '' then
@@ -59,10 +58,10 @@ procedure TDialogResourceDetails.BeginInitEx(x, y, cx, cy: Integer; Style,
   ExStyle, helpId: DWORD; menu, cls, title: TSzOrID; fontSize, fontWeight, fontItalic, fontCharset: DWORD;
   const faceName: string);
 var
-  template : TDlgTemplateEx;
-  w : word;
-  wFace : WideString;
-  b : byte;
+  template: TDlgTemplateEx;
+  w: word;
+  wFace: WideString;
+  b: byte;
 begin
   Data.Clear;
   if faceName <> '' then
@@ -100,9 +99,9 @@ begin
   data.Write(PWideChar (wFace)^, (Length(wFace) + 1) * SizeOf(WideChar))
 end;
 
-procedure TDialogResourceDetails.EndInit(ctrlCount : DWORD);
+procedure TDialogResourceDetails.EndInit(ctrlCount: DWORD);
 var
-  p : PDlgTemplate;
+  p: PDlgTemplate;
 begin
   p := PDlgTemplate(Data.Memory);
   p^.cdit := CtrlCount
@@ -110,7 +109,7 @@ end;
 
 procedure TDialogResourceDetails.EndInitEx(ctrlCount: DWORD);
 var
-  p : PDlgTemplateEx;
+  p: PDlgTemplateEx;
 begin
   p := PDlgTemplateEx (Data.Memory);
   p^.cDlgItems := CtrlCount
@@ -122,10 +121,10 @@ begin
 end;
 
 procedure TDialogResourceDetails.InitAddControl(cls: TSzOrID; id: DWORD;
-  const text: TSzOrID; x, y, cx, cy: Integer; Style, ExStyle: DWORD; dataLen : DWORD; const dat);
+  const text: TSzOrID; x, y, cx, cy: Integer; Style, ExStyle: DWORD; dataLen: DWORD; const dat);
 var
-  templ : TDlgItemTemplate;
-  w : word;
+  templ: TDlgItemTemplate;
+  w: word;
 begin
   Pad (data);
 
@@ -156,8 +155,8 @@ procedure TDialogResourceDetails.InitAddControlEx(cls: TSzOrID; id: DWORD;
   const text: TSzOrID; x, y, cx, cy: Integer; Style, ExStyle, helpId,
   dataLen: DWORD; const dat);
 var
-  templ : TDlgItemTemplateEx;
-  w : word;
+  templ: TDlgItemTemplateEx;
+  w: word;
 begin
   Pad (data);
 
@@ -187,7 +186,7 @@ end;
 
 procedure TDialogResourceDetails.InitNew;
 var
-  id : TszOrID;
+  id: TszOrID;
 begin
   // Defaults from VC6
 
@@ -199,7 +198,7 @@ begin
 end;
 
 initialization
-  RegisterResourceDetails (TDialogResourceDetails);
+  RegisterResourceDetails(TDialogResourceDetails);
 finalization
-  UnregisterResourceDetails (TDialogResourceDetails);
+  UnregisterResourceDetails(TDialogResourceDetails);
 end.

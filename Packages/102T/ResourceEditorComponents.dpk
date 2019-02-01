@@ -91,7 +91,6 @@ contains
   MultiLanguage_tlb in '..\..\Source\Components\MultiLanguage_TLB.pas',
   RichOle in '..\..\Source\Components\RichOle.pas',
   SpellCheckerForm in '..\..\Source\Components\SpellCheckerForm.pas' {fmSpellChecker},
-  twain in '..\..\Source\Components\twain.pas',
   unitBTree in '..\..\Source\Components\unitBTree.pas',
   unitCExpression in '..\..\Source\Components\unitCExpression.pas',
   unitCharsetMap in '..\..\Source\Components\unitCharsetMap.pas',

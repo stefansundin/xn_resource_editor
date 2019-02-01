@@ -6,7 +6,8 @@ uses
   Windows, Classes, SysUtils, Contnrs, unitResourceDetails;
 
 type
-  TFileFlags = (ffDebug, ffInfoInferred, ffPatched, ffPreRelease, ffPrivateBuild, ffSpecialBuild);
+  TFileFlags = (ffDebug, ffInfoInferred, ffPatched, ffPreRelease,
+    ffPrivateBuild, ffSpecialBuild);
   TVersionFileFlags = set of TFileFlags;
 
   TVersionStringValue = class
@@ -15,7 +16,6 @@ type
     FValue : string;
     FLangId : Integer;
     FCodePage : Integer;
-
   public
     constructor Create(const AKeyName, AValue : string; ALangId, ACodePage : Integer);
     property KeyName : string read FKeyName;
@@ -596,7 +596,7 @@ begin
 end;
 
 initialization
-  RegisterResourceDetails (TVersionInfoResourceDetails);
+  RegisterResourceDetails(TVersionInfoResourceDetails);
 finalization
-  UnregisterResourceDetails (TVersionInfoResourceDetails);
+  UnregisterResourceDetails(TVersionInfoResourceDetails);
 end.

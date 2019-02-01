@@ -486,9 +486,9 @@ begin
 end;
 
 initialization
-  RegisterResourceDetails (TMessageResourceDetails);
-  RegisterResourceDetails (TStringResourceDetails);
+  RegisterResourceDetails(TMessageResourceDetails);
+  RegisterResourceDetails(TStringResourceDetails);
 finalization
-  UnregisterResourceDetails (TStringResourceDetails);
-  UnregisterResourceDetails (TMessageResourceDetails);
+  UnregisterResourceDetails(TStringResourceDetails);
+  UnregisterResourceDetails(TMessageResourceDetails);
 end.

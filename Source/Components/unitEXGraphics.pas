@@ -32,11 +32,11 @@ const
   HLSMAX = 240;
 
 var
-  SystemPalette256 : HPALETTE;  // 256 color 'web' palette.
-  SystemPalette2 : HPALETTE;
+  SystemPalette256: HPALETTE;  // 256 color 'web' palette.
+  SystemPalette2: HPALETTE;
 
-procedure iHLSToRGB (hue, lum, sat : Integer; var r, g, b : Integer);
-procedure RGBtoHLS(lRGBColor : TColor; var H, L, S : Integer);
+procedure iHLSToRGB (hue, lum, sat: Integer; var r, g, b: Integer);
+procedure RGBtoHLS(lRGBColor: TColor; var H, L, S: Integer);
 
 implementation
 
@@ -44,7 +44,7 @@ const
   RGBMAX = 255;
   UNDEFINED = HLSMAX * 2 div 3;
 
-function HueToRGB(n1,n2,hue : Integer) : word;
+function HueToRGB(n1,n2,hue: Integer): word;
 begin
   while hue > hlsmax do
     Dec(hue, HLSMAX);
@@ -64,9 +64,9 @@ begin
         Result := n1
 end;
 
-procedure iHLSToRGB (hue, lum, sat : Integer; var r, g, b : Integer);
+procedure iHLSToRGB (hue, lum, sat: Integer; var r, g, b: Integer);
 var
-  Magic1,Magic2 : Integer;        // calculated magic numbers (really!) */
+  Magic1,Magic2: Integer;        // calculated magic numbers (really!) */
 
 begin
   if sat = 0 then              // achromatic case */
@@ -92,7 +92,7 @@ begin
   end;
 end;
 
-function max (x, y : Integer) : Integer;
+function max (x, y: Integer): Integer;
 begin
   if x > y then
     Result := x
@@ -100,7 +100,7 @@ begin
     Result := y
 end;
 
-function min (x, y : Integer) : Integer;
+function min (x, y: Integer): Integer;
 begin
   if x < y then
     Result := x
@@ -109,11 +109,11 @@ begin
 end;
 
 
-procedure RGBtoHLS(lRGBColor : TColor; var H, L, S : Integer);
+procedure RGBtoHLS(lRGBColor: TColor; var H, L, S: Integer);
 var
-  R, G, B : Integer;
-  cMax, cMin : Integer;
-  rDelta, gDelta, bDelta : Integer;
+  R, G, B: Integer;
+  cMax, cMin: Integer;
+  rDelta, gDelta, bDelta: Integer;
 begin
   R := GetRValue(lRGBColor);
   G := GetGValue(lRGBColor);
@@ -161,8 +161,8 @@ type
     palVersion		: word;
     palNumEntries	: word;
     PalEntries		: array [0..5,0..5,0..5] of TPaletteEntry;
-    MonoEntries         : array [0..23] of TPaletteEntry;
-    StdEntries          : array [0..15] of TPaletteEntry;
+    MonoEntries        : array [0..23] of TPaletteEntry;
+    StdEntries         : array [0..15] of TPaletteEntry;
   end;
 var
   r, g, b		: byte;
@@ -206,12 +206,12 @@ end;
  |                                                                            |
  | Does what it says on the tin..                                             |
  *----------------------------------------------------------------------------*)
-function Create2ColorPalette : HPALETTE;
+function Create2ColorPalette: HPALETTE;
 const
-  palColors2 : array [0..1] of TColor = ($000000, $ffffff);
+  palColors2: array [0..1] of TColor = ($000000, $ffffff);
 var
-  logPalette : PLogPalette;
-  i, c : Integer;
+  logPalette: PLogPalette;
+  i, c: Integer;
 
 begin
   GetMem (logPalette, SizeOf(logPalette) + 2 * SizeOf(PALETTEENTRY));

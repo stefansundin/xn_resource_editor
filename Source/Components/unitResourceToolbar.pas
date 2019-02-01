@@ -9,32 +9,29 @@ const
   RT_TOOLBAR = MakeIntResource(241);
 
 type
-TToolbarResourceDetails = class (TResourceDetails)
-//  private
-//    fHelpID : Integer;                    // Extended menu's help ID
+  TToolbarResourceDetails = class (TResourceDetails)
   protected
-    constructor Create(AParent : TResourceModule; ALanguage : Integer; const AName, AType : WideString; ASize : Integer; AData : pointer); override;
+    constructor Create(AParent: TResourceModule; ALanguage: Integer; const AName, AType: WideString; ASize: Integer; AData: pointer); override;
 
   public
     destructor Destroy; override;
 
-    class function GetBaseType : WideString; override;
-    procedure ChangeData(newData : TMemoryStream); override;
+    class function GetBaseType: WideString; override;
+    procedure ChangeData(newData: TMemoryStream); override;
 
     procedure InitNew; override;
-end;
+  end;
 
 implementation
 
 type
-
-TToolbarData = packed record  // From a CodeGuru message quoting MFC source...
-  wVersion : word;
-  wBtnWidth : word;
-  wBtnHeight : word;
-  wBtnCount : word;
-  wButtonIDs : array [0..0] of word;
-end;
+  TToolbarData = packed record  // From a CodeGuru message quoting MFC source...
+    wVersion: word;
+    wBtnWidth: word;
+    wBtnHeight: word;
+    wBtnCount: word;
+    wButtonIDs: array [0..0] of word;
+  end;
 
 { TToolbarResourceDetails }
 
@@ -62,7 +59,7 @@ end;
 
 procedure TToolbarResourceDetails.InitNew;
 var
-  dat : TToolbarData;
+  dat: TToolbarData;
 begin
   dat.wVersion := 1;
   dat.wBtnWidth := 16;
@@ -73,9 +70,7 @@ begin
 end;
 
 initialization
-  RegisterResourceDetails (TToolbarResourceDetails);
+  RegisterResourceDetails(TToolbarResourceDetails);
 finalization
-  UnregisterResourceDetails (TToolbarResourceDetails);
+  UnregisterResourceDetails(TToolbarResourceDetails);
 end.
-
-

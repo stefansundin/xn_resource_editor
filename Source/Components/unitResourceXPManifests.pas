@@ -3,14 +3,14 @@ unit unitResourceXPManifests;
 interface
 
 uses
-  Windows, Classes, SysUtils, Contnrs, unitResourceDetails, AxCtrls;
+  Windows, Classes, SysUtils, Contnrs, AxCtrls, unitResourceDetails;
 
 type
-TXPManifestResourceDetails = class (TAnsiResourceDetails)
-public
-  class function GetBaseType : WideString; override;
-  procedure InitNew; override;
-end;
+  TXPManifestResourceDetails = class (TAnsiResourceDetails)
+  public
+    class function GetBaseType : WideString; override;
+    procedure InitNew; override;
+  end;
 
 const
   RT_XPMANIFEST = MakeIntResource(24);
@@ -58,7 +58,7 @@ begin
 end;
 
 initialization
-  RegisterResourceDetails (TXPManifestResourceDetails);
+  RegisterResourceDetails(TXPManifestResourceDetails);
 finalization
-  UnregisterResourceDetails (TXPManifestResourceDetails);
+  UnregisterResourceDetails(TXPManifestResourceDetails);
 end.

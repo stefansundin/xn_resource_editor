@@ -12,12 +12,12 @@ type
 //------------------------------------------------------------------------
 // HTML resource details class
 
-  THTMLResourceDetails = class (TAnsiResourceDetails)
+  THTMLResourceDetails = class(TAnsiResourceDetails)
   protected
     procedure InitNew; override;
-    class function SupportsData(Size : Integer; data : Pointer) : Boolean; override;
+    class function SupportsData(Size: Integer; data: Pointer): Boolean; override;
   public
-    class function GetBaseType : WideString; override;
+    class function GetBaseType: WideString; override;
   end;
 
 
@@ -38,14 +38,14 @@ end;
 class function THTMLResourceDetails.SupportsData(Size: Integer;
   data: Pointer): Boolean;
 var
-  p : PChar;
+  p: PChar;
 begin
   p := PChar (data);
   Result := (StrLIComp (p, '<HTML', 5) = 0) or (StrLIComp (p, '<!', 2) = 0);
 end;
 
 initialization
-  RegisterResourceDetails (THTMLResourceDetails);
+  RegisterResourceDetails(THTMLResourceDetails);
 finalization
-  UnregisterResourceDetails (THTMLResourceDetails);
+  UnregisterResourceDetails(THTMLResourceDetails);
 end.

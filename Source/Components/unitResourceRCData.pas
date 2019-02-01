@@ -8,7 +8,7 @@ uses
 type
   TRCDataResourceDetails = class (TResourceDetails)
   public
-    class function GetBaseType : WideString; override;
+    class function GetBaseType: WideString; override;
   end;
 
   TRCDataDescriptionResourceDetails = class (TRCDataResourceDetails)
@@ -16,9 +16,9 @@ type
     function GetDescription: WideString;
     procedure SetDescription(const Value: WideString);
   protected
-    class function SupportsRCData(const AName : string; Size : Integer; data : Pointer) : Boolean; override;
+    class function SupportsRCData(const AName: string; Size: Integer; data: Pointer): Boolean; override;
   public
-    property Description : WideString read GetDescription write SetDescription;
+    property Description: WideString read GetDescription write SetDescription;
   end;
 
   TRCDataFormResourceDetails = class (TRCDataResourceDetails)
@@ -26,9 +26,9 @@ type
     function GetText: WideString;
     procedure SetText(const Value: WideString);
   protected
-    class function SupportsRCData(const AName : string; Size : Integer; data : Pointer) : Boolean; override;
+    class function SupportsRCData(const AName: string; Size: Integer; data: Pointer): Boolean; override;
   public
-    property Text : WideString read GetText write SetText;
+    property Text: WideString read GetText write SetText;
   end;
 
   TPackageEnvironment = (pePreV4, peUndefine, peBCB, peDelphi);
@@ -36,12 +36,12 @@ type
 
   TRCDataPackagesResourceDetails = class (TRCDataResourceDetails)
   private
-    FRequiresList : TStrings;
-    FContainsList : TStrings;
-    FFlags : DWORD;
+    FRequiresList: TStrings;
+    FContainsList: TStrings;
+    FFlags: DWORD;
 
     function GetRequiresCount: Integer;
-    function GetRequires(idx : Integer): string;
+    function GetRequires(idx: Integer): string;
     function GetContainsCount: Integer;
     function GetContains(idx: Integer): string;
     function GetContainsFlag(idx: Integer): Byte;
@@ -54,30 +54,30 @@ type
     function GetNeverBuild: Boolean;
     function GetRunTimeOnly: Boolean;
   protected
-    class function SupportsRCData(const AName : string; Size : Integer; data : Pointer) : Boolean; override;
+    class function SupportsRCData(const AName: string; Size: Integer; data: Pointer): Boolean; override;
   public
     destructor Destroy; override;
-    procedure ChangeData(newData : TMemoryStream); override;
-    property RequiresCount : Integer read GetRequiresCount;
-    property Requires[idx : Integer] : string read GetRequires;
-    property ContainsCount : Integer read GetContainsCount;
-    property Contains[idx : Integer] : string read GetContains;
-    property ContainsFlag [idx : Integer] : Byte read GetContainsFlag;
+    procedure ChangeData(newData: TMemoryStream); override;
+    property RequiresCount: Integer read GetRequiresCount;
+    property Requires[idx: Integer]: string read GetRequires;
+    property ContainsCount: Integer read GetContainsCount;
+    property Contains[idx: Integer]: string read GetContains;
+    property ContainsFlag [idx: Integer]: Byte read GetContainsFlag;
 
-    property NeverBuild : Boolean read GetNeverBuild;
-    property DesignTimeOnly : Boolean read GetDesignTimeOnly;
-    property RunTimeOnly : Boolean read GetRunTimeOnly;
-    property CheckForDuplicates : Boolean read GetCheckForDuplicates;
-    property Environment : TPackageEnvironment read GetEnvironment;
-    property ModuleType : TModuleType read GetModuleType;
+    property NeverBuild: Boolean read GetNeverBuild;
+    property DesignTimeOnly: Boolean read GetDesignTimeOnly;
+    property RunTimeOnly: Boolean read GetRunTimeOnly;
+    property CheckForDuplicates: Boolean read GetCheckForDuplicates;
+    property Environment: TPackageEnvironment read GetEnvironment;
+    property ModuleType: TModuleType read GetModuleType;
   end;
 
 implementation
 
 type
   TPkgName = packed record
-    HashCode : Byte;
-    Name : array [0..255] of Char;
+    HashCode: Byte;
+    Name: array [0..255] of Char;
   end;
   PPkgName = ^TPkgName;
 
@@ -94,7 +94,7 @@ type
 
   PUnitName = ^TUnitName;
   TUnitName = packed record
-    Flags : Byte;
+    Flags: Byte;
     HashCode: Byte;
     Name: array[0..255] of Char;
   end;
@@ -105,6 +105,7 @@ class function TRCDataResourceDetails.GetBaseType: WideString;
 begin
   Result := IntToStr (Integer (RT_RCDATA));
 end;
+
 
 { TRCDataDescriptionResourceDetails }
 
@@ -126,6 +127,7 @@ begin
   Result := CompareText(AName, 'DESCRIPTION') = 0;
 end;
 
+
 { TRCDataPackagesResourceDetails }
 
 procedure TRCDataPackagesResourceDetails.ChangeData(
@@ -138,10 +140,10 @@ end;
 
 procedure TRCDataPackagesResourceDetails.DecodeData;
 var
-  p : PChar;
-  i, Count : Integer;
-  pkg : PPkgName;
-  unt : PUnitName;
+  p: PChar;
+  i, Count: Integer;
+  pkg: PPkgName;
+  unt: PUnitName;
 begin
   if not Assigned(FRequiresList) then
   begin
@@ -232,7 +234,7 @@ begin
   Result := (FFlags and 1) <> 0
 end;
 
-function TRCDataPackagesResourceDetails.GetRequires(idx : Integer): string;
+function TRCDataPackagesResourceDetails.GetRequires(idx: Integer): string;
 begin
   DecodeData;
   Result := FRequiresList [idx]
@@ -260,50 +262,50 @@ end;
 
 function TRCDataFormResourceDetails.GetText: WideString;
 var
-  s: TStringStream;
+  StringStream: TStringStream;
 begin
-  s := TStringStream.Create('');
+  StringStream := TStringStream.Create('');
   try
     data.Seek(0, soFromBeginning);
-    ObjectBinaryToText(data, s);
-    Result := UTF8Decode(s.DataString);
+    ObjectBinaryToText(data, StringStream);
+    Result := UTF8Decode(StringStream.DataString);
   finally
-    s.Free
+    StringStream.Free;
   end
 end;
 
 procedure TRCDataFormResourceDetails.SetText(const Value: WideString);
 var
-  s: TStringStream;
-  m: TMemoryStream;
+  StringStream: TStringStream;
+  MemoryStream: TMemoryStream;
 begin
-  s := TStringStream.Create(Utf8Encode(Value));
+  StringStream := TStringStream.Create(Utf8Encode(Value));
   try
-    m := TMemoryStream.Create;
+    MemoryStream := TMemoryStream.Create;
     try
-      s.Seek(0, soFromBeginning);
-      ObjectTextToBinary(s, m);
-      ChangeData(m);
+      StringStream.Seek(0, soFromBeginning);
+      ObjectTextToBinary(StringStream, MemoryStream);
+      ChangeData(MemoryStream);
     finally
-      m.Free;
+      MemoryStream.Free;
     end
   finally
-    s.Free
+    StringStream.Free
   end
 end;
 
 class function TRCDataFormResourceDetails.SupportsRCData(
   const AName: string; Size: Integer; data: Pointer): Boolean;
 begin
-  Result := (Size > 0) and (strlcomp (PChar (data), 'TPF0', 4) = 0);
+  Result := (Size > 0) and (StrLComp(PChar(data), 'TPF0', 4) = 0);
 end;
 
 initialization
-  RegisterResourceDetails (TRCDataDescriptionResourceDetails);
-  RegisterResourceDetails (TRCDataPackagesResourceDetails);
-  RegisterResourceDetails (TRCDataFormResourceDetails);
+  RegisterResourceDetails(TRCDataDescriptionResourceDetails);
+  RegisterResourceDetails(TRCDataPackagesResourceDetails);
+  RegisterResourceDetails(TRCDataFormResourceDetails);
 finalization
-  UnregisterResourceDetails (TRCDataDescriptionResourceDetails);
-  UnregisterResourceDetails (TRCDataPackagesResourceDetails);
-  UnregisterResourceDetails (TRCDataFormResourceDetails);
+  UnregisterResourceDetails(TRCDataDescriptionResourceDetails);
+  UnregisterResourceDetails(TRCDataPackagesResourceDetails);
+  UnregisterResourceDetails(TRCDataFormResourceDetails);
 end.

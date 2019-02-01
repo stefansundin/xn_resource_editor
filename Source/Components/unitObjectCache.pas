@@ -35,128 +35,128 @@ uses
   Windows, Classes, SysUtils, Contnrs, SyncObjs;
 
 type
-  TObjectCacheProc = procedure(obj : TObject; idx, param : Integer; var continue : Boolean) of object;
+  TObjectCacheProc = procedure(obj: TObject; idx, param: Integer; var continue: Boolean) of object;
 
   TObjectCache = class;
 
   TObjectCacheEnumerator = class
   private
-    FObjectCache : TObjectCache;
-    FIdx : Integer;
+    FObjectCache: TObjectCache;
+    FIdx: Integer;
   public
-    constructor Create(AObjectCache : TObjectCache);
-    function MoveNext : Boolean;
-    function GetCurrent : TObject;
+    constructor Create(AObjectCache: TObjectCache);
+    function MoveNext: Boolean;
+    function GetCurrent: TObject;
 
-    property Current : TObject read GetCurrent;
+    property Current: TObject read GetCurrent;
   end;
 
   //---------------------------------------------------------------
   TObjectCache = class
   private
-    FOrigCapacity : Integer;
-    FObjects : TObjectList;
+    FOrigCapacity: Integer;
+    FObjects: TObjectList;
     function GetOwnsObjects: Boolean;
     procedure SetOwnsObjects(const Value: Boolean);
     function GetCapacity: Integer;
     procedure SetCapacity(const Value: Integer);
     function GetCount: Integer;
   protected
-    function CanRemove(AObject : TObject) : Boolean; virtual;
-    function Matches (ObjA, ObjB : TObject) : Boolean; virtual;
+    function CanRemove(AObject: TObject): Boolean; virtual;
+    function Matches (ObjA, ObjB: TObject): Boolean; virtual;
   public
-    constructor Create(ACapacity : Integer; OwnsObjects : Boolean);
+    constructor Create(ACapacity: Integer; OwnsObjects: Boolean);
     destructor Destroy; override;
-    function IndexOfObject(AObject : TObject) : Integer;
-    procedure Add (AObject : TObject); virtual;
+    function IndexOfObject(AObject: TObject): Integer;
+    procedure Add (AObject: TObject); virtual;
     procedure Clear;
-    function ForEach(proc : TObjectCacheProc; param : Integer) : TObject;
-    function ForEachIdx (proc : TObjectCacheProc; param : Integer) : Integer;
-    function GetEnumerator : TObjectCacheEnumerator;
-    procedure BringToFrontObject(idx : Integer);
-    function ObjectAt(idx : Integer) : TObject;
+    function ForEach(proc: TObjectCacheProc; param: Integer): TObject;
+    function ForEachIdx (proc: TObjectCacheProc; param: Integer): Integer;
+    function GetEnumerator: TObjectCacheEnumerator;
+    procedure BringToFrontObject(idx: Integer);
+    function ObjectAt(idx: Integer): TObject;
 
-    procedure Remove(AObject : TObject);
-    function Extract(AObject : TObject) : TObject;
+    procedure Remove(AObject: TObject);
+    function Extract(AObject: TObject): TObject;
 
-    procedure Push(AObject : TObject);
-    function Pop : TObject;
+    procedure Push(AObject: TObject);
+    function Pop: TObject;
 
-    property OwnsObjects : Boolean read GetOwnsObjects write SetOwnsObjects;
-    property Capacity : Integer read GetCapacity write SetCapacity;
-    property Count : Integer read GetCount;
+    property OwnsObjects: Boolean read GetOwnsObjects write SetOwnsObjects;
+    property Capacity: Integer read GetCapacity write SetCapacity;
+    property Count: Integer read GetCount;
   end;
 
   //---------------------------------------------------------------
   TClassAssociation = class
   private
-    FClassA, FClassB : TClass;
+    FClassA, FClassB: TClass;
   public
-    constructor Create(AClassA, AClassB : TClass);
+    constructor Create(AClassA, AClassB: TClass);
 
-    property ClassA : TClass read FClassA;
-    property ClassB : TClass read FClassB;
+    property ClassA: TClass read FClassA;
+    property ClassB: TClass read FClassB;
   end;
 
   //---------------------------------------------------------------
   TClassAssociations = class
   private
-    FAssociations : TObjectList;
+    FAssociations: TObjectList;
     function GetCount: Integer;
     function GetAssociation(idx: Integer): TClassAssociation;
     function GetIndexOf(classA, classB: TClass): Integer;
     function GetIndexOfClassA(classA: TClass): Integer;
     function GetIndexOfClassB(classB: TClass): Integer;
   protected
-    property Association [idx : Integer] : TClassAssociation read GetAssociation;
-    property Count : Integer read GetCount;
-    property IndexOf [classA, classB : TClass] : Integer read GetIndexOf;
-    property IndexOfClassA [classA : TClass] : Integer read GetIndexOfClassA;
-    property IndexOfClassB [classB : TClass] : Integer read GetIndexOfClassB;
+    property Association [idx: Integer]: TClassAssociation read GetAssociation;
+    property Count: Integer read GetCount;
+    property IndexOf [classA, classB: TClass]: Integer read GetIndexOf;
+    property IndexOfClassA [classA: TClass]: Integer read GetIndexOfClassA;
+    property IndexOfClassB [classB: TClass]: Integer read GetIndexOfClassB;
   public
     constructor Create;
     destructor Destroy; override;
 
-    procedure Associate(classA, classB : TClass);
-    procedure DisAssociate(classA, classB : TClass);
+    procedure Associate(classA, classB: TClass);
+    procedure DisAssociate(classA, classB: TClass);
 
-    function FindClassBFor (classA : TClass) : TClass;
-    function FindClassAFor (classB : TClass) : TClass;
+    function FindClassBFor (classA: TClass): TClass;
+    function FindClassAFor (classB: TClass): TClass;
   end;
 
   //---------------------------------------------------------------
   TClassStringAssociations = class
   private
-    FAssociations : TStringList;
+    FAssociations: TStringList;
     function GetIndexOf(const st: string; cls: TClass): Integer;
     function GetCount: Integer;
     function GetString(idx: Integer): string;
     function GetClass(idx: Integer): TClass;
   protected
-    property IndexOf [const st : string; cls : TClass] : Integer read GetIndexOf;
+    property IndexOf [const st: string; cls: TClass]: Integer read GetIndexOf;
   public
     constructor Create;
     destructor Destroy; override;
 
-    procedure Associate(const st : string; cls : TClass);
-    procedure DisAssociate(const st : string; cls : TClass);
+    procedure Associate(const st: string; cls: TClass);
+    procedure DisAssociate(const st: string; cls: TClass);
 
-    function FindStringFor (cls : TClass) : string;
-    function FindClassFor (const st : string) : TClass;
+    function FindStringFor (cls: TClass): string;
+    function FindClassFor (const st: string): TClass;
 
-    property Count : Integer read GetCount;
-    property Strings[idx : Integer] : string read GetString;
-    property Classes[idx : Integer] : TClass read GetClass;
+    property Count: Integer read GetCount;
+    property Strings[idx: Integer]: string read GetString;
+    property Classes[idx: Integer]: TClass read GetClass;
   end;
 
   TObjectProcessorState = (opsIdle, opsBusy);
   //---------------------------------------------------------------
   TObjectProcessor = class (TThread)
   private
-    FSync : TCriticalSection;
-    FSignal : TEvent;
-    FObjects : TObjectList;
-    FState : TObjectProcessorState;
+    FSync: TCriticalSection;
+    FSignal: TEvent;
+    FObjects: TObjectList;
+    FState: TObjectProcessorState;
     procedure SetOwnsObjects(const Value: Boolean);
     function GetOwnsObjects: Boolean;
     function GetCount: Integer;
@@ -164,27 +164,27 @@ type
   protected
     procedure Execute; override;
 
-    procedure Reset(obj : TObject); virtual;
-    procedure Process (obj : TObject); virtual;
+    procedure Reset(obj: TObject); virtual;
+    procedure Process (obj: TObject); virtual;
     procedure ObjectsProcessed; virtual;
   public
     constructor Create;
     destructor Destroy; override;
     procedure Clear;
     procedure Terminate;
-    procedure AddObjectToQueue(obj : TObject);
+    procedure AddObjectToQueue(obj: TObject);
 
-    property OwnsObjects : Boolean read GetOwnsObjects write SetOwnsObjects;
-    property State : TObjectProcessorState read FState;
-    property Count : Integer read GetCount;
+    property OwnsObjects: Boolean read GetOwnsObjects write SetOwnsObjects;
+    property State: TObjectProcessorState read FState;
+    property Count: Integer read GetCount;
   end;
 
   TLog = class
   private
-    FLock : TCriticalSection;
-    FStrings : TStrings;
-    FLocked : Boolean;
-    FInLock : Boolean;
+    FLock: TCriticalSection;
+    FStrings: TStrings;
+    FLocked: Boolean;
+    FInLock: Boolean;
     FCapacity: Integer;
     procedure Init;
     procedure Lock;
@@ -194,13 +194,13 @@ type
 
   public
     destructor Destroy; override;
-    function LockGetCount : Integer;
-    procedure Add (const st : string);
+    function LockGetCount: Integer;
+    procedure Add (const st: string);
     procedure Clear;
     procedure Unlock;
 
-    property Capacity : Integer read FCapacity write SetCapacity;
-    property Strings[idx : Integer] : string read GetStrings;
+    property Capacity: Integer read FCapacity write SetCapacity;
+    property Strings[idx: Integer]: string read GetStrings;
   end;
 
 implementation
@@ -220,8 +220,8 @@ implementation
  *----------------------------------------------------------------------*)
 procedure TObjectCache.Add(AObject: TObject);
 var
-  idx, c : Integer;
-  b : Boolean;
+  idx, c: Integer;
+  b: Boolean;
 begin
   idx := IndexOfObject(AObject);
   if idx = 0 then       // Already in the cache at the front
@@ -275,8 +275,8 @@ end;
  *----------------------------------------------------------------------*)
 procedure TObjectCache.BringToFrontObject(idx: Integer);
 var
-  b : Boolean;
-  obj : TObject;
+  b: Boolean;
+  obj: TObject;
 begin
   if (idx > 0) then
   begin
@@ -303,7 +303,7 @@ end;
  |                                                                      |
  | The function returns True if the object can be safely removed.       |
  *----------------------------------------------------------------------*)
-function TObjectCache.CanRemove(AObject: TObject) : Boolean;
+function TObjectCache.CanRemove(AObject: TObject): Boolean;
 begin
   Result := True
 end;
@@ -315,7 +315,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TObjectCache.Clear;
 var
-  i : Integer;
+  i: Integer;
 begin
   i := 0;
   while i < FObjects.Count do
@@ -328,7 +328,7 @@ end;
 (*----------------------------------------------------------------------*
  | constructor TObjectCache.Create                                      |
  *----------------------------------------------------------------------*)
-constructor TObjectCache.Create(ACapacity : Integer; OwnsObjects : Boolean);
+constructor TObjectCache.Create(ACapacity: Integer; OwnsObjects: Boolean);
 begin
   FObjects := TObjectList.Create(OwnsObjects);
   FOrigCapacity := ACapacity;
@@ -356,7 +356,7 @@ end;
  | The function returns the extracted object.  nb.  Even if OwnsObjects |
  | true, the object is *not* deleted                                    |
  *----------------------------------------------------------------------*)
-function TObjectCache.Extract(AObject: TObject) : TObject;
+function TObjectCache.Extract(AObject: TObject): TObject;
 begin
   Result := FObjects.Extract(AObject)
 end;
@@ -368,15 +368,15 @@ end;
  |                                                                      |
  | Parameters:                                                          |
  |   proc: TObjectCacheProc     procedure to call                       |
- |   param : Integer            User parameter to pass to the procedure |
+ |   param: Integer            User parameter to pass to the procedure |
  |                                                                      |
  | The function returns the object that caused 'proc' to return with    |
  | 'continue=False'.  You can use this eg. to search the cache.         |
  *----------------------------------------------------------------------*)
-function TObjectCache.ForEach(proc: TObjectCacheProc; param : Integer) : TObject;
+function TObjectCache.ForEach(proc: TObjectCacheProc; param: Integer): TObject;
 var
-  i : Integer;
-  continue : Boolean;
+  i: Integer;
+  continue: Boolean;
 begin
   i := 0;
   continue := True;
@@ -402,7 +402,7 @@ end;
  |                                                                      |
  | Parameters:                                                          |
  |   proc: TObjectCacheProc     procedure to call                       |
- |   param : Integer            User parameter to pass to the procedure |
+ |   param: Integer            User parameter to pass to the procedure |
  |                                                                      |
  | The function returns the index of the object that caused 'proc'      |
  | to return with 'continue=False'.  You can use this eg. to search the |
@@ -411,8 +411,8 @@ end;
 function TObjectCache.ForEachIdx(proc: TObjectCacheProc;
   param: Integer): Integer;
 var
-  i : Integer;
-  continue : Boolean;
+  i: Integer;
+  continue: Boolean;
 begin
   i := 0;
   continue := True;
@@ -478,7 +478,7 @@ end;
  *----------------------------------------------------------------------*)
 function TObjectCache.IndexOfObject(AObject: TObject): Integer;
 var
-  i, c : Integer;
+  i, c: Integer;
 begin
   Result := -1;
   c := FObjects.Count;
@@ -597,7 +597,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TClassAssociations.Associate(classA, classB: TClass);
 var
-  i : Integer;
+  i: Integer;
 begin
   i := IndexOf [classA, classB];
 
@@ -629,7 +629,7 @@ end;
  *----------------------------------------------------------------------*)
 procedure TClassAssociations.DisAssociate(classA, classB: TClass);
 var
-  idx : Integer;
+  idx: Integer;
 begin
   idx := IndexOf [classA, classB];
   if idx >= 0 then
@@ -650,7 +650,7 @@ end;
  *----------------------------------------------------------------------*)
 function TClassAssociations.FindClassAFor(classB: TClass): TClass;
 var
-  idx : Integer;
+  idx: Integer;
 begin
   idx := IndexOfClassB [classB];
   if idx >= 0 then
@@ -676,7 +676,7 @@ end;
  *----------------------------------------------------------------------*)
 function TClassAssociations.FindClassBFor(classA: TClass): TClass;
 var
-  idx : Integer;
+  idx: Integer;
 begin
   idx := IndexOfClassA [classA];
   if idx >= 0 then
@@ -708,8 +708,8 @@ end;
 
 function TClassAssociations.GetIndexOf(classA, classB: TClass): Integer;
 var
-  i : Integer;
-  ass : TClassAssociation;
+  i: Integer;
+  ass: TClassAssociation;
 begin
   Result := -1;
 
@@ -726,8 +726,8 @@ end;
 
 function TClassAssociations.GetIndexOfClassA(classA: TClass): Integer;
 var
-  i : Integer;
-  ass : TClassAssociation;
+  i: Integer;
+  ass: TClassAssociation;
 begin
   Result := -1;
 
@@ -750,8 +750,8 @@ end;
 
 function TClassAssociations.GetIndexOfClassB(classB: TClass): Integer;
 var
-  i : Integer;
-  ass : TClassAssociation;
+  i: Integer;
+  ass: TClassAssociation;
 begin
   Result := -1;
 
@@ -778,7 +778,7 @@ end;
 
 procedure TClassStringAssociations.Associate(const st: string; cls: TClass);
 var
-  i : Integer;
+  i: Integer;
 begin
   i := IndexOf [st, cls];
 
@@ -801,7 +801,7 @@ end;
 procedure TClassStringAssociations.DisAssociate(const st: string;
   cls: TClass);
 var
-  idx : Integer;
+  idx: Integer;
 begin
   idx := IndexOf [st, cls];
   if idx >= 0 then
@@ -810,7 +810,7 @@ end;
 
 function TClassStringAssociations.FindClassFor(const st: string): TClass;
 var
-  idx : Integer;
+  idx: Integer;
 begin
   idx := FAssociations.IndexOf (st);
   if idx >= 0 then
@@ -821,7 +821,7 @@ end;
 
 function TClassStringAssociations.FindStringFor(cls: TClass): string;
 var
-  i : Integer;
+  i: Integer;
 begin
   Result := '';
   for i := 0 to Count - 1 do
@@ -845,7 +845,7 @@ end;
 function TClassStringAssociations.GetIndexOf(const st: string;
   cls: TClass): Integer;
 var
-  i : Integer;
+  i: Integer;
 begin
   Result := -1;
   for i := 0 to Count - 1 do
@@ -877,7 +877,7 @@ end;
 
 procedure TObjectProcessor.Clear;
 var
-  i : Integer;
+  i: Integer;
 begin
   FSync.Enter;
   try
@@ -1032,7 +1032,7 @@ end;
 
 procedure TLog.LimitCapacity;
 var
-  needLock : Boolean;
+  needLock: Boolean;
 begin
   if FCapacity < 1 then
     Exit;

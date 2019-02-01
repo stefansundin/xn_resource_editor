@@ -1,5 +1,5 @@
 (*======================================================================*
- | unitResourceJPEG                                                     |
+ | 2                                                     |
  |                                                                      |
  | Encapsulates JPEG images in custom (non-RC data) resources.          |
  |                                                                      |
@@ -8,12 +8,12 @@
  | 1.0      14/06/2001  CPWW  Original                                  |
  *======================================================================*)
 
-unit unitResourceJPEG;
+unit 2;
 
 interface
 
 uses
-  Windows, Classes, SysUtils, Graphics, jpeg, unitResourceDetails,
+  Windows, Classes, SysUtils, Graphics, Jpeg, unitResourceDetails,
   unitResourceGraphics;
 
 type
@@ -22,27 +22,27 @@ type
 
   TJPegResourceDetails = class (TGraphicsResourceDetails)
   protected
-    fWidth, fHeight : Integer;
+    FWidth, FHeight: Integer;
     function GetHeight: Integer; override;
     function GetPixelFormat: TPixelFormat; override;
     function GetWidth: Integer; override;
     procedure InitNew; override;
-    class function SupportsData(Size : Integer; data : Pointer) : Boolean; override;
+    class function SupportsData(Size: Integer; data: Pointer): Boolean; override;
   public
-    class function GetBaseType : WideString; override;
-    procedure GetImage(picture : TPicture); override;
-    procedure SetImage(image : TPicture); override;
+    class function GetBaseType: WideString; override;
+    procedure GetImage(picture: TPicture); override;
+    procedure SetImage(image: TPicture); override;
   end;
 
 implementation
 
-function FindJPegSegment(var data : PChar; segment : byte) : Boolean;
+function FindJPegSegment(var data: PChar; segment: byte): Boolean;
 const
   ParameterlessSegments = #$01#$d0#$d1#$d2#$d3#$d4#$d5#$d6#$d7#$d8#$d9;
 var
-  p : PChar;
-  seg : Byte;
-  len : Word;
+  p: PChar;
+  seg: Byte;
+  len: Word;
 begin
   p := data;
   Result := False;
@@ -78,9 +78,9 @@ begin
   until False
 end;
 
-procedure GetJPegSize(data : PChar; var Width, Height : Integer);
+procedure GetJPegSize(data: PChar; var Width, Height: Integer);
 var
-  len : Integer;
+  len: Integer;
 begin
   if FindJPegSegment(data, $c0) then
   begin
@@ -106,10 +106,10 @@ end;
 
 function TJPegResourceDetails.GetHeight: Integer;
 begin
-  if fHeight = 0 then
+  if FHeight = 0 then
     GetJPegSize(data.Memory, FWidth, FHeight);
 
-  Result := fHeight;
+  Result := FHeight;
 end;
 
 procedure TJPegResourceDetails.GetImage(picture: TPicture);
@@ -117,8 +117,8 @@ begin
   picture.graphic := TJPegImage.Create;
   data.Seek(0, soFromBeginning);
   TJpegImage(picture.graphic).LoadFromStream (data);
-  fWidth := picture.graphic.Width;
-  fHeight := picture.graphic.Height;
+  FWidth := picture.graphic.Width;
+  FHeight := picture.graphic.Height;
 end;
 
 function TJPegResourceDetails.GetPixelFormat: TPixelFormat;
@@ -128,15 +128,15 @@ end;
 
 function TJPegResourceDetails.GetWidth: Integer;
 begin
-  if fWidth = 0 then
+  if FWidth = 0 then
     GetJPegSize(data.Memory, FWidth, FHeight);
-  Result := fWidth;
+  Result := FWidth;
 end;
 
 procedure TJPegResourceDetails.InitNew;
 var
-  img : TJPegImage;
-  bmp : TBitmap;
+  img: TJPegImage;
+  bmp: TBitmap;
 begin
   bmp := nil;
   img := TJPegImage.Create;
@@ -155,14 +155,14 @@ end;
 procedure TJPegResourceDetails.SetImage(image: TPicture);
 begin
   inherited;
-  fWidth := image.Width;
-  fHeight := image.Height;
+  FWidth := image.Width;
+  FHeight := image.Height;
 end;
 
 class function TJPegResourceDetails.SupportsData(Size: Integer;
   data: Pointer): Boolean;
 var
-  len : Integer;
+  len: Integer;
 begin
   Result := False;
   if PWORD (data)^ = $d8ff then
@@ -181,7 +181,7 @@ begin
 end;
 
 initialization
-  RegisterResourceDetails (TJPEGResourceDetails);
+  RegisterResourceDetails(TJPEGResourceDetails);
 finalization
-  UnRegisterResourceDetails (TJPEGResourceDetails);
+  UnRegisterResourceDetails(TJPEGResourceDetails);
 end.

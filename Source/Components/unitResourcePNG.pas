@@ -3,7 +3,7 @@ unit unitResourcePNG;
 interface
 
 uses
-  Windows, Classes, SysUtils, graphics, pngimage, unitResourceDetails,
+  Windows, Classes, SysUtils, Graphics, PngImage, unitResourceDetails,
   unitResourceGraphics;
 
 type
@@ -65,9 +65,9 @@ begin
 end;
 
 initialization
-  RegisterResourceDetails (TPngResourceDetails);
+  RegisterResourceDetails(TPngResourceDetails);
 finalization
-  UnregisterResourceDetails (TPngResourceDetails);
+  UnregisterResourceDetails(TPngResourceDetails);
 end.
 
 

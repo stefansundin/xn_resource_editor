@@ -159,7 +159,6 @@
         <DCCReference Include="..\..\Source\Components\SpellCheckerForm.pas">
             <Form>fmSpellChecker</Form>
         </DCCReference>
-        <DCCReference Include="..\..\Source\Components\twain.pas"/>
         <DCCReference Include="..\..\Source\Components\unitBTree.pas"/>
         <DCCReference Include="..\..\Source\Components\unitCExpression.pas"/>
         <DCCReference Include="..\..\Source\Components\unitCharsetMap.pas"/>
