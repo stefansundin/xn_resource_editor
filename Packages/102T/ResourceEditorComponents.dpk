@@ -127,7 +127,6 @@ contains
   unitSearchString in '..\..\Source\Components\unitSearchString.pas',
   unitStreamTextReader in '..\..\Source\Components\unitStreamTextReader.pas',
   unitVersionInfo in '..\..\Source\Components\unitVersionInfo.pas',
-  unitVirtualMemory in '..\..\Source\Components\unitVirtualMemory.pas',
-  XFace in '..\..\Source\Components\XFace.pas';
+  unitVirtualMemory in '..\..\Source\Components\unitVirtualMemory.pas';
 
 end.
