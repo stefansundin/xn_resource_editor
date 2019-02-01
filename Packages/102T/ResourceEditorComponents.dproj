@@ -130,7 +130,6 @@
         <DCCReference Include="..\..\Source\Components\cmpSpellChecker.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpSplitterPanel.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpStandardSystemMenu.pas"/>
-        <DCCReference Include="..\..\Source\Components\cmpSuDoku.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpTextDisplay.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpTexturedPanel.pas"/>
         <DCCReference Include="..\..\Source\Components\cmpThemedScrollBox.pas"/>

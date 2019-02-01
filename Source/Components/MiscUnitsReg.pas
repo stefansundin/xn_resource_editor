@@ -36,8 +36,7 @@ uses
   cmpFileCopier,
   cmpSplitterPanel,
   cmpTextDisplay,
-  cmpUCtrls,
-  cmpSuDoku;
+  cmpUCtrls;
 
 procedure Register;
 begin
@@ -48,7 +47,6 @@ begin
     TNTAboutBox,
     THyperlinkButton,
     TExSplitter,
-//    TTrayIcon,
     TMessageDisplay,
     TMRUList,
     TPropertyListBox,
@@ -70,8 +68,7 @@ begin
     TSplitterPanel,
     TTextDisplay,
     TUEdit,
-    TUComboBox,
-    TSuDoku
+    TUComboBox
   ]);
 end;
 

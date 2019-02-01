@@ -64,7 +64,6 @@ contains
   cmpSpellChecker in '..\..\Source\Components\cmpSpellChecker.pas',
   cmpSplitterPanel in '..\..\Source\Components\cmpSplitterPanel.pas',
   cmpStandardSystemMenu in '..\..\Source\Components\cmpStandardSystemMenu.pas',
-  cmpSuDoku in '..\..\Source\Components\cmpSuDoku.pas',
   cmpTextDisplay in '..\..\Source\Components\cmpTextDisplay.pas',
   cmpTexturedPanel in '..\..\Source\Components\cmpTexturedPanel.pas',
   cmpThemedScrollBox in '..\..\Source\Components\cmpThemedScrollBox.pas',
