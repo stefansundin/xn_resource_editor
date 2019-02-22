@@ -1,0 +1,61 @@
+package ResourceEditorComponents;
+
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'Resource Editor Components'}
+{$LIBSUFFIX '10S'}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  vcl;
+
+contains
+  ResourceEditorComponentsReg in '..\..\Source\Components\ResourceEditorComponentsReg.pas',
+  cmpBitmapEditor in '..\..\Source\Components\cmpBitmapEditor.pas',
+  cmpDialogBox in '..\..\Source\Components\cmpDialogBox.pas',
+  cmpDialogEditor in '..\..\Source\Components\cmpDialogEditor.pas',
+  cmpGradientShape in '..\..\Source\Components\cmpGradientShape.pas',
+  cmpMenuDesigner in '..\..\Source\Components\cmpMenuDesigner.pas',
+  DialogButtonControls in '..\..\Source\Components\DialogButtonControls.pas',
+  DialogComboBoxControls in '..\..\Source\Components\DialogComboBoxControls.pas',
+  DialogConsts in '..\..\Source\Components\DialogConsts.pas',
+  DialogEditControls in '..\..\Source\Components\DialogEditControls.pas',
+  DialogHotkeyControls in '..\..\Source\Components\DialogHotkeyControls.pas',
+  DialogListboxControls in '..\..\Source\Components\DialogListboxControls.pas',
+  DialogListViewControls in '..\..\Source\Components\DialogListViewControls.pas',
+  DialogProgressBarControls in '..\..\Source\Components\DialogProgressBarControls.pas',
+  DialogScrollbarControls in '..\..\Source\Components\DialogScrollbarControls.pas',
+  DialogSliderControls in '..\..\Source\Components\DialogSliderControls.pas',
+  DialogStaticControls in '..\..\Source\Components\DialogStaticControls.pas',
+  DialogStrings in '..\..\Source\Components\DialogStrings.pas',
+  DialogUpDownControls in '..\..\Source\Components\DialogUpDownControls.pas',
+  GIFImage in '..\..\Source\Components\GIFImage.pas',
+  GraphFlip in '..\..\Source\Components\GraphFlip.pas',
+  MMPropZLIB in '..\..\Source\Components\MMPropZLIB.pas',
+  unitExIcon in '..\..\Source\Components\unitExIcon.pas',
+  XFace in '..\..\Source\Components\XFace.pas';
+
+end.
